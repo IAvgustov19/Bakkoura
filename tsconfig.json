@@ -1,0 +1,11 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "amd",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "strict": false,
+    "esModuleInterop": true
+  }
+}
