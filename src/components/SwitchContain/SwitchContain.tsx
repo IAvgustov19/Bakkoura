@@ -10,18 +10,11 @@ import RN from '../RN';
 type Props = {
   title?: string;
   _title?: string;
-  isSwitch?: boolean;
   handlePress?: () => void;
   back?: boolean;
 };
 
-const SwitchContain: React.FC<Props> = ({
-  title,
-  isSwitch,
-  handlePress,
-  back,
-  _title,
-}) => {
+const SwitchContain: React.FC<Props> = ({title, handlePress, back, _title}) => {
   const translateX = useSharedValue(0);
 
   const handlePresss = () => {

@@ -20,6 +20,9 @@ import StressTestDuring from '../screens/stressTest/StressTestDuring/StressTestD
 import NewAlarmScreen from '../screens/alarm/NewAlarm';
 import NameAlarm from '../screens/alarm/NameAlarm';
 import CitesScreen from '../screens/worldTime/CitesScreen';
+import NewProjectTimer from '../screens/projectTimer/NewProjectTimer';
+import NewProjectTimerPrice from '../screens/projectTimer/NewProjectTimerPrice';
+import ProjectTimerCalculator from '../screens/projectTimer/ProjectTImerCalculator';
 
 const Stack = createStackNavigator();
 
@@ -151,6 +154,27 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.CITIES_SCREEN}
           component={CitesScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.NEW_PROJECT_TIMER}
+          component={NewProjectTimer}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.NEW_PROJECT_TIMER_PRICE}
+          component={NewProjectTimerPrice}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.PROJECT_TIMER_CALCULATOR}
+          component={ProjectTimerCalculator}
           options={{
             headerTitleAlign: 'center',
           }}

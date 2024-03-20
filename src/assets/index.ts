@@ -47,6 +47,10 @@ import worldWatchMinutline from './svg/minutLine.svg';
 import searchIcon from './svg/search.svg';
 import stopwatch from './svg/stopwatch.svg';
 import circleIcon from './svg/circleIcon.svg';
+import play from './svg/play.svg';
+import plus from './svg/plus.svg';
+import pausa from './svg/pausa.svg';
+import circleDollar from './svg/dollar-circle.svg';
 
 export const Images = {
   Svg: {
@@ -99,6 +103,10 @@ export const Images = {
     searchIcon,
     stopwatch,
     circleIcon,
+    play,
+    pausa,
+    plus,
+    circleDollar,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

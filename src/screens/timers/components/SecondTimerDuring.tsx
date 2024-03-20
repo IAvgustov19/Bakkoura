@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {BG, Images} from '../../../assets';
 import RN from '../../../components/RN';
 import SwitchContain from '../../../components/SwitchContain/SwitchContain';
+import {formattedTime} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
@@ -40,19 +41,19 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
             <RN.Text style={styles.finished}>{currentTime}</RN.Text>
           ) : timerStatus.back ? (
             <RN.Text style={styles.timerTime}>
-              {secondTimerValue.hours +
-                ':' +
-                secondTimerValue.minut +
-                ':' +
-                secondTimerValue.second}
+              {formattedTime(
+                secondTimerValue.hours,
+                secondTimerValue.minut,
+                secondTimerValue.second,
+              )}
             </RN.Text>
           ) : (
             <RN.Text style={styles.timerTime}>
-              {secondTimerTime.hours +
-                ':' +
-                secondTimerTime.minut +
-                ':' +
-                secondTimerTime.second}
+              {formattedTime(
+                secondTimerTime.hours,
+                secondTimerTime.minut,
+                secondTimerTime.second,
+              )}
             </RN.Text>
           )}
           {finished ? (

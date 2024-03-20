@@ -399,6 +399,26 @@ export class TimerStore {
       this.inActive('finished');
     });
   };
+  resetTimerBack = () => {
+    runInAction(() => {
+      this.secondTimerValue = {
+        hours: 0,
+        minut: 0,
+        second: 0,
+      };
+      this.firstTimerValue = {
+        hours: 0,
+        minut: 0,
+        second: 0,
+      };
+      this.inActive('reset');
+      this.inActive('start');
+      this.inActive('stop');
+      this.totalDurationSeconds = 0;
+      this.percentage = 100;
+      this.inActive('finished');
+    });
+  };
 
   selectedSound = {title: 'Ocean'};
   soundsData = SoundsData;

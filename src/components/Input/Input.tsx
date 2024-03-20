@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, TextInput} from 'react-native';
+import {Text, View, StyleSheet, TextInput, DimensionValue} from 'react-native';
 import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
@@ -10,14 +10,38 @@ type Props = {
   value?: any;
   onChangeText?: (e) => void;
   icon?: React.ReactNode;
+  height?: DimensionValue;
+  width?: DimensionValue;
+  multiLine?: boolean;
+  numberOfLines?: number;
+  paddingTop?: number;
 };
 
-const Input: React.FC<Props> = ({placeholder, value, onChangeText, icon}) => {
+const Input: React.FC<Props> = ({
+  placeholder,
+  value,
+  onChangeText,
+  icon,
+  height,
+  width,
+  multiLine,
+  numberOfLines,
+  paddingTop,
+}) => {
   return (
     <RN.View style={styles.inputBox}>
       <TextInput
+        multiline={multiLine}
+        numberOfLines={numberOfLines}
         placeholderTextColor={COLORS.grey}
-        style={styles.input}
+        style={[
+          styles.input,
+          {
+            height: height,
+            paddingTop: paddingTop,
+            width: width ? width : '80%',
+          },
+        ]}
         onChangeText={onChangeText}
         value={value}
         autoCapitalize="none"

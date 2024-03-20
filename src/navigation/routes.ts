@@ -46,4 +46,9 @@ export enum APP_ROUTES {
 
   //World Time screens
   CITIES_SCREEN = 'CitesScreen',
+
+  //Project Timer screens
+  NEW_PROJECT_TIMER = 'NewProjectTimer',
+  NEW_PROJECT_TIMER_PRICE = 'NewProjectTimerPrice',
+  PROJECT_TIMER_CALCULATOR = 'ProjectTimerCalculator',
 }

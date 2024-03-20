@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
   title: {
     // textAlign: 'center',
     // alignSelf: 'center',
+    paddingTop: 3,
+    // backgroundColor: 'red',
   },
   leftItem: {
     paddingTop: 2,

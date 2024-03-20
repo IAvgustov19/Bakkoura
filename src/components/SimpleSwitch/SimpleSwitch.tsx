@@ -13,7 +13,7 @@ type Props = {
 };
 
 const SimpleSwitch: React.FC<Props> = ({handlePress, active}) => {
-  const translateX = useSharedValue(20);
+  const translateX = useSharedValue(0);
 
   const handlePresss = () => {
     if (!active) {

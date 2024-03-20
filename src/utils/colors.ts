@@ -8,4 +8,5 @@ export const COLORS = {
   red: '#F20000',
   green: '#21C004',
   darkRed: '#DD0000',
+  darkGreyText: '#2F4252',
 };
