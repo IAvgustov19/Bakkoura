@@ -9,9 +9,16 @@ type Props = {
   value?: string;
   onPress?: () => void;
   backBlack?: boolean;
+  rightItem?: React.ReactNode;
 };
 
-const ListItemCont: React.FC<Props> = ({title, value, onPress, backBlack}) => {
+const ListItemCont: React.FC<Props> = ({
+  title,
+  value,
+  onPress,
+  backBlack,
+  rightItem,
+}) => {
   return (
     <RN.TouchableOpacity
       style={[
@@ -20,10 +27,14 @@ const ListItemCont: React.FC<Props> = ({title, value, onPress, backBlack}) => {
       ]}
       onPress={onPress}>
       <RN.Text style={styles.listItemText}>{title}</RN.Text>
-      <RN.TouchableOpacity style={styles.listItemRight} onPress={onPress}>
-        <RN.Text style={styles.listItemRightText}>{value}</RN.Text>
-        <Images.Svg.arrowRight />
-      </RN.TouchableOpacity>
+      {rightItem ? (
+        rightItem
+      ) : (
+        <RN.TouchableOpacity style={styles.listItemRight} onPress={onPress}>
+          <RN.Text style={styles.listItemRightText}>{value}</RN.Text>
+          <Images.Svg.arrowRight />
+        </RN.TouchableOpacity>
+      )}
     </RN.TouchableOpacity>
   );
 };

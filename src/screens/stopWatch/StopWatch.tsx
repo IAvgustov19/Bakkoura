@@ -38,7 +38,6 @@ const StopWatch = () => {
   };
 
   const renderLaps = useMemo(() => {
-    console.log(laps);
     return laps.length > 0 ? (
       <RN.View style={styles.lapsBox}>
         <Line />

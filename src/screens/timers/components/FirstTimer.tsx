@@ -1,24 +1,13 @@
 import DateList, {ItemType} from '../../../components/DataLists/DataLists';
-import {
-  PossibleDaysInMonth,
-  getData,
-  numberOfDaysIn,
-  _getTimeData,
-  generateMinutesList,
-} from '../../../helper/helper';
+import {_getTimeData} from '../../../helper/helper';
 import dayjs from 'dayjs';
-import {useRef, useState} from 'react';
+import {useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import RN from '../../../components/RN';
-import SwitchContain from '../../../components/SwitchContain/SwitchContain';
 import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
-import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
 
 const FirstTimer = () => {
-  const [numberOfDays, setNumberOfDays] = useState<PossibleDaysInMonth>(
-    numberOfDaysIn(new Date().getMonth() + 1, new Date().getFullYear()),
-  );
   const {setFirstTimer, firstTimerValue} = useRootStore().timerStore;
 
   const startListData = _getTimeData(0, {is24Hour: true, minuteInterval: 0});

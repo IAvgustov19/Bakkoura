@@ -2,6 +2,7 @@ import React from 'react';
 import {memo, MutableRefObject, useMemo, useRef} from 'react';
 import {
   Animated,
+  DimensionValue,
   FlatListProps,
   Platform,
   StyleSheet,
@@ -38,6 +39,7 @@ type Props = {
   separatorColor?: string;
   flatListProps?: Partial<FlatListProps<ItemType>>;
   label?: string;
+  labelLeft?: DimensionValue;
 };
 
 const List = ({
@@ -51,6 +53,7 @@ const List = ({
   separatorColor,
   flatListProps = {},
   label,
+  labelLeft,
 }: Props) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const {flatListStyle, iosTextVerticalCenter, textStyle, dividerStyle} =
@@ -174,14 +177,7 @@ const List = ({
         {...rest}
       />
       <RN.View pointerEvents="box-none" style={[styles.divider, dividerStyle]}>
-        {/* <LinearGradient
-          pointerEvents="box-none"
-          style={[styles.divider, dividerStyle]}
-          //   start={{x: 0, y: 0}}
-          //   end={{x: 1, y: 0}}
-          colors={[]}> */}
-        <RN.Text style={styles.label}>{label}</RN.Text>
-        {/* </LinearGradient> */}
+        <RN.Text style={[styles.label, {left: labelLeft}]}>{label}</RN.Text>
       </RN.View>
     </View>
   );
@@ -191,6 +187,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: 'red',
+    height: '100%',
   },
   androidTextVerticalCenter: {
     textAlignVertical: 'center',

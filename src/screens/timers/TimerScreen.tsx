@@ -28,6 +28,7 @@ const TimerScreen = () => {
     soundsData,
     onSoundItemPress,
     selectedSound,
+    resetTimerBack,
   } = useRootStore().timerStore;
 
   const StartTimer = () => {
@@ -69,7 +70,7 @@ const TimerScreen = () => {
     inActive('reset');
     inActive('start');
     inActive('stop');
-    resetTimer();
+    resetTimerBack();
   };
 
   return (

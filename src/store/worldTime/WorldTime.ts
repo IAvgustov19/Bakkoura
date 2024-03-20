@@ -154,7 +154,6 @@ export class WorldTimeStore {
       timezones: data.timezones,
     };
     this.selectedCountries = [...this.selectedCountries, newData] as never;
-    console.log(this.selectedCountries);
     callback();
   };
 }

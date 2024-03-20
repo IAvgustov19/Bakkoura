@@ -205,6 +205,14 @@ function getMonthArray(): Array<ItemType> {
     {value: 12, text: '12', id: 'December'},
   ];
 }
+function PriceArray(): Array<ItemType> {
+  const arr = [];
+  for (let index = 0; index <= 100; index++) {
+    const element = {value: index, text: `${index}`, id: `${index}`};
+    arr.push(element);
+  }
+  return arr;
+}
 
 const getDateArray = () => _generateArray(31);
 
@@ -212,6 +220,7 @@ const hour12Data = _addEmptySlots(getHourArray(false, -1));
 const hour24Data = _addEmptySlots(getHourArray(true, -1));
 const amPmData = _addEmptySlots(getAmPmArray());
 
+export const priceData = _addEmptySlots(PriceArray());
 const monthData = _addEmptySlots(getMonthArray());
 const tempDateData = getDateArray();
 const date31Data = _addEmptySlots(tempDateData);
@@ -293,4 +302,75 @@ export const getCurrentTime = () => {
   const formattedMinutes: string = minutes < 10 ? `0${minutes}` : `${minutes}`;
   const formattedSeconds: string = seconds < 10 ? `0${seconds}` : `${seconds}`;
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+};
+
+export const formatDate = (timestamp: number) => {
+  var currentDate = new Date();
+  var givenDate = new Date(timestamp);
+  var oneDay = 24 * 60 * 60 * 1000; // 1 kunning millisekundlar soni
+
+  // Bugungi sana va berilgan sanani milisekundlarga ajratish
+  var currentDay = Date.UTC(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+  );
+  var givenDay = Date.UTC(
+    givenDate.getFullYear(),
+    givenDate.getMonth(),
+    givenDate.getDate(),
+  );
+
+  // Kunlar farqi
+  var dayDifference = Math.round((currentDay - givenDay) / oneDay);
+
+  if (dayDifference === 0) {
+    return 'Today';
+  } else if (dayDifference === 1) {
+    return 'Yesterday';
+  } else if (dayDifference > 1) {
+    // Kuni, oy va yilni ajratib olamiz
+    var day: any = givenDate.getDate();
+    var month: any = givenDate.getMonth() + 1; // 0 dan boshlanadi, shuning uchun 1 qo'shib beramiz
+    var year = givenDate.getFullYear();
+
+    // Kun va oy raqamlarini 10 dan kichik bo'lsa oldini 0 qo'yamiz
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
+
+    // Formatni qaytarish
+    return year + '-' + month + '-' + day;
+  }
+};
+
+export const formatDateTime = (timestamp: number) => {
+  var givenDate = new Date(timestamp);
+  var hours = givenDate.getHours().toString().padStart(2, '0');
+  var minutes = givenDate.getMinutes().toString().padStart(2, '0');
+  var seconds = givenDate.getSeconds().toString().padStart(2, '0');
+
+  return hours + ':' + minutes + ':' + seconds;
+};
+
+export const secondsToHMS = (seconds: number) => {
+  if (seconds > 0) {
+    const hours: number = Math.floor(seconds / 3600);
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds: number = seconds % 60;
+    return `${hours < 10 ? `0${hours}` : hours}:${
+      minutes < 10 ? `0${minutes}` : minutes
+    }:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
+  } else {
+    return '00:00:00';
+  }
+};
+
+export const formattedTime = (
+  hours: number,
+  minutes: number,
+  seconds: number,
+) => {
+  return `${hours < 10 ? `0${hours}` : hours}:${
+    minutes < 10 ? `0${minutes}` : minutes
+  }:${seconds < 10 ? `0${seconds}` : seconds}`;
 };

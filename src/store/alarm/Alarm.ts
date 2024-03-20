@@ -34,7 +34,7 @@ export class AlarmStore {
     this.setNewAlarmState('id', this.alarmsListData.length + 1);
   };
 
-  handleDeleteAlarm = id => {
+  handleDeleteAlarm = (id: number) => {
     setTimeout(() => {
       runInAction(() => {
         this.alarmsListData = this.alarmsListData.filter(
@@ -44,7 +44,7 @@ export class AlarmStore {
     }, 200);
   };
 
-  handleInactiveAlarm = index => {
+  handleInactiveAlarm = (index: number) => {
     runInAction(() => {
       this.alarmsListData = this.alarmsListData.map((item, i) => {
         return i === index

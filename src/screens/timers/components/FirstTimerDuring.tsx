@@ -4,6 +4,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import {BG, Images} from '../../../assets';
 import RN from '../../../components/RN';
 import SwitchContain from '../../../components/SwitchContain/SwitchContain';
+import {formattedTime} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {stop?: boolean; finished?: boolean};
@@ -21,21 +22,19 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
             <RN.Text style={styles.duringTimer}>{currentTime}</RN.Text>
           ) : timerStatus.back ? (
             <RN.Text style={styles.duringTimer}>
-              {' '}
-              {firstTimerValue.hours +
-                ':' +
-                firstTimerValue.minut +
-                ':' +
-                firstTimerValue.second}
+              {formattedTime(
+                firstTimerValue.hours,
+                firstTimerValue.minut,
+                firstTimerValue.second,
+              )}
             </RN.Text>
           ) : (
             <RN.Text style={styles.duringTimer}>
-              {' '}
-              {firstTimerTime.hours +
-                ':' +
-                firstTimerTime.minut +
-                ':' +
-                firstTimerTime.second}
+              {formattedTime(
+                firstTimerTime.hours,
+                firstTimerTime.minut,
+                firstTimerTime.second,
+              )}
             </RN.Text>
           )}
         </RN.View>

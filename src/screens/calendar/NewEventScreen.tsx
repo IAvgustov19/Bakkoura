@@ -14,7 +14,7 @@ import TextInput from '../../components/TextInputView';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
-import {HITSLOP} from '../../utils/styles';
+import {HITSLOP, windowHeight} from '../../utils/styles';
 
 const NewEventScreen = () => {
   const navigation = useNavigation();
@@ -51,133 +51,156 @@ const NewEventScreen = () => {
               </RN.TouchableOpacity>
             }
           />
-          <RN.View style={styles.eventsTypeList}>
-            <RN.View style={styles.listItem}>
-              <KeyboardAvoidingView
-                children={
-                  <TextInput
-                    multiline={true}
-                    onChangeText={e => setNewEventState('name', e as never)}
-                    style={styles.listItemTextInput}
-                    placeholderTextColor={COLORS.grey}
-                    placeholder="Name"
-                  />
-                }
-              />
+          <RN.ScrollView style={styles.scrollView}>
+            <RN.View style={styles.content}>
+              <RN.View>
+                <RN.View style={styles.eventsTypeList}>
+                  <RN.View style={styles.listItem}>
+                    <KeyboardAvoidingView
+                      children={
+                        <TextInput
+                          multiline={true}
+                          onChangeText={e =>
+                            setNewEventState('name', e as never)
+                          }
+                          style={styles.listItemTextInput}
+                          placeholderTextColor={COLORS.grey}
+                          placeholder="Name"
+                        />
+                      }
+                    />
+                  </RN.View>
+                  <RN.View style={styles.line}></RN.View>
+                  <RN.TouchableOpacity
+                    style={styles.listItem}
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.DATE_SCREEN as never)
+                    }>
+                    <RN.Text style={styles.listItemText}>Date</RN.Text>
+                    <RN.TouchableOpacity
+                      style={styles.listItemRight}
+                      onPress={() =>
+                        navigation.navigate(APP_ROUTES.DATE_SCREEN as never)
+                      }>
+                      <RN.Text style={styles.listItemRightText}>
+                        {`${
+                          newEventData.day < 10
+                            ? `0${newEventData.day}`
+                            : newEventData.day
+                        }.${
+                          newEventData.month < 10
+                            ? `0${newEventData.month}`
+                            : newEventData.month
+                        }.${newEventData.year}`}
+                      </RN.Text>
+                      <Images.Svg.dateMenu />
+                    </RN.TouchableOpacity>
+                  </RN.TouchableOpacity>
+                  <RN.View style={styles.line}></RN.View>
+                  <RN.TouchableOpacity
+                    style={styles.listItem}
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
+                    }>
+                    <RN.Text style={styles.listItemText}>Time</RN.Text>
+                    <RN.TouchableOpacity
+                      style={styles.listItemRight}
+                      onPress={() =>
+                        navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
+                      }>
+                      <RN.Text style={styles.listItemRightText}>
+                        {`${
+                          newEventData.hour < 10
+                            ? `0${newEventData.hour}`
+                            : newEventData.hour
+                        }:${
+                          newEventData.minut < 10
+                            ? `0${newEventData.minut}`
+                            : newEventData.minut
+                        }:${
+                          newEventData.second < 10
+                            ? `0${newEventData.second}`
+                            : newEventData.second
+                        }`}
+                      </RN.Text>
+                      <Images.Svg.arrowRight />
+                    </RN.TouchableOpacity>
+                  </RN.TouchableOpacity>
+                </RN.View>
+                <RN.View style={styles.eventsTypeList}>
+                  <RN.View style={styles.listItem}>
+                    <RN.Text style={styles.listItemText}>All day</RN.Text>
+                    <Switch
+                      value={newEventData.allDay}
+                      onValueChange={e =>
+                        setNewEventState('allDay', e as never)
+                      }
+                    />
+                  </RN.View>
+                  <RN.View style={styles.line}></RN.View>
+                  <RN.TouchableOpacity
+                    style={styles.listItem}
+                    onPress={() => setRepeat(true)}>
+                    <RN.Text style={styles.listItemText}>Repeat</RN.Text>
+                    <RN.TouchableOpacity
+                      style={styles.listItemRight}
+                      onPress={() => setRepeat(true)}>
+                      <RN.Text style={styles.listItemRightText}>
+                        {selectedRepeat.title}
+                      </RN.Text>
+                      <Images.Svg.arrowRight />
+                    </RN.TouchableOpacity>
+                  </RN.TouchableOpacity>
+                </RN.View>
+                <RN.View style={styles.eventsTypeList}>
+                  <RN.View style={styles.listItem}>
+                    <RN.Text style={styles.listItemText}>Reminder</RN.Text>
+                    <Switch
+                      value={newEventData.reminder}
+                      onValueChange={e =>
+                        setNewEventState('reminder', e as never)
+                      }
+                    />
+                  </RN.View>
+                  <RN.View style={styles.line}></RN.View>
+                  <RN.TouchableOpacity
+                    style={styles.listItem}
+                    onPress={() => setSound(true)}>
+                    <RN.Text style={styles.listItemText}>Sound</RN.Text>
+                    <RN.TouchableOpacity
+                      style={styles.listItemRight}
+                      onPress={() => setSound(true)}>
+                      <RN.Text style={styles.listItemRightText}>
+                        {selectedSound.title}
+                      </RN.Text>
+                      <Images.Svg.arrowRight />
+                    </RN.TouchableOpacity>
+                  </RN.TouchableOpacity>
+                </RN.View>
+                <RN.View style={styles.eventsTypeList}>
+                  <RN.View style={styles.listItem}>
+                    <RN.TextInput
+                      onChangeText={e =>
+                        setNewEventState('comment', e as never)
+                      }
+                      style={styles.listItemTextInput}
+                      placeholderTextColor="#7D7D7D"
+                      placeholder="Comment"
+                    />
+                  </RN.View>
+                </RN.View>
+              </RN.View>
+              <RN.View style={styles.addBtn}>
+                <StartBtn
+                  onPress={() => addEvents(() => navigation.goBack())}
+                  primary={true}
+                  text="Add"
+                  subWidth={70}
+                  elWidth={55}
+                />
+              </RN.View>
             </RN.View>
-            <RN.View style={styles.line}></RN.View>
-            <RN.TouchableOpacity
-              style={styles.listItem}
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.DATE_SCREEN as never)
-              }>
-              <RN.Text style={styles.listItemText}>Date</RN.Text>
-              <RN.TouchableOpacity
-                style={styles.listItemRight}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.DATE_SCREEN as never)
-                }>
-                <RN.Text style={styles.listItemRightText}>
-                  {`${
-                    newEventData.day < 10
-                      ? `0${newEventData.day}`
-                      : newEventData.day
-                  }.${
-                    newEventData.month < 10
-                      ? `0${newEventData.month}`
-                      : newEventData.month
-                  }.${newEventData.year}`}
-                </RN.Text>
-                <Images.Svg.dateMenu />
-              </RN.TouchableOpacity>
-            </RN.TouchableOpacity>
-            <RN.View style={styles.line}></RN.View>
-            <RN.TouchableOpacity
-              style={styles.listItem}
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
-              }>
-              <RN.Text style={styles.listItemText}>Time</RN.Text>
-              <RN.TouchableOpacity
-                style={styles.listItemRight}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
-                }>
-                <RN.Text style={styles.listItemRightText}>
-                  {`${
-                    newEventData.hour < 10
-                      ? `0${newEventData.hour}`
-                      : newEventData.hour
-                  }:${
-                    newEventData.minut < 10
-                      ? `0${newEventData.minut}`
-                      : newEventData.minut
-                  }:${
-                    newEventData.second < 10
-                      ? `0${newEventData.second}`
-                      : newEventData.second
-                  }`}
-                </RN.Text>
-                <Images.Svg.arrowRight />
-              </RN.TouchableOpacity>
-            </RN.TouchableOpacity>
-          </RN.View>
-          <RN.View style={styles.eventsTypeList}>
-            <RN.View style={styles.listItem}>
-              <RN.Text style={styles.listItemText}>All day</RN.Text>
-              <Switch
-                value={newEventData.allDay}
-                onValueChange={e => setNewEventState('allDay', e as never)}
-              />
-            </RN.View>
-            <RN.View style={styles.line}></RN.View>
-            <RN.TouchableOpacity
-              style={styles.listItem}
-              onPress={() => setRepeat(true)}>
-              <RN.Text style={styles.listItemText}>Repeat</RN.Text>
-              <RN.TouchableOpacity
-                style={styles.listItemRight}
-                onPress={() => setRepeat(true)}>
-                <RN.Text style={styles.listItemRightText}>
-                  {selectedRepeat.title}
-                </RN.Text>
-                <Images.Svg.arrowRight />
-              </RN.TouchableOpacity>
-            </RN.TouchableOpacity>
-          </RN.View>
-          <RN.View style={styles.eventsTypeList}>
-            <RN.View style={styles.listItem}>
-              <RN.Text style={styles.listItemText}>Reminder</RN.Text>
-              <Switch
-                value={newEventData.reminder}
-                onValueChange={e => setNewEventState('reminder', e as never)}
-              />
-            </RN.View>
-            <RN.View style={styles.line}></RN.View>
-            <RN.TouchableOpacity
-              style={styles.listItem}
-              onPress={() => setSound(true)}>
-              <RN.Text style={styles.listItemText}>Sound</RN.Text>
-              <RN.TouchableOpacity
-                style={styles.listItemRight}
-                onPress={() => setSound(true)}>
-                <RN.Text style={styles.listItemRightText}>
-                  {selectedSound.title}
-                </RN.Text>
-                <Images.Svg.arrowRight />
-              </RN.TouchableOpacity>
-            </RN.TouchableOpacity>
-          </RN.View>
-          <RN.View style={styles.eventsTypeList}>
-            <RN.View style={styles.listItem}>
-              <RN.TextInput
-                onChangeText={e => setNewEventState('comment', e as never)}
-                style={styles.listItemTextInput}
-                placeholderTextColor="#7D7D7D"
-                placeholder="Comment"
-              />
-            </RN.View>
-          </RN.View>
+          </RN.ScrollView>
           <SoundsContent
             headerTitle="Repeat"
             data={repeatData}
@@ -202,15 +225,6 @@ const NewEventScreen = () => {
             onClose={() => setSound(e => !e)}
             modalVisible={sound}
           />
-          <RN.View style={styles.addBtn}>
-            <StartBtn
-              onPress={() => addEvents(() => navigation.goBack())}
-              primary={true}
-              text="Add"
-              subWidth={70}
-              elWidth={55}
-            />
-          </RN.View>
         </RN.View>
       }
     />
@@ -233,6 +247,13 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 10,
     height: '100%',
     // backgroundColor: 'red',
+  },
+  scrollView: {
+    height: windowHeight,
+  },
+  content: {
+    justifyContent: 'space-between',
+    height: windowHeight - windowHeight / 6,
   },
   eventsTypeList: {
     backgroundColor: '#0D0D0D',
