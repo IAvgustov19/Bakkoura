@@ -21,7 +21,6 @@ export enum APP_ROUTES {
   MARKET = 'MarketScreen',
   MESSENGER = 'MessengerScreen',
   TODOTIMER = 'ToDoTimerScreen',
-
   TIMER = 'TimerScreen',
   STRESS_TEST = 'StressTest',
   PROJECT_TIMER = 'ProjectTimer',
@@ -29,6 +28,7 @@ export enum APP_ROUTES {
   STOP_WATCH = 'StopWatch',
   ALARM_SCREEN = 'AlarmScreen',
   METRONOME = 'MetronomeScreen',
+  POMODORO = 'Pomodoro',
 
   //calendar screens
   EVENTS_SCREEN = 'EventScreen',
@@ -51,4 +51,7 @@ export enum APP_ROUTES {
   NEW_PROJECT_TIMER = 'NewProjectTimer',
   NEW_PROJECT_TIMER_PRICE = 'NewProjectTimerPrice',
   PROJECT_TIMER_CALCULATOR = 'ProjectTimerCalculator',
+
+  //pomodoro screens
+  ADD_TASK_SCREEN = 'AddTaskScreen',
 }

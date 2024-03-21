@@ -4,6 +4,7 @@ import HomeScreen from '../../screens/home/HomeScreen';
 import MarketScreen from '../../screens/market/MarketScreen';
 import MessengerScreen from '../../screens/messenger/MessengerScreen';
 import Metronome from '../../screens/metronome/Metronome';
+import Pomodoro from '../../screens/pomodoro/Pomodoro';
 import ProjectTimer from '../../screens/projectTimer/ProjectTimer';
 import StopWatch from '../../screens/stopWatch/StopWatch';
 import StressTest from '../../screens/stressTest/StressTest';
@@ -69,9 +70,9 @@ export const bottomTabBarOptions = {
     },
     {
       index: 8,
-      tabName: APP_ROUTES.METRONOME,
-      component: Metronome,
-      buttonLabel: 'Metronome',
+      tabName: APP_ROUTES.POMODORO,
+      component: Pomodoro,
+      buttonLabel: 'Pomodoro',
     },
     {
       index: 9,

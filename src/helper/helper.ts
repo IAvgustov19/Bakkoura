@@ -364,6 +364,17 @@ export const secondsToHMS = (seconds: number) => {
     return '00:00:00';
   }
 };
+export const secondsToMS = (seconds: number) => {
+  if (seconds > 0) {
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds: number = seconds % 60;
+    return `${minutes < 10 ? `0${minutes}` : minutes}:${
+      remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
+    }`;
+  } else {
+    return '00:00';
+  }
+};
 
 export const formattedTime = (
   hours: number,

@@ -23,6 +23,7 @@ import CitesScreen from '../screens/worldTime/CitesScreen';
 import NewProjectTimer from '../screens/projectTimer/NewProjectTimer';
 import NewProjectTimerPrice from '../screens/projectTimer/NewProjectTimerPrice';
 import ProjectTimerCalculator from '../screens/projectTimer/ProjectTImerCalculator';
+import AddTaskScreen from '../screens/pomodoro/AddTaskScreen';
 
 const Stack = createStackNavigator();
 
@@ -175,6 +176,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.PROJECT_TIMER_CALCULATOR}
           component={ProjectTimerCalculator}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ADD_TASK_SCREEN}
+          component={AddTaskScreen}
           options={{
             headerTitleAlign: 'center',
           }}

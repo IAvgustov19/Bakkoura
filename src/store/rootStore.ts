@@ -3,6 +3,7 @@ import {createContext} from 'react';
 import {AlarmStore} from './alarm/Alarm';
 import {AuthStore} from './auth/authStore';
 import {CalendarStore} from './calendar/Calendar';
+import {PomodoroStore} from './pomodoro/Pomodoro';
 import {ProjectTimer} from './projectTimer/ProjectTimer';
 import {StopWatchStore} from './stopWatch/StopWatch';
 import {StressTestStore} from './stressTest/StressTest';
@@ -18,6 +19,7 @@ export class RootStore {
   worldTimeStore: WorldTimeStore;
   stopWatchStore: StopWatchStore;
   projectTimer: ProjectTimer;
+  pomodoroStore: PomodoroStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -29,6 +31,7 @@ export class RootStore {
     this.worldTimeStore = new WorldTimeStore(this);
     this.stopWatchStore = new StopWatchStore();
     this.projectTimer = new ProjectTimer(this);
+    this.pomodoroStore = new PomodoroStore();
   }
 }
 const rootStore = new RootStore();

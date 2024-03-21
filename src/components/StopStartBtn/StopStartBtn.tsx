@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
   ellipse: {},
   primaryText: {
     position: 'absolute',
-    fontSize: 16,
+    fontSize: 18,
     color: '#000',
   },
   outlineText: {
     position: 'absolute',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
   },
 });
