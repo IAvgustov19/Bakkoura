@@ -15,6 +15,7 @@ type Props = {
   multiLine?: boolean;
   numberOfLines?: number;
   paddingTop?: number;
+  backColor?: string;
 };
 
 const Input: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const Input: React.FC<Props> = ({
   multiLine,
   numberOfLines,
   paddingTop,
+  backColor,
 }) => {
   return (
     <RN.View style={styles.inputBox}>
@@ -39,6 +41,7 @@ const Input: React.FC<Props> = ({
           {
             height: height,
             paddingTop: paddingTop,
+            backgroundColor: backColor ? backColor : COLORS.black,
             width: width ? width : '80%',
           },
         ]}
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#0D0D0D',
+    backgroundColor: COLORS.black,
     borderRadius: 30,
     paddingHorizontal: 30,
   },

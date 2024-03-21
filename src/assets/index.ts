@@ -51,6 +51,9 @@ import play from './svg/play.svg';
 import plus from './svg/plus.svg';
 import pausa from './svg/pausa.svg';
 import circleDollar from './svg/dollar-circle.svg';
+import pomodoro from './svg/pomodoro.svg';
+import minusDelete from './svg/minusDelate.svg';
+import addSmallicon from './svg/addSmallicon.svg';
 
 export const Images = {
   Svg: {
@@ -107,6 +110,9 @@ export const Images = {
     pausa,
     plus,
     circleDollar,
+    pomodoro,
+    addSmallicon,
+    minusDelete,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

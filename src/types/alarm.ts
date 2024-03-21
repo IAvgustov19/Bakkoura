@@ -59,3 +59,27 @@ export const ProjectTimerDataInitial: ProjectTimerDataType = {
   secondInterval: null,
   timestamp: 0,
 };
+
+export type PomodoroDataType = {
+  id: number;
+  name: string;
+  description: string;
+  finishTime: string;
+  minut: number;
+  second: number;
+  time: string;
+  hour: string;
+  breackType: string;
+};
+
+export const PomodoroDataInitial: PomodoroDataType = {
+  id: 0,
+  name: '',
+  description: '',
+  finishTime: '00:00',
+  second: 0,
+  minut: 15,
+  time: '00:00',
+  hour: '0',
+  breackType: '',
+};

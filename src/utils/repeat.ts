@@ -63,3 +63,18 @@ export const WeekRepeatData = [
     active: false,
   },
 ];
+
+export const BreakData = [
+  {
+    id: 1,
+    title: 'Pomodoro',
+  },
+  {
+    id: 2,
+    title: 'Short Break',
+  },
+  {
+    id: 3,
+    title: 'Long Break',
+  },
+];

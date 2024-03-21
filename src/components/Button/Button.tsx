@@ -1,18 +1,31 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {COLORS} from '../../utils/colors';
 
 type Props = {
   title: string;
   onPress?: () => void;
   icon?: any;
+  outline?: boolean;
 };
 
-const ButtonComp: React.FC<Props> = ({title, onPress, icon}) => {
+const ButtonComp: React.FC<Props> = ({title, onPress, icon, outline}) => {
   return (
-    <LinearGradient style={styles.gradient} colors={['#ECC271', '#35270A']}>
+    <LinearGradient
+      style={[
+        styles.gradient,
+        {borderColor: outline ? COLORS.darkGreyText : '#ECC271'},
+      ]}
+      colors={outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.title}>{title}</Text>
+        <Text
+          style={[
+            styles.title,
+            {color: outline ? COLORS.white : COLORS.black},
+          ]}>
+          {title}
+        </Text>
         <View style={styles.icon}>{icon ? icon : null}</View>
       </TouchableOpacity>
     </LinearGradient>
@@ -42,7 +55,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     textAlign: 'center',
-    // fontWeight: '600',
+    fontWeight: '400',
   },
   icon: {
     height: '100%',
