@@ -83,3 +83,27 @@ export const PomodoroDataInitial: PomodoroDataType = {
   hour: '0',
   breackType: '',
 };
+
+export type TogetherDataType = {
+  id: number;
+  name: string;
+  type: string;
+  fromDate: string;
+  reminder: boolean;
+  control: string;
+  time: string;
+  days: string;
+  timeStamp: number;
+};
+
+export const TogetherDataInitial = {
+  id: 0,
+  name: '',
+  type: 'Dating',
+  fromDate: '0',
+  reminder: false,
+  control: 'Stopped',
+  time: '0',
+  days: '0',
+  timeStamp: 0,
+};

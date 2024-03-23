@@ -78,3 +78,49 @@ export const BreakData = [
     title: 'Long Break',
   },
 ];
+
+export const ControlData = [
+  {
+    id: 1,
+    title: 'Synchronized',
+    active: false,
+  },
+  {
+    id: 2,
+    title: 'Resynchronized',
+    active: false,
+  },
+  {
+    id: 3,
+    title: 'Stopped',
+    active: true,
+  },
+  {
+    id: 4,
+    title: 'Refreshed',
+    active: false,
+  },
+];
+
+export const StatusData = [
+  {
+    id: 1,
+    title: 'Dating',
+    active: true,
+  },
+  {
+    id: 2,
+    title: 'Separated',
+    active: false,
+  },
+  {
+    id: 3,
+    title: 'Betrothal',
+    active: false,
+  },
+  {
+    id: 4,
+    title: 'Merried',
+    active: false,
+  },
+];

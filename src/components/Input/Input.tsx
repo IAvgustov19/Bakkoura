@@ -3,6 +3,7 @@ import {Text, View, StyleSheet, TextInput, DimensionValue} from 'react-native';
 import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
+import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
   numberOfLines?: number;
   paddingTop?: number;
   backColor?: string;
+  iconPress?: () => void;
 };
 
 const Input: React.FC<Props> = ({
@@ -29,6 +31,7 @@ const Input: React.FC<Props> = ({
   numberOfLines,
   paddingTop,
   backColor,
+  iconPress,
 }) => {
   return (
     <RN.View style={styles.inputBox}>
@@ -49,7 +52,14 @@ const Input: React.FC<Props> = ({
         value={value}
         autoCapitalize="none"
         placeholder={placeholder}></TextInput>
-      <RN.View style={styles.iconBox}>{icon ? icon : null}</RN.View>
+      {icon ? (
+        <RN.TouchableOpacity
+          hitSlop={HITSLOP}
+          onPress={iconPress}
+          style={styles.iconBox}>
+          {icon}
+        </RN.TouchableOpacity>
+      ) : null}
     </RN.View>
   );
 };

@@ -11,6 +11,7 @@ import RN from '../../components/RN';
 import SoundsContent from '../../components/SoundsContent/SoundsContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import TextInput from '../../components/TextInputView';
+import {formattedDate, formattedTime} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
@@ -83,15 +84,11 @@ const NewEventScreen = () => {
                         navigation.navigate(APP_ROUTES.DATE_SCREEN as never)
                       }>
                       <RN.Text style={styles.listItemRightText}>
-                        {`${
-                          newEventData.day < 10
-                            ? `0${newEventData.day}`
-                            : newEventData.day
-                        }.${
-                          newEventData.month < 10
-                            ? `0${newEventData.month}`
-                            : newEventData.month
-                        }.${newEventData.year}`}
+                        {formattedDate(
+                          newEventData.day,
+                          newEventData.month,
+                          newEventData.year,
+                        )}
                       </RN.Text>
                       <Images.Svg.dateMenu />
                     </RN.TouchableOpacity>
@@ -109,19 +106,11 @@ const NewEventScreen = () => {
                         navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
                       }>
                       <RN.Text style={styles.listItemRightText}>
-                        {`${
-                          newEventData.hour < 10
-                            ? `0${newEventData.hour}`
-                            : newEventData.hour
-                        }:${
-                          newEventData.minut < 10
-                            ? `0${newEventData.minut}`
-                            : newEventData.minut
-                        }:${
-                          newEventData.second < 10
-                            ? `0${newEventData.second}`
-                            : newEventData.second
-                        }`}
+                        {formattedTime(
+                          newEventData.hour,
+                          newEventData.minut,
+                          newEventData.second,
+                        )}
                       </RN.Text>
                       <Images.Svg.arrowRight />
                     </RN.TouchableOpacity>

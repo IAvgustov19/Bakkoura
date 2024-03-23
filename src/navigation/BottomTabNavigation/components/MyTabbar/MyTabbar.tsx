@@ -32,12 +32,12 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
       switch (label as APP_ROUTES) {
         case APP_ROUTES.HOME_START:
           return <Images.Svg.homeIcon />;
-        case APP_ROUTES.EVENTS_SCREEN:
-          return <Images.Svg.calendarIcon />;
-        case APP_ROUTES.STRESS_TEST:
-          return <Images.Svg.stressTest />;
-        case APP_ROUTES.ALARM_SCREEN:
-          return <Images.Svg.alarmIcon />;
+        case APP_ROUTES.MARKET:
+          return <Images.Svg.marketIcon />;
+        case APP_ROUTES.MESSENGER:
+          return <Images.Svg.messengerIcon />;
+        case APP_ROUTES.TODOTIMER:
+          return <Images.Svg.todoIcon />;
         case APP_ROUTES.TIMER:
           return <Images.Svg.timerIcon />;
         case APP_ROUTES.PROJECT_TIMER:
@@ -46,16 +46,32 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
           return <Images.Svg.worldTimeIcon />;
         case APP_ROUTES.STOP_WATCH:
           return <Images.Svg.stopWatchIcon />;
+        case APP_ROUTES.METRONOME:
+          return <Images.Svg.metronomeIcon />;
+        case APP_ROUTES.STRESS_TEST:
+          return <Images.Svg.stressTest />;
         case APP_ROUTES.POMODORO:
-          return <Images.Svg.pomodoroIcon />;
-        case APP_ROUTES.MESSENGER:
-          return <Images.Svg.messengerIcon />;
-        case APP_ROUTES.MARKET:
-          return <Images.Svg.marketIcon />;
-        case APP_ROUTES.TODOTIMER:
-          return <Images.Svg.todoIcon />;
+          return <Images.Svg.podcastIcon />;
+        case APP_ROUTES.ALARM_SCREEN:
+          return <Images.Svg.alarmIcon />;
+        case APP_ROUTES.EVENTS_SCREEN:
+          return <Images.Svg.calendarIcon />;
+        case APP_ROUTES.TIME_TOGETHER:
+          return <Images.Svg.timeTogetherIcon />;
+        case APP_ROUTES.JIHAD_BAKKOURA:
+          return <Images.Svg.jihadBakkuraIcon />;
+        case APP_ROUTES.FAMILY_TREE:
+          return <Images.Svg.familyTreeIcon />;
+        case APP_ROUTES.BAKKOURA_WATCH:
+          return <Images.Svg.bakkuraWatchIcon />;
+        case APP_ROUTES.TIME_CLINIC:
+          return <Images.Svg.timeClinicIcon />;
+        case APP_ROUTES.PODCASTS:
+          return <Images.Svg.podcastIcon />;
+        case APP_ROUTES.H30_LEGEND:
+          return <Images.Svg.h30Icon />;
         default:
-          return <Images.Svg.stopWatchIcon />;
+          return <Images.Svg.homeIcon />;
       }
     };
 

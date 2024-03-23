@@ -54,9 +54,40 @@ import circleDollar from './svg/dollar-circle.svg';
 import pomodoro from './svg/pomodoro.svg';
 import minusDelete from './svg/minusDelate.svg';
 import addSmallicon from './svg/addSmallicon.svg';
+import timeTogetherIcon from './svg/timeTogethetIcon.svg';
+import jihadBakkuraIcon from './svg/jihadBakkura.svg';
+import familyTreeIcon from './svg/familyTreeIcon.svg';
+import bakkuraWatchIcon from './svg/about bakk icon.svg';
+import timeClinicIcon from './svg/clinic icon.svg';
+import podcastIcon from './svg/podcasts.svg';
+import h30Icon from './svg/30h icon.svg';
+import heartIcon from './svg/heart.svg';
 
 export const Images = {
   Svg: {
+    //bottomSheet
+    homeIcon,
+    marketIcon,
+    messengerIcon,
+    todoIcon,
+    timerIcon,
+    projectTimerIcon,
+    worldTimeIcon,
+    stopWatchIcon,
+    stressTest,
+    alarmIcon,
+    pomodoroIcon,
+    metronomeIcon,
+    calendarIcon,
+    timeTogetherIcon,
+    jihadBakkuraIcon,
+    familyTreeIcon,
+    bakkuraWatchIcon,
+    timeClinicIcon,
+    podcastIcon,
+    h30Icon,
+
+    //other
     eye,
     bts,
     btsRightLinear,
@@ -68,10 +99,6 @@ export const Images = {
     ellipse,
     subtrackOut,
     ellipseOut,
-    homeIcon,
-    marketIcon,
-    messengerIcon,
-    todoIcon,
     sunIcon,
     sendIcon,
     ellipseSmall,
@@ -79,25 +106,16 @@ export const Images = {
     tabbarBg,
     arrowRight,
     dotOpenBar,
-    timerIcon,
-    projectTimerIcon,
-    worldTimeIcon,
-    stopWatchIcon,
     borderBg,
     bellBlue,
     bellBlueLeft,
     bellGreen,
     timerLogo,
     arrowLeft,
-    calendarIcon,
     dateMenu,
     panda,
     yellowPanda,
     yellowPanda1,
-    stressTest,
-    alarmIcon,
-    pomodoroIcon,
-    metronomeIcon,
     deleteIcon,
     whiteDelete,
     worldWatch,
@@ -113,6 +131,7 @@ export const Images = {
     pomodoro,
     addSmallicon,
     minusDelete,
+    heartIcon,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

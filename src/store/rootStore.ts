@@ -8,6 +8,7 @@ import {ProjectTimer} from './projectTimer/ProjectTimer';
 import {StopWatchStore} from './stopWatch/StopWatch';
 import {StressTestStore} from './stressTest/StressTest';
 import {TimerStore} from './timer/Timer';
+import {TogetherTimeStore} from './togetherTime/TogethetTime';
 import {WorldTimeStore} from './worldTime/WorldTime';
 
 export class RootStore {
@@ -20,6 +21,7 @@ export class RootStore {
   stopWatchStore: StopWatchStore;
   projectTimer: ProjectTimer;
   pomodoroStore: PomodoroStore;
+  togetherTimeStore: TogetherTimeStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -32,6 +34,7 @@ export class RootStore {
     this.stopWatchStore = new StopWatchStore();
     this.projectTimer = new ProjectTimer(this);
     this.pomodoroStore = new PomodoroStore();
+    this.togetherTimeStore = new TogetherTimeStore(this);
   }
 }
 const rootStore = new RootStore();
