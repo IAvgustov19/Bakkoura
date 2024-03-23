@@ -307,9 +307,8 @@ export const getCurrentTime = () => {
 export const formatDate = (timestamp: number) => {
   var currentDate = new Date();
   var givenDate = new Date(timestamp);
-  var oneDay = 24 * 60 * 60 * 1000; // 1 kunning millisekundlar soni
+  var oneDay = 24 * 60 * 60 * 1000;
 
-  // Bugungi sana va berilgan sanani milisekundlarga ajratish
   var currentDay = Date.UTC(
     currentDate.getFullYear(),
     currentDate.getMonth(),
@@ -321,7 +320,6 @@ export const formatDate = (timestamp: number) => {
     givenDate.getDate(),
   );
 
-  // Kunlar farqi
   var dayDifference = Math.round((currentDay - givenDay) / oneDay);
 
   if (dayDifference === 0) {
@@ -329,16 +327,13 @@ export const formatDate = (timestamp: number) => {
   } else if (dayDifference === 1) {
     return 'Yesterday';
   } else if (dayDifference > 1) {
-    // Kuni, oy va yilni ajratib olamiz
     var day: any = givenDate.getDate();
-    var month: any = givenDate.getMonth() + 1; // 0 dan boshlanadi, shuning uchun 1 qo'shib beramiz
+    var month: any = givenDate.getMonth() + 1;
     var year = givenDate.getFullYear();
 
-    // Kun va oy raqamlarini 10 dan kichik bo'lsa oldini 0 qo'yamiz
     day = day < 10 ? '0' + day : day;
     month = month < 10 ? '0' + month : month;
 
-    // Formatni qaytarish
     return year + '-' + month + '-' + day;
   }
 };
@@ -384,4 +379,14 @@ export const formattedTime = (
   return `${hours < 10 ? `0${hours}` : hours}:${
     minutes < 10 ? `0${minutes}` : minutes
   }:${seconds < 10 ? `0${seconds}` : seconds}`;
+};
+
+export const formattedDate = (
+  day: number | Date,
+  month: number | Date,
+  year: number | Date,
+) => {
+  return `${day < 10 ? `0${day}` : day}/${
+    month < 10 ? `0${month}` : month
+  }/${year}`;
 };

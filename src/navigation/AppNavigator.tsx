@@ -24,6 +24,12 @@ import NewProjectTimer from '../screens/projectTimer/NewProjectTimer';
 import NewProjectTimerPrice from '../screens/projectTimer/NewProjectTimerPrice';
 import ProjectTimerCalculator from '../screens/projectTimer/ProjectTImerCalculator';
 import AddTaskScreen from '../screens/pomodoro/AddTaskScreen';
+import AddEtap from '../screens/timeTogether/AddEtap';
+import DeleteEtap from '../screens/timeTogether/DeleteEtap';
+import FromDate from '../screens/timeTogether/FromDate';
+import LoverName from '../screens/timeTogether/LoverName';
+import Synchronyze from '../screens/timeTogether/Synchronyze';
+import Thanks from '../screens/timeTogether/Thanks';
 
 const Stack = createStackNavigator();
 
@@ -183,6 +189,48 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.ADD_TASK_SCREEN}
           component={AddTaskScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ADD_ETAP}
+          component={AddEtap}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.DELETE_ETAP}
+          component={DeleteEtap}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.FROM_DATE}
+          component={FromDate}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.LOVER_NAME}
+          component={LoverName}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.SYNCHRONYZE}
+          component={Synchronyze}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.THANKS}
+          component={Thanks}
           options={{
             headerTitleAlign: 'center',
           }}

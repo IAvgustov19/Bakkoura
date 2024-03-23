@@ -1,30 +1,28 @@
 import React from 'react';
 import RN from '../../components/RN';
-import {StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import TextView from '../../components/Text/Text';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import {Images} from '../../assets';
 
 const ToDoTimer = () => {
   return (
-    <LinearGradient
-      style={styles.gradient}
-      colors={['#323D45', '#1B2024', '#0C0C0C']}>
-      <RN.View style={styles.container}>
-        <TextView title="Todo timer screen" />
-      </RN.View>
-    </LinearGradient>
+    <LinearContainer
+      children={
+        <RN.View style={styles.container}>
+          <HeaderContent
+            leftItem={<Images.Svg.btsRightLinear />}
+            title="To do Timer"
+          />
+        </RN.View>
+      }
+    />
   );
 };
 
 export default ToDoTimer;
 
-const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-  },
+const styles = RN.StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 10,
   },
 });

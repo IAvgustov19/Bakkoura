@@ -1,20 +1,17 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import TextView from '../../components/Text/Text';
 
-const MarketScreen = () => {
+const Podcasts = () => {
   return (
     <LinearContainer
       children={
-        <RN.View style={styles.container}>
+        <RN.View>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="Market"
+            title="Podcasts"
           />
         </RN.View>
       }
@@ -22,10 +19,4 @@ const MarketScreen = () => {
   );
 };
 
-export default MarketScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-  },
-});
+export default Podcasts;

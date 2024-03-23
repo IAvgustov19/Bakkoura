@@ -29,6 +29,13 @@ export enum APP_ROUTES {
   ALARM_SCREEN = 'AlarmScreen',
   METRONOME = 'MetronomeScreen',
   POMODORO = 'Pomodoro',
+  TIME_TOGETHER = 'TimeTogether',
+  JIHAD_BAKKOURA = 'JihadBakkura',
+  FAMILY_TREE = 'FamilyTree',
+  BAKKOURA_WATCH = 'BakkuraWatch',
+  TIME_CLINIC = 'TimeClinic',
+  PODCASTS = 'Podcasts',
+  H30_LEGEND = 'H30Legend',
 
   //calendar screens
   EVENTS_SCREEN = 'EventScreen',
@@ -54,4 +61,12 @@ export enum APP_ROUTES {
 
   //pomodoro screens
   ADD_TASK_SCREEN = 'AddTaskScreen',
+
+  //Time together
+  ADD_ETAP = 'AddEtap',
+  FROM_DATE = 'FromDate',
+  SYNCHRONYZE = 'Stynchronyze',
+  THANKS = 'Thanks',
+  LOVER_NAME = 'LoverName',
+  DELETE_ETAP = 'DeleteEtap',
 }
