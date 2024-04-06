@@ -15,7 +15,7 @@ const SwitchBtn: React.FC<Props> = ({title, icon, onPress}) => {
 
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <LinearGradient style={styles.gradient} colors={['#ECC271', '#35270A']}>
+      <LinearGradient style={styles.gradient} colors={['#ECC271', '#735315']}>
         {icon ? (
           <View style={styles.icon}>
             <View style={styles.ellipse}>

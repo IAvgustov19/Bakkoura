@@ -15,7 +15,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {COLORS} from '../../utils/colors';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
-import {IosAndroidHeight} from '../../utils/styles';
+import {IosAndroidHeight, windowHeight} from '../../utils/styles';
 
 const ProjectTimer = () => {
   const [play, setPlay] = useState(false);
@@ -39,7 +39,7 @@ const ProjectTimer = () => {
     navigation.navigate(APP_ROUTES.NEW_PROJECT_TIMER as never);
   };
 
-  const renderLeftActions = id => {
+  const renderLeftActions = (id: number) => {
     return (
       <RectButton
         style={styles.rightAction}
@@ -51,26 +51,29 @@ const ProjectTimer = () => {
     );
   };
 
-  const renderProjects = useCallback(() => {
-    return projectTimerList.map((item, index) => (
-      <Swipeable
+  const handleSwipe = (id: number) => {
+    handleDeleteProjectTimer(id);
+  };
+
+  const renderProjects = ({item, index}) => (
+    <Swipeable
+      key={index}
+      renderRightActions={() => renderLeftActions(item.id)}
+      onSwipeableWillOpen={() => handleSwipe(item.id)}
+      onSwipeableOpen={() => console.log('hi')}>
+      <ProjectTimerItem
+        onEnter={() => onGetOneProject(item)}
         key={index}
-        renderRightActions={() => renderLeftActions(item.id)}
-        onSwipeableWillOpen={() => handleDeleteProjectTimer(item.id)}>
-        <ProjectTimerItem
-          onEnter={() => onGetOneProject(item)}
-          key={index}
-          play={item.play}
-          day={item.date}
-          time={item.time}
-          name={item.title}
-          description={item.description}
-          workTime={item.workTime}
-          onPlay={() => onPlayHandle(index)}
-        />
-      </Swipeable>
-    ));
-  }, [projectTimerList]);
+        play={item.play}
+        day={item.date}
+        time={item.time}
+        name={item.title}
+        description={item.description}
+        workTime={item.workTime}
+        onPlay={() => onPlayHandle(index)}
+      />
+    </Swipeable>
+  );
 
   const onCalculate = () => {
     if (projectTimerList.length) {
@@ -94,23 +97,29 @@ const ProjectTimer = () => {
                 <TextView text="On this week" />
                 <TextView text={`Total: ${calculatedTotalTime}`} />
               </RN.View>
-              <RN.ScrollView
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                style={{height: RN.Platform.OS === 'ios' ? '82%' : '80%'}}>
-                {renderProjects()}
-              </RN.ScrollView>
+              <RN.View style={styles.flatList}>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  ListEmptyComponent={
+                    <ListEmptyComp title="No project timer yet" />
+                  }
+                  data={projectTimerList}
+                  renderItem={renderProjects}
+                />
+              </RN.View>
             </RN.View>
-            <StartBtn
-              text="+"
-              textSize={36}
-              primary
-              elWidth={55}
-              subWidth={70}
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.NEW_PROJECT_TIMER as never)
-              }
-            />
+            <RN.View style={styles.btnBox}>
+              <StartBtn
+                text="+"
+                textSize={36}
+                primary
+                elWidth={55}
+                subWidth={70}
+                onPress={() =>
+                  navigation.navigate(APP_ROUTES.NEW_PROJECT_TIMER as never)
+                }
+              />
+            </RN.View>
           </RN.View>
         </RN.View>
       }
@@ -125,8 +134,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   content: {
-    height: '80%',
+    height: windowHeight - windowHeight / 3.5,
     justifyContent: 'space-between',
+  },
+  flatList: {
+    height: '100%',
   },
   totalTime: {
     flexDirection: 'row',
@@ -134,6 +146,7 @@ const styles = StyleSheet.create({
   },
   projects: {
     gap: 10,
+    height: '85%',
   },
   rightAction: {
     backgroundColor: COLORS.darkRed,
@@ -144,5 +157,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '100%',
     paddingHorizontal: 15,
+  },
+  btnBox: {
+    alignItems: 'center',
   },
 });

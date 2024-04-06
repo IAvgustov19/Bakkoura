@@ -124,3 +124,85 @@ export const StatusData = [
     active: false,
   },
 ];
+
+export const etapData = [
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+];
+
+export const HistoryData = [
+  {
+    id: 1,
+    title: 'lastDay',
+    key: 'lastDay',
+  },
+  {
+    id: 2,
+    title: 'Last Week',
+    key: 'lastWeek',
+  },
+  {
+    id: 3,
+    title: 'Last Month',
+    key: 'lastMonth',
+  },
+];
+export const TodoGoalData = [
+  {
+    id: 1,
+    title: 'Day',
+  },
+  {
+    id: 2,
+    title: 'Week',
+  },
+  {
+    id: 3,
+    title: 'Month',
+  },
+];
+
+export const ToDoTaskNameData = [
+  {
+    id: 1,
+    title: 'Work',
+  },
+  {
+    id: 2,
+    title: 'Rest',
+  },
+  {
+    id: 3,
+    title: 'Run',
+  },
+  {
+    id: 4,
+    title: 'Reading',
+  },
+  {
+    id: 5,
+    title: 'Selph time',
+  },
+  {
+    id: 6,
+    title: 'Cleaning',
+  },
+  {
+    id: 7,
+    title: 'Gim',
+  },
+  {
+    id: 8,
+    title: 'Walk',
+  },
+];

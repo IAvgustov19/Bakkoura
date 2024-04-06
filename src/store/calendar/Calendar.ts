@@ -1,5 +1,10 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {getCurrentTime} from '../../helper/helper';
+import {
+  formatDate,
+  formatDayVaMonth,
+  formattedDate,
+  getCurrentTime,
+} from '../../helper/helper';
 import {
   DateDataType,
   NewEventStateInitial,
@@ -15,6 +20,7 @@ export class CalendarStore {
     this.root = root;
     this.updateCalendarCurrentTime();
     this.calculateRemainingTime();
+    this.filterNearDay();
   }
 
   date = new Date();
@@ -36,6 +42,25 @@ export class CalendarStore {
 
   calendarCurrentTime = '';
 
+  nearDay: {day: string; name: string; date: string} = {
+    name: 'No events yet',
+    day: 'Today',
+    date: '',
+  };
+
+  filterNearDay = () => {
+    const day = new Date().getDay();
+    const near = this.allEventsData.find(item => day <= item.day);
+    if (near) {
+      runInAction(() => {
+        this.nearDay.name = near.name;
+        this.nearDay.day = formatDayVaMonth(near.day, near.month, near.year);
+        this.nearDay.date = formattedDate(near.day, near.month, near.year);
+      });
+    } else {
+    }
+  };
+
   filterEvents = (data: DateDataType) => {
     if (this.filteredAllEventsData.some(data => data === data)) {
       this.allEventsData = this.cloneAllEventsData;
@@ -52,6 +77,8 @@ export class CalendarStore {
   };
 
   addEvents = (calback: () => void) => {
+    const now = Date.now();
+    this.setNewEventState('timeStamp', now as never);
     runInAction(() => {
       if (!this.newEventData.name) return;
       if (
@@ -65,6 +92,7 @@ export class CalendarStore {
         this.cloneAllEventsData = this.allEventsData;
         this.newEventData = {...NewEventStateInitial};
         calback();
+        this.filterNearDay();
       } else {
         console.log('enter time');
       }
@@ -135,7 +163,7 @@ export class CalendarStore {
       runInAction(() => {
         this.calendarCurrentTime = currentTime;
       });
-    }, 1000);
+    }, 60000);
   };
 
   selectedRepeat = {title: 'Yearly'};

@@ -22,7 +22,7 @@ const LoverName = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="LoverName"
+            title="Lover Name"
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>

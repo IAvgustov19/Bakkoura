@@ -6,7 +6,7 @@ import RN from '../RN';
 
 type Props = {
   title?: string;
-  value?: string;
+  value?: string | React.ReactNode;
   onPress?: () => void;
   backBlack?: boolean;
   rightItem?: React.ReactNode;

@@ -21,21 +21,9 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
           {timerStatus.finished ? (
             <RN.Text style={styles.duringTimer}>{currentTime}</RN.Text>
           ) : timerStatus.back ? (
-            <RN.Text style={styles.duringTimer}>
-              {formattedTime(
-                firstTimerValue.hours,
-                firstTimerValue.minut,
-                firstTimerValue.second,
-              )}
-            </RN.Text>
+            <RN.Text style={styles.duringTimer}>{firstTimerValue.time}</RN.Text>
           ) : (
-            <RN.Text style={styles.duringTimer}>
-              {formattedTime(
-                firstTimerTime.hours,
-                firstTimerTime.minut,
-                firstTimerTime.second,
-              )}
-            </RN.Text>
+            <RN.Text style={styles.duringTimer}>{firstTimerTime.time}</RN.Text>
           )}
         </RN.View>
         <RN.View style={styles.currentTimeBox}>

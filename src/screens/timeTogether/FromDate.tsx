@@ -18,6 +18,7 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import {windowHeight} from '../../utils/styles';
 import {observer} from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
+import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 
 const FromDate = () => {
   const navigation = useNavigation();
@@ -153,6 +154,7 @@ const FromDate = () => {
                   lastListData,
                 )}
               />
+              <DataListLinearBack />
             </RN.View>
             <StartBtn text="Ok" primary onPress={() => navigation.goBack()} />
           </RN.View>

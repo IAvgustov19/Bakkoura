@@ -10,6 +10,7 @@ import {priceData, _getTimeData} from '../../helper/helper';
 import {observer} from 'mobx-react-lite';
 import dayjs from 'dayjs';
 import useRootStore from '../../hooks/useRootStore';
+import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 
 const NewProjectTimerPrice = () => {
   const {setNewProjectTimeState, newProjectTimerState} =
@@ -42,6 +43,7 @@ const NewProjectTimerPrice = () => {
                 labelLeft={'60%'}
                 initialScrollIndex={Number(newProjectTimerState.price)}
               />
+              <DataListLinearBack />
             </RN.View>
             <StartBtn
               text="Ok"

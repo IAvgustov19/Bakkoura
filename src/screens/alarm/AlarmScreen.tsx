@@ -23,7 +23,7 @@ const AlarmScreen = () => {
     useRootStore().alarmStore;
   const navigation = useNavigation();
 
-  const renderLeftActions = id => {
+  const renderLeftActions = (id: number) => {
     return (
       <RectButton
         style={styles.rightAction}

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignContent: 'flex-end',
+    alignContent: 'center',
     marginTop: 30,
     marginBottom: 30,
     width: '100%',
@@ -33,17 +33,17 @@ const styles = StyleSheet.create({
   title: {
     // textAlign: 'center',
     // alignSelf: 'center',
-    paddingTop: 3,
+    // paddingTop: 3,
     // backgroundColor: 'red',
   },
   leftItem: {
-    paddingTop: 2,
+    // paddingTop: 2,
     position: 'absolute',
     left: 0,
   },
   rightItem: {
     position: 'absolute',
-    paddingTop: 2,
+    // paddingTop: 2,
     right: 0,
   },
 });

@@ -85,10 +85,10 @@ const TimerScreen = () => {
           {timerStatus.reset ? null : (
             <RN.View style={styles.switchHours}>
               <SwitchContain
-                handlePress={() => toggle('h30')}
-                back={timerStatus.h30}
-                title="30h"
-                _title="24h"
+                handlePress={() => toggle('h24')}
+                back={timerStatus.h24}
+                title="24h"
+                _title="30h"
               />
               <RN.View style={styles.changeTimer}>
                 <RN.TouchableOpacity

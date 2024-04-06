@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, DimensionValue} from 'react-native';
+import {DefinitionProps} from 'react-native-svg';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
 
@@ -7,14 +8,26 @@ type Props = {
   borderColor?: string;
   textColor?: string;
   text?: string;
+  onPress?: () => void;
+  Width?: DimensionValue;
 };
 
-const OutlineBtn: React.FC<Props> = ({borderColor, textColor, text}) => {
+const OutlineBtn: React.FC<Props> = ({
+  borderColor,
+  textColor,
+  text,
+  onPress,
+  Width,
+}) => {
   return (
     <RN.TouchableOpacity
+      onPress={onPress}
       style={[
         styles.container,
-        {borderColor: borderColor ? borderColor : COLORS.darkGreyText},
+        {
+          borderColor: borderColor ? borderColor : COLORS.darkGreyText,
+          width: Width ? Width : 110,
+        },
       ]}>
       <RN.Text style={{color: textColor ? textColor : COLORS.grey}}>
         {text}

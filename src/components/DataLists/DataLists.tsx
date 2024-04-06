@@ -11,6 +11,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {windowWidth} from '../../utils/styles';
 import RN from '../RN';
 
 export const themeColors = {
@@ -21,7 +22,11 @@ export const themeColors = {
   error: '#FC3361',
 };
 
-export type ItemType = {value: number | Date; text: string; id: string};
+export type ItemType = {
+  value: number | Date;
+  text: string;
+  id: string;
+};
 export type ListItemStyleType = {color?: string; backgroundColor?: string};
 
 const NUMBER_OF_ITEMS = 5;
@@ -188,6 +193,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: 'red',
     height: '100%',
+    zIndex: 2,
   },
   androidTextVerticalCenter: {
     textAlignVertical: 'center',

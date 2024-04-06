@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import RN from '../../../components/RN';
 import {_getTimeData} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
+import DataListLinearBack from '../../../components/DataListLinearBack/DataListLinearBack';
 
 type Props = {
   okOnPress?: () => void;
@@ -86,6 +87,7 @@ const SetAlarmClock: React.FC<Props> = ({okOnPress}) => {
             middleListData,
           )}
         />
+        <DataListLinearBack />
       </RN.View>
     </RN.View>
   );

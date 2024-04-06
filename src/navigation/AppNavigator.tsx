@@ -30,10 +30,35 @@ import FromDate from '../screens/timeTogether/FromDate';
 import LoverName from '../screens/timeTogether/LoverName';
 import Synchronyze from '../screens/timeTogether/Synchronyze';
 import Thanks from '../screens/timeTogether/Thanks';
+import {Keyboard} from 'react-native';
+import CreateSector from '../screens/bakkouraWatch/CreateSector';
+import SectorName from '../screens/bakkouraWatch/SectorName';
+import SectorColor from '../screens/bakkouraWatch/SectorColor';
+import SectorTime from '../screens/bakkouraWatch/SectorTime';
+import NewTask from '../screens/todoTimer/NewTask';
+import TodoGoal from '../screens/todoTimer/TodoGoal';
+import TaskName from '../screens/todoTimer/TaskName';
+import TodoTimerHistory from '../screens/todoTimer/TodoTimerHistory';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
+  const [keyboardStatus, setKeyboardStatus] = React.useState('');
+
+  React.useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('Keyboard Shown');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('Keyboard Hidden');
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const {isAuthorized} = useRootStore().authStore;
 
   const renderPublicNavigators = () => {
@@ -231,6 +256,62 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.THANKS}
           component={Thanks}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CREATE_SECTOR}
+          component={CreateSector}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.SECTOR_NAME}
+          component={SectorName}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.SECTOR_COLOR}
+          component={SectorColor}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.SECTOR_TIME}
+          component={SectorTime}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.NEW_TASK}
+          component={NewTask}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TODO_GOAL}
+          component={TodoGoal}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TASK_NAME}
+          component={TaskName}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TODO_TIMER_HISTORY}
+          component={TodoTimerHistory}
           options={{
             headerTitleAlign: 'center',
           }}

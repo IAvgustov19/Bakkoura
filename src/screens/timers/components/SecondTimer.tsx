@@ -7,14 +7,15 @@ import {observer} from 'mobx-react-lite';
 type Props = {};
 
 const SecondTimer: React.FC<Props> = ({}) => {
-  const {setSecondTimer, secondTimerValue} = useRootStore().timerStore;
+  const {setSecondTimer, secondTimerValue, timerStatus} =
+    useRootStore().timerStore;
 
   return (
     <View style={styles.container}>
       <SliderComponent
         value={secondTimerValue.hours === 0 ? '0' : secondTimerValue.hours}
         minValue={0}
-        maxValue={24}
+        maxValue={timerStatus.h24 ? 23 : 29}
         onChangeValue={e => setSecondTimer('hours', e)}
         step={1}
         label="H"
@@ -30,7 +31,7 @@ const SecondTimer: React.FC<Props> = ({}) => {
       <SliderComponent
         value={secondTimerValue.second === 0 ? '0' : secondTimerValue.second}
         minValue={0}
-        maxValue={60}
+        maxValue={timerStatus.h24 ? 59 : 47}
         onChangeValue={e => setSecondTimer('second', e)}
         step={1}
         label="Sec."

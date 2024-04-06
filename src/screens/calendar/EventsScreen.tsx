@@ -13,8 +13,7 @@ import Events from './components/Events';
 import Calendars from './components/Calendars';
 
 const EventScreen = () => {
-  const {calendarCurrentTime, newEventData, calculateRemainingTime} =
-    useRootStore().calendarStore;
+  const {calendarCurrentTime} = useRootStore().calendarStore;
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
 

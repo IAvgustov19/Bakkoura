@@ -107,3 +107,74 @@ export const TogetherDataInitial = {
   days: '0',
   timeStamp: 0,
 };
+
+export type SelectListDataType = {
+  id: number;
+  name: string;
+  color: string;
+  fromHour: number;
+  fromMin: number;
+  toHour: number;
+  toMin: number;
+  start: number;
+  end: number;
+};
+
+export const SelectListDataInitial: SelectListDataType = {
+  id: 0,
+  name: '',
+  color: '',
+  fromHour: 0,
+  fromMin: 0,
+  toHour: 0,
+  toMin: 0,
+  start: 0,
+  end: 0,
+};
+
+export type MetronomDataType = {
+  countMinut: number;
+  oneWithoutSound: boolean;
+  beatCount: number;
+  etap: number;
+};
+
+export const MetronomDataInitial: MetronomDataType = {
+  countMinut: 100,
+  oneWithoutSound: false,
+  beatCount: 100,
+  etap: 1,
+};
+
+export type TodoTimerDataType = {
+  id: number;
+  name: string;
+  goal: string;
+  time: string;
+  seconds: number;
+  startTime: number;
+  endTime: number;
+  hours: number;
+  minutes: number;
+  totalTime: string;
+  secondInterval: any;
+  timestamp: number;
+  play: boolean;
+  date: number;
+};
+export const TodoTimerDataInitial: TodoTimerDataType = {
+  id: 0,
+  name: '',
+  goal: '',
+  time: '',
+  seconds: 0,
+  startTime: 0,
+  endTime: 0,
+  hours: 0,
+  minutes: 0,
+  totalTime: '00:00:00',
+  secondInterval: null,
+  timestamp: 0,
+  play: false,
+  date: 0,
+};

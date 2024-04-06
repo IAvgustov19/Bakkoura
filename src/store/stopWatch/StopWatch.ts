@@ -15,24 +15,34 @@ export class StopWatchStore {
   intervalId = null;
   laps: [{id: number; lap: string}] = [] as never;
   second = 0;
+  is24h = true;
 
   milliseconds: number;
-  savedMilliseconds: number;
+  savedMilliseconds: number = 0;
 
   maindis = '00 : 00 : 00';
+
+  sethours = () => {
+    this.is24h = !this.is24h;
+  };
 
   startStopTimer = () => {
     if (this.start) {
       clearInterval(this.intervalId);
+      this.savedMilliseconds = this.milliseconds; // Save elapsed time
       this.start = false;
       this.stop = true;
       this.circle = false;
     } else {
+      // Adjust startTime based on saved time
+      this.startTime = moment().subtract(
+        this.savedMilliseconds,
+        'milliseconds',
+      );
       this.start = true;
       this.stop = false;
       this.circle = true;
       this.isRunning = true;
-      this.startTime = moment() as never;
       this.intervalId = setInterval(() => {
         runInAction(() => {
           if (this.isRunning) {
@@ -44,7 +54,6 @@ export class StopWatchStore {
       }, 10);
     }
   };
-
   circleResetTimer = (lap: string) => {
     runInAction(() => {
       if (this.circle) {
@@ -52,18 +61,15 @@ export class StopWatchStore {
           {id: this.laps.length + 1, lap: lap},
           ...this.laps,
         ] as never;
-        this.stop = true;
-        clearInterval(this.intervalId);
-        this.start = false;
-        this.circle = false;
       } else {
-        this.circle = true;
         this.start = false;
         this.stop = false;
         this.isRunning = false;
         this.maindis = '00 : 00 : 00';
+        this.savedMilliseconds = 0;
+        this.startTime = moment();
+        this.milliseconds = 0;
         this.second = 0;
-        this.startTime = this.startTime;
         this.laps = [] as never;
         clearInterval(this.intervalId);
       }

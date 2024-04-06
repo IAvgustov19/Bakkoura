@@ -1,5 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {getCurrentTime} from '../../helper/helper';
+import {getCurrentTime, secondsToHMS} from '../../helper/helper';
 import {SoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
 
@@ -7,12 +7,21 @@ type firstTimerValueType = {
   hours: number;
   minut: number;
   second: number;
+  time: string;
 };
 
 type secondTimerValueType = {
   hours: number;
   minut: number;
   second: number;
+  time: string;
+};
+
+const TimerValueInitial = {
+  hours: 0,
+  minut: 0,
+  second: 0,
+  time: '00:00:00',
 };
 
 export class TimerStore {
@@ -31,8 +40,8 @@ export class TimerStore {
     continue: false,
     back: true,
     forward: false,
-    h30: true,
-    h24: false,
+    h30: false,
+    h24: true,
     work: false,
     rest: false,
     finished: false,
@@ -56,28 +65,12 @@ export class TimerStore {
 
   totalDurationSeconds = 0;
 
-  firstTimerValue: secondTimerValueType = {
-    hours: 0,
-    minut: 0,
-    second: 0,
-  };
+  firstTimerValue: secondTimerValueType = TimerValueInitial;
 
-  firstTimerTime: secondTimerValueType = {
-    hours: 0,
-    minut: 0,
-    second: 0,
-  };
+  firstTimerTime: secondTimerValueType = TimerValueInitial;
 
-  secondTimerValue: secondTimerValueType = {
-    hours: 0,
-    minut: 0,
-    second: 0,
-  };
-  secondTimerTime: secondTimerValueType = {
-    hours: 0,
-    minut: 0,
-    second: 0,
-  };
+  secondTimerValue: secondTimerValueType = TimerValueInitial;
+  secondTimerTime: secondTimerValueType = TimerValueInitial;
 
   getFinishedTime = (timerValue: firstTimerValueType) => {
     const now: Date = new Date();
@@ -121,7 +114,30 @@ export class TimerStore {
   };
 
   setFirstTimer = (key: keyof firstTimerValueType, value: any) => {
-    this.firstTimerValue[key] = value;
+    this.firstTimerValue[key] = value as never;
+  };
+
+  setAllTime = () => {
+    this.firstTimerValue.time = secondsToHMS(
+      this.firstTimerValue.hours * 3600 +
+        this.firstTimerValue.minut * 60 +
+        this.firstTimerValue.second,
+    );
+    this.firstTimerTime.time = secondsToHMS(
+      this.firstTimerTime.hours * 3600 +
+        this.firstTimerTime.minut * 60 +
+        this.firstTimerTime.second,
+    );
+    this.secondTimerValue.time = secondsToHMS(
+      this.secondTimerValue.hours * 3600 +
+        this.secondTimerValue.minut * 60 +
+        this.secondTimerValue.second,
+    );
+    this.secondTimerTime.time = secondsToHMS(
+      this.secondTimerTime.hours * 3600 +
+        this.secondTimerTime.minut * 60 +
+        this.secondTimerTime.second,
+    );
   };
 
   startFirstDecreaseTimer = () => {
@@ -146,6 +162,7 @@ export class TimerStore {
             }
           }
         }
+        this.setAllTime();
       });
     }, 1000);
   };
@@ -181,8 +198,8 @@ export class TimerStore {
           this.active('finished');
           this.inActive('start');
         }
+        this.setAllTime();
       });
-
       clearInterval(this.firstDecreaseInterval);
     }, 1000);
   };
@@ -212,7 +229,8 @@ export class TimerStore {
   };
 
   setSecondTimer = (key: keyof secondTimerValueType, value: any) => {
-    this.secondTimerValue[key] = value;
+    this.secondTimerValue[key] = value as never;
+    this.setAllTime();
   };
 
   startSecondDecreaseTimer = () => {
@@ -234,11 +252,13 @@ export class TimerStore {
             } else {
               clearInterval(this.secondDecreaseInterval);
               this.active('finished');
+              this.inActive('start');
               this.totalDurationSeconds = 0;
               this.percentage = 100;
             }
           }
         }
+        this.setAllTime();
       });
     }, 1000);
   };
@@ -275,37 +295,41 @@ export class TimerStore {
           this.active('finished');
           this.inActive('start');
         }
+        this.setAllTime();
       });
-
       clearInterval(this.secondDecreaseInterval);
     }, 1000);
   };
 
   startStopSecondTimer = () => {
-    if (this.timerStatus.start) {
-      this.active('stop');
-      clearInterval(this.secondDecreaseInterval);
-      clearInterval(this.secondIncreaseInterval);
-      this.secondIsRunning = false;
-      this.inActive('start');
-    } else if (
-      this.secondTimerValue.hours ||
-      this.secondTimerValue.minut ||
-      this.secondTimerValue.second > 0
-    ) {
-      // this.calculateRemainingTime();
-      this.active('start');
-      this.active('reset');
-      this.inActive('stop');
-      this.inActive('finished');
-      if (this.timerStatus.back) {
-        this.startSecondDecreaseTimer();
-        this.calculatePercentage();
-      } else {
-        this.calculateIncreasePercentage();
-        this.increaseSecondTimerValues();
-      }
-    } else return;
+    if (this.timerStatus.finished) {
+      this.resetTimer();
+    } else {
+      if (this.timerStatus.start) {
+        this.active('stop');
+        clearInterval(this.secondDecreaseInterval);
+        clearInterval(this.secondIncreaseInterval);
+        this.secondIsRunning = false;
+        this.inActive('start');
+      } else if (
+        this.secondTimerValue.hours ||
+        this.secondTimerValue.minut ||
+        this.secondTimerValue.second > 0
+      ) {
+        // this.calculateRemainingTime();
+        this.active('start');
+        this.active('reset');
+        this.inActive('stop');
+        this.inActive('finished');
+        if (this.timerStatus.back) {
+          this.startSecondDecreaseTimer();
+          this.calculatePercentage();
+        } else {
+          this.calculateIncreasePercentage();
+          this.increaseSecondTimerValues();
+        }
+      } else return;
+    }
   };
 
   calculatePercentage = () => {
@@ -326,45 +350,18 @@ export class TimerStore {
 
   calculateIncreasePercentage() {
     const totalSeconds =
+      this.secondTimerValue.hours * 3600 +
+      this.secondTimerValue.minut * 60 +
+      this.secondTimerValue.second;
+    const increaseSecond =
       this.secondTimerTime.hours * 3600 +
       this.secondTimerTime.minut * 60 +
       this.secondTimerTime.second;
 
-    let remainingPercentage;
+    const decreasePercentage = 100 / (totalSeconds / increaseSecond);
 
-    if (totalSeconds <= 0) {
-      remainingPercentage = 0;
-    } else if (totalSeconds >= this.totalDurationSeconds) {
-      remainingPercentage = 100;
-    } else {
-      const elapsedPercentage =
-        (totalSeconds / this.totalDurationSeconds) * 100;
-      remainingPercentage = Math.max(
-        0,
-        Math.min(100, this.percentage + elapsedPercentage),
-      );
-    }
-
-    this.percentage = remainingPercentage;
+    this.increasePercentage = decreasePercentage;
   }
-
-  calculateRemainingTime = () => {
-    let totalSeconds =
-      this.secondTimerValue.hours * 3600 +
-      this.secondTimerValue.minut * 60 +
-      this.secondTimerValue.second;
-
-    const intervalId = setInterval(() => {
-      if (totalSeconds > 0) {
-        const {hours, minutes, remainingSeconds} =
-          this.secondsToHMS(totalSeconds);
-
-        totalSeconds--;
-      } else {
-        clearInterval(intervalId);
-      }
-    }, 1000);
-  };
 
   secondsToHMS = (seconds: number) => {
     if (seconds > 0) {
@@ -380,37 +377,30 @@ export class TimerStore {
 
   resetTimer = () => {
     runInAction(() => {
-      this.secondTimerValue = {
-        hours: 0,
-        minut: 0,
-        second: 0,
-      };
-      this.firstTimerValue = {
-        hours: 0,
-        minut: 0,
-        second: 0,
-      };
+      this.secondTimerValue = TimerValueInitial;
+      this.secondTimerTime = TimerValueInitial;
+      this.firstTimerValue = TimerValueInitial;
+      this.firstTimerTime = TimerValueInitial;
       this.inActive('reset');
       this.inActive('start');
       this.inActive('stop');
       this.totalDurationSeconds = 0;
       this.percentage = 100;
       this.active('back');
+      this.active('h24');
       this.inActive('finished');
+      clearInterval(this.firstIncreaseInterval);
+      clearInterval(this.firstDecreaseInterval);
+      clearInterval(this.secondIncreaseInterval);
+      clearInterval(this.secondDecreaseInterval);
     });
   };
   resetTimerBack = () => {
     runInAction(() => {
-      this.secondTimerValue = {
-        hours: 0,
-        minut: 0,
-        second: 0,
-      };
-      this.firstTimerValue = {
-        hours: 0,
-        minut: 0,
-        second: 0,
-      };
+      this.secondTimerValue = TimerValueInitial;
+      this.secondTimerTime = TimerValueInitial;
+      this.firstTimerValue = TimerValueInitial;
+      this.firstTimerTime = TimerValueInitial;
       this.inActive('reset');
       this.inActive('start');
       this.inActive('stop');

@@ -37,7 +37,7 @@ import yellowPanda from './svg/yellowPanda.svg';
 import yellowPanda1 from './svg/yellowPanda1.svg';
 import stressTest from './svg/stressTest.svg';
 import alarmIcon from './svg/alarm icon.svg';
-import metronomeIcon from './svg/metronome.svg';
+import metronomIcon from './svg/metronome.svg';
 import pomodoroIcon from './svg/pomod icon.svg';
 import deleteIcon from './svg/DELETE.svg';
 import whiteDelete from './svg/whiteDELETE.svg';
@@ -62,6 +62,31 @@ import timeClinicIcon from './svg/clinic icon.svg';
 import podcastIcon from './svg/podcasts.svg';
 import h30Icon from './svg/30h icon.svg';
 import heartIcon from './svg/heart.svg';
+import colorBorder from './svg/colorBorder.svg';
+import colorBox from './svg/colorBox.svg';
+import smallColorBox from './svg/smallColorBox.svg';
+import betweenTimesLine from './svg/betweenTImesLine.svg';
+import outlineSubstrack from './svg/outlineSubstrack.svg';
+import metronom from './svg/metronomeContent.svg';
+import metronomLine from './svg/mertonomeLine.svg';
+import addCount from './svg/addCount.svg';
+import removeCount from './svg/removeCount.svg';
+import ellipseDot from './svg/ellipseDot.svg';
+import ellipseDotLarge from './svg/ellipseDotLarge.svg';
+import bottonEllipse from './svg/bottonEllipse.svg';
+import rightArrowYellow from './svg/rightArrowYellow.svg';
+import leftArrowYellow from './svg/leftArrowYellow.svg';
+import todoTaskBack from './svg/todoTaskBack.svg';
+import homeWatch24and30 from './svg/homeWatch24and30.svg';
+import homeWatch24 from './svg/homeWatch24.svg';
+import homeWatch30 from './svg/homeWatch30h.svg';
+import homeWatchLine from './svg/homeWatchLine.svg';
+import userIcon from './svg/userIcon.svg';
+import messageIcon from './svg/messageIcon.svg';
+import alarmNotificatiion from './svg/alarmNotification.svg';
+import dateBottomLine from './svg/dateBottomLine.svg';
+import hour24Line from './svg/hour24Line.svg';
+import hour30Line from './svg/hour30Line.svg';
 
 export const Images = {
   Svg: {
@@ -77,7 +102,7 @@ export const Images = {
     stressTest,
     alarmIcon,
     pomodoroIcon,
-    metronomeIcon,
+    metronomIcon,
     calendarIcon,
     timeTogetherIcon,
     jihadBakkuraIcon,
@@ -132,10 +157,47 @@ export const Images = {
     addSmallicon,
     minusDelete,
     heartIcon,
+    colorBorder,
+    colorBox,
+    smallColorBox,
+    betweenTimesLine,
+    outlineSubstrack,
+    metronom,
+    metronomLine,
+    addCount,
+    removeCount,
+    ellipseDot,
+    ellipseDotLarge,
+    bottonEllipse,
+    rightArrowYellow,
+    leftArrowYellow,
+    todoTaskBack,
+    homeWatch24and30,
+    homeWatch24,
+    homeWatch30,
+    homeWatchLine,
+    userIcon,
+    messageIcon,
+    alarmNotificatiion,
+    dateBottomLine,
+    hour24Line,
+    hour30Line,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
-    stopwatch: require('./images/stopwatch.png'),
+    stopwatchBg: require('./images/stopwatchBg.png'),
+    bakkouraWatch30h: require('./images/justBakkuraWatch.png'),
+    bakkouraWatch: require('./images/bakkouraWatch.png'),
+    sectorWatch: require('./images/sectorWatch.png'),
+    sectorWatchHours: require('./images/sectorWatchHours.png'),
+    bakkouraWatchLines: require('./images/bakkouraWatchLines.png'),
+    bakkouraWatchMain: require('./images/bakkouraWatchMain.png'),
+    watchBack: require('./images/watchBack.png'),
+    homeWatch24and30: require('./images/homeWatch24and30.webp'),
+    homeWatch24: require('./images/homewatch24.webp'),
+    homeWatch30: require('./images/homeWatch30.webp'),
+    stopwatch24: require('./images/stopwatch24.png'),
+    stopwatch30: require('./images/stopwatch30.png'),
   },
 };
 
@@ -148,4 +210,8 @@ export const BG = {
   light: require('./images/light.png'),
   bottomSheetBg: require('./images/bottomSheetBg.png'),
   duringTimerBg: require('./images/duringTimerBg.png'),
+};
+
+export const Sounds = {
+  metronom: require('./sounds/metronom.mp3'),
 };
