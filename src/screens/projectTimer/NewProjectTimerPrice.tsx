@@ -43,7 +43,7 @@ const NewProjectTimerPrice = () => {
                 labelLeft={'60%'}
                 initialScrollIndex={Number(newProjectTimerState.price)}
               />
-              <DataListLinearBack />
+              <DataListLinearBack top={165} />
             </RN.View>
             <StartBtn
               text="Ok"
@@ -68,11 +68,11 @@ const styles = RN.StyleSheet.create({
   priceBox: {
     justifyContent: 'center',
     height: '50%',
-    paddingHorizontal: '10%',
+    paddingHorizontal: 20,
     paddingTop: 50,
   },
   content: {
-    height: '85%',
+    height: '88%',
     justifyContent: 'space-between',
   },
 });

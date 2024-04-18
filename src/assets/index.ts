@@ -87,6 +87,9 @@ import alarmNotificatiion from './svg/alarmNotification.svg';
 import dateBottomLine from './svg/dateBottomLine.svg';
 import hour24Line from './svg/hour24Line.svg';
 import hour30Line from './svg/hour30Line.svg';
+import calendarChangeIcon1 from './svg/calendarChangeIcon1.svg';
+import calendarChangeIcon2 from './svg/calendarChangeIcon2.svg';
+import calendarMonthBottom from './svg/calendarMonthBottom.svg';
 
 export const Images = {
   Svg: {
@@ -182,6 +185,9 @@ export const Images = {
     dateBottomLine,
     hour24Line,
     hour30Line,
+    calendarChangeIcon1,
+    calendarChangeIcon2,
+    calendarMonthBottom,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

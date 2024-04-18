@@ -39,6 +39,7 @@ import NewTask from '../screens/todoTimer/NewTask';
 import TodoGoal from '../screens/todoTimer/TodoGoal';
 import TaskName from '../screens/todoTimer/TaskName';
 import TodoTimerHistory from '../screens/todoTimer/TodoTimerHistory';
+import OneMonthAndEvents from '../screens/calendar/OneMonthAndEvents';
 
 const Stack = createStackNavigator();
 
@@ -130,6 +131,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.NEW_EVENT}
           component={NewEvent}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ONE_MONTH_AND_EVENTS}
+          component={OneMonthAndEvents}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -324,7 +332,10 @@ const AppNavigator = () => {
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator
         initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
-        screenOptions={{headerShown: false, gestureEnabled: false}}>
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}>
         {isAuthorized ? renderPrivateNavigators() : renderPublicNavigators()}
       </Stack.Navigator>
     </NavigationContainer>

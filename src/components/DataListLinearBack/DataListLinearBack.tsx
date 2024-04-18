@@ -1,13 +1,18 @@
 import React from 'react';
+import {DimensionValue} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RN from '../RN';
 
-const DataListLinearBack = () => {
+type Props = {
+  top?: DimensionValue;
+};
+
+const DataListLinearBack: React.FC<Props> = ({top}) => {
   return (
     <LinearGradient
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
-      style={styles.linear}
+      style={[styles.linear, {top: top ? top : 110}]}
       colors={[
         'transparent',
         'rgba(13,13,13,.3)',

@@ -156,7 +156,13 @@ const FromDate = () => {
               />
               <DataListLinearBack />
             </RN.View>
-            <StartBtn text="Ok" primary onPress={() => navigation.goBack()} />
+            <StartBtn
+              subWidth={75}
+              elWidth={55}
+              text="Ok"
+              primary
+              onPress={() => navigation.goBack()}
+            />
           </RN.View>
         </RN.View>
       }

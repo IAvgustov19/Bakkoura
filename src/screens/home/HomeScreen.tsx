@@ -38,6 +38,7 @@ const HomeScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
+            title="Home"
             rightItem={
               <RN.View style={styles.profile}>
                 <RN.TouchableOpacity
@@ -100,7 +101,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 10,
   },
   content: {
-    height: windowHeight - windowHeight / 3.5,
+    height: windowHeight - windowHeight / 3.3,
     justifyContent: 'space-between',
   },
   title: {
@@ -138,5 +139,6 @@ const styles = RN.StyleSheet.create({
   },
   watchSwitch: {
     alignItems: 'center',
+    top: -10,
   },
 });

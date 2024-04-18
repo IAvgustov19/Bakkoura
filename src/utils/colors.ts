@@ -9,6 +9,7 @@ export const COLORS = {
   green: '#21C004',
   darkRed: '#DD0000',
   darkGreyText: '#2F4252',
+  borderBottom: '#505072',
 };
 
 export const SelectColorData = [

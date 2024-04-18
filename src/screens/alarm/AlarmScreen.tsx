@@ -126,7 +126,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 15,
   },
   alarmsBox: {
-    height: '80%',
+    height: '83%',
     justifyContent: 'space-between',
   },
   itemContainer: {

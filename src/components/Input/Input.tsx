@@ -16,6 +16,7 @@ type Props = {
   multiLine?: boolean;
   numberOfLines?: number;
   paddingTop?: number;
+  paddingHorizontal?: number;
   backColor?: string;
   iconPress?: () => void;
 };
@@ -32,9 +33,16 @@ const Input: React.FC<Props> = ({
   paddingTop,
   backColor,
   iconPress,
+  paddingHorizontal,
 }) => {
   return (
-    <RN.View style={styles.inputBox}>
+    <RN.View
+      style={[
+        styles.inputBox,
+        {
+          paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
+        },
+      ]}>
       <TextInput
         multiline={multiLine}
         numberOfLines={numberOfLines}

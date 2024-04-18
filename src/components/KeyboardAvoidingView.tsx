@@ -16,7 +16,7 @@ export const KeyboardAvoidingView = ({
     <View
       behavior="position"
       enabled
-      keyboardVerticalOffset={Platform.OS === 'android' ? -110 : 90}
+      keyboardVerticalOffset={Platform.OS === 'android' ? 110 : 90}
       style={[styles.container, style]}
       {...props}>
       {children}

@@ -3,6 +3,8 @@ import {
   formatDate,
   formatDayVaMonth,
   formattedDate,
+  generateYearsData,
+  getCalendarArray,
   getCurrentTime,
 } from '../../helper/helper';
 import {
@@ -21,6 +23,7 @@ export class CalendarStore {
     this.updateCalendarCurrentTime();
     this.calculateRemainingTime();
     this.filterNearDay();
+    this.generateCalendarMonths();
   }
 
   date = new Date();
@@ -28,8 +31,7 @@ export class CalendarStore {
   totalTimeSecond = 0;
 
   allEventsData: NewEventStateType[] = [];
-  filteredAllEventsData: NewEventStateType[] = [];
-  cloneAllEventsData = this.allEventsData;
+  cloneAllEventsData: NewEventStateType[] = [];
 
   newEventData: NewEventStateType = {...NewEventStateInitial};
 
@@ -41,11 +43,29 @@ export class CalendarStore {
   };
 
   calendarCurrentTime = '';
+  months = [];
+
+  oneMonth: Date | string;
 
   nearDay: {day: string; name: string; date: string} = {
     name: 'No events yet',
     day: 'Today',
     date: '',
+  };
+  calendarData: any[];
+
+  currentDate = new Date().toISOString().slice(0, 10);
+
+  isUpdate = false;
+
+  getOneMonth = (month: string) => {
+    runInAction(() => {
+      this.oneMonth = month;
+    });
+  };
+
+  generateCalendarMonths = () => {
+    this.calendarData = generateYearsData();
   };
 
   filterNearDay = () => {
@@ -55,48 +75,96 @@ export class CalendarStore {
       runInAction(() => {
         this.nearDay.name = near.name;
         this.nearDay.day = formatDayVaMonth(near.day, near.month, near.year);
-        this.nearDay.date = formattedDate(near.day, near.month, near.year);
+        this.nearDay.date = near.date;
       });
     } else {
     }
   };
 
-  filterEvents = (data: DateDataType) => {
-    if (this.filteredAllEventsData.some(data => data === data)) {
+  filterEvents = (date: string) => {
+    if (this.currentDate === date) {
       this.allEventsData = this.cloneAllEventsData;
-      this.filteredAllEventsData = [];
+      this.currentDate = date;
     } else {
       this.allEventsData = this.cloneAllEventsData.filter(
-        event =>
-          event.year === data.year &&
-          event.month === data.month &&
-          event.day === data.day,
+        event => event.date === (date as never),
       );
-      this.filteredAllEventsData = this.allEventsData;
+      this.currentDate = date;
     }
   };
 
-  addEvents = (calback: () => void) => {
-    const now = Date.now();
-    this.setNewEventState('timeStamp', now as never);
+  addEvents = (calback?: () => void) => {
+    if (!this.isUpdate) {
+      const now = Date.now();
+      this.setNewEventState('timeStamp', now as never);
+      this.setNewEventState('id', (this.allEventsData.length + 1) as never);
+      this.setNewEventState(
+        'date',
+        formattedDate(
+          this.newEventData.day,
+          this.newEventData.month,
+          this.newEventData.year,
+          3,
+        ) as never,
+      );
+      runInAction(() => {
+        if (!this.newEventData.name) return;
+        if (
+          this.newEventData.hour > 0 ||
+          this.newEventData.minut > 0 ||
+          (this.newEventData.second > 0 && this.newEventData.day > 0) ||
+          this.newEventData.month > 0 ||
+          this.newEventData.year > 0
+        ) {
+          this.allEventsData = [...this.allEventsData, this.newEventData];
+          this.cloneAllEventsData = this.allEventsData;
+          this.newEventData = {...NewEventStateInitial};
+          calback();
+          this.filterNearDay();
+          this.clearState();
+        } else {
+          console.log('enter time');
+        }
+      });
+    } else {
+      this.updateEventCalendar(this.newEventData.id);
+      calback();
+      this.clearState();
+    }
+  };
+
+  getOneEvent = (data: NewEventStateType) => {
     runInAction(() => {
-      if (!this.newEventData.name) return;
-      if (
-        this.newEventData.hour > 0 ||
-        this.newEventData.minut > 0 ||
-        (this.newEventData.second > 0 && this.newEventData.day > 0) ||
-        this.newEventData.month > 0 ||
-        this.newEventData.year > 0
-      ) {
-        this.allEventsData.push(this.newEventData);
-        this.cloneAllEventsData = this.allEventsData;
-        this.newEventData = {...NewEventStateInitial};
-        calback();
-        this.filterNearDay();
-      } else {
-        console.log('enter time');
-      }
+      this.newEventData = data;
+      this.isUpdate = true;
     });
+  };
+
+  handleDeleteEvent = (id: number) => {
+    setTimeout(() => {
+      runInAction(() => {
+        this.allEventsData = this.allEventsData.filter(item => item.id !== id);
+      });
+    }, 200);
+  };
+
+  updateEventCalendar = (id: number) => {
+    const list = this.allEventsData.map((item, i) => {
+      return i === id
+        ? {
+            ...item,
+            item: this.newEventData,
+          }
+        : item;
+    });
+    runInAction(() => {
+      this.allEventsData = list;
+    });
+  };
+
+  clearState = () => {
+    this.newEventData = NewEventStateInitial;
+    this.isUpdate = false;
   };
 
   calculateRemainingTime = () => {
@@ -163,7 +231,7 @@ export class CalendarStore {
       runInAction(() => {
         this.calendarCurrentTime = currentTime;
       });
-    }, 60000);
+    }, 1000);
   };
 
   selectedRepeat = {title: 'Yearly'};

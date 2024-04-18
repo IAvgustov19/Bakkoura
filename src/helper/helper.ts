@@ -430,10 +430,36 @@ export const formattedDate = (
   day: number | Date,
   month: number | Date,
   year: number | Date,
+  index?: number,
 ) => {
-  return `${day < 10 ? `0${day}` : day}/${
-    month < 10 ? `0${month}` : month
-  }/${year}`;
+  let date = '';
+  switch (index) {
+    case 0:
+      date = `${day < 10 ? `0${day}` : day}/${
+        month < 10 ? `0${month}` : month
+      }/${year}`;
+      break;
+    case 1:
+      date = `${day < 10 ? `0${day}` : day}-${
+        month < 10 ? `0${month}` : month
+      }-${year}`;
+      break;
+    case 2:
+      date = `${day < 10 ? `0${day}` : day}.${
+        month < 10 ? `0${month}` : month
+      }.${year}`;
+    case 3:
+      date = `${year}-${month < 10 ? `0${month}` : month}-${
+        day < 10 ? `0${day}` : day
+      }`;
+      break;
+    default:
+      date = `${day < 10 ? `0${day}` : day}/${
+        month < 10 ? `0${month}` : month
+      }/${year}`;
+      break;
+  }
+  return date;
 };
 
 export const diagonalTime = (startTime: string, endTime: string) => {
@@ -463,4 +489,81 @@ export const diagonalTime = (startTime: string, endTime: string) => {
     hours: Math.abs(hourDifference),
     minutes: Math.abs(minuteDifference),
   };
+};
+
+export const toMonthName = (dateString: string) => {
+  let number = new Date(dateString).getMonth() + 1;
+  switch (number) {
+    case 1:
+      return 'January';
+    case 2:
+      return 'February';
+    case 3:
+      return 'March';
+    case 4:
+      return 'April';
+    case 5:
+      return 'May';
+    case 6:
+      return 'June';
+    case 7:
+      return 'July';
+    case 8:
+      return 'August';
+    case 9:
+      return 'September';
+    case 10:
+      return 'October';
+    case 11:
+      return 'November';
+    case 12:
+      return 'December';
+    default:
+      return "Noma'lum";
+  }
+};
+
+export const getCalendarArray = (year: any) => {
+  const months = [];
+  for (let month = 0; month < 12; month++) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const monthArray = [];
+    for (let day = 1; day <= daysInMonth; day++) {
+      monthArray.push(new Date(year, month, day));
+    }
+    months.push(monthArray);
+  }
+  return months;
+};
+
+export const generateYearsData = () => {
+  const yearsData = [];
+  const currentYear = new Date().getFullYear();
+  for (let year = currentYear; year <= currentYear + 1; year++) {
+    const monthsData = [];
+    for (let month = 0; month < 12; month++) {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const lastDayOfMonth = new Date(year, month, daysInMonth);
+
+      // Avtomatik joy vaqtini olish
+      const offset = lastDayOfMonth.getTimezoneOffset();
+      const offsetHours = Math.abs(Math.floor(offset / 60))
+        .toString()
+        .padStart(2, '0');
+      const offsetMinutes = Math.abs(offset % 60)
+        .toString()
+        .padStart(2, '0');
+      const sign = offset < 0 ? '+' : '-';
+      const timeZoneString = `T00:00:00.000${sign}${offsetHours}:${offsetMinutes}`;
+
+      const monthString = `${year}-${(month + 1)
+        .toString()
+        .padStart(2, '0')}-${daysInMonth
+        .toString()
+        .padStart(2, '0')}${timeZoneString}`;
+      monthsData.push(monthString);
+    }
+    yearsData.push({year: year.toString(), months: monthsData});
+  }
+  return yearsData;
 };

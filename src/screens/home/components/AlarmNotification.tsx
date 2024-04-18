@@ -28,14 +28,17 @@ export default AlarmNotification;
 const styles = RN.StyleSheet.create({
   container: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
   info: {
     position: 'absolute',
     zIndex: 1,
-    paddingHorizontal: 25,
     alignItems: 'center',
-    paddingTop: '35%',
+    justifyContent: 'center',
     gap: 2,
+    height: '100%',
+    paddingBottom: 20,
+    paddingLeft: 15,
   },
   day: {
     color: COLORS.white,

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -11,23 +11,26 @@ import useRootStore from '../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import Events from './components/Events';
 import Calendars from './components/Calendars';
+import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 
 const EventScreen = () => {
-  const {calendarCurrentTime} = useRootStore().calendarStore;
+  const {calendarCurrentTime, calendarData} = useRootStore().calendarStore;
   const [checked, setChecked] = useState(false);
   const navigation = useNavigation();
 
   const toggleSwitch = () => {
-    setChecked(!checked);
+    setTimeout(() => {
+      setChecked(!checked);
+    }, 1);
   };
 
-  const renderCalendar = () => {
+  const renderCalendar = useCallback(() => {
     if (checked) {
-      return <Calendars />;
+      return <Calendars calendarDatas={calendarData} />;
     } else {
       return <Events />;
     }
-  };
+  }, [checked]);
 
   return (
     <LinearContainer
@@ -45,7 +48,20 @@ const EventScreen = () => {
           <RN.View style={styles.calendarBox}>{renderCalendar()}</RN.View>
           <RN.View style={styles.bottomMenu}>
             <RN.TouchableOpacity>
-              <Switch value={checked} onValueChange={toggleSwitch} />
+              <SimpleSwitch
+                active={checked}
+                width={60}
+                topMenu={-10}
+                paddingVertical={10}
+                handlePress={toggleSwitch}
+                icon={
+                  checked ? (
+                    <Images.Svg.calendarChangeIcon1 />
+                  ) : (
+                    <Images.Svg.calendarChangeIcon2 />
+                  )
+                }
+              />
             </RN.TouchableOpacity>
             <StartBtn
               subWidth={60}
@@ -79,7 +95,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    bottom: '15%',
+    bottom: '13%',
     paddingHorizontal: 10,
   },
   currentTime: {

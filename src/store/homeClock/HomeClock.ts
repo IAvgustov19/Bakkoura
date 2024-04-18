@@ -11,7 +11,7 @@ export class HomeClockStore {
   newDate = new Date();
   month = this.newDate.getMonth() + 1;
   today = {
-    day: `${this.newDate.getDay()}`,
+    day: `${this.newDate.getDay() === 0 ? '7' : this.newDate.getDate()}`,
     monthYear:
       this.month < 10
         ? `0${this.month}.${this.newDate.getFullYear()}`

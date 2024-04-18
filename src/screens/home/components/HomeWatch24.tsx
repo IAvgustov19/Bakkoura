@@ -5,6 +5,7 @@ import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
+import {windowHeight} from '../../../utils/styles';
 
 const HomeWatch24 = () => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
@@ -55,7 +56,7 @@ const styles = RN.StyleSheet.create({
   },
   watchBox: {
     width: '100%',
-    height: 350,
+    height: windowHeight / 2.5,
   },
   watch: {
     width: '100%',

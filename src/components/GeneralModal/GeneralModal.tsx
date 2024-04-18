@@ -14,6 +14,7 @@ const GeneralModal: React.FC<Props> = ({children, hide, visible}) => {
       animationType="slide"
       transparent={true}
       visible={visible}
+      statusBarTranslucent={true}
       onRequestClose={hide}>
       <LinearContainer children={children} />
     </RN.Modal>

@@ -59,8 +59,7 @@ const ProjectTimer = () => {
     <Swipeable
       key={index}
       renderRightActions={() => renderLeftActions(item.id)}
-      onSwipeableWillOpen={() => handleSwipe(item.id)}
-      onSwipeableOpen={() => console.log('hi')}>
+      onSwipeableWillOpen={() => handleSwipe(item.id)}>
       <ProjectTimerItem
         onEnter={() => onGetOneProject(item)}
         key={index}

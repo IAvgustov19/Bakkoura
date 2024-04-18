@@ -43,6 +43,7 @@ export enum APP_ROUTES {
   REPEAT = 'RepeatScreen',
   DATE_SCREEN = 'DateScreen',
   TIME_SCREEN = 'TimeScreen',
+  ONE_MONTH_AND_EVENTS = 'OneMonthAndEvents',
 
   //stress test screens
   STRESS_TEST_DURING = 'StressTestDuring',
