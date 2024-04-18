@@ -8,20 +8,41 @@ type Props = {
   eventName?: string;
   date?: string;
   time?: string;
+  onPress?: () => void;
+  isShowDate?: boolean;
+  leftLine?: boolean;
+  borderRadius?: number;
 };
 
-const EventItem: React.FC<Props> = ({eventName, date, time}) => {
+const EventItem: React.FC<Props> = ({
+  eventName,
+  date,
+  time,
+  onPress,
+  isShowDate,
+  borderRadius,
+  leftLine,
+}) => {
   return (
-    <RN.TouchableOpacity style={styles.container}>
+    <RN.Pressable
+      style={[
+        styles.container,
+        {
+          borderLeftWidth: leftLine ? 1 : 0,
+          borderLeftColor: COLORS.red,
+          borderRadius: borderRadius,
+        },
+      ]}
+      onPress={onPress}>
       <RN.View style={styles.timeBox}>
         <RN.Text style={styles.name}>{eventName}</RN.Text>
-        <RN.Text style={styles.date}>{date}</RN.Text>
+        {isShowDate ? <RN.Text style={styles.date}>{date}</RN.Text> : null}
         <RN.Text style={styles.time}>{time}</RN.Text>
       </RN.View>
       <RN.TouchableOpacity style={styles.arrowRight}>
         <Images.Svg.arrowRight />
       </RN.TouchableOpacity>
-    </RN.TouchableOpacity>
+    </RN.Pressable>
   );
 };
 
@@ -34,9 +55,8 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
     backgroundColor: COLORS.black,
-    borderRadius: 5,
   },
   timeBox: {
     gap: 5,

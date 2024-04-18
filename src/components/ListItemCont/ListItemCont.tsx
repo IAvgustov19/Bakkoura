@@ -1,15 +1,16 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, DimensionValue} from 'react-native';
 import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
 
 type Props = {
   title?: string;
-  value?: string;
+  value?: string | React.ReactNode;
   onPress?: () => void;
   backBlack?: boolean;
   rightItem?: React.ReactNode;
+  rightVertical?: DimensionValue;
 };
 
 const ListItemCont: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const ListItemCont: React.FC<Props> = ({
   onPress,
   backBlack,
   rightItem,
+  rightVertical,
 }) => {
   return (
     <RN.TouchableOpacity
@@ -28,7 +30,12 @@ const ListItemCont: React.FC<Props> = ({
       onPress={onPress}>
       <RN.Text style={styles.listItemText}>{title}</RN.Text>
       {rightItem ? (
-        rightItem
+        <RN.TouchableOpacity style={styles.listItemRight} onPress={onPress}>
+          <RN.Text style={styles.listItemRightText}>{value}</RN.Text>
+          <RN.View style={{paddingVertical: rightVertical ? rightVertical : 0}}>
+            {rightItem}
+          </RN.View>
+        </RN.TouchableOpacity>
       ) : (
         <RN.TouchableOpacity style={styles.listItemRight} onPress={onPress}>
           <RN.Text style={styles.listItemRightText}>{value}</RN.Text>
@@ -52,7 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   listItemText: {
-    color: '#7D7D7D',
+    color: COLORS.grey,
     fontSize: 16,
   },
   listItemRight: {
@@ -61,6 +68,6 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   listItemRightText: {
-    color: '#7D7D7D',
+    color: COLORS.grey,
   },
 });

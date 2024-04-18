@@ -1,11 +1,8 @@
 import React from 'react';
 import RN from '../../../components/RN';
 import {Images} from '../../../assets/index';
-import TextView from '../../../components/Text/Text';
 import {COLORS} from '../../../utils/colors';
 import {observer} from 'mobx-react-lite';
-import {Button} from 'react-native';
-import {ButtonGroup} from '@rneui/base';
 
 type Props = {
   name?: string;

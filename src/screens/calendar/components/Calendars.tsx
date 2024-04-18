@@ -1,57 +1,63 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useMemo, useState} from 'react';
-import {Calendar, CalendarList} from 'react-native-calendars';
+import React, {useCallback} from 'react';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
-import {DateDataType} from '../../../types/calendar';
+import {APP_ROUTES} from '../../../navigation/routes';
+import {CalendarDataType} from '../../../types/calendar';
 import {COLORS} from '../../../utils/colors';
-import EventItem from './EventItem';
-import Events from './Events';
+import {windowHeight} from '../../../utils/styles';
+import CalendarComp from './CalendarComp';
 
-const Calendars = () => {
+type Props = {
+  calendarDatas?: CalendarDataType;
+};
+
+const Calendars: React.FC<Props> = ({calendarDatas}) => {
   const navigation = useNavigation();
-  const [selectedDate, setSelectedDate] = useState('');
-  const {onRepeatItemPress, allEventsData, filterEvents} =
-    useRootStore().calendarStore;
+  const {months, getOneMonth, oneMonth} = useRootStore().calendarStore;
 
-  const markedDates = useMemo(() => {
-    return {
-      [selectedDate]: {
-        selected: true,
-        selectedColor: COLORS.yellow,
-        selectedTextColor: COLORS.black,
-        dotColor: COLORS.yellow,
-        marked: true,
-      },
-    };
-  }, [selectedDate]);
-
-  const selectDay = (data: DateDataType) => {
-    filterEvents(data);
-    setSelectedDate(data.dateString);
+  const selectMonth = (data?: Date | string) => {
+    getOneMonth(data as never);
+    navigation.navigate(APP_ROUTES.ONE_MONTH_AND_EVENTS as never);
   };
+
+  const renderMonth = useCallback(() => {
+    return calendarDatas?.map((item, indexMonth) => {
+      return (
+        <RN.View style={styles.calendar} key={indexMonth}>
+          <RN.Text style={styles.year}>{`${item?.year}`}</RN.Text>
+          <RN.View style={styles.month}>
+            {item.months?.map((month, index) => {
+              return (
+                <CalendarComp
+                  key={index}
+                  calendarWidth={'31.5%'}
+                  date={month as never}
+                  dayFontSize={10}
+                  selectMonth={() => selectMonth(month)}
+                  dateWidth={13}
+                  dateHeight={15}
+                  showWeekDays={false}
+                  currentDateFontSize={18}
+                  weekGap={5}
+                />
+              );
+            })}
+          </RN.View>
+        </RN.View>
+      );
+    });
+  }, [months, oneMonth]);
 
   return (
     <RN.View style={styles.container}>
-      <Calendar
-        style={styles.calendar}
-        onDayPress={day => selectDay(day)}
-        markedDates={markedDates}
-        theme={{
-          calendarBackground: COLORS.transparent,
-          dayTextColor: COLORS.white,
-          textDisabledColor: COLORS.grey,
-          backgroundColor: COLORS.transparent,
-          selectedDayTextColor: COLORS.blue,
-          selectedDotColor: COLORS.blue,
-          monthTextColor: COLORS.white,
-          textSectionTitleColor: COLORS.white,
-        }}
-      />
-      <RN.View style={styles.events}>
-        <Events />
-      </RN.View>
+      <RN.ScrollView
+        style={styles.scrollView}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
+        <RN.View style={styles.month}>{renderMonth()}</RN.View>
+      </RN.ScrollView>
     </RN.View>
   );
 };
@@ -60,19 +66,28 @@ export default observer(Calendars);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
     width: '100%',
-    // flexDirection: 'row',
-    // flexDirection: 'row',
+  },
+  scrollView: {
+    height: windowHeight - windowHeight / 4,
   },
   calendar: {
-    // height: '40%',
-    // width: '30%',
-    backgroundColor: 'transparent',
+    paddingBottom: 30,
   },
-  events: {
+  month: {
     width: '100%',
-    height: '35%',
-    marginVertical: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    rowGap: 10,
+  },
+  oneMonth: {
+    width: '100%',
+  },
+  year: {
+    textAlign: 'center',
+    marginBottom: 20,
+    fontSize: 38,
+    color: COLORS.white,
   },
 });

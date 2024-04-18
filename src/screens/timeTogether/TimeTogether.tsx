@@ -13,7 +13,7 @@ import {formatDateTime} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
-import {windowHeight} from '../../utils/styles';
+import {windowHeight, windowWidth} from '../../utils/styles';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
@@ -63,7 +63,7 @@ const TimeTogether = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
-                <Images.Svg.heartIcon />
+                <Images.Svg.heartIcon width={windowWidth - 40} />
               </RN.View>
               <RN.View style={styles.coupleInfo}>
                 <TextView
@@ -123,19 +123,23 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 10,
   },
   content: {
-    height: windowHeight - windowHeight / 5,
+    height: windowHeight - windowHeight / 4,
+    // backgroundColor: 'red',
   },
   coupleBox: {
-    height: '50%',
+    height: windowHeight - windowHeight / 1.8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   heartBox: {
     position: 'absolute',
+    paddingTop: 20,
   },
   coupleInfo: {
+    height: '100%',
+    // gap: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100%',
-    gap: 10,
   },
   coupleTimeText: {
     marginTop: 10,
@@ -162,7 +166,7 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 10,
   },
   etapScrollView: {
-    height: '25%',
+    height: windowHeight / 6,
   },
   etapList: {
     flexDirection: 'row',

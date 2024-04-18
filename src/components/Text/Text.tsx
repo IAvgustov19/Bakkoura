@@ -22,14 +22,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: '#fff',
-    fontWeight: '500',
+    fontWeight: '400',
     textAlign: 'center',
-    // fontFamily: ''
+    fontFamily: 'RedHatDisplay-Regular',
   },
   text: {
     fontSize: 14,
     color: '#979DA2',
     fontWeight: '400',
     textAlign: 'center',
+    fontFamily: 'RedHatDisplay-Regular',
   },
 });

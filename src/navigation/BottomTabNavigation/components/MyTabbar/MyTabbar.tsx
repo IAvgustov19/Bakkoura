@@ -46,8 +46,8 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
           return <Images.Svg.worldTimeIcon />;
         case APP_ROUTES.STOP_WATCH:
           return <Images.Svg.stopWatchIcon />;
-        case APP_ROUTES.METRONOME:
-          return <Images.Svg.metronomeIcon />;
+        case APP_ROUTES.METRONOM:
+          return <Images.Svg.metronomIcon />;
         case APP_ROUTES.STRESS_TEST:
           return <Images.Svg.stressTest />;
         case APP_ROUTES.POMODORO:

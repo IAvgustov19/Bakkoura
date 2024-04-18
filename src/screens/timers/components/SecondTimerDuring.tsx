@@ -7,6 +7,7 @@ import RN from '../../../components/RN';
 import SwitchContain from '../../../components/SwitchContain/SwitchContain';
 import {formattedTime} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
+import {COLORS} from '../../../utils/colors';
 
 type Props = {
   stop?: boolean;
@@ -22,6 +23,7 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
     timerStatus,
     increasePercentage,
   } = useRootStore().timerStore;
+
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
@@ -40,23 +42,11 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
           {timerStatus.finished ? (
             <RN.Text style={styles.finished}>{currentTime}</RN.Text>
           ) : timerStatus.back ? (
-            <RN.Text style={styles.timerTime}>
-              {formattedTime(
-                secondTimerValue.hours,
-                secondTimerValue.minut,
-                secondTimerValue.second,
-              )}
-            </RN.Text>
+            <RN.Text style={styles.timerTime}>{secondTimerValue.time}</RN.Text>
           ) : (
-            <RN.Text style={styles.timerTime}>
-              {formattedTime(
-                secondTimerTime.hours,
-                secondTimerTime.minut,
-                secondTimerTime.second,
-              )}
-            </RN.Text>
+            <RN.Text style={styles.timerTime}>{secondTimerTime.time}</RN.Text>
           )}
-          {finished ? (
+          {timerStatus.finished ? (
             <RN.View style={styles.finishedStatus}>
               <RN.Text style={styles.timeOver}>Time is over</RN.Text>
               <Images.Svg.bellGreen width={35} />
@@ -105,14 +95,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
+  currentTime: {
+    color: COLORS.grey,
+    fontSize: 14,
+  },
   timerTime: {
-    fontSize: 60,
+    fontSize: 50,
     color: '#fff',
     fontWeight: '200',
-  },
-  currentTime: {
-    fontSize: 14,
-    color: '#979DA2',
   },
   finishedStatus: {
     flexDirection: 'row',
@@ -130,7 +120,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   finished: {
-    fontSize: 40,
+    fontSize: 50,
     color: '#fff',
     fontWeight: '200',
   },

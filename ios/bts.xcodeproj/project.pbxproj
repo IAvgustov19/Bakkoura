@@ -12,8 +12,22 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		38CE42E834B7471AA48838BC /* RedHatDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81985794653541B7929C575A /* RedHatDisplay-Italic.ttf */; };
+		6AEE8E99171D475F958D268A /* RedHatDisplay-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49EF834407E64FA3B22AEEF2 /* RedHatDisplay-MediumItalic.ttf */; };
+		755F24A0D5D6417AA085EE61 /* RedHatDisplay-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44BE32852B7E40FE9E6B625E /* RedHatDisplay-BoldItalic.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-bts-btsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-bts-btsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		89C5E60384744E979CD3461C /* RedHatDisplay-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5180AD7208BE424BBC6CE409 /* RedHatDisplay-SemiBoldItalic.ttf */; };
+		9579739912134FE0A2256750 /* RedHatDisplay-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5687D1A979674FE5B8F47803 /* RedHatDisplay-Medium.ttf */; };
+		A187536DC1E343B0B19BFCF7 /* RedHatDisplay-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1AAC9974D79410C96F0A62E /* RedHatDisplay-Light.ttf */; };
+		A7CEDB605E6D4538B9DB9CFE /* RedHatDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D7F899EECE94D2E9443CDD8 /* RedHatDisplay-Bold.ttf */; };
+		AD702C62953441F99FD646EF /* RedHatDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE7A0F5DDE2D4B8CA821090C /* RedHatDisplay-Regular.ttf */; };
+		C24FB535E5744B7B9BDB0502 /* RedHatDisplay-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EC24312615A544C58CA8C6CF /* RedHatDisplay-BlackItalic.ttf */; };
+		D2F329CA118B4C45ABA72A2C /* RedHatDisplay-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E284A1486128400FB287ADB6 /* RedHatDisplay-LightItalic.ttf */; };
+		E00ED23DF08C4987BA5AC647 /* RedHatDisplay-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00DD01279CBF4705BD2978B8 /* RedHatDisplay-ExtraBold.ttf */; };
+		E468E8309EA043E4BC7CFDBD /* RedHatDisplay-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 938060DE82764653B2F1CFCE /* RedHatDisplay-ExtraBoldItalic.ttf */; };
+		F15CDE55DE0B4B52BD08BF1B /* RedHatDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0890806FB16D42FF822C4672 /* RedHatDisplay-Black.ttf */; };
+		F89D542D7A46493BBCE3A1F7 /* RedHatDisplay-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90B2DBFB66724D5692A18E82 /* RedHatDisplay-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,9 +41,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00DD01279CBF4705BD2978B8 /* RedHatDisplay-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-ExtraBold.ttf"; path = "../src/assets/fonts/RedHatDisplay-ExtraBold.ttf"; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* btsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = btsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* btsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = btsTests.m; sourceTree = "<group>"; };
+		0890806FB16D42FF822C4672 /* RedHatDisplay-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-Black.ttf"; path = "../src/assets/fonts/RedHatDisplay-Black.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* bts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = bts/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = bts/AppDelegate.mm; sourceTree = "<group>"; };
@@ -38,11 +54,23 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bts/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-bts-btsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bts-btsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-bts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts.debug.xcconfig"; path = "Target Support Files/Pods-bts/Pods-bts.debug.xcconfig"; sourceTree = "<group>"; };
+		44BE32852B7E40FE9E6B625E /* RedHatDisplay-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-BoldItalic.ttf"; path = "../src/assets/fonts/RedHatDisplay-BoldItalic.ttf"; sourceTree = "<group>"; };
+		49EF834407E64FA3B22AEEF2 /* RedHatDisplay-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-MediumItalic.ttf"; path = "../src/assets/fonts/RedHatDisplay-MediumItalic.ttf"; sourceTree = "<group>"; };
+		4D7F899EECE94D2E9443CDD8 /* RedHatDisplay-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-Bold.ttf"; path = "../src/assets/fonts/RedHatDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		5180AD7208BE424BBC6CE409 /* RedHatDisplay-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-SemiBoldItalic.ttf"; path = "../src/assets/fonts/RedHatDisplay-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		5687D1A979674FE5B8F47803 /* RedHatDisplay-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-Medium.ttf"; path = "../src/assets/fonts/RedHatDisplay-Medium.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-bts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts.release.xcconfig"; path = "Target Support Files/Pods-bts/Pods-bts.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-bts-btsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts-btsTests.debug.xcconfig"; path = "Target Support Files/Pods-bts-btsTests/Pods-bts-btsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-bts.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bts.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81985794653541B7929C575A /* RedHatDisplay-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-Italic.ttf"; path = "../src/assets/fonts/RedHatDisplay-Italic.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bts/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-bts-btsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts-btsTests.release.xcconfig"; path = "Target Support Files/Pods-bts-btsTests/Pods-bts-btsTests.release.xcconfig"; sourceTree = "<group>"; };
+		90B2DBFB66724D5692A18E82 /* RedHatDisplay-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-SemiBold.ttf"; path = "../src/assets/fonts/RedHatDisplay-SemiBold.ttf"; sourceTree = "<group>"; };
+		938060DE82764653B2F1CFCE /* RedHatDisplay-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/RedHatDisplay-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		AE7A0F5DDE2D4B8CA821090C /* RedHatDisplay-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-Regular.ttf"; path = "../src/assets/fonts/RedHatDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		E1AAC9974D79410C96F0A62E /* RedHatDisplay-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-Light.ttf"; path = "../src/assets/fonts/RedHatDisplay-Light.ttf"; sourceTree = "<group>"; };
+		E284A1486128400FB287ADB6 /* RedHatDisplay-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-LightItalic.ttf"; path = "../src/assets/fonts/RedHatDisplay-LightItalic.ttf"; sourceTree = "<group>"; };
+		EC24312615A544C58CA8C6CF /* RedHatDisplay-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "RedHatDisplay-BlackItalic.ttf"; path = "../src/assets/fonts/RedHatDisplay-BlackItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -122,6 +150,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				E619F7AA05EE4A168E161A01 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -146,6 +175,27 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-bts-btsTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E619F7AA05EE4A168E161A01 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0890806FB16D42FF822C4672 /* RedHatDisplay-Black.ttf */,
+				EC24312615A544C58CA8C6CF /* RedHatDisplay-BlackItalic.ttf */,
+				4D7F899EECE94D2E9443CDD8 /* RedHatDisplay-Bold.ttf */,
+				44BE32852B7E40FE9E6B625E /* RedHatDisplay-BoldItalic.ttf */,
+				00DD01279CBF4705BD2978B8 /* RedHatDisplay-ExtraBold.ttf */,
+				938060DE82764653B2F1CFCE /* RedHatDisplay-ExtraBoldItalic.ttf */,
+				81985794653541B7929C575A /* RedHatDisplay-Italic.ttf */,
+				E1AAC9974D79410C96F0A62E /* RedHatDisplay-Light.ttf */,
+				E284A1486128400FB287ADB6 /* RedHatDisplay-LightItalic.ttf */,
+				5687D1A979674FE5B8F47803 /* RedHatDisplay-Medium.ttf */,
+				49EF834407E64FA3B22AEEF2 /* RedHatDisplay-MediumItalic.ttf */,
+				AE7A0F5DDE2D4B8CA821090C /* RedHatDisplay-Regular.ttf */,
+				90B2DBFB66724D5692A18E82 /* RedHatDisplay-SemiBold.ttf */,
+				5180AD7208BE424BBC6CE409 /* RedHatDisplay-SemiBoldItalic.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,6 +293,20 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				F15CDE55DE0B4B52BD08BF1B /* RedHatDisplay-Black.ttf in Resources */,
+				C24FB535E5744B7B9BDB0502 /* RedHatDisplay-BlackItalic.ttf in Resources */,
+				A7CEDB605E6D4538B9DB9CFE /* RedHatDisplay-Bold.ttf in Resources */,
+				755F24A0D5D6417AA085EE61 /* RedHatDisplay-BoldItalic.ttf in Resources */,
+				E00ED23DF08C4987BA5AC647 /* RedHatDisplay-ExtraBold.ttf in Resources */,
+				E468E8309EA043E4BC7CFDBD /* RedHatDisplay-ExtraBoldItalic.ttf in Resources */,
+				38CE42E834B7471AA48838BC /* RedHatDisplay-Italic.ttf in Resources */,
+				A187536DC1E343B0B19BFCF7 /* RedHatDisplay-Light.ttf in Resources */,
+				D2F329CA118B4C45ABA72A2C /* RedHatDisplay-LightItalic.ttf in Resources */,
+				9579739912134FE0A2256750 /* RedHatDisplay-Medium.ttf in Resources */,
+				6AEE8E99171D475F958D268A /* RedHatDisplay-MediumItalic.ttf in Resources */,
+				AD702C62953441F99FD646EF /* RedHatDisplay-Regular.ttf in Resources */,
+				F89D542D7A46493BBCE3A1F7 /* RedHatDisplay-SemiBold.ttf in Resources */,
+				89C5E60384744E979CD3461C /* RedHatDisplay-SemiBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +530,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P67WCFH9R2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = bts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -478,7 +543,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = bakkoura.bts;
 				PRODUCT_NAME = bts;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -493,6 +558,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P67WCFH9R2;
 				INFOPLIST_FILE = bts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -504,7 +570,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = bakkoura.bts;
 				PRODUCT_NAME = bts;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -580,10 +646,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -651,10 +714,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -672,7 +732,7 @@
 				00E356F71AD99517003FC87E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "bts" */ = {
 			isa = XCConfigurationList;
@@ -681,7 +741,7 @@
 				13B07F951A680F5B00A75B9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "bts" */ = {
 			isa = XCConfigurationList;
@@ -690,7 +750,7 @@
 				83CBBA211A601CBA00E9B192 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

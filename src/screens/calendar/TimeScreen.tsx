@@ -11,6 +11,7 @@ import {observer} from 'mobx-react-lite';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
+import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 
 const TimeScreen = () => {
   const {setNewEventState, newEventData} = useRootStore().calendarStore;
@@ -132,6 +133,7 @@ const TimeScreen = () => {
               style={styles.middleListStyle}
               initialScrollIndex={0}
             />
+            <DataListLinearBack />
           </RN.View>
           <RN.View style={styles.okBtn}>
             <StartBtn

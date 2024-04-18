@@ -1,44 +1,86 @@
+import {useNavigation} from '@react-navigation/native';
 import {color} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
-import React from 'react';
+import React, {useCallback} from 'react';
+import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
+import {Images} from '../../../assets';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
+import ListEmptyComp from '../../../components/ListEmptyComp/ListEmtyComp';
 import RN from '../../../components/RN';
+import {formattedDate} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
+import {APP_ROUTES} from '../../../navigation/routes';
+import {NewEventStateType} from '../../../types/calendar';
 import {COLORS} from '../../../utils/colors';
 import EventItem from './EventItem';
 
-const Events = () => {
-  const {allEventsData, secondsToHMS} = useRootStore().calendarStore;
+type Props = {
+  isShowDate?: boolean;
+  leftLine?: boolean;
+  borderRaduis?: number;
+};
+
+const Events: React.FC<Props> = ({
+  borderRaduis = 5,
+  isShowDate = true,
+  leftLine,
+}) => {
+  const {allEventsData, secondsToHMS, getOneEvent, handleDeleteEvent} =
+    useRootStore().calendarStore;
+  const navigation = useNavigation();
+
+  const onGetHandle = (item: NewEventStateType) => {
+    navigation.navigate(APP_ROUTES.NEW_EVENT as never);
+    getOneEvent(item);
+  };
+
+  const renderLeftActions = (id: number) => {
+    return (
+      <RectButton
+        style={styles.rightAction}
+        onPress={() => handleDeleteEvent(id)}>
+        <RN.View>
+          <Images.Svg.whiteDelete />
+        </RN.View>
+      </RectButton>
+    );
+  };
+
+  const renderItem = ({item, index}) => {
+    return (
+      <Swipeable
+        key={index}
+        renderRightActions={() => renderLeftActions(item.id)}
+        onSwipeableWillOpen={() => handleDeleteEvent(item.id)}>
+        <RN.View style={styles.itemContainer}>
+          <EventItem
+            key={index}
+            eventName={item.name}
+            isShowDate={isShowDate}
+            borderRadius={borderRaduis}
+            leftLine={leftLine}
+            date={formattedDate(item.day, item.month, item.year, 2)}
+            time={`${item.stayedDay} days ${
+              item.stayedHour < 10 ? `0${item.stayedHour}` : item.stayedHour
+            }:${
+              item.stayedMinut < 10 ? `0${item.stayedMinut}` : item.stayedMinut
+            } hours`}
+            onPress={() => onGetHandle(item)}
+          />
+        </RN.View>
+      </Swipeable>
+    );
+  };
 
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.eventsTypeList}>
-        {allEventsData.length > 0 ? (
-          <RN.ScrollView style={styles.scrollView}>
-            {allEventsData.map((item, index) => {
-              return (
-                <EventItem
-                  key={index}
-                  eventName={item.name}
-                  date={`${item.day < 10 ? `0${item.day}` : item.day}.${
-                    item.month < 10 ? `0${item.month}` : item.month
-                  }.${item.year}`}
-                  time={`${item.stayedDay} days ${
-                    item.stayedHour < 10
-                      ? `0${item.stayedHour}`
-                      : item.stayedHour
-                  }:${
-                    item.stayedMinut < 10
-                      ? `0${item.stayedMinut}`
-                      : item.stayedMinut
-                  } hours`}
-                />
-              );
-            })}
-          </RN.ScrollView>
-        ) : (
-          <RN.Text style={styles.noEventYet}>No events yet</RN.Text>
-        )}
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<ListEmptyComp title="No event yet" />}
+          data={allEventsData}
+          renderItem={renderItem}
+        />
       </RN.View>
     </RN.View>
   );
@@ -47,21 +89,10 @@ const Events = () => {
 export default observer(Events);
 
 const styles = RN.StyleSheet.create({
-  cancelBtn: {
-    paddingTop: 5,
-    paddingRight: 5,
-    paddingBottom: 5,
-  },
-  cancelTxt: {
-    color: '#656E77',
-    fontSize: 16,
-  },
   container: {
-    // paddingHorizontal: 10,
+    height: '85%',
   },
-  scrollView: {
-    height: '90%',
-  },
+  itemContainer: {},
   eventsTypeList: {
     borderRadius: 3,
     paddingHorizontal: 5,
@@ -71,5 +102,15 @@ const styles = RN.StyleSheet.create({
     textAlign: 'center',
     color: COLORS.grey,
     fontSize: 20,
+  },
+  rightAction: {
+    backgroundColor: COLORS.darkRed,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    height: '80%',
+    marginTop: '1%',
+    borderRadius: 5,
+    width: '100%',
+    paddingHorizontal: 15,
   },
 });

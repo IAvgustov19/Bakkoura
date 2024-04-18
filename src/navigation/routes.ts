@@ -27,7 +27,8 @@ export enum APP_ROUTES {
   WORLD_TIME = 'WorldTime',
   STOP_WATCH = 'StopWatch',
   ALARM_SCREEN = 'AlarmScreen',
-  METRONOME = 'MetronomeScreen',
+  EVENTS_SCREEN = 'EventScreen',
+  METRONOM = 'MetronomScreen',
   POMODORO = 'Pomodoro',
   TIME_TOGETHER = 'TimeTogether',
   JIHAD_BAKKOURA = 'JihadBakkura',
@@ -38,11 +39,11 @@ export enum APP_ROUTES {
   H30_LEGEND = 'H30Legend',
 
   //calendar screens
-  EVENTS_SCREEN = 'EventScreen',
   NEW_EVENT = 'NewEventScreen',
   REPEAT = 'RepeatScreen',
   DATE_SCREEN = 'DateScreen',
   TIME_SCREEN = 'TimeScreen',
+  ONE_MONTH_AND_EVENTS = 'OneMonthAndEvents',
 
   //stress test screens
   STRESS_TEST_DURING = 'StressTestDuring',
@@ -69,4 +70,16 @@ export enum APP_ROUTES {
   THANKS = 'Thanks',
   LOVER_NAME = 'LoverName',
   DELETE_ETAP = 'DeleteEtap',
+
+  //Bakkoura watch
+  CREATE_SECTOR = 'CreateSector',
+  SECTOR_NAME = 'SectorName',
+  SECTOR_COLOR = 'SectorColor',
+  SECTOR_TIME = 'SectorTime',
+
+  //to do timer
+  NEW_TASK = 'NewTask',
+  TODO_GOAL = 'TodoGoal',
+  TASK_NAME = 'TaskName',
+  TODO_TIMER_HISTORY = 'TodoTimerHistory',
 }

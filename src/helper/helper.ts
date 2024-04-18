@@ -12,6 +12,8 @@ type Config = {
   maximumDate?: Date;
   minimumDate?: Date;
   minuteInterval?: number;
+  is30h?: boolean;
+  is48m?: boolean;
 };
 
 export function numberOfDaysIn(
@@ -100,29 +102,32 @@ export function _getDateData(
 
 export function _getTimeData(
   index: 0 | 1 | 2,
-  {is24Hour = false, minuteInterval = 1}: Config,
+  {is24Hour = false, minuteInterval = 1, is30h = false, is48m = false}: Config,
 ): Array<ItemType> {
   if (index === 0) {
     return is24Hour ? hour24Data : hour12Data;
   } else if (index === 1) {
-    let length = 60;
+    let minuteLength = is48m ? 48 : 60;
+
     let _minuteInterval = 1;
     if (
       typeof minuteInterval === 'number' &&
       minuteInterval >= 1 &&
-      minuteInterval <= 60
+      minuteInterval <= minuteLength
     ) {
       _minuteInterval = Math.floor(minuteInterval);
-      length = 60 / _minuteInterval;
+      minuteLength = minuteLength / _minuteInterval;
     }
 
     return _addEmptySlots(
-      Array.from({length}, (_, i) => ({
+      Array.from({length: minuteLength}, (_, i) => ({
         value: i * _minuteInterval,
         text: ('0' + i * _minuteInterval).slice(-2),
         id: `#${i + 1}`,
       })),
     );
+  } else if (index === 2) {
+    return is30h ? hour30Data : hour24Data;
   } else {
     return amPmData;
   }
@@ -173,6 +178,9 @@ export function _generateArray(limit: number, valueModifier = 0) {
 export const getHourArray = (is24Hour: boolean, valueModifier: number = 0) =>
   _generateArray(is24Hour ? 24 : 12, valueModifier);
 
+export const get30HourArray = (is24Hour: boolean, valueModifier: number = 0) =>
+  _generateArray(is24Hour ? 24 : 30, valueModifier);
+
 function getAmPmArray() {
   return ['AM', 'PM'].map((item, index) => ({
     value: index + 1,
@@ -218,6 +226,7 @@ const getDateArray = () => _generateArray(31);
 
 const hour12Data = _addEmptySlots(getHourArray(false, -1));
 const hour24Data = _addEmptySlots(getHourArray(true, -1));
+const hour30Data = _addEmptySlots(get30HourArray(false, -1));
 const amPmData = _addEmptySlots(getAmPmArray());
 
 export const priceData = _addEmptySlots(PriceArray());
@@ -303,6 +312,33 @@ export const getCurrentTime = () => {
   const formattedSeconds: string = seconds < 10 ? `0${seconds}` : `${seconds}`;
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 };
+export function formatDayVaMonth(day: number, month: number, year: number) {
+  const monthData = [
+    'yanvar',
+    'fevral',
+    'mart',
+    'aprel',
+    'may',
+    'iyun',
+    'iyul',
+    'avgust',
+    'sentabr',
+    'oktabr',
+    'noyabr',
+    'dekabr',
+  ];
+
+  const today = new Date().getDay();
+  const Month = new Date().getMonth();
+
+  if (day === today && Month + 1 === month) {
+    return 'Today';
+  } else {
+    const kun = day;
+    const oy = monthData[Month];
+    return `${kun}-${oy}`;
+  }
+}
 
 export const formatDate = (timestamp: number) => {
   var currentDate = new Date();
@@ -339,12 +375,16 @@ export const formatDate = (timestamp: number) => {
 };
 
 export const formatDateTime = (timestamp: number) => {
-  var givenDate = new Date(timestamp);
-  var hours = givenDate.getHours().toString().padStart(2, '0');
-  var minutes = givenDate.getMinutes().toString().padStart(2, '0');
-  var seconds = givenDate.getSeconds().toString().padStart(2, '0');
+  if (timestamp > 0) {
+    var givenDate = new Date(timestamp);
+    var hours = givenDate.getHours().toString().padStart(2, '0');
+    var minutes = givenDate.getMinutes().toString().padStart(2, '0');
+    var seconds = givenDate.getSeconds().toString().padStart(2, '0');
 
-  return hours + ':' + minutes + ':' + seconds;
+    return hours + ':' + minutes + ':' + seconds;
+  } else {
+    return '00' + ':' + '00' + ':' + '00';
+  }
 };
 
 export const secondsToHMS = (seconds: number) => {
@@ -371,22 +411,159 @@ export const secondsToMS = (seconds: number) => {
   }
 };
 
+export const hoursSecondsToS = (hour: number, minut: number) => {
+  let sekund = hour * 3600 + minut * 60;
+  return sekund;
+};
+
 export const formattedTime = (
   hours: number,
   minutes: number,
-  seconds: number,
+  seconds?: number,
 ) => {
   return `${hours < 10 ? `0${hours}` : hours}:${
     minutes < 10 ? `0${minutes}` : minutes
-  }:${seconds < 10 ? `0${seconds}` : seconds}`;
+  }${seconds ? `:${seconds < 10 ? `0${seconds}` : seconds}` : ''}`;
 };
 
 export const formattedDate = (
   day: number | Date,
   month: number | Date,
   year: number | Date,
+  index?: number,
 ) => {
-  return `${day < 10 ? `0${day}` : day}/${
-    month < 10 ? `0${month}` : month
-  }/${year}`;
+  let date = '';
+  switch (index) {
+    case 0:
+      date = `${day < 10 ? `0${day}` : day}/${
+        month < 10 ? `0${month}` : month
+      }/${year}`;
+      break;
+    case 1:
+      date = `${day < 10 ? `0${day}` : day}-${
+        month < 10 ? `0${month}` : month
+      }-${year}`;
+      break;
+    case 2:
+      date = `${day < 10 ? `0${day}` : day}.${
+        month < 10 ? `0${month}` : month
+      }.${year}`;
+    case 3:
+      date = `${year}-${month < 10 ? `0${month}` : month}-${
+        day < 10 ? `0${day}` : day
+      }`;
+      break;
+    default:
+      date = `${day < 10 ? `0${day}` : day}/${
+        month < 10 ? `0${month}` : month
+      }/${year}`;
+      break;
+  }
+  return date;
+};
+
+export const diagonalTime = (startTime: string, endTime: string) => {
+  // Parsing start and end times
+  let startHours = parseInt(startTime.substring(0, 2));
+  let startMinutes = parseInt(startTime.substring(3));
+  let endHours = parseInt(endTime.substring(0, 2));
+  let endMinutes = parseInt(endTime.substring(3));
+
+  // Calculating the difference between start and end times
+  let hourDifference = endHours - startHours;
+  let minuteDifference = endMinutes - startMinutes;
+
+  // Adjusting for cases where the end time is earlier than the start time
+  if (hourDifference < 0) {
+    hourDifference = 12 + hourDifference;
+  }
+
+  // Adjusting minutes
+  if (minuteDifference < 0) {
+    minuteDifference = 60 + minuteDifference;
+    hourDifference--; // Reduce one hour
+  }
+
+  // Returning the result
+  return {
+    hours: Math.abs(hourDifference),
+    minutes: Math.abs(minuteDifference),
+  };
+};
+
+export const toMonthName = (dateString: string) => {
+  let number = new Date(dateString).getMonth() + 1;
+  switch (number) {
+    case 1:
+      return 'January';
+    case 2:
+      return 'February';
+    case 3:
+      return 'March';
+    case 4:
+      return 'April';
+    case 5:
+      return 'May';
+    case 6:
+      return 'June';
+    case 7:
+      return 'July';
+    case 8:
+      return 'August';
+    case 9:
+      return 'September';
+    case 10:
+      return 'October';
+    case 11:
+      return 'November';
+    case 12:
+      return 'December';
+    default:
+      return "Noma'lum";
+  }
+};
+
+export const getCalendarArray = (year: any) => {
+  const months = [];
+  for (let month = 0; month < 12; month++) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const monthArray = [];
+    for (let day = 1; day <= daysInMonth; day++) {
+      monthArray.push(new Date(year, month, day));
+    }
+    months.push(monthArray);
+  }
+  return months;
+};
+
+export const generateYearsData = () => {
+  const yearsData = [];
+  const currentYear = new Date().getFullYear();
+  for (let year = currentYear; year <= currentYear + 1; year++) {
+    const monthsData = [];
+    for (let month = 0; month < 12; month++) {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const lastDayOfMonth = new Date(year, month, daysInMonth);
+
+      // Avtomatik joy vaqtini olish
+      const offset = lastDayOfMonth.getTimezoneOffset();
+      const offsetHours = Math.abs(Math.floor(offset / 60))
+        .toString()
+        .padStart(2, '0');
+      const offsetMinutes = Math.abs(offset % 60)
+        .toString()
+        .padStart(2, '0');
+      const sign = offset < 0 ? '+' : '-';
+      const timeZoneString = `T00:00:00.000${sign}${offsetHours}:${offsetMinutes}`;
+
+      const monthString = `${year}-${(month + 1)
+        .toString()
+        .padStart(2, '0')}-${daysInMonth
+        .toString()
+        .padStart(2, '0')}${timeZoneString}`;
+      monthsData.push(monthString);
+    }
+    yearsData.push({year: year.toString(), months: monthsData});
+  }
+  return yearsData;
 };

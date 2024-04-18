@@ -1,5 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import * as React from 'react';
+import {DimensionValue} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
   useAnimatedStyle,
@@ -10,9 +11,20 @@ import RN from '../RN';
 type Props = {
   handlePress?: () => void;
   active?: boolean;
+  icon?: React.ReactNode;
+  width?: DimensionValue;
+  topMenu?: DimensionValue;
+  paddingVertical?: DimensionValue;
 };
 
-const SimpleSwitch: React.FC<Props> = ({handlePress, active}) => {
+const SimpleSwitch: React.FC<Props> = ({
+  handlePress,
+  active,
+  icon,
+  width,
+  paddingVertical,
+  topMenu,
+}) => {
   const translateX = useSharedValue(0);
 
   const handlePresss = () => {
@@ -34,11 +46,19 @@ const SimpleSwitch: React.FC<Props> = ({handlePress, active}) => {
       onPress={() => {
         handlePresss(), handlePress();
       }}>
-      <RN.View style={[styles.box]}>
+      <RN.View style={[styles.box, {width: width ? width : 50}]}>
         <Animated.View style={[styles.animatedBox, animatedStyles]}>
           <LinearGradient
             colors={['#ECC271', '#7F642E']}
-            style={styles.linear}></LinearGradient>
+            style={[
+              styles.linear,
+              {
+                top: topMenu ? topMenu : -5,
+                paddingVertical: paddingVertical ? paddingVertical : 6,
+              },
+            ]}>
+            {icon}
+          </LinearGradient>
         </Animated.View>
       </RN.View>
     </RN.TouchableOpacity>
@@ -49,7 +69,7 @@ export default observer(SimpleSwitch);
 
 const styles = RN.StyleSheet.create({
   container: {
-    width: 60,
+    // width: 60,
   },
   box: {
     backgroundColor: '#121212',

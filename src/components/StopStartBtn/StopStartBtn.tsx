@@ -9,6 +9,7 @@ type componentNameProps = {
   subWidth?: number | string;
   elWidth?: number | string;
   textSize?: string | any;
+  color?: string;
 };
 
 const StartBtn = (props: componentNameProps) => {
@@ -33,14 +34,17 @@ const StartBtn = (props: componentNameProps) => {
           />
           <Images.Svg.ellipseOut
             style={styles.ellipse}
-            width={props.subWidth ? props.subWidth : 75}
+            width={props.elWidth ? props.elWidth : 75}
           />
         </>
       )}
       <Text
         style={[
           props.primary ? styles.primaryText : styles.outlineText,
-          {fontSize: props.textSize},
+          {
+            fontSize: props.textSize ? props.textSize : 18,
+            color: props.color ? props.color : props.primary ? '#000' : '#fff',
+          },
         ]}>
         {props.text}
       </Text>
@@ -63,10 +67,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     fontSize: 18,
     color: '#000',
+    textAlign: 'center',
   },
   outlineText: {
     position: 'absolute',
     color: '#fff',
     fontSize: 18,
+    textAlign: 'center',
   },
 });

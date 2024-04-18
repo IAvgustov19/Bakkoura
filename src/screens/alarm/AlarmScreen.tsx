@@ -23,7 +23,7 @@ const AlarmScreen = () => {
     useRootStore().alarmStore;
   const navigation = useNavigation();
 
-  const renderLeftActions = id => {
+  const renderLeftActions = (id: number) => {
     return (
       <RectButton
         style={styles.rightAction}
@@ -126,7 +126,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 15,
   },
   alarmsBox: {
-    height: '80%',
+    height: '83%',
     justifyContent: 'space-between',
   },
   itemContainer: {

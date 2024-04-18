@@ -17,6 +17,7 @@ import useRootStore from '../../hooks/useRootStore';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import {APP_ROUTES} from '../../navigation/routes';
 import {observer} from 'mobx-react-lite';
+import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 
 const DateScreen = () => {
   const navigation = useNavigation();
@@ -152,6 +153,7 @@ const DateScreen = () => {
                 lastListData,
               )}
             />
+            <DataListLinearBack />
           </RN.View>
           <RN.View style={styles.okBtn}>
             <StartBtn

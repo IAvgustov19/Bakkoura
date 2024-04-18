@@ -1,7 +1,7 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import RN from '../../components/RN';
 import {StyleSheet, View} from 'react-native';
-import StopwatchComp from '../../components/Stopwatch/Stopwatch';
+import StopwatchComp from './components/Stopwatch/Stopwatch';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import {Images} from '../../assets';
@@ -9,14 +9,14 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import {COLORS} from '../../utils/colors';
-import {windowWidth} from '../../utils/styles';
+import {HITSLOP, windowWidth} from '../../utils/styles';
 import useRootStore from '../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import Line from '../../components/Line/Line';
+import {moderateScale} from '../../utils/dimensions';
 
 const StopWatch = () => {
-  const [isWatch, setIsWatch] = useState(false);
-  const [is24h, setIs30h] = useState(true);
+  const [isWatch, setIsWatch] = useState(true);
   const {
     maindis,
     startStopTimer,
@@ -27,14 +27,12 @@ const StopWatch = () => {
     circleResetTimer,
     laps,
     stop,
+    is24h,
+    sethours,
   } = useRootStore().stopWatchStore;
 
-  const handleIndexChange = index => {
-    if (index === 0) {
-      setIsWatch(true);
-    } else {
-      setIsWatch(false);
-    }
+  const handleIndexChange = () => {
+    setIsWatch(e => !e);
   };
 
   const renderLaps = useMemo(() => {
@@ -72,20 +70,22 @@ const StopWatch = () => {
             ]}>
             <RN.View style={styles.switchBox}>
               <SwitchContain
-                title="30h"
-                _title="24h"
+                title="24h"
+                _title="30h"
                 back={is24h}
-                handlePress={() => setIs30h(e => !e)}
+                handlePress={sethours}
               />
               <RN.View style={styles.activeBtn}>
                 <RN.TouchableOpacity
-                  onPress={() => handleIndexChange(0)}
+                  onPress={handleIndexChange}
+                  hitSlop={HITSLOP}
                   style={[
                     styles.changeBtn,
                     {backgroundColor: isWatch ? '#ECC271' : '#000'},
                   ]}></RN.TouchableOpacity>
                 <RN.TouchableOpacity
-                  onPress={() => handleIndexChange(0)}
+                  onPress={handleIndexChange}
+                  hitSlop={{left: 3, right: 3, bottom: 3, top: 3}}
                   style={[
                     styles.changeBtn,
                     {
@@ -94,17 +94,18 @@ const StopWatch = () => {
                   ]}></RN.TouchableOpacity>
               </RN.View>
             </RN.View>
-            <SwiperFlatList
-              horizontal
-              onChangeIndex={({index}) => handleIndexChange(index)}>
-              <RN.View style={styles.child}>
-                <StopwatchComp display={maindis} time={second} />
-              </RN.View>
-              <RN.View style={[styles.child]}>
-                <RN.Text style={styles.text}>{maindis}</RN.Text>
-                {stop ? <RN.Text style={styles.pausa}>Pausa</RN.Text> : null}
-              </RN.View>
-            </SwiperFlatList>
+            <RN.View style={styles.stopwatch}>
+              {isWatch ? (
+                <RN.View style={styles.child}>
+                  <StopwatchComp display={maindis} time={second} />
+                </RN.View>
+              ) : (
+                <RN.View style={[styles.child, styles.childTwo]}>
+                  <RN.Text style={styles.text}>{maindis}</RN.Text>
+                  {stop ? <RN.Text style={styles.pausa}>Pausa</RN.Text> : null}
+                </RN.View>
+              )}
+            </RN.View>
             {isRunning ? (
               <RN.View style={styles.btnsBox}>
                 <StartBtn
@@ -148,16 +149,23 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
   },
+  stopwatch: {
+    height: '85%',
+  },
   child: {
     width: windowWidth - 40,
     alignItems: 'center',
+  },
+  childTwo: {
     justifyContent: 'center',
+    height: '90%',
   },
   text: {
     color: COLORS.white,
-    fontSize: 66,
-    fontWeight: '200',
-    width: '90%',
+    fontSize: moderateScale(50),
+    fontWeight: '100',
+    width: '100%',
+    paddingLeft: '7%',
   },
 
   changeBtn: {
@@ -167,18 +175,26 @@ const styles = StyleSheet.create({
   },
   activeBtn: {
     flexDirection: 'row',
-    gap: 5,
+    gap: 15,
   },
   btnsBox: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    bottom: 65,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    zIndex: 1,
   },
   btnBox: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 1,
   },
   lapsBox: {
     height: 50,

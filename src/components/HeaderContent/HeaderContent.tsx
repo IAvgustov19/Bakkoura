@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
+import {verticalScale} from '../../utils/dimensions';
+import {windowHeight} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
 
@@ -24,26 +26,25 @@ export default HeaderContent;
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignContent: 'flex-end',
-    marginTop: 30,
-    marginBottom: 30,
+    justifyContent: 'space-between',
+    alignContent: 'center',
     width: '100%',
+    marginTop: 20,
+    marginBottom: 20,
   },
   title: {
-    // textAlign: 'center',
-    // alignSelf: 'center',
-    paddingTop: 3,
-    // backgroundColor: 'red',
+    alignSelf: 'center',
+    position: 'absolute',
+    width: '100%',
+    textAlign: 'center',
+    justifyContent: 'center',
   },
   leftItem: {
-    paddingTop: 2,
-    position: 'absolute',
-    left: 0,
+    justifyContent: 'center',
+    zIndex: 1,
   },
   rightItem: {
-    position: 'absolute',
-    paddingTop: 2,
-    right: 0,
+    justifyContent: 'center',
+    zIndex: 1,
   },
 });

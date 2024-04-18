@@ -2,6 +2,7 @@ import * as React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {BG, Images} from '../../assets';
+import {windowHeight} from '../../utils/styles';
 import RN from '../RN';
 
 type Props = {
@@ -13,8 +14,8 @@ const LinearContainer: React.FC<Props> = ({children}) => {
     <LinearGradient
       colors={['#323D45', '#1B2024', '#020202']}
       style={styles.container}>
-      <RN.View style={styles.borderImage}>
-        {/* <Images.Svg.borderBg
+      {/* <RN.View style={styles.borderImage}> */}
+      {/* <Images.Svg.borderBg
           style={{
             position: 'absolute',
             left: 10,
@@ -22,8 +23,8 @@ const LinearContainer: React.FC<Props> = ({children}) => {
           }}
           width={'100%'}
         /> */}
-        {children}
-      </RN.View>
+      {children}
+      {/* </RN.View> */}
     </LinearGradient>
   );
 };
@@ -32,14 +33,16 @@ export default LinearContainer;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  borderImage: {
-    width: '100%',
+    height: windowHeight,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    paddingLeft: 10,
-    height: '100%',
-    position: 'absolute',
   },
+  // borderImage: {
+  //   width: '100%',
+  //   paddingVertical: 20,
+  //   paddingHorizontal: 10,
+  //   paddingLeft: 10,
+  //   height: '100%',
+  //   position: 'absolute',
+  // },
 });

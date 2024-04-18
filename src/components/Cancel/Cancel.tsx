@@ -1,4 +1,5 @@
 import React from 'react';
+import {COLORS} from '../../utils/colors';
 import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 
@@ -26,7 +27,7 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 5,
   },
   cancelTxt: {
-    color: '#656E77',
+    color: COLORS.grey,
     fontSize: 16,
   },
 });

@@ -2,13 +2,18 @@ import {makeAutoObservable} from 'mobx';
 import {createContext} from 'react';
 import {AlarmStore} from './alarm/Alarm';
 import {AuthStore} from './auth/authStore';
+import {BakkouraWatchStore} from './bakkouraWatch/BakkouraWatch';
 import {CalendarStore} from './calendar/Calendar';
+import {HomeClockStore} from './homeClock/HomeClock';
+import {MetronomStore} from './metronom/Metronom';
 import {PomodoroStore} from './pomodoro/Pomodoro';
 import {ProjectTimer} from './projectTimer/ProjectTimer';
 import {StopWatchStore} from './stopWatch/StopWatch';
 import {StressTestStore} from './stressTest/StressTest';
 import {TimerStore} from './timer/Timer';
+import {TodoTimerStore} from './todoTimer/ToDoTimer';
 import {TogetherTimeStore} from './togetherTime/TogethetTime';
+import {VisibleStore} from './visible/Visible';
 import {WorldTimeStore} from './worldTime/WorldTime';
 
 export class RootStore {
@@ -22,6 +27,11 @@ export class RootStore {
   projectTimer: ProjectTimer;
   pomodoroStore: PomodoroStore;
   togetherTimeStore: TogetherTimeStore;
+  bakkouraWatchStore: BakkouraWatchStore;
+  metronomStore: MetronomStore;
+  visibleStore: VisibleStore;
+  todoTimer: TodoTimerStore;
+  homeClockStore: HomeClockStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -35,6 +45,11 @@ export class RootStore {
     this.projectTimer = new ProjectTimer(this);
     this.pomodoroStore = new PomodoroStore();
     this.togetherTimeStore = new TogetherTimeStore(this);
+    this.bakkouraWatchStore = new BakkouraWatchStore();
+    this.metronomStore = new MetronomStore();
+    this.visibleStore = new VisibleStore(this);
+    this.todoTimer = new TodoTimerStore();
+    this.homeClockStore = new HomeClockStore();
   }
 }
 const rootStore = new RootStore();

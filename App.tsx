@@ -5,7 +5,8 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {Keyboard} from 'react-native';
 import RN from './src/components/RN';
 import AppNavigator from './src/navigation/AppNavigator';
 

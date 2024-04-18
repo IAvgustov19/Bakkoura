@@ -1,4 +1,5 @@
 export type NewEventStateType = {
+  id: number;
   name: string;
   date: string;
   time: string;
@@ -22,6 +23,7 @@ export type NewEventStateType = {
 };
 
 export const NewEventStateInitial: NewEventStateType = {
+  id: 0,
   name: '',
   date: '',
   time: '',
@@ -51,3 +53,8 @@ export type DateDataType = {
   timestamp: number;
   dateString: string;
 };
+
+export type CalendarDataType = {
+  year: string;
+  months: [];
+}[];

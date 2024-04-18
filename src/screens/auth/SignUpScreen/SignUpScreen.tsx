@@ -23,7 +23,6 @@ const SignUpScreen = () => {
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={
               <RN.TouchableOpacity
-                style={styles.localize}
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                 }>
@@ -72,9 +71,6 @@ const styles = StyleSheet.create({
   // scrollView: {
   //   paddingVertical: 20,
   // },
-  localize: {
-    marginTop: -5,
-  },
   container: {
     paddingHorizontal: 10,
     height: WINDOW_HEIGHT - 40,

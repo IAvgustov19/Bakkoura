@@ -6,11 +6,19 @@ import {StyleSheet} from 'react-native';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
+import LinearGradient from 'react-native-linear-gradient';
+import {COLORS} from '../../../utils/colors';
+import DataListLinearBack from '../../../components/DataListLinearBack/DataListLinearBack';
 
 const FirstTimer = () => {
-  const {setFirstTimer, firstTimerValue} = useRootStore().timerStore;
+  const {setFirstTimer, firstTimerValue, setAllTime, timerStatus} =
+    useRootStore().timerStore;
 
-  const startListData = _getTimeData(0, {is24Hour: true, minuteInterval: 0});
+  const startListData = _getTimeData(2, {
+    is24Hour: false,
+    minuteInterval: 0,
+    is30h: !timerStatus.h24,
+  });
 
   const selectedStartItem = useRef<number>(
     'date' === 'date'
@@ -25,7 +33,10 @@ const FirstTimer = () => {
   );
 
   const middleListData = _getTimeData(1, {minuteInterval: 0});
-  const lastListData = _getTimeData(1, {minuteInterval: 1});
+  const lastListData = _getTimeData(1, {
+    minuteInterval: 1,
+    is48m: !timerStatus.h24,
+  });
 
   const selectedMiddleItem = useRef<number>(
     'date' === 'date' ? new Date().getMonth() : new Date().getMinutes(),
@@ -61,14 +72,17 @@ const FirstTimer = () => {
   const firstHandleChange = () => {
     const value = firstSelectedValue.current;
     setFirstTimer('hours', value);
+    setAllTime();
   };
   const secondHandleChange = () => {
     const value = secondSelectedValue.current;
     setFirstTimer('minut', value);
+    setAllTime();
   };
   const thirdHandleChange = () => {
     const value = thirdSelectedValue.current;
     setFirstTimer('second', value);
+    setAllTime();
   };
 
   return (
@@ -109,6 +123,7 @@ const FirstTimer = () => {
             lastListData,
           )}
         />
+        <DataListLinearBack />
       </RN.View>
     </RN.View>
   );
@@ -116,6 +131,13 @@ const FirstTimer = () => {
 export default observer(FirstTimer);
 
 const styles = StyleSheet.create({
+  linear: {
+    position: 'absolute',
+    width: '100%',
+    height: 55,
+    top: 110,
+    zIndex: -1,
+  },
   container: {
     justifyContent: 'center',
     alignItems: 'center',

@@ -4,6 +4,8 @@ import {StyleSheet} from 'react-native';
 import {Images} from '../../assets';
 import useRootStore from '../../hooks/useRootStore';
 import {SoundsData} from '../../utils/sounds';
+import {windowHeight} from '../../utils/styles';
+import Cancel from '../Cancel/Cancel';
 import HeaderContent from '../HeaderContent/HeaderContent';
 import LinearContainer from '../LinearContainer/LinearContainer';
 import ListItemCont from '../ListItemCont/ListItemCont';
@@ -70,9 +72,10 @@ const SoundsContent: React.FC<Props> = ({
 }) => {
   return (
     <RN.Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={modalVisible}
+      statusBarTranslucent={true}
       onRequestClose={onClose}>
       <LinearContainer
         children={
@@ -81,13 +84,7 @@ const SoundsContent: React.FC<Props> = ({
               <HeaderContent
                 title={headerTitle}
                 leftItem={headerLeftItem}
-                rightItem={
-                  <RN.TouchableOpacity
-                    style={styles.cancelBtn}
-                    onPress={onClose}>
-                    <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-                  </RN.TouchableOpacity>
-                }
+                rightItem={<Cancel onClose={onClose} />}
               />
               <RN.View style={styles.listsBox}>
                 <RN.FlatList
@@ -143,20 +140,12 @@ export default observer(SoundsContent);
 const styles = RN.StyleSheet.create({
   centeredView: {
     height: '90%',
+    // backgroundColor: 'red',
   },
   modalView: {
     width: '100%',
     height: '100%',
     paddingHorizontal: 20,
-  },
-  cancelBtn: {
-    paddingTop: 5,
-    paddingRight: 5,
-    paddingBottom: 5,
-  },
-  cancelTxt: {
-    color: '#656E77',
-    fontSize: 16,
   },
   listsBox: {
     width: '100%',

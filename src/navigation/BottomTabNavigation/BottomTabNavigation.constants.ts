@@ -7,7 +7,7 @@ import HomeScreen from '../../screens/home/HomeScreen';
 import JihadBakkoura from '../../screens/jihadBakkoura/JihadBakkoura';
 import MarketScreen from '../../screens/market/MarketScreen';
 import MessengerScreen from '../../screens/messenger/MessengerScreen';
-import Metronome from '../../screens/metronome/Metronome';
+import Metronom from '../../screens/metronom/Metronom';
 import Podcasts from '../../screens/podcasts/Podcasts';
 import Pomodoro from '../../screens/pomodoro/Pomodoro';
 import ProjectTimer from '../../screens/projectTimer/ProjectTimer';
@@ -77,9 +77,9 @@ export const bottomTabBarOptions = {
     },
     {
       index: 8,
-      tabName: APP_ROUTES.METRONOME,
-      component: Metronome,
-      buttonLabel: 'Metronome',
+      tabName: APP_ROUTES.METRONOM,
+      component: Metronom,
+      buttonLabel: 'Metronom',
     },
     {
       index: 9,
