@@ -1,26 +1,101 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image, Button } from 'react-native';
 import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import TextView from '../../../components/Text/Text';
-import {BG, Images} from '../../../assets';
-import {useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../../navigation/routes';
+import { BG, Images } from '../../../assets';
+import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../../navigation/routes';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import RN from '../../../components/RN';
-import {windowHeight} from '../../../utils/styles';
+import { windowHeight } from '../../../utils/styles';
 import useRootStore from '../../../hooks/useRootStore';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import auth, { Auth, GoogleAuthProvider, signInWithCredential, createUserWithEmailAndPassword } from '@firebase/auth';
+import * as firebase from '@firebase/app';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SignInScreen = () => {
   const navigation = useNavigation();
-  const {setAuthorized} = useRootStore().authStore;
+  const { setAuthorized } = useRootStore().authStore;
   const [remember, setRemember] = useState(false);
 
   const RememberMe = () => {
     setRemember(e => !e);
   };
+
+
+  // import statusCodes along with GoogleSignin
+
+  GoogleSignin.configure({
+    webClientId: '825580714539-79fjuisrr0k5povubd4qi7rv3oop6d6o.apps.googleusercontent.com',
+  });
+
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      // const { idToken} = await GoogleSignin.signIn();
+      // const aaa = GoogleAut
+      // // this.setState({ userInfo });
+      const { idToken } = await GoogleSignin.signIn();
+      console.log('idToken:', idToken);
+      const googleCredentials = GoogleAuthProvider.credential(idToken);
+      await AsyncStorage.setItem('token', idToken);
+      setAuthorized()
+      // navigation.navigate(APP_ROUTES.MESSENGER as never);
+      return signInWithCredential(firebase, googleCredentials);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+  const signinByEmailPassword = async () => {
+    try {
+      auth()
+        .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+        .then(() => {
+          console.log('User account created & signed in!');
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            console.log('That email address is already in use!');
+          }
+
+          if (error.code === 'auth/invalid-email') {
+            console.log('That email address is invalid!');
+          }
+
+          console.error(error);
+        });      // User signed in successfully
+      // console.log('User signed in:', userCredential.user);
+    } catch (error) {
+      console.error('Sign in error:', error);
+    }
+  }
+
+  // useEffect(() => {
+  //   const check = async () => {
+  //     const token = await AsyncStorage.getItem('token');
+  //     if (token) {
+  //       navigation.navigate(APP_ROUTES.FIRST as never);
+  //     }
+  //     console.log(token);
+  //   }
+  //   check();
+  // }, [])
+
+
 
   return (
     <LinearContainer
@@ -72,7 +147,8 @@ const SignInScreen = () => {
               <ButtonComp
                 title="Sign in"
                 // icon={<Images.Svg.eye />}
-                onPress={setAuthorized}
+                // onPress={setAuthorized}
+                onPress={() => signIn()}
               />
             </View>
             <View style={styles.orWithSocial}>

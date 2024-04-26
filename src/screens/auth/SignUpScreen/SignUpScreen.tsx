@@ -1,7 +1,7 @@
 import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
-import React, {Component} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import React, {Component, useEffect, useState} from 'react';
+import {Text, StyleSheet, View, Alert, TextInput} from 'react-native';
 import {Images} from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
@@ -11,10 +11,51 @@ import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
 import {APP_ROUTES} from '../../../navigation/routes';
+import auth from '@react-native-firebase/auth';
+import { Button } from 'react-native';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const {setAuthorized} = useRootStore().authStore;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null); // To store user information
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(userAuth => {
+      setUser(userAuth); 
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const handleSignUp = () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User account created & signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('Error', 'That email address is already in use!');
+        } else if (error.code === 'auth/invalid-email') {
+          Alert.alert('Error', 'That email address is invalid!');
+        } else {
+          Alert.alert('Error', error.message);
+        }
+        console.error(error);
+      });
+  };
+  const handleSignOut = () => {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log('User signed out successfully');
+      })
+      .catch(error => {
+        console.error('Error signing out:', error);
+      });
+  };
   return (
     <LinearContainer
       children={
@@ -43,6 +84,31 @@ const SignUpScreen = () => {
             <TextView style={styles.label} text="Country" />
             <Input placeholder="77777" />
           </RN.View>
+          {user ? (
+        <View>
+          <Text>Welcome, {user.email}</Text>
+          <Button title="Sign Out" onPress={handleSignOut} />
+        </View>
+      ) : (
+        <View>
+          <TextInput
+            style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1, marginBottom: 20, paddingHorizontal: 10 }}
+            onChangeText={text => setEmail(text)}
+            value={email}
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={{ height: 40, width: 300, borderColor: 'gray', borderWidth: 1, marginBottom: 20, paddingHorizontal: 10 }}
+            onChangeText={text => setPassword(text)}
+            value={password}
+            placeholder="Password"
+            secureTextEntry
+          />
+          <Button title="Sign Up" onPress={handleSignUp} />
+        </View>
+      )}
           <RN.View style={styles.signUpBtn}>
             <ButtonComp
               onPress={setAuthorized}

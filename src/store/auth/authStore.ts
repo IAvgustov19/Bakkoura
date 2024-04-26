@@ -1,5 +1,5 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {RootStore} from '../rootStore';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { RootStore } from '../rootStore';
 
 export class AuthStore {
   private readonly root: RootStore;
@@ -8,11 +8,17 @@ export class AuthStore {
     this.root = root;
   }
 
-  isAuthorized = true;
+  isAuthorized = false;
 
   setAuthorized = () => {
     runInAction(() => {
       this.isAuthorized = true;
+    });
+  };
+
+  setNotAuthorized = () => {
+    runInAction(() => {
+      this.isAuthorized = false;
     });
   };
 }
