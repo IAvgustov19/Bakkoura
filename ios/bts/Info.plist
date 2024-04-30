@@ -20,8 +20,6 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-<<<<<<< Updated upstream
-=======
 	<key>CFBundleURLTypes</key>
 	<array>
   <dict>
@@ -33,7 +31,6 @@
 			</array>
 		</dict>
 	</array>
->>>>>>> Stashed changes
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
