@@ -20,6 +20,20 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+<<<<<<< Updated upstream
+=======
+	<key>CFBundleURLTypes</key>
+	<array>
+  <dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.669015865828-mooljv4lt6i7pbgevhg5l0qnrgku0f27</string>
+			</array>
+		</dict>
+	</array>
+>>>>>>> Stashed changes
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
