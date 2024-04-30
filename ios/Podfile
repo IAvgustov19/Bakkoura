@@ -1,3 +1,4 @@
+# source 'https://github.com/CocoaPods/Specs.git'
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -25,11 +26,21 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+
+# use_modular_headers!
+use_frameworks! :linkage => :static
+
 target 'bts' do
   config = use_native_modules!
 
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  # pod 'FirebaseDatabase', :modular_headers => true
+  pod 'FirebaseFirestore', :modular_headers => true
+
+
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.

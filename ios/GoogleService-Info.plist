@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>825580714539-1m3gaakr79bgtv0avu317ev5rh5tavsc.apps.googleusercontent.com</string>
+	<string>669015865828-mooljv4lt6i7pbgevhg5l0qnrgku0f27.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.825580714539-1m3gaakr79bgtv0avu317ev5rh5tavsc</string>
+	<string>com.googleusercontent.apps.669015865828-mooljv4lt6i7pbgevhg5l0qnrgku0f27</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB_G4wqLEJyU5IR0gJ8pBIWjfDPVCbIPB0</string>
+	<string>AIzaSyAQLJe1ZvklDpRcxvlaoywirJ8Tb-ol71o</string>
 	<key>GCM_SENDER_ID</key>
-	<string>825580714539</string>
+	<string>669015865828</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.reactjs.native.example.bts</string>
 	<key>PROJECT_ID</key>
-	<string>btsauth</string>
+	<string>bakkoura-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>btsauth.appspot.com</string>
+	<string>bakkoura-app.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:825580714539:ios:8e07dc1f5604138c4ec86e</string>
+	<string>1:669015865828:ios:a50bb970684e742ad26ff1</string>
 </dict>
 </plist>

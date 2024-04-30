@@ -22,12 +22,12 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
-		<dict>
+  <dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.825580714539-1m3gaakr79bgtv0avu317ev5rh5tavsc</string>
+				<string>com.googleusercontent.apps.669015865828-mooljv4lt6i7pbgevhg5l0qnrgku0f27</string>
 			</array>
 		</dict>
 	</array>

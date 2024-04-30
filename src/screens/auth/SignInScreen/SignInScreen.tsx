@@ -13,13 +13,42 @@ import { windowHeight } from '../../../utils/styles';
 import useRootStore from '../../../hooks/useRootStore';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import auth, { Auth, GoogleAuthProvider, signInWithCredential, createUserWithEmailAndPassword } from '@firebase/auth';
+import auth, { Auth, GoogleAuthProvider, signInWithCredential, createUserWithEmailAndPassword, TwitterAuthProvider, signInWithPopup } from '@firebase/auth';
 import * as firebase from '@firebase/app';
+
+import authh from '@react-native-firebase/auth';
+// import firestore from '@react-native-firebase/firestore';
+// import database from '@react-native-firebase/database';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+
+
 const SignInScreen = () => {
+
+  authh()
+  .createUserWithEmailAndPassword('testtest@gmail.com', 'SuperSecretPassword234999!')
+  .then((res) => {
+    res.user.updateProfile({
+      displayName: ""
+    })
+    console.log('User account created & signed in!');
+  })
+  .catch(error => {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }
+
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+
+    console.error(error);
+  });
+  
+  console.log(authh().currentUser)
+
   const navigation = useNavigation();
   const { setAuthorized } = useRootStore().authStore;
   const [remember, setRemember] = useState(false);
@@ -29,24 +58,18 @@ const SignInScreen = () => {
   };
 
 
-  // import statusCodes along with GoogleSignin
-
   GoogleSignin.configure({
-    webClientId: '825580714539-79fjuisrr0k5povubd4qi7rv3oop6d6o.apps.googleusercontent.com',
+    webClientId: '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
   });
 
-  const signIn = async () => {
+  const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      // const { idToken} = await GoogleSignin.signIn();
-      // const aaa = GoogleAut
-      // // this.setState({ userInfo });
       const { idToken } = await GoogleSignin.signIn();
       console.log('idToken:', idToken);
       const googleCredentials = GoogleAuthProvider.credential(idToken);
       await AsyncStorage.setItem('token', idToken);
       setAuthorized()
-      // navigation.navigate(APP_ROUTES.MESSENGER as never);
       return signInWithCredential(firebase, googleCredentials);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -56,44 +79,10 @@ const SignInScreen = () => {
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
       } else {
-        // some other error happened
+        // 
       }
     }
   };
-  const signinByEmailPassword = async () => {
-    try {
-      auth()
-        .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
-        .then(() => {
-          console.log('User account created & signed in!');
-        })
-        .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            console.log('That email address is already in use!');
-          }
-
-          if (error.code === 'auth/invalid-email') {
-            console.log('That email address is invalid!');
-          }
-
-          console.error(error);
-        });      // User signed in successfully
-      // console.log('User signed in:', userCredential.user);
-    } catch (error) {
-      console.error('Sign in error:', error);
-    }
-  }
-
-  // useEffect(() => {
-  //   const check = async () => {
-  //     const token = await AsyncStorage.getItem('token');
-  //     if (token) {
-  //       navigation.navigate(APP_ROUTES.FIRST as never);
-  //     }
-  //     console.log(token);
-  //   }
-  //   check();
-  // }, [])
 
 
 
@@ -148,19 +137,20 @@ const SignInScreen = () => {
                 title="Sign in"
                 // icon={<Images.Svg.eye />}
                 // onPress={setAuthorized}
-                onPress={() => signIn()}
+                onPress={() => { }
+                }
               />
             </View>
             <View style={styles.orWithSocial}>
               <TextView text="Or Sign Up using" />
               <View style={styles.socialBox}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {}}>
                   <Images.Svg.f />
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <Images.Svg.x />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => signInWithGoogle()}>
                   <Images.Svg.g />
                 </TouchableOpacity>
               </View>
