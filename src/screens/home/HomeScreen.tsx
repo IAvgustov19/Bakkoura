@@ -16,8 +16,10 @@ import {COLORS} from '../../utils/colors';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
+  const {setNotAuthorized} = useRootStore().authStore;
   const {whichWatch, today, homeCurrentTime, changeWatch} =
     useRootStore().homeClockStore;
   const [watch, setWatch] = useState(true);
@@ -31,6 +33,11 @@ const HomeScreen = () => {
   const onChangeWatch = () => {
     setWatch(e => !e);
   };
+
+  const logOut = async() => {
+    await AsyncStorage.removeItem('token');
+    setNotAuthorized();
+  }
 
   return (
     <LinearContainer
@@ -47,7 +54,7 @@ const HomeScreen = () => {
                   }>
                   <Images.Svg.messageIcon />
                 </RN.TouchableOpacity>
-                <RN.TouchableOpacity>
+                <RN.TouchableOpacity onPress={() => logOut()}>
                   <Images.Svg.userIcon />
                 </RN.TouchableOpacity>
               </RN.View>
