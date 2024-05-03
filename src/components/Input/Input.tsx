@@ -19,6 +19,7 @@ type Props = {
   paddingHorizontal?: number;
   backColor?: string;
   iconPress?: () => void;
+  secureTextEntry?: boolean;
 };
 
 const Input: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const Input: React.FC<Props> = ({
   backColor,
   iconPress,
   paddingHorizontal,
+  secureTextEntry
 }) => {
   return (
     <RN.View
@@ -59,6 +61,7 @@ const Input: React.FC<Props> = ({
         onChangeText={onChangeText}
         value={value}
         autoCapitalize="none"
+        secureTextEntry={secureTextEntry}
         placeholder={placeholder}></TextInput>
       {icon ? (
         <RN.TouchableOpacity

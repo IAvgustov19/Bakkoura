@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "669015865828",
+    "firebase_url": "https://bakkoura-app-default-rtdb.firebaseio.com",
+    "project_id": "bakkoura-app",
+    "storage_bucket": "bakkoura-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669015865828:android:e99af747b079b259d26ff1",
+        "android_client_info": {
+          "package_name": "com.bts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD34RYbmO-WGD8svojyQSaK5wrl7lqzib4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "669015865828-mooljv4lt6i7pbgevhg5l0qnrgku0f27.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.bts"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
