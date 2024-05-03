@@ -15,6 +15,16 @@ export enum APP_ROUTES {
   LANGUAGE_SCREEN = 'LanguageScreen',
   BOTTOM_NAVIGATION = 'AppBottomNavigation',
   MAINSCREEN = 'MainScreen',
+  PERSONAL_STACK = 'PersonalStack',
+  // nested stack screens
+  PERSONAL_AREA = 'PersonalArea',
+  PERSONAL_DETAILS= 'PersonalDetails',
+  SECURE_ENTRY = 'SecureEntry',
+  THEME = 'Theme',
+  LOGIN_PASSWORD = 'LoginPassword',
+  // lang
+
+
 
   //bottomsheet screens
   HOME_START = 'HomeScreen',

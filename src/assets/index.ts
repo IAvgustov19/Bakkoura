@@ -90,6 +90,8 @@ import hour30Line from './svg/hour30Line.svg';
 import calendarChangeIcon1 from './svg/calendarChangeIcon1.svg';
 import calendarChangeIcon2 from './svg/calendarChangeIcon2.svg';
 import calendarMonthBottom from './svg/calendarMonthBottom.svg';
+import hidePassword from './svg/hidePassword.svg';
+import showPassword from './svg/showPassword.svg';
 
 export const Images = {
   Svg: {
@@ -117,6 +119,8 @@ export const Images = {
 
     //other
     eye,
+    hidePassword,
+    showPassword,
     bts,
     btsRightLinear,
     f,

@@ -40,6 +40,7 @@ import TodoGoal from '../screens/todoTimer/TodoGoal';
 import TaskName from '../screens/todoTimer/TaskName';
 import TodoTimerHistory from '../screens/todoTimer/TodoTimerHistory';
 import OneMonthAndEvents from '../screens/calendar/OneMonthAndEvents';
+import PersonalStack from '../screens/personalArea/personalStack';
 
 const Stack = createStackNavigator();
 
@@ -320,6 +321,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.TODO_TIMER_HISTORY}
           component={TodoTimerHistory}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+         <Stack.Screen
+          name={APP_ROUTES.PERSONAL_STACK}
+          component={PersonalStack}
           options={{
             headerTitleAlign: 'center',
           }}
