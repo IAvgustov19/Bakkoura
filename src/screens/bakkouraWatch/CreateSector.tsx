@@ -48,7 +48,10 @@ const CreateSector = () => {
             title="Sector"
             rightItem={<Cancel onClose={onBackHandle} />}
           />
-          <RN.ScrollView style={styles.scrollView}>
+          <RN.ScrollView
+            style={styles.scrollView}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <Vertices
                 data={listSelects.map(value => ({
@@ -68,6 +71,7 @@ const CreateSector = () => {
                         navigation.navigate(APP_ROUTES.BAKKOURA_WATCH as never),
                       )
                     }
+                    textSize={14}
                   />
                   <StartBtn
                     text="Ok"
@@ -75,6 +79,7 @@ const CreateSector = () => {
                     subWidth={70}
                     primary
                     onPress={CreateSector}
+                    textSize={14}
                   />
                 </RN.View>
                 <RN.View style={styles.bottom}>
@@ -135,9 +140,8 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    height: windowHeight - windowHeight / 5,
+    // height: windowHeight - windowHeight / 6,
     justifyContent: 'space-between',
-    // backgroundColor: 'blue',
   },
   watchBox: {
     alignItems: 'center',
@@ -163,29 +167,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 10,
   },
   scrollView: {
-    height: windowHeight,
-    // backgroundColor: 'red',
-  },
-  triangleContainer: {
-    width: '85%',
-    height: '85%',
-    position: 'absolute',
-    borderRadius: 150,
-    // backgroundColor: 'red',
-    // overflow: 'hidden',
-    alignItems: 'center',
-    // justifyContent: 'center',
-  },
-  triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderTopWidth: 165,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    transformOrigin: 'bottom',
-    bottom: 10,
+    height: windowHeight - windowHeight / 6,
   },
   text: {
     color: COLORS.yellow,

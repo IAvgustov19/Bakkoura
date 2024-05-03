@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
+import {COLORS} from '../../utils/colors';
 
 type Props = {
   title?: string;
@@ -8,9 +9,14 @@ type Props = {
   style?: any;
 };
 
-const TextView: React.FC<Props> = ({text, title, style}) => {
+const TextView: React.FC<Props> = ({text, title, style, textAlign}) => {
   return (
-    <Text style={[title ? styles.title : styles.text, style]}>
+    <Text
+      style={[
+        title ? styles.title : styles.text,
+        style,
+        {textAlign: textAlign ? textAlign : 'center'},
+      ]}>
       {title || text}
     </Text>
   );
@@ -28,9 +34,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    color: '#979DA2',
+    color: COLORS.grey,
     fontWeight: '400',
-    textAlign: 'center',
     fontFamily: 'RedHatDisplay-Regular',
   },
 });

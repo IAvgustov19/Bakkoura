@@ -90,6 +90,14 @@ import hour30Line from './svg/hour30Line.svg';
 import calendarChangeIcon1 from './svg/calendarChangeIcon1.svg';
 import calendarChangeIcon2 from './svg/calendarChangeIcon2.svg';
 import calendarMonthBottom from './svg/calendarMonthBottom.svg';
+import bakkouraLogo from './svg/bakkouraLogo.svg';
+import francvilaLogo from './svg/francvilaLogo.svg';
+import btsGreyLogo from './svg/btsGreyLogo.svg';
+import uploadFile from './svg/uploadFile.svg';
+import cancelGrey from './svg/cancelGrey.svg';
+import fileAttachIcon from './svg/fileAttachIcon.svg';
+import jihadBakkouraLogoTitle from './svg/Jihad BakkouraLogoTitle.svg';
+import jihadBakkouraSiteLogo from './svg/jihadBakkouraSiteLogo.svg';
 
 export const Images = {
   Svg: {
@@ -188,6 +196,14 @@ export const Images = {
     calendarChangeIcon1,
     calendarChangeIcon2,
     calendarMonthBottom,
+    bakkouraLogo,
+    francvilaLogo,
+    btsGreyLogo,
+    uploadFile,
+    cancelGrey,
+    fileAttachIcon,
+    jihadBakkouraLogoTitle,
+    jihadBakkouraSiteLogo,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -204,6 +220,11 @@ export const Images = {
     homeWatch30: require('./images/homeWatch30.webp'),
     stopwatch24: require('./images/stopwatch24.png'),
     stopwatch30: require('./images/stopwatch30.png'),
+    eye: require('./images/eye.webp'),
+    companyCardImage: require('./images/companyCardImage.png'),
+    bakkouraPr1: require('./images/bakkouraPr1.png'),
+    jihadBakkouraAvatar: require('./images/jihadBakkouraAvatar.png'),
+    concept30h: require('./images/concept30h.png'),
   },
 };
 

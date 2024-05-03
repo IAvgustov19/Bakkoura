@@ -12,6 +12,7 @@ import RN from '../../../components/RN';
 import {windowHeight} from '../../../utils/styles';
 import useRootStore from '../../../hooks/useRootStore';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
+import GiveImage from '../../../components/GiveImage/GiveImage';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -71,7 +72,7 @@ const SignInScreen = () => {
             <View style={styles.signUp}>
               <ButtonComp
                 title="Sign in"
-                // icon={<Images.Svg.eye />}
+                icon={<GiveImage source={Images.Img.eye} />}
                 onPress={setAuthorized}
               />
             </View>

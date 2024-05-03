@@ -57,7 +57,7 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
       <RN.View style={styles.row}>
         <DateList
           data={startListData}
-          itemHeight={55}
+          itemHeight={40}
           onChange={fromHourChange}
           selectedValue={fromHourSelectedValue}
           label="Hours"
@@ -65,20 +65,20 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
         />
         <DateList
           data={middleListData}
-          itemHeight={55}
+          itemHeight={40}
           selectedValue={fromMinutSelectedValue}
           onChange={fromMinutChange}
           label={'Min.'}
           style={styles.middleListStyle}
           initialScrollIndex={0}
         />
-        <DataListLinearBack />
+        <DataListLinearBack top={80} height={40} />
       </RN.View>
       <Images.Svg.betweenTimesLine />
       <RN.View style={styles.row}>
         <DateList
           data={startListData}
-          itemHeight={55}
+          itemHeight={40}
           onChange={toHourChange}
           selectedValue={toHourSelectedValue}
           label="Hours"
@@ -86,14 +86,14 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
         />
         <DateList
           data={middleListData}
-          itemHeight={55}
+          itemHeight={40}
           selectedValue={toMinutSelectedValue}
           onChange={toMinutChange}
           label={'Min.'}
           style={styles.middleListStyle}
           initialScrollIndex={0}
         />
-        <DataListLinearBack />
+        <DataListLinearBack top={80} height={40} />
       </RN.View>
     </RN.View>
   );

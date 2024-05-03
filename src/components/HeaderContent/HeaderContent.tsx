@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     width: '100%',
-    marginTop: 20,
+    marginTop: 25,
     marginBottom: 20,
   },
   title: {

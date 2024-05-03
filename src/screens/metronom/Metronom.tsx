@@ -1,5 +1,5 @@
 import {observer} from 'mobx-react-lite';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import {Images} from '../../assets';
@@ -11,7 +11,7 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
-import {etapData} from '../../utils/repeat';
+import {etapCountData} from '../../utils/repeat';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import EllipseBotton from './components/EllipseBotton';
 import FirstMetronom from './components/FirstMetronom';
@@ -25,9 +25,35 @@ const Metronom = () => {
     playPause,
     isPlaying,
     clearState,
-    sound,
+    setEtapCount,
   } = useRootStore().metronomStore;
   const [one, isOne] = useState(true);
+
+  const renderCount = useCallback(() => {
+    return etapCountData.map((item, index) => {
+      return (
+        <EllipseBotton
+          key={index}
+          number={`${item.id}`}
+          isActive={item.id === metronomState.etapCount}
+          onPress={() => setEtapCount(item.id)}
+        />
+      );
+    });
+  }, [metronomState.etapCount]);
+
+  const scrollViewRef = useRef(null);
+
+  const AddEtap = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({x: windowWidth / 2.5, animated: true});
+    }
+  };
+  const RemoveEtap = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({x: 0, animated: true});
+    }
+  };
 
   return (
     <LinearContainer
@@ -103,19 +129,18 @@ const Metronom = () => {
                 <TextView text={'1 bar with sound and 1 bar without sound'} />
               </RN.View>
               <RN.View style={styles.bottomBox}>
-                <RN.TouchableOpacity>
+                <RN.TouchableOpacity onPress={RemoveEtap}>
                   <Images.Svg.leftArrowYellow />
                 </RN.TouchableOpacity>
-                {etapData.map((item, index) => {
-                  return (
-                    <EllipseBotton
-                      key={index}
-                      number={`${item.id}`}
-                      isActive={item.id === metronomState.etap}
-                    />
-                  );
-                })}
-                <RN.TouchableOpacity>
+                <RN.ScrollView
+                  ref={scrollViewRef}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}>
+                  <RN.View style={[styles.renderCount]}>
+                    {renderCount()}
+                  </RN.View>
+                </RN.ScrollView>
+                <RN.TouchableOpacity onPress={AddEtap}>
                   <Images.Svg.rightArrowYellow />
                 </RN.TouchableOpacity>
               </RN.View>
@@ -168,8 +193,15 @@ const styles = StyleSheet.create({
   },
   bottomBox: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 20,
+  },
+  renderCount: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    overflow: 'hidden',
+    paddingHorizontal: 10,
   },
 });

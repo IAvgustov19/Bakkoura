@@ -125,7 +125,7 @@ export const StatusData = [
   },
 ];
 
-export const etapData = [
+export const etapCountData = [
   {
     id: 1,
   },
@@ -137,6 +137,12 @@ export const etapData = [
   },
   {
     id: 4,
+  },
+  {
+    id: 5,
+  },
+  {
+    id: 6,
   },
 ];
 

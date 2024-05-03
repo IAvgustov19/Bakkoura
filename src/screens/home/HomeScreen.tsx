@@ -15,9 +15,20 @@ import {windowHeight} from '../../utils/styles';
 import {COLORS} from '../../utils/colors';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
-import SwitchContain from '../../components/SwitchContain/SwitchContain';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = () => {
+  // function getDate() {
+  //   const subscriber = firestore()
+  //     .collection('users')
+  //     .onSnapshot(documentSnapshot => {
+  //       console.log('User data: ', documentSnapshot.docs);
+  //     });
+  // }
+  // useEffect(() => {
+  //   getDate();
+  // }, []);
+
   const {whichWatch, today, homeCurrentTime, changeWatch} =
     useRootStore().homeClockStore;
   const [watch, setWatch] = useState(true);
@@ -31,6 +42,19 @@ const HomeScreen = () => {
   const onChangeWatch = () => {
     setWatch(e => !e);
   };
+
+  const renderWatchs = useCallback(() => {
+    switch (whichWatch) {
+      case 1:
+        return <HomeWatch30h24h />;
+      case 2:
+        return <HomeWatch24 />;
+      case 3:
+        return <HomeWatch30 />;
+      default:
+        return <HomeWatch30h24h />;
+    }
+  }, [whichWatch]);
 
   return (
     <LinearContainer
@@ -60,7 +84,7 @@ const HomeScreen = () => {
                 title={'Today is your day! Do something good!'}
                 style={styles.title}
               />
-              <RN.View>{watch ? <HomeWatch24 /> : <HomeWatch30 />}</RN.View>
+              <RN.View>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
                 <RN.View style={styles.todayBox}>
                   <RN.Text style={styles.day}>{today.day}</RN.Text>
@@ -80,12 +104,7 @@ const HomeScreen = () => {
               </RN.View>
             </RN.View>
             <RN.View style={styles.watchSwitch}>
-              <SwitchContain
-                title="24h"
-                _title="30h"
-                back={watch}
-                handlePress={onChangeWatch}
-              />
+              <WatchSwitch />
             </RN.View>
           </RN.View>
         </RN.View>
@@ -139,6 +158,6 @@ const styles = RN.StyleSheet.create({
   },
   watchSwitch: {
     alignItems: 'center',
-    top: -10,
+    top: -windowHeight / 20,
   },
 });

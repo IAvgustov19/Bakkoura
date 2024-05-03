@@ -1,11 +1,10 @@
 import {observer} from 'mobx-react-lite';
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
-import {etapData} from '../../../utils/repeat';
 import SliderComp from './SliderComp';
 
 type Props = {
@@ -21,7 +20,8 @@ const SecondMetronom: React.FC<Props> = ({
   removeCount,
   etap,
 }) => {
-  const {setMetronomState} = useRootStore().metronomStore;
+  const {setMetronomState, etapData, metronomState} =
+    useRootStore().metronomStore;
 
   return (
     <RN.View style={styles.container}>
@@ -31,7 +31,7 @@ const SecondMetronom: React.FC<Props> = ({
           return (
             <Images.Svg.ellipseDotLarge
               key={index}
-              fill={item?.id === etap ? COLORS.yellow : COLORS.black}
+              fill={item === etap ? COLORS.yellow : COLORS.black}
             />
           );
         })}

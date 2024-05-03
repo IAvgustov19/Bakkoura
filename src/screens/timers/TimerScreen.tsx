@@ -1,6 +1,5 @@
 import {observer} from 'mobx-react-lite';
-import * as React from 'react';
-import Swiper from 'react-native-swiper';
+import React, {useMemo} from 'react';
 import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -72,7 +71,6 @@ const TimerScreen = () => {
     inActive('stop');
     resetTimerBack();
   };
-
   return (
     <LinearContainer
       children={
