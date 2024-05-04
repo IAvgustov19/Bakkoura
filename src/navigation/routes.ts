@@ -15,6 +15,22 @@ export enum APP_ROUTES {
   LANGUAGE_SCREEN = 'LanguageScreen',
   BOTTOM_NAVIGATION = 'AppBottomNavigation',
   MAINSCREEN = 'MainScreen',
+  PERSONAL_STACK = 'PersonalStack',
+  // nested stack screens
+  PERSONAL_AREA = 'PersonalArea',
+  PERSONAL_DETAILS= 'PersonalDetails',
+  SECURE_ENTRY = 'SecureEntry',
+  THEME = 'Theme',
+  LOGIN_PASSWORD = 'LoginPassword',
+  //from menu
+  CONTACT_STACK = 'ConstactStack',
+  // nested stack screens
+  CONTACT_US = 'ContactUs',
+  SEND_IDEA = 'SendIdea',
+  WATCH_VALUATION = 'WatchValuation',
+  CONTACT_THANKS = 'ContactThanks',
+
+
 
   //bottomsheet screens
   HOME_START = 'HomeScreen',

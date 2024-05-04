@@ -15,6 +15,8 @@ type Props = {
   icon?: any;
   outline?: boolean;
   width?: DimensionValue;
+  containerColor?: string;
+  textColor?: string;
 };
 
 const ButtonComp: React.FC<Props> = ({
@@ -23,22 +25,26 @@ const ButtonComp: React.FC<Props> = ({
   icon,
   outline,
   width,
+  textColor, 
+  containerColor
 }) => {
   return (
     <LinearGradient
       style={[
         styles.gradient,
         {
+          // backgroundColor: containerColor,
           borderColor: outline ? COLORS.darkGreyText : '#ECC271',
           width: width ? width : '100%',
         },
       ]}
-      colors={outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}>
+      colors={!!containerColor ? [containerColor, containerColor] : outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}
+      >
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text
           style={[
             styles.title,
-            {color: outline ? COLORS.white : COLORS.black},
+            { color: textColor || (outline ? COLORS.white : COLORS.black) },
           ]}>
           {title}
         </Text>

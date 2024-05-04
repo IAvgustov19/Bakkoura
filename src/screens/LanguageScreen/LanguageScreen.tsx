@@ -16,6 +16,7 @@ const LanguageScreen = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
+            <Images.Svg.bg style={styles.bg} />
           <HeaderContent
             leftItem={
               <RN.TouchableOpacity
@@ -52,6 +53,10 @@ export default LanguageScreen;
 const styles = RN.StyleSheet.create({
   container: {
     paddingHorizontal: 15,
+    position: 'relative',
+  },
+  bg: {
+    position: 'absolute',
   },
   back: {
     flexDirection: 'row',

@@ -18,8 +18,8 @@ type Props = {
   paddingTop?: number;
   paddingHorizontal?: number;
   backColor?: string;
-  iconPress?: () => void;
   secureTextEntry?: boolean;
+  iconPress?: () => void;
 };
 
 const Input: React.FC<Props> = ({
