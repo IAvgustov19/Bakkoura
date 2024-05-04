@@ -11,6 +11,7 @@ export class VisibleStore {
   visible = {
     todoTimerHistory: false,
     todoTimerTaskName: false,
+    timeClinicThanks: false,
   };
 
   show = (key: keyof typeof this.visible) => {

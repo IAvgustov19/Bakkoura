@@ -12,6 +12,8 @@ import ButtonComp from '../Button/Button';
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {APP_ROUTES} from '../../navigation/routes';
+import GiveImage from '../GiveImage/GiveImage';
+import {Images} from '../../assets';
 
 const OnBoarding = () => {
   const navigation = useNavigation();
@@ -40,7 +42,7 @@ const OnBoarding = () => {
                         navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
                       }
                       title="Let’s start!"
-                      // icon={<e.eye />}
+                      icon={<GiveImage source={Images.Img.eye} />}
                     />
                   ) : null}
                 </View>

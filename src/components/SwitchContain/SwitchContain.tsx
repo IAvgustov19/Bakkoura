@@ -51,11 +51,11 @@ export default observer(SwitchContain);
 
 const styles = RN.StyleSheet.create({
   container: {
-    width: 95,
+    width: 80,
   },
   box: {
     backgroundColor: '#121212',
-    width: 95,
+    width: 80,
     height: 22,
     borderRadius: 20,
   },
@@ -72,7 +72,7 @@ const styles = RN.StyleSheet.create({
     borderRadius: 30,
     borderColor: '#ECC271',
     borderWidth: 1,
-    width: 75,
+    minWidth: 60,
     top: -5,
     alignItems: 'center',
   },

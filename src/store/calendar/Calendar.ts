@@ -58,6 +58,12 @@ export class CalendarStore {
 
   isUpdate = false;
 
+  switchCalendar = false;
+
+  setSwitchCalendar = () => {
+    this.switchCalendar = !this.switchCalendar;
+  };
+
   getOneMonth = (month: string) => {
     runInAction(() => {
       this.oneMonth = month;

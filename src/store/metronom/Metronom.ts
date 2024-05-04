@@ -24,6 +24,8 @@ export class MetronomStore {
 
   soundIntervalState = null;
 
+  etapData = [1, 2, 3, 4];
+
   setMetronomCountMinut = (key: string) => {
     if (key === 'add') {
       this.metronomState.countMinut++;
@@ -58,11 +60,22 @@ export class MetronomStore {
           }
           runInAction(() => {
             this.metronomState.beatCount--;
+            if (this.metronomState.etapLine < 2) {
+              this.metronomState.etapLine++;
+            } else {
+              this.metronomState.etapLine = 1;
+            }
 
-            if (this.metronomState.etap < 4) {
+            if (this.metronomState.etap < this.metronomState.etapCount) {
               this.metronomState.etap++;
             } else {
               this.metronomState.etap = 1;
+            }
+            if (this.metronomState.etapCount === 1) {
+              runInAction(() => {
+                this.sound.stop();
+                clearInterval(this.soundIntervalState);
+              });
             }
             if (
               this.metronomState.oneWithoutSound &&
@@ -81,6 +94,17 @@ export class MetronomStore {
         }
       }
     }, Math.round(60000 / this.metronomState.countMinut));
+  };
+
+  setEtapCount = (num: number) => {
+    let newData = [];
+    for (let index = 1; index <= num; index++) {
+      newData.push(index);
+    }
+    runInAction(() => {
+      this.etapData = newData;
+      this.metronomState.etapCount = num;
+    });
   };
 
   playPause = () => {
@@ -118,5 +142,6 @@ export class MetronomStore {
     this.sound.stop();
     this.isPlaying = false;
     this.metronomState = MetronomDataInitial;
+    this.etapData = [1, 2, 3, 4];
   };
 }

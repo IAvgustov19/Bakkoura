@@ -1,5 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import * as React from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 import RN from '../../../components/RN';
 import SimpleSwitch from '../../../components/SimpleSwitch/SimpleSwitch';
 import TextView from '../../../components/Text/Text';
@@ -9,17 +10,25 @@ type Props = {
   time?: string;
   description?: string;
   isActive?: boolean;
-  handleActive?: () => void;
+  handleInactiveAlarm?: (e?: any) => void;
 };
 
 const AlarmListItem: React.FC<Props> = ({
   time,
   description,
   isActive,
-  handleActive,
+  handleInactiveAlarm,
 }) => {
   return (
-    <RN.View style={styles.container}>
+    <LinearGradient
+      start={{x: 0, y: 0.5}}
+      end={{x: 1, y: 0.5}}
+      colors={
+        isActive
+          ? ['#0D0D0D', '#051222', '#00448E']
+          : [COLORS.black, COLORS.black]
+      }
+      style={styles.itemContainer}>
       <RN.View style={styles.timeBox}>
         <RN.Text
           style={[
@@ -30,15 +39,15 @@ const AlarmListItem: React.FC<Props> = ({
         </RN.Text>
         <TextView style={styles.desc} text={description} />
       </RN.View>
-      <SimpleSwitch active={isActive} handlePress={handleActive} />
-    </RN.View>
+      <SimpleSwitch active={isActive} handlePress={handleInactiveAlarm} />
+    </LinearGradient>
   );
 };
 
 export default observer(AlarmListItem);
 
 const styles = RN.StyleSheet.create({
-  container: {
+  itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

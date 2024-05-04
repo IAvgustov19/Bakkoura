@@ -2,15 +2,20 @@ import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
 import React, {Component} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
+import {TextInput} from 'react-native-gesture-handler';
 import {Images} from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
+import GiveImage from '../../../components/GiveImage/GiveImage';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
+import {KeyboardAvoidingView} from '../../../components/KeyboardAvoidingView';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
 import {APP_ROUTES} from '../../../navigation/routes';
+import {COLORS} from '../../../utils/colors';
+import {windowHeight} from '../../../utils/styles';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -30,35 +35,45 @@ const SignUpScreen = () => {
               </RN.TouchableOpacity>
             }
           />
-          <TextView title="Sign up" textAlign="center" />
-          <RN.View style={styles.formBox}>
-            <TextView style={styles.label} text="Name" />
-            <Input placeholder="JB" />
-            <TextView style={styles.label} text="Username" />
-            <Input placeholder="77777" />
-            <TextView style={styles.label} text="Email" />
-            <Input placeholder="77777" />
-            <TextView style={styles.label} text="Password" />
-            <Input placeholder="77777" />
-            <TextView style={styles.label} text="Country" />
-            <Input placeholder="77777" />
-          </RN.View>
-          <RN.View style={styles.signUpBtn}>
-            <ButtonComp
-              onPress={setAuthorized}
-              // icon={<Images.Svg.eye />}
-              title="Sign Up"
-            />
-          </RN.View>
-          <View style={styles.needAcc}>
-            <TextView text="Already have un Account?" />
-            <RN.TouchableOpacity
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
-              }>
-              <TextView style={styles.signUpText} text="Sign In" />
-            </RN.TouchableOpacity>
-          </View>
+          <RN.ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
+            <RN.View style={styles.content}>
+              <TextView title="Sign up" textAlign="center" />
+              <RN.View style={styles.formBox}>
+                <TextView style={styles.label} text="Name" />
+                <Input placeholder="JB" />
+                <TextView style={styles.label} text="Username" />
+                <Input placeholder="77777" />
+                <TextView style={styles.label} text="Email" />
+                {/* <KeyboardAvoidingView
+                children={ */}
+                <Input placeholder="77777" />
+                <TextView style={styles.label} text="Password" />
+                {/* }
+                /> */}
+                <Input placeholder="77777" />
+                <TextView style={styles.label} text="Country" />
+                <Input placeholder="77777" />
+              </RN.View>
+              <RN.View style={styles.signUpBtn}>
+                <ButtonComp
+                  onPress={setAuthorized}
+                  icon={<GiveImage source={Images.Img.eye} />}
+                  title="Sign Up"
+                />
+              </RN.View>
+              <View style={styles.needAcc}>
+                <TextView text="Already have un Account?" />
+                <RN.TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
+                  }>
+                  <TextView style={styles.signUpText} text="Sign In" />
+                </RN.TouchableOpacity>
+              </View>
+            </RN.View>
+          </RN.ScrollView>
         </RN.View>
       }
     />
@@ -68,12 +83,14 @@ const SignUpScreen = () => {
 export default SignUpScreen;
 
 const styles = StyleSheet.create({
-  // scrollView: {
-  //   paddingVertical: 20,
-  // },
+  scrollView: {},
   container: {
     paddingHorizontal: 10,
     height: WINDOW_HEIGHT - 40,
+  },
+  content: {
+    height: windowHeight - windowHeight / 6,
+    // backgroundColor: 'red',
   },
   formBox: {
     alignItems: 'flex-start',

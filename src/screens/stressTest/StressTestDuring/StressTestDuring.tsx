@@ -1,16 +1,19 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Images} from '../../../assets';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
+import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
 import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
 import SwitchContain from '../../../components/SwitchContain/SwitchContain';
 import useRootStore from '../../../hooks/useRootStore';
+import {Lotties} from '../../../lotties/lottie';
 import {APP_ROUTES} from '../../../navigation/routes';
 import {COLORS} from '../../../utils/colors';
+import {windowWidth} from '../../../utils/styles';
 
 const StressTestDuring = () => {
   const [is24, setIs24] = useState(true);
@@ -28,6 +31,12 @@ const StressTestDuring = () => {
     navigation.navigate(APP_ROUTES.STRESS_TEST as never);
   };
 
+  const pandaLottie = useMemo(() => {
+    return (
+      <LottieContent source={Lotties.stressTest} width={windowWidth - 20} />
+    );
+  }, []);
+
   return (
     <LinearContainer
       children={
@@ -40,11 +49,7 @@ const StressTestDuring = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.timeBox}>
               <RN.View style={styles.panda}>
-                {stressTestStatus.reset ? (
-                  <RN.Image source={Images.Img.pandaTimer} />
-                ) : (
-                  <Images.Svg.panda />
-                )}
+                {stressTestStatus.reset ? pandaLottie : <Images.Svg.panda />}
               </RN.View>
               <RN.Text style={styles.time}>
                 {stressTestData.time ? stressTestData.time : '00:00:00'}
@@ -93,7 +98,7 @@ const styles = RN.StyleSheet.create({
   timeBox: {
     width: '100%',
     // backgroundColor: 'red',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
   },
   panda: {},
@@ -102,5 +107,6 @@ const styles = RN.StyleSheet.create({
     fontSize: 60,
     fontWeight: '300',
     color: COLORS.white,
+    bottom: '25%',
   },
 });

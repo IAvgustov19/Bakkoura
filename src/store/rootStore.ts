@@ -5,6 +5,7 @@ import {AuthStore} from './auth/authStore';
 import {BakkouraWatchStore} from './bakkouraWatch/BakkouraWatch';
 import {CalendarStore} from './calendar/Calendar';
 import {HomeClockStore} from './homeClock/HomeClock';
+import {MarketStore} from './market/Market';
 import {MetronomStore} from './metronom/Metronom';
 import {PomodoroStore} from './pomodoro/Pomodoro';
 import {ProjectTimer} from './projectTimer/ProjectTimer';
@@ -32,6 +33,7 @@ export class RootStore {
   visibleStore: VisibleStore;
   todoTimer: TodoTimerStore;
   homeClockStore: HomeClockStore;
+  marketStore: MarketStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -50,6 +52,7 @@ export class RootStore {
     this.visibleStore = new VisibleStore(this);
     this.todoTimer = new TodoTimerStore();
     this.homeClockStore = new HomeClockStore();
+    this.marketStore = new MarketStore();
   }
 }
 const rootStore = new RootStore();

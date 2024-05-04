@@ -5,6 +5,7 @@ import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
+import {windowHeight} from '../../../utils/styles';
 
 const HomeWatch30h24h = () => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
@@ -19,7 +20,7 @@ const HomeWatch30h24h = () => {
       <LinearGradient
         style={[
           styles.lineMinut,
-          {transform: `rotate(${homeCurrentTime.minut}deg)`},
+          {transform: `rotate(${homeCurrentTime.second * 3}deg)`},
         ]}
         colors={['#E10000', '#007AFF']}
       />
@@ -40,12 +41,12 @@ const HomeWatch30h24h = () => {
       <RN.View
         style={[
           styles.second60Line,
-          {transform: `rotate(${homeCurrentTime.second * 6}deg)`},
+          {transform: `rotate(${homeCurrentTime.minut}deg)`},
         ]}></RN.View>
       <RN.View
         style={[
           styles.second48Line,
-          {transform: `rotate(${homeCurrentTime.second48 * 6}deg)`},
+          {transform: `rotate(${homeCurrentTime.minut}deg)`},
         ]}></RN.View>
     </RN.View>
   );
@@ -61,7 +62,7 @@ const styles = RN.StyleSheet.create({
   },
   watchBox: {
     width: '100%',
-    height: 350,
+    height: windowHeight / 2.5,
   },
   watch: {
     width: '100%',

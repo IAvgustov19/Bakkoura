@@ -1,6 +1,5 @@
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import {Text, View, StyleSheet, ImageBackground} from 'react-native';
 import {BG, Images} from '../../../../assets';
 import RN from '../../../../components/RN';
 import TextView from '../../../../components/Text/Text';
@@ -111,8 +110,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
 
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 
-  // variables
-  const snapPoints = React.useMemo(() => ['13.5%', '80%'], []);
+  const snapPoints = React.useMemo(() => [110, '80%'], []);
 
   return (
     <BottomSheet

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS} from '../../utils/colors';
+import {verticalScale} from '../../utils/dimensions';
 
 type Props = {
   title: string;
@@ -64,13 +65,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: verticalScale(10),
     // backgroundColor: 'red',
   },
   title: {
     fontSize: 18,
     textAlign: 'center',
     fontWeight: '400',
+    color: COLORS.black,
   },
   icon: {
     height: '100%',
