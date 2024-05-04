@@ -29,6 +29,7 @@ export enum APP_ROUTES {
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',
   CONTACT_THANKS = 'ContactThanks',
+  // lang
 
 
 

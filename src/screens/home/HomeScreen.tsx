@@ -66,7 +66,10 @@ const HomeScreen = () => {
                   }>
                   <Images.Svg.messageIcon />
                 </RN.TouchableOpacity>
-                <RN.TouchableOpacity onPress={() => logOut()}>
+                <RN.TouchableOpacity
+                onPress={() => navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)}
+                // onPress={() => logOut()}
+                >
                   <Images.Svg.userIcon />
                 </RN.TouchableOpacity>
               </RN.View>

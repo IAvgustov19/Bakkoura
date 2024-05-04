@@ -128,6 +128,8 @@ export const Images = {
 
     //other
     eye,
+    hidePassword,
+    showPassword,
     bts,
     btsRightLinear,
     f,
