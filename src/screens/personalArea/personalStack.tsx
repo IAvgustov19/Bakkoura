@@ -8,6 +8,10 @@ import { APP_ROUTES } from '../../navigation/routes';
 import LanguageScreen from '../LanguageScreen/LanguageScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import ContactStack from '../contactUs/ContactStack';
+import ContactUs from '../contactUs/screens/ContactUs';
+import ContactThanks from '../contactUs/screens/ContactThanks';
+import SendIdea from '../contactUs/screens/SendIdea';
+import WatchValuation from '../contactUs/screens/WatchValuation';
 
 const Stack = createStackNavigator();
 
@@ -57,9 +61,39 @@ const PersonalStack = () => {
                     headerTitleAlign: 'center',
                 }}
             />
+            {/* menu */}
             <Stack.Screen
                 name={APP_ROUTES.CONTACT_STACK}
                 component={ContactStack}
+                options={{
+                    headerTitleAlign: 'center',
+                }}
+            />
+            {/* nested screens */}
+            <Stack.Screen
+                name={APP_ROUTES.SEND_IDEA}
+                component={SendIdea}
+                options={{
+                    headerTitleAlign: 'center',
+                }}
+            />
+             <Stack.Screen
+                name={APP_ROUTES.CONTACT_US}
+                component={ContactUs}
+                options={{
+                    headerTitleAlign: 'center',
+                }}
+            />
+            <Stack.Screen
+                name={APP_ROUTES.CONTACT_THANKS}
+                component={ContactThanks}
+                options={{
+                    headerTitleAlign: 'center',
+                }}
+            />
+            <Stack.Screen
+                name={APP_ROUTES.WATCH_VALUATION}
+                component={WatchValuation}
                 options={{
                     headerTitleAlign: 'center',
                 }}

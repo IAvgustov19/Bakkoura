@@ -9,7 +9,7 @@ import TextView from '../../../components/Text/Text';
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 
-export default function PersonalDetails() {
+const PersonalDetails = () => {
   const navigation = useNavigation();
 
   const [name, setName] = useState('');
@@ -17,20 +17,20 @@ export default function PersonalDetails() {
   return (
     <LinearContainer
       children={
-        <RN.ScrollView style={styles.scrollView}>
-          <RN.View style={styles.container}>
-            <Images.Svg.bg style={styles.bg} />
-            <HeaderContent
-              leftItem={
-                <RN.TouchableOpacity
-                  style={styles.back}
-                  onPress={() => navigation.goBack()}>
-                  <Images.Svg.arrowLeft />
-                  <TextView text="Back" />
-                </RN.TouchableOpacity>
-              }
-              title="Name"
-            />
+        <RN.View style={styles.container}>
+          <Images.Svg.bg style={styles.bg} />
+          <HeaderContent
+            leftItem={
+              <RN.TouchableOpacity
+                style={styles.back}
+                onPress={() => navigation.goBack()}>
+                <Images.Svg.arrowLeft />
+                <TextView text="Back" />
+              </RN.TouchableOpacity>
+            }
+            title="Name"
+          />
+          <RN.ScrollView>
             <RN.View style={styles.content}>
               <RN.View style={styles.inputBox}>
                 <Input
@@ -56,13 +56,14 @@ export default function PersonalDetails() {
                 />
               </RN.View>
             </RN.View>
-          </RN.View>
-        </RN.ScrollView>
+          </RN.ScrollView>
+        </RN.View>
       }
     />
   )
 }
 
+export default PersonalDetails;
 
 
 const styles = RN.StyleSheet.create({

@@ -10,6 +10,12 @@ export const COLORS = {
   darkRed: '#DD0000',
   darkGreyText: '#2F4252',
   borderBottom: '#505072',
+  darkGrey: '#3F3F3F',
+  lightGrey: '#D9D9D9',
+  c: '#CCCCCC',
+  c3: '#3C3C3C',
+  f5: '#5F5F5F',
+  a: '#AAAAAA',
 };
 
 export const SelectColorData = [

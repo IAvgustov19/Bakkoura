@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, TextInput, DimensionValue} from 'react-native';
-import {Images} from '../../assets';
+import {StyleSheet, TextInput, DimensionValue} from 'react-native';
 import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
 import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
+import TextView from '../Text/Text';
 
 type Props = {
+  title?: string;
   placeholder: string;
   value?: any;
   onChangeText?: (e) => void;
@@ -20,6 +21,8 @@ type Props = {
   backColor?: string;
   secureTextEntry?: boolean;
   iconPress?: () => void;
+  textAlignVertical?: any;
+  onPressIn?: () => void;
 };
 
 const Input: React.FC<Props> = ({
@@ -35,42 +38,48 @@ const Input: React.FC<Props> = ({
   backColor,
   iconPress,
   paddingHorizontal,
-  secureTextEntry
+  textAlignVertical,
+  title,
+  onPressIn,
 }) => {
   return (
-    <RN.View
-      style={[
-        styles.inputBox,
-        {
-          paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
-        },
-      ]}>
-      <TextInput
-        multiline={multiLine}
-        numberOfLines={numberOfLines}
-        placeholderTextColor={COLORS.grey}
+    <RN.View style={styles.container}>
+      {title ? <TextView style={styles.title} text={title} /> : null}
+      <RN.View
         style={[
-          styles.input,
+          styles.inputBox,
           {
-            height: height,
-            paddingTop: paddingTop,
+            paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
             backgroundColor: backColor ? backColor : COLORS.black,
-            width: width ? width : '80%',
           },
-        ]}
-        onChangeText={onChangeText}
-        value={value}
-        autoCapitalize="none"
-        secureTextEntry={secureTextEntry}
-        placeholder={placeholder}></TextInput>
-      {icon ? (
-        <RN.TouchableOpacity
-          hitSlop={HITSLOP}
-          onPress={iconPress}
-          style={styles.iconBox}>
-          {icon}
-        </RN.TouchableOpacity>
-      ) : null}
+        ]}>
+        <TextInput
+          multiline={multiLine}
+          numberOfLines={numberOfLines}
+          placeholderTextColor={COLORS.grey}
+          textAlignVertical={textAlignVertical}
+          style={[
+            styles.input,
+            {
+              height: height,
+              paddingTop: paddingTop,
+              width: width ? width : '80%',
+            },
+          ]}
+          onChangeText={onChangeText}
+          onPressIn={onPressIn}
+          value={value}
+          autoCapitalize="none"
+          placeholder={placeholder}></TextInput>
+        {icon ? (
+          <RN.TouchableOpacity
+            hitSlop={HITSLOP}
+            onPress={iconPress}
+            style={styles.iconBox}>
+            {icon}
+          </RN.TouchableOpacity>
+        ) : null}
+      </RN.View>
     </RN.View>
   );
 };
@@ -78,6 +87,10 @@ const Input: React.FC<Props> = ({
 export default Input;
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    alignItems: 'flex-start',
+  },
   inputBox: {
     width: '100%',
     flexDirection: 'row',
@@ -93,4 +106,9 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   iconBox: {},
+  title: {
+    marginLeft: 15,
+    marginBottom: 5,
+    marginTop: 10,
+  },
 });

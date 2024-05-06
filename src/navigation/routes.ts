@@ -23,7 +23,7 @@ export enum APP_ROUTES {
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
   //from menu
-  CONTACT_STACK = 'ConstactStack',
+  CONTACT_STACK = 'ContactStack',
   // nested stack screens
   CONTACT_US = 'ContactUs',
   SEND_IDEA = 'SendIdea',
@@ -99,4 +99,16 @@ export enum APP_ROUTES {
   TODO_GOAL = 'TodoGoal',
   TASK_NAME = 'TaskName',
   TODO_TIMER_HISTORY = 'TodoTimerHistory',
+
+  //market
+  ORDER_SCREEN = 'OrderScreen',
+  MARKET_WEB_VIEW = 'MarketWebView',
+
+  //time clinic
+  CONSULTATION = 'Consultation',
+  TIME_MANAGEMENT = 'TimeManagement',
+  CONSULTATION_THANKS = 'ConsultationThanks',
+  THE_BOOK = 'TheBook',
+  JIHAD_BAKKOURA_TIME_CLINIC = 'JihadBakkouraTimeClinic',
+  CONCEPT_30H = 'Concept30h',
 }

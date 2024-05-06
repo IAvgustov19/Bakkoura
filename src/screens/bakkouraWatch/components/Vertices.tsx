@@ -7,7 +7,7 @@ import {
   Skia,
 } from '@shopify/react-native-skia';
 import {observer} from 'mobx-react-lite';
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import {ImageSourcePropType, StyleSheet} from 'react-native';
 import {useSharedValue, withTiming} from 'react-native-reanimated';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -15,16 +15,24 @@ import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
+import {windowHeight, windowWidth} from '../../../utils/styles';
 
 const SIZE = 360;
 const STROKE_WIDTH = 12;
-const MARGIN = 14;
-const RADIUS = 152;
+const MARGIN = 15;
+const RADIUS = 130;
 
 const path = Skia.Path.Make();
+let width =
+  windowHeight > 920
+    ? windowWidth / 9.5
+    : windowHeight > 850
+    ? windowWidth / 40
+    : windowWidth / 15;
+
 path.addCircle(
-  RADIUS + STROKE_WIDTH + MARGIN * 1.35,
-  RADIUS + STROKE_WIDTH + MARGIN - 2,
+  RADIUS + STROKE_WIDTH + MARGIN + width,
+  RADIUS + STROKE_WIDTH + MARGIN,
   RADIUS,
 );
 
@@ -124,11 +132,17 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  bakkouraWatch: {},
+  bakkouraWatch: {
+    width: 320,
+    height: 315,
+    objectFit: 'contain',
+  },
   bakkouraWatchHours: {
     position: 'absolute',
-    top: 25,
     zIndex: 1,
+    width: 262,
+    objectFit: 'contain',
+    height: 262,
   },
   canvasContainer: {
     flex: 1,

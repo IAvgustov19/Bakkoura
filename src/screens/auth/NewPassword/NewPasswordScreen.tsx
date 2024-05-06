@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Images} from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
+import GiveImage from '../../../components/GiveImage/GiveImage';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
@@ -38,7 +39,11 @@ const NewPasswordScreen = () => {
               <Input placeholder="7777777" />
             </RN.View>
             <RN.View style={styles.sendBtn}>
-              <ButtonComp onPress={setAuthorized} title="Save" />
+              <ButtonComp
+                onPress={setAuthorized}
+                title="Save"
+                icon={<GiveImage source={Images.Img.eye} />}
+              />
             </RN.View>
           </RN.View>
         </RN.View>

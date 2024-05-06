@@ -8,6 +8,7 @@ import en from './svg/en.svg';
 import subtrack from './svg/subtrack.svg';
 import ellipse from './svg/ellipse.svg';
 import ellipseSmall from './svg/ellipseSmall.svg';
+import ellipseSmallWhite from './svg/ellipseSmallWhite.svg';
 import subtrackOut from './svg/subtrackOut.svg';
 import ellipseOut from './svg/ellipseOut.svg';
 import sunIcon from './svg/sun.svg';
@@ -144,6 +145,7 @@ export const Images = {
     sunIcon,
     sendIcon,
     ellipseSmall,
+    ellipseSmallWhite,
     ellipseLight,
     tabbarBg,
     arrowRight,
@@ -202,6 +204,14 @@ export const Images = {
     calendarChangeIcon1,
     calendarChangeIcon2,
     calendarMonthBottom,
+    bakkouraLogo,
+    francvilaLogo,
+    btsGreyLogo,
+    uploadFile,
+    cancelGrey,
+    fileAttachIcon,
+    jihadBakkouraLogoTitle,
+    jihadBakkouraSiteLogo,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -218,6 +228,11 @@ export const Images = {
     homeWatch30: require('./images/homeWatch30.webp'),
     stopwatch24: require('./images/stopwatch24.png'),
     stopwatch30: require('./images/stopwatch30.png'),
+    eye: require('./images/eye.webp'),
+    companyCardImage: require('./images/companyCardImage.png'),
+    bakkouraPr1: require('./images/bakkouraPr1.png'),
+    jihadBakkouraAvatar: require('./images/jihadBakkouraAvatar.png'),
+    concept30h: require('./images/concept30h.png'),
   },
 };
 

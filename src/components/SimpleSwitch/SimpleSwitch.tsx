@@ -1,5 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import * as React from 'react';
+import {useMemo} from 'react';
 import {DimensionValue} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
@@ -25,16 +26,16 @@ const SimpleSwitch: React.FC<Props> = ({
   paddingVertical,
   topMenu,
 }) => {
-  const translateX = useSharedValue(0);
+  const translateX = useSharedValue(active ? 20 : 0);
 
-  const handlePresss = () => {
+  const handlePresss = React.useCallback(() => {
     if (!active) {
       translateX.value += 20;
     } else {
       translateX.value -= 20;
     }
     active = !active;
-  };
+  }, [active]);
 
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{translateX: withSpring(translateX.value)}],
@@ -95,3 +96,11 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
   },
 });
+// import React from 'react';
+// import RN from '../RN';
+
+// const SimpleSwitch = () => {
+//   return <RN.View></RN.View>;
+// };
+
+// export default SimpleSwitch;

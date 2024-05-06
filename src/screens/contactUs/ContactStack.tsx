@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const ContactStack = () => {
 
     return (
-        <Stack.Navigator initialRouteName={APP_ROUTES.SEND_IDEA} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName={APP_ROUTES.CONTACT_US} screenOptions={{ headerShown: false }}>
             <Stack.Screen
                 name={APP_ROUTES.SEND_IDEA}
                 component={SendIdea}
@@ -21,7 +21,7 @@ const ContactStack = () => {
                 }}
             />
             <Stack.Screen
-                name={APP_ROUTES.THANKS}
+                name={APP_ROUTES.CONTACT_THANKS}
                 component={ContactThanks}
                 options={{
                     headerTitleAlign: 'center',

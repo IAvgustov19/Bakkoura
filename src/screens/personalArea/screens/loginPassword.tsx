@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 
-export default function LoginPassword() {
+const LoginPassword = () => {
     const navigation = useNavigation();
 
     const [userData, setUserData] = useState({ login: '', password: '', repeatPassword: '' });
@@ -100,6 +100,7 @@ export default function LoginPassword() {
     )
 }
 
+export default LoginPassword;
 
 
 const styles = RN.StyleSheet.create({

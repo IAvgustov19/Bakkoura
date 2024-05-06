@@ -40,6 +40,14 @@ import TodoGoal from '../screens/todoTimer/TodoGoal';
 import TaskName from '../screens/todoTimer/TaskName';
 import TodoTimerHistory from '../screens/todoTimer/TodoTimerHistory';
 import OneMonthAndEvents from '../screens/calendar/OneMonthAndEvents';
+import OrderScreen from '../screens/market/OrderScreen';
+import MarketWebView from '../screens/market/MarketVebWiew';
+import Consultation from '../screens/timeClinic/Consultation';
+import TimeManagement from '../screens/timeClinic/TimeManagement';
+import ConsultationThanks from '../screens/timeClinic/Thanks';
+import TheBook from '../screens/timeClinic/TheBook';
+import JihadBakkouraTimeClinic from '../screens/timeClinic/JihadBakkouraTimeClinic';
+import Concept30h from '../screens/timeClinic/Concept30h';
 import PersonalStack from '../screens/personalArea/personalStack';
 
 const Stack = createStackNavigator();
@@ -321,6 +329,62 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.TODO_TIMER_HISTORY}
           component={TodoTimerHistory}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ORDER_SCREEN}
+          component={OrderScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.MARKET_WEB_VIEW}
+          component={MarketWebView}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CONSULTATION}
+          component={Consultation}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TIME_MANAGEMENT}
+          component={TimeManagement}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CONSULTATION_THANKS}
+          component={ConsultationThanks}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.THE_BOOK}
+          component={TheBook}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.JIHAD_BAKKOURA_TIME_CLINIC}
+          component={JihadBakkouraTimeClinic}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CONCEPT_30H}
+          component={Concept30h}
           options={{
             headerTitleAlign: 'center',
           }}

@@ -1,6 +1,9 @@
 PODS:
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> bakkoura-watch
   - abseil/algorithm (1.20240116.2):
     - abseil/algorithm/algorithm (= 1.20240116.2)
     - abseil/algorithm/container (= 1.20240116.2)
@@ -948,6 +951,7 @@ PODS:
     - abseil/meta/type_traits
     - abseil/xcprivacy
   - abseil/xcprivacy (1.20240116.2)
+<<<<<<< HEAD
   - AppAuth (1.7.5):
     - AppAuth/Core (= 1.7.5)
     - AppAuth/ExternalUserAgent (= 1.7.5)
@@ -955,6 +959,8 @@ PODS:
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
 >>>>>>> Stashed changes
+=======
+>>>>>>> bakkoura-watch
   - boost (1.83.0)
   - BoringSSL-GRPC (0.0.32):
     - BoringSSL-GRPC/Implementation (= 0.0.32)
@@ -964,7 +970,6 @@ PODS:
   - BoringSSL-GRPC/Interface (0.0.32)
   - BVLinearGradient (2.8.3):
     - React-Core
-  - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.4)
   - FBReactNativeSpec (0.73.4):
@@ -974,6 +979,7 @@ PODS:
     - React-Core (= 0.73.4)
     - React-jsi (= 0.73.4)
     - ReactCommon/turbomodule/core (= 0.73.4)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   - Firebase (10.24.0):
@@ -984,11 +990,14 @@ PODS:
   - Firebase/Core (10.24.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 10.24.0)
+=======
+>>>>>>> bakkoura-watch
   - Firebase/CoreOnly (10.24.0):
     - FirebaseCore (= 10.24.0)
   - Firebase/Firestore (10.24.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 10.24.0)
+<<<<<<< HEAD
   - FirebaseAnalytics (10.24.0):
     - FirebaseAnalytics/AdIdSupport (= 10.24.0)
     - FirebaseCore (~> 10.0)
@@ -1015,13 +1024,22 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
     - RecaptchaInterop (~> 100.0)
+=======
+  - FirebaseAppCheckInterop (10.25.0)
+>>>>>>> bakkoura-watch
   - FirebaseCore (10.24.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
     - GoogleUtilities/Logger (~> 7.12)
+<<<<<<< HEAD
   - FirebaseCoreExtension (10.24.0):
     - FirebaseCore (~> 10.0)
   - FirebaseCoreInternal (10.24.0):
+=======
+  - FirebaseCoreExtension (10.25.0):
+    - FirebaseCore (~> 10.0)
+  - FirebaseCoreInternal (10.25.0):
+>>>>>>> bakkoura-watch
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseFirestore (10.24.0):
     - FirebaseCore (~> 10.0)
@@ -1043,6 +1061,7 @@ PODS:
     - gRPC-Core (~> 1.62.0)
     - leveldb-library (~> 1.22)
     - nanopb (< 2.30911.0, >= 2.30908.0)
+<<<<<<< HEAD
   - FirebaseInstallations (10.24.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
@@ -1178,6 +1197,20 @@ PODS:
   - GoogleUtilities/UserDefaults (7.13.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
+=======
+  - FirebaseSharedSwift (10.25.0)
+  - fmt (6.2.1)
+  - glog (0.3.5)
+  - GoogleUtilities/Environment (7.13.2):
+    - GoogleUtilities/Privacy
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.13.2):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Privacy
+  - "GoogleUtilities/NSData+zlib (7.13.2)":
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (7.13.2)
+>>>>>>> bakkoura-watch
   - "gRPC-C++ (1.62.5)":
     - "gRPC-C++/Implementation (= 1.62.5)"
     - "gRPC-C++/Interface (= 1.62.5)"
@@ -1256,22 +1289,36 @@ PODS:
     - gRPC-Core/Privacy (= 1.62.5)
   - gRPC-Core/Interface (1.62.5)
   - gRPC-Core/Privacy (1.62.5)
+<<<<<<< HEAD
   - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 4.0, >= 1.5)
   - GTMSessionFetcher/Core (3.4.1)
 >>>>>>> Stashed changes
+=======
+>>>>>>> bakkoura-watch
   - hermes-engine (0.73.4):
     - hermes-engine/Pre-built (= 0.73.4)
   - hermes-engine/Pre-built (0.73.4)
   - leveldb-library (1.22.5)
   - libevent (2.1.12)
+<<<<<<< HEAD
+=======
+  - lottie-ios (3.4.4)
+  - lottie-react-native (5.1.6):
+    - lottie-ios (~> 3.4.0)
+    - React-Core
+>>>>>>> bakkoura-watch
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
     - nanopb/encode (= 2.30909.1)
   - nanopb/decode (2.30909.1)
   - nanopb/encode (2.30909.1)
+<<<<<<< HEAD
   - OpenSSL-Universal (1.1.1100)
+=======
+  - PromisesObjC (2.4.0)
+>>>>>>> bakkoura-watch
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -2143,13 +2190,21 @@ PODS:
   - React-Mapbuffer (0.73.4):
     - glog
     - React-debug
-  - react-native-safe-area-context (4.9.0):
+  - react-native-image-picker (7.1.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-skia (1.0.4):
+  - react-native-safe-area-context (4.10.1):
+    - React-Core
+  - react-native-skia (1.2.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React
     - React-callinvoker
+    - React-Core
+  - react-native-webview (13.8.7):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - React-nativeconfig (0.73.4)
   - React-NativeModulesApple (0.73.4):
@@ -2318,6 +2373,7 @@ PODS:
     - React-jsi (= 0.73.4)
     - React-logger (= 0.73.4)
     - React-perflogger (= 0.73.4)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   - RecaptchaInterop (100.0.0)
@@ -2330,25 +2386,35 @@ PODS:
     - Firebase/Auth (= 10.24.0)
     - React-Core
     - RNFBApp
+=======
+  - RNFBApp (19.2.2):
+    - Firebase/CoreOnly (= 10.24.0)
+    - React-Core
+>>>>>>> bakkoura-watch
   - RNFBFirestore (19.2.2):
     - Firebase/Firestore (= 10.24.0)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - React-Core
     - RNFBApp
+<<<<<<< HEAD
 >>>>>>> Stashed changes
   - RNGestureHandler (2.15.0):
+=======
+  - RNGestureHandler (2.16.1):
+>>>>>>> bakkoura-watch
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - RNReanimated (3.7.1):
+  - RNReanimated (3.10.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - ReactCommon/turbomodule/core
-  - RNScreens (3.29.0):
+  - RNScreens (3.31.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+    - React-RCTImage
   - RNSound (0.11.2):
     - React-Core
     - RNSound/Core (= 0.11.2)
@@ -2356,7 +2422,7 @@ PODS:
     - React-Core
   - RNSVG (14.1.0):
     - React-Core
-  - RNVectorIcons (10.0.3):
+  - RNVectorIcons (10.1.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -2369,6 +2435,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   - Firebase
@@ -2396,10 +2463,12 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitReactPlugin (= 0.201.0)
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.201.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.201.0)
+=======
+>>>>>>> bakkoura-watch
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - OpenSSL-Universal (= 1.1.1100)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -2408,7 +2477,6 @@ DEPENDENCIES:
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Codegen (from `build/generated/ios`)
   - React-Core (from `../node_modules/react-native/`)
-  - React-Core/DevSupport (from `../node_modules/react-native/`)
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -2424,8 +2492,10 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -2446,6 +2516,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
@@ -2453,6 +2524,10 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
 >>>>>>> Stashed changes
+=======
+  - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+>>>>>>> bakkoura-watch
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -2463,6 +2538,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     - CocoaAsyncSocket
 =======
@@ -2474,11 +2550,18 @@ SPEC REPOS:
     - FirebaseAnalytics
     - FirebaseAppCheckInterop
     - FirebaseAuth
+=======
+    - abseil
+    - BoringSSL-GRPC
+    - Firebase
+    - FirebaseAppCheckInterop
+>>>>>>> bakkoura-watch
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
     - FirebaseFirestore
     - FirebaseFirestoreInternal
+<<<<<<< HEAD
     - FirebaseInstallations
     - FirebaseSharedSwift
 >>>>>>> Stashed changes
@@ -2505,6 +2588,18 @@ SPEC REPOS:
     - libevent
     - nanopb
     - OpenSSL-Universal
+=======
+    - FirebaseSharedSwift
+    - fmt
+    - GoogleUtilities
+    - "gRPC-C++"
+    - gRPC-Core
+    - leveldb-library
+    - libevent
+    - lottie-ios
+    - nanopb
+    - PromisesObjC
+>>>>>>> bakkoura-watch
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -2523,6 +2618,8 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-11-17-RNv0.73.0-21043a3fc062be445e56a2c10ecd8be028dd9cc5
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -2565,10 +2662,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-skia:
     :path: "../node_modules/@shopify/react-native-skia"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -2609,6 +2710,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   RNCAsyncStorage:
@@ -2620,6 +2722,12 @@ EXTERNAL SOURCES:
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
 >>>>>>> Stashed changes
+=======
+  RNFBApp:
+    :path: "../node_modules/@react-native-firebase/app"
+  RNFBFirestore:
+    :path: "../node_modules/@react-native-firebase/firestore"
+>>>>>>> bakkoura-watch
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -2636,18 +2744,22 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
 >>>>>>> Stashed changes
+=======
+  abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
+>>>>>>> bakkoura-watch
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BoringSSL-GRPC: 1e2348957acdbcad360b80a264a90799984b2ba6
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
-  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: 84f6edbe225f38aebd9deaf1540a4160b1f087d7
   FBReactNativeSpec: d0086a479be91c44ce4687a962956a352d2dc697
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
@@ -2687,6 +2799,28 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
+=======
+  Firebase: 91fefd38712feb9186ea8996af6cbdef41473442
+  FirebaseAppCheckInterop: 5da5ce93e8797a215e3f677fb0654b74e736c8b8
+  FirebaseCore: 11dc8a16dfb7c5e3c3f45ba0e191a33ac4f50894
+  FirebaseCoreExtension: 8a47811d0b155501559ef05d089518152a0a1677
+  FirebaseCoreInternal: 910a81992c33715fec9263ca7381d59ab3a750b7
+  FirebaseFirestore: 6df1bc70a56c15921286ff2a3096fa2d350b8823
+  FirebaseFirestoreInternal: d9a6e08e9bb4016ce7c0b3544f1cf7abcd7cf26f
+  FirebaseSharedSwift: 0274086954b1b2d5fd7e829eccc587044d72a4ba
+  fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
+  glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
+  GoogleUtilities: c56430aef51a1aa57b25da78c3f8397e522c67b7
+  "gRPC-C++": e725ef63c4475d7cdb7e2cf16eb0fde84bd9ee51
+  gRPC-Core: eee4be35df218649fe66d721a05a7f27a28f069b
+  hermes-engine: b2669ce35fc4ac14f523b307aff8896799829fe2
+  leveldb-library: e8eadf9008a61f9e1dde3978c086d2b6d9b9dc28
+  libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
+  lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
+  nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+>>>>>>> bakkoura-watch
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: ab7f915c15569f04a49669e573e6e319a53f9faa
   RCTTypeSafety: 63b97ced7b766865057e7154db0e81ce4ee6cf1e
@@ -2708,8 +2842,15 @@ SPEC CHECKSUMS:
   React-jsinspector: 9ac353eccf6ab54d1e0a33862ba91221d1e88460
   React-logger: 0a57b68dd2aec7ff738195f081f0520724b35dab
   React-Mapbuffer: 114be72666d7e3e317c1a36fb566cd3ad712fcc8
+<<<<<<< HEAD
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-skia: e657c3ae5bd1c72e63752abe1e7d96ee36f419a1
+=======
+  react-native-image-picker: fefff630cfa3ee6a809f6ac6569981f4a34e0050
+  react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
+  react-native-skia: 50285b613249df29d3284cb31d4163100bc3a319
+  react-native-webview: 732dfccd4a5f948fc77be85ab82ee0ea238ad72c
+>>>>>>> bakkoura-watch
   React-nativeconfig: ca8b90c736cf3be019cb332ca42d93dd95b32e05
   React-NativeModulesApple: 1fdffcce7772e274baeab33a1900f45feba86cbd
   React-perflogger: 8a1e1af5733004bdd91258dcefbde21e0d1faccd
@@ -2727,6 +2868,7 @@ SPEC CHECKSUMS:
   React-rendererdebug: 9a0563e113d2c80060eaef92063e259051328d2b
   React-rncore: 1b3de0a735e73765a2920fb28748a83e8c81decb
   React-runtimeexecutor: e6ab6bb083dbdbdd489cff426ed0bce0652e6edf
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   React-runtimescheduler: ed48e5faac6751e66ee1261c4bd01643b436f112
   React-utils: 6e5ad394416482ae21831050928ae27348f83487
@@ -2751,13 +2893,30 @@ SPEC CHECKSUMS:
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   RNVectorIcons: ee070291bc6c7b4c880181b214534d4657ea1905
+=======
+  React-runtimescheduler: 1c054b58fef2ce74cdcbdcd70db190e10f56a617
+  React-utils: 21a798438d45e70ed9c2e2fe0894ee32ba7b7c5b
+  ReactCommon: dcc65c813041388dead6c8b477444757425ce961
+  RNFBApp: 91311b27bc9a33e23b76a62825afd1635501018a
+  RNFBFirestore: 58f9f2f1d61eadcf16bf6d75737d92ad651bb264
+  RNGestureHandler: bc8e51fa9f774e8fc28b28cab94de450b521f1a5
+  RNReanimated: cec884efa5381ba8df9aff34bc5861d74e8fed78
+  RNScreens: 35f3344904f6bba888c0e61532278436e275de3c
+  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
+  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNVectorIcons: 9282eb0aef2f7d4747f621aa6c586ce910de23b1
+>>>>>>> bakkoura-watch
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: 1b901a6d6eeba4e8a2e8f308f708691cdb5db312
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 PODFILE CHECKSUM: f3200cd85437a57c91e29a4aa7131055e274c299
 =======
 PODFILE CHECKSUM: e608b0fd87a07472803bfa50e2843e675075e640
 >>>>>>> Stashed changes
+=======
+PODFILE CHECKSUM: c8fa70550e6f0cf306a031370b029e441a967c9d
+>>>>>>> bakkoura-watch
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.14.3
