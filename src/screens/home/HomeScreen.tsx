@@ -50,6 +50,18 @@ const HomeScreen = () => {
       await GoogleSignin.signOut();
     }
   }
+  const renderWatchs = useCallback(() => {
+    switch (whichWatch) {
+      case 1:
+        return <HomeWatch30h24h />;
+      case 2:
+        return <HomeWatch24 />;
+      case 3:
+        return <HomeWatch30 />;
+      default:
+        return <HomeWatch30h24h />;
+    }
+  }, [whichWatch]);
 
   return (
     <LinearContainer
@@ -82,7 +94,7 @@ const HomeScreen = () => {
                 title={'Today is your day! Do something good!'}
                 style={styles.title}
               />
-              <RN.View>{watch ? <HomeWatch24 /> : <HomeWatch30 />}</RN.View>
+              <RN.View>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
                 <RN.View style={styles.todayBox}>
                   <RN.Text style={styles.day}>{today.day}</RN.Text>
@@ -102,12 +114,7 @@ const HomeScreen = () => {
               </RN.View>
             </RN.View>
             <RN.View style={styles.watchSwitch}>
-              <SwitchContain
-                title="24h"
-                _title="30h"
-                back={watch}
-                handlePress={onChangeWatch}
-              />
+              <WatchSwitch />
             </RN.View>
           </RN.View>
         </RN.View>
@@ -161,6 +168,6 @@ const styles = RN.StyleSheet.create({
   },
   watchSwitch: {
     alignItems: 'center',
-    top: -10,
+    top: -windowHeight / 20,
   },
 });

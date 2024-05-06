@@ -7,7 +7,6 @@ import ListItemCont from '../../../components/ListItemCont/ListItemCont';
 import { APP_ROUTES } from '../../../navigation/routes';
 import { windowHeight, windowWidth } from '../../../utils/styles';
 import { COLORS } from '../../../utils/colors';
-import { ScrollView } from 'react-native';
 import RN from '../../../components/RN';
 
 const PersonalArea = () => {
@@ -15,19 +14,19 @@ const PersonalArea = () => {
     return (
         <LinearContainer
             children={
-                <RN.ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                    <RN.View style={styles.container}>
-                        <Images.Svg.bg style={styles.bg} />
-                        <HeaderContent
-                            rightItem={
-                                <RN.TouchableOpacity
-                                    style={styles.cancelBtn}
-                                    onPress={() => navigation.goBack()}>
-                                    <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-                                </RN.TouchableOpacity>
-                            }
-                            title="Personal Area"
-                        />
+                <RN.View style={styles.container}>
+                    <Images.Svg.bg style={styles.bg} />
+                    <HeaderContent
+                        rightItem={
+                            <RN.TouchableOpacity
+                                style={styles.cancelBtn}
+                                onPress={() => navigation.goBack()}>
+                                <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
+                            </RN.TouchableOpacity>
+                        }
+                        title="Personal Area"
+                    />
+                    <RN.ScrollView showsVerticalScrollIndicator={false}>
                         <RN.TouchableOpacity style={{ alignItems: 'center' }}>
                             <Images.Svg.userIcon width={79} height={79} />
                         </RN.TouchableOpacity>
@@ -60,7 +59,7 @@ const PersonalArea = () => {
                                 <RN.View style={styles.eventsTypeList}>
                                     <ListItemCont
                                         title="Organize Menu"
-                                        onPress={() => navigation.navigate(APP_ROUTES.CONTACT_STACK as never)}
+                                        onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)}
                                     />
                                     <RN.View style={styles.line}></RN.View>
                                     <ListItemCont
@@ -95,8 +94,8 @@ const PersonalArea = () => {
                                 </RN.View>
                             </RN.View>
                         </RN.View>
-                    </RN.View>
-                </RN.ScrollView>
+                    </RN.ScrollView>
+                </RN.View>
             }
         />
     );

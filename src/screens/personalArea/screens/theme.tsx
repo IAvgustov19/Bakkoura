@@ -11,7 +11,7 @@ import LinearContainer from '../../../components/LinearContainer/LinearContainer
 
 import { Themes } from '../../../utils/themes';
 
-export default function Theme() {
+const Theme = () => {
     const navigation = useNavigation();
     const [active, setActive] = useState(0);
 
@@ -66,7 +66,7 @@ export default function Theme() {
     )
 }
 
-
+export default Theme;
 
 const styles = RN.StyleSheet.create({
 

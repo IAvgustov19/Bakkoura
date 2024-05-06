@@ -11,7 +11,7 @@ import LinearContainer from '../../../components/LinearContainer/LinearContainer
 
 import { SecureEntries } from '../../../utils/secureEntries';
 
-export default function SecureEntry() {
+const SecureEntry = () => {
     const navigation = useNavigation();
     const [active, setActive] = useState(0);
 
@@ -67,6 +67,7 @@ export default function SecureEntry() {
 }
 
 
+export default SecureEntry;
 
 const styles = RN.StyleSheet.create({
     container: {

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {Images} from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -14,6 +14,9 @@ import {COLORS} from '../../utils/colors';
 import {BreakData} from '../../utils/repeat';
 import TextView from '../../components/Text/Text';
 import Line from '../../components/Line/Line';
+import LottieContent from '../../components/LottieContent/LottieContent';
+import {Lotties} from '../../lotties/lottie';
+import {windowWidth} from '../../utils/styles';
 
 const Pomodoro = () => {
   const {
@@ -52,6 +55,17 @@ const Pomodoro = () => {
     });
   }, [taskList]);
 
+  const pomodoroLottie = useMemo(() => {
+    return (
+      <LottieContent
+        source={Lotties.pomodoro}
+        width={windowWidth - 50}
+        autoPlay={isStartCurrent}
+        speed={isStartCurrent ? 1 : 0}
+      />
+    );
+  }, [isStartCurrent]);
+
   return (
     <LinearContainer
       children={
@@ -84,7 +98,7 @@ const Pomodoro = () => {
                   <TextView text={'#Design'} />
                   <RN.Text style={styles.breakTimeText}>Long Break</RN.Text>
                 </RN.View>
-                <Images.Svg.pomodoro />
+                {pomodoroLottie}
                 <RN.View style={styles.pomodoroTime}>
                   <RN.Text style={styles.time}>{currentTime}</RN.Text>
                 </RN.View>

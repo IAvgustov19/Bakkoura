@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingViewProps,
 } from 'react-native';
 import {COLORS} from '../utils/colors';
+import RN from './RN';
 
 export const KeyboardAvoidingView = ({
   children,
@@ -14,9 +15,9 @@ export const KeyboardAvoidingView = ({
 }: KeyboardAvoidingViewProps) => {
   return (
     <View
-      behavior="position"
+      behavior={RN.Platform.OS === 'ios' ? 'padding' : null}
       enabled
-      keyboardVerticalOffset={Platform.OS === 'android' ? 110 : 90}
+      // keyboardVerticalOffset={Platform.OS === 'android' ? 110 : 90}
       style={[styles.container, style]}
       {...props}>
       {children}

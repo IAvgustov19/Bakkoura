@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS} from '../../utils/colors';
+import {verticalScale} from '../../utils/dimensions';
 
 type Props = {
   title: string;
@@ -15,8 +16,6 @@ type Props = {
   icon?: any;
   outline?: boolean;
   width?: DimensionValue;
-  containerColor?: string;
-  textColor?: string;
 };
 
 const ButtonComp: React.FC<Props> = ({
@@ -25,26 +24,23 @@ const ButtonComp: React.FC<Props> = ({
   icon,
   outline,
   width,
-  textColor, 
-  containerColor
 }) => {
   return (
     <LinearGradient
       style={[
         styles.gradient,
         {
-          // backgroundColor: containerColor,
           borderColor: outline ? COLORS.darkGreyText : '#ECC271',
           width: width ? width : '100%',
         },
       ]}
-      colors={!!containerColor ? [containerColor, containerColor] : outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}
+      colors={outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}
       >
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text
           style={[
             styles.title,
-            { color: textColor || (outline ? COLORS.white : COLORS.black) },
+            { color: outline ? COLORS.white : COLORS.black },
           ]}>
           {title}
         </Text>
@@ -70,13 +66,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: verticalScale(10),
     // backgroundColor: 'red',
   },
   title: {
     fontSize: 18,
     textAlign: 'center',
     fontWeight: '400',
+    color: COLORS.black,
   },
   icon: {
     height: '100%',

@@ -1,10 +1,10 @@
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
+import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
-import {etapData} from '../../../utils/repeat';
 
 type Props = {
   countMinut?: number;
@@ -19,26 +19,22 @@ const FirstMetronom: React.FC<Props> = ({
   removeCount,
   etap,
 }) => {
+  const {etapData, metronomState} = useRootStore().metronomStore;
+
   const EtapHandle = useMemo(() => {
-    let total = -40;
-    switch (etap) {
-      case 1:
+    let total = 0;
+
+    switch (metronomState.etapLine % 2 == 0) {
+      case false:
         total = -30;
         break;
-      case 2:
-        total = -10;
-        break;
-      case 3:
-        total = 10;
-        break;
-      case 4:
+      case true:
         total = 30;
         break;
-      default:
-        total = -40;
     }
+
     return total;
-  }, [etap]);
+  }, [metronomState.etapLine]);
 
   return (
     <RN.View style={styles.metronom}>
@@ -54,7 +50,9 @@ const FirstMetronom: React.FC<Props> = ({
           <Images.Svg.addCount />
         </RN.TouchableOpacity>
       </RN.View>
-      <Images.Svg.metronom />
+      <RN.View style={styles.metronomImage}>
+        <Images.Svg.metronom />
+      </RN.View>
       <RN.View
         style={[styles.metronomLine, {transform: `rotate(${EtapHandle}deg)`}]}>
         <Images.Svg.metronomLine />
@@ -65,7 +63,7 @@ const FirstMetronom: React.FC<Props> = ({
             return (
               <Images.Svg.ellipseDot
                 key={index}
-                fill={item?.id === etap ? COLORS.yellow : COLORS.black}
+                fill={item === etap ? COLORS.yellow : COLORS.black}
               />
             );
           })}
@@ -83,12 +81,15 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     // backgroundColor: 'red',
   },
+  metronomImage: {
+    // zIndex: 1,
+  },
   plusMinus: {
     position: 'absolute',
     flexDirection: 'row',
     gap: 30,
     paddingVertical: 15,
-    zIndex: 2,
+    zIndex: 3,
   },
   minCountBox: {
     width: 60,

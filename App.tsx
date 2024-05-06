@@ -13,7 +13,11 @@ import AppNavigator from './src/navigation/AppNavigator';
 const App = () => {
   return (
     <>
-      <RN.StatusBar translucent={true} backgroundColor={'transparent'} />
+      <RN.StatusBar
+        translucent={true}
+        backgroundColor={'transparent'}
+        barStyle="light-content"
+      />
       <AppNavigator />
     </>
   );

@@ -32,6 +32,7 @@ use_frameworks! :linkage => :static
 
 target 'bts' do
   config = use_native_modules!
+<<<<<<< HEAD
 
 <<<<<<< Updated upstream
 =======
@@ -44,6 +45,11 @@ target 'bts' do
 
 
 >>>>>>> Stashed changes
+=======
+  
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+>>>>>>> bakkoura-watch
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.

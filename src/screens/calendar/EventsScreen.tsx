@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -14,23 +14,33 @@ import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 
 const EventScreen = () => {
-  const {calendarCurrentTime, calendarData} = useRootStore().calendarStore;
-  const [checked, setChecked] = useState(false);
+  const {calendarCurrentTime, setSwitchCalendar, switchCalendar} =
+    useRootStore().calendarStore;
   const navigation = useNavigation();
 
   const toggleSwitch = () => {
     setTimeout(() => {
-      setChecked(!checked);
+      setSwitchCalendar();
     }, 1);
   };
 
   const renderCalendar = useCallback(() => {
-    if (checked) {
-      return <Calendars calendarDatas={calendarData} />;
+    if (switchCalendar) {
+      return <Calendars />;
     } else {
       return <Events />;
     }
-  }, [checked]);
+  }, [switchCalendar]);
+
+  const title = useMemo(() => {
+    let t = '';
+    if (switchCalendar) {
+      t = 'Calendar';
+    } else {
+      t = 'Events';
+    }
+    return t;
+  }, [switchCalendar]);
 
   return (
     <LinearContainer
@@ -43,19 +53,19 @@ const EventScreen = () => {
                 {calendarCurrentTime}
               </RN.Text>
             }
-            title={checked ? 'Calendar' : 'Events'}
+            title={title}
           />
           <RN.View style={styles.calendarBox}>{renderCalendar()}</RN.View>
           <RN.View style={styles.bottomMenu}>
             <RN.TouchableOpacity>
               <SimpleSwitch
-                active={checked}
+                active={switchCalendar}
                 width={60}
                 topMenu={-10}
                 paddingVertical={10}
                 handlePress={toggleSwitch}
                 icon={
-                  checked ? (
+                  switchCalendar ? (
                     <Images.Svg.calendarChangeIcon1 />
                   ) : (
                     <Images.Svg.calendarChangeIcon2 />

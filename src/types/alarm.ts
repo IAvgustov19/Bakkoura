@@ -137,6 +137,8 @@ export type MetronomDataType = {
   oneWithoutSound: boolean;
   beatCount: number;
   etap: number;
+  etapCount: number;
+  etapLine: number;
 };
 
 export const MetronomDataInitial: MetronomDataType = {
@@ -144,6 +146,8 @@ export const MetronomDataInitial: MetronomDataType = {
   oneWithoutSound: false,
   beatCount: 100,
   etap: 1,
+  etapCount: 4,
+  etapLine: 1,
 };
 
 export type TodoTimerDataType = {

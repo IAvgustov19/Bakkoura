@@ -4,8 +4,10 @@ import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
+import GiveImage from '../../../components/GiveImage/GiveImage';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
+import {KeyboardAvoidingView} from '../../../components/KeyboardAvoidingView';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
@@ -17,6 +19,7 @@ import firestore from '@react-native-firebase/firestore';
 
 // import bcrypt from 'bcrypt';
 import ReactNativeBcrypt from 'react-native-bcrypt';
+import { windowHeight } from '../../../utils/styles';
 
 // import {sendEmailVerification } from 'firebase/auth';
 
@@ -149,6 +152,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     height: WINDOW_HEIGHT - 40,
+  },
+  content: {
+    height: windowHeight - windowHeight / 6,
+    // backgroundColor: 'red',
   },
   formBox: {
     alignItems: 'flex-start',
