@@ -22,7 +22,7 @@ export enum APP_ROUTES {
   SECURE_ENTRY = 'SecureEntry',
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
-  //from menu
+  MENU = 'Menu',
   CONTACT_STACK = 'ContactStack',
   // nested stack screens
   CONTACT_US = 'ContactUs',

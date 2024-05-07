@@ -85,7 +85,7 @@ const PersonalArea = () => {
                                 <RN.View style={styles.eventsTypeList}>
                                     <ListItemCont
                                         title="Organize Menu"
-                                        onPress={() => navigation.navigate(APP_ROUTES.CONTACT_US as never)}
+                                        onPress={() => navigation.navigate(APP_ROUTES.MENU as never)}
                                     />
                                     <RN.View style={styles.line}></RN.View>
                                     <ListItemCont

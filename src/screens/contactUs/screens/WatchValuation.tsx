@@ -100,7 +100,6 @@ const styles = RN.StyleSheet.create({
     height: WINDOW_HEIGHT,
   },
   bg: {
-    left: 1,
     zIndex: 1,
     height: '100%',
     position: 'absolute',
