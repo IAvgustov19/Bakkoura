@@ -12,6 +12,7 @@ import ContactUs from '../contactUs/screens/ContactUs';
 import ContactThanks from '../contactUs/screens/ContactThanks';
 import SendIdea from '../contactUs/screens/SendIdea';
 import WatchValuation from '../contactUs/screens/WatchValuation';
+import Menu from './screens/menu';
 
 const Stack = createStackNavigator();
 
@@ -62,9 +63,10 @@ const PersonalStack = () => {
                 }}
             />
             {/* menu */}
+
             <Stack.Screen
-                name={APP_ROUTES.CONTACT_STACK}
-                component={ContactStack}
+                name={APP_ROUTES.MENU}
+                component={Menu}
                 options={{
                     headerTitleAlign: 'center',
                 }}

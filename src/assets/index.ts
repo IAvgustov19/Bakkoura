@@ -103,6 +103,8 @@ import jihadBakkouraLogoTitle from './svg/Jihad BakkouraLogoTitle.svg';
 import jihadBakkouraSiteLogo from './svg/jihadBakkouraSiteLogo.svg';
 import bg from './svg/bg.svg';
 import profileBackground from './svg/profileBackground.svg';
+import checkIcon from './svg/checkIcon.svg';
+import checkbox from './svg/checkbox.svg';
 
 export const Images = {
   Svg: {
@@ -132,6 +134,8 @@ export const Images = {
     eye,
     hidePassword,
     showPassword,
+    checkIcon,
+    checkbox,
     bts,
     btsRightLinear,
     profileBackground,

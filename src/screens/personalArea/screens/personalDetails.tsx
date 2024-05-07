@@ -98,7 +98,6 @@ const styles = RN.StyleSheet.create({
     top: '30%',
   },
   bg: {
-    left: 1,
     position: 'absolute',
   }
 });
