@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {StyleSheet, TextInput, DimensionValue} from 'react-native';
-import {COLORS} from '../../utils/colors';
-import {verticalScale} from '../../utils/dimensions';
-import {HITSLOP} from '../../utils/styles';
+import { StyleSheet, TextInput, DimensionValue } from 'react-native';
+import { COLORS } from '../../utils/colors';
+import { verticalScale } from '../../utils/dimensions';
+import { HITSLOP } from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
 
@@ -41,6 +41,8 @@ const Input: React.FC<Props> = ({
   textAlignVertical,
   title,
   onPressIn,
+  secureTextEntry
+
 }) => {
   return (
     <RN.View style={styles.container}>
@@ -54,6 +56,7 @@ const Input: React.FC<Props> = ({
           },
         ]}>
         <TextInput
+          secureTextEntry={secureTextEntry}
           multiline={multiLine}
           numberOfLines={numberOfLines}
           placeholderTextColor={COLORS.grey}

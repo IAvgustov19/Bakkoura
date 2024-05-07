@@ -19,7 +19,11 @@ const Theme = () => {
         return (
             <RN.View style={styles.eventsTypeList}>
                 <ListItemCont
-                    rightItem={<RadioBtn active={active == index} />}
+                    rightItem={
+                        <RadioBtn
+                            active={active == index}
+                            onPress={() => setActive(index)}
+                        />}
                     title={item}
                     onPress={() => setActive(index)}
                 />
@@ -48,20 +52,19 @@ const Theme = () => {
                         data={Themes}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={renderItem}
-                        ListFooterComponent={() => (
-                            <RN.View style={styles.addBtn}>
-                                <StartBtn
-                                    onPress={() => { }}
-                                    primary={true}
-                                    text={'Ok'}
-                                    subWidth={70}
-                                    elWidth={55}
-                                />
-                            </RN.View>
-                        )}
                     />
+                    <RN.View style={styles.addBtn}>
+                        <StartBtn
+                            primary={true}
+                            text={'Ok'}
+                            subWidth={70}
+                            elWidth={55}
+                            onPress={() => navigation.goBack()}
+                        />
+                    </RN.View>
                 </RN.View>
             }
+
         />
     )
 }

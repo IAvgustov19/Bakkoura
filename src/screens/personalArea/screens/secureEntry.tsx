@@ -19,7 +19,11 @@ const SecureEntry = () => {
         return (
             <RN.View style={styles.eventsTypeList}>
                 <ListItemCont
-                    rightItem={<RadioBtn active={active == index} />}
+                    rightItem={
+                        <RadioBtn
+                            active={active == index}
+                            onPress={() => setActive(index)}
+                        />}
                     title={item}
                     onPress={() => setActive(index)}
                 />
@@ -31,36 +35,34 @@ const SecureEntry = () => {
     return (
         <LinearContainer
             children={
-                    <RN.View style={styles.container}>
-                        <Images.Svg.bg style={styles.bg} />
-                        <HeaderContent
-                            leftItem={
-                                <RN.TouchableOpacity
-                                    style={styles.back}
-                                    onPress={() => navigation.goBack()}>
-                                    <Images.Svg.arrowLeft />
-                                    <TextView text="Back" />
-                                </RN.TouchableOpacity>
-                            }
-                            title="Secure Entry"
-                        />
-                        <RN.FlatList
-                            data={SecureEntries}
-                            keyExtractor={(item, index) => index.toString()}
-                            renderItem={renderItem}
-                            ListFooterComponent={() => (
-                                <RN.View style={styles.addBtn}>
-                                    <StartBtn
-                                        onPress={() => { }}
-                                        primary={true}
-                                        text={'Ok'}
-                                        subWidth={70}
-                                        elWidth={55}
-                                    />
-                                </RN.View>
-                            )}
+                <RN.View style={styles.container}>
+                    <Images.Svg.bg style={styles.bg} />
+                    <HeaderContent
+                        leftItem={
+                            <RN.TouchableOpacity
+                                style={styles.back}
+                                onPress={() => navigation.goBack()}>
+                                <Images.Svg.arrowLeft />
+                                <TextView text="Back" />
+                            </RN.TouchableOpacity>
+                        }
+                        title="Secure Entry"
+                    />
+                    <RN.FlatList
+                        data={SecureEntries}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={renderItem}
+                    />
+                    <RN.View style={styles.addBtn}>
+                        <StartBtn
+                            onPress={() => navigation.goBack()}
+                            primary={true}
+                            text={'Ok'}
+                            subWidth={70}
+                            elWidth={55}
                         />
                     </RN.View>
+                </RN.View>
             }
         />
     )
@@ -95,10 +97,10 @@ const styles = RN.StyleSheet.create({
         gap: 5,
     },
     addBtn: {
-        position: 'absolute',
-        alignItems: 'center',
         bottom: 20,
         width: '100%',
+        position: 'absolute',
+        alignItems: 'center',
     },
     back: {
         flexDirection: 'row',

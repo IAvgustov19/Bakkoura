@@ -102,6 +102,7 @@ import fileAttachIcon from './svg/fileAttachIcon.svg';
 import jihadBakkouraLogoTitle from './svg/Jihad BakkouraLogoTitle.svg';
 import jihadBakkouraSiteLogo from './svg/jihadBakkouraSiteLogo.svg';
 import bg from './svg/bg.svg';
+import profileBackground from './svg/profileBackground.svg';
 
 export const Images = {
   Svg: {
@@ -133,6 +134,7 @@ export const Images = {
     showPassword,
     bts,
     btsRightLinear,
+    profileBackground,
     f,
     x,
     g,

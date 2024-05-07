@@ -13,6 +13,8 @@ const LoginPassword = () => {
     const navigation = useNavigation();
 
     const [userData, setUserData] = useState({ login: '', password: '', repeatPassword: '' });
+    const [showHide, setShowHide] = useState({ showPassword: false, showRepeatPassword: true });
+
     return (
         <LinearContainer
             children={
@@ -45,7 +47,7 @@ const LoginPassword = () => {
                             </RN.View>
                             <RN.View style={styles.inputBox}>
                                 <Input
-                                    secureTextEntry={false}
+                                    secureTextEntry={showHide.showPassword}
                                     placeholder="Password"
                                     value={userData.password}
                                     onChangeText={(text) =>
@@ -57,15 +59,19 @@ const LoginPassword = () => {
                                 />
                                 <RN.TouchableOpacity
                                     style={styles.deleteBox}
-                                    onPress={() => { }}
+                                    onPress={() =>
+                                        setShowHide((prevData) => ({
+                                            ...prevData,
+                                            showPassword: !prevData.showPassword
+                                        }))}
                                 >
-                                    <Images.Svg.showPassword />
-                                </RN.TouchableOpacity>
+                                    {showHide.showPassword ? <Images.Svg.hidePassword /> : <Images.Svg.showPassword />}
 
+                                </RN.TouchableOpacity>
                             </RN.View>
                             <RN.View style={styles.inputBox}>
                                 <Input
-                                    secureTextEntry
+                                    secureTextEntry={showHide.showRepeatPassword}
                                     placeholder="Repeat Password"
                                     value={userData.repeatPassword}
                                     onChangeText={(text) =>
@@ -77,24 +83,28 @@ const LoginPassword = () => {
                                 />
                                 <RN.TouchableOpacity
                                     style={styles.deleteBox}
-                                    onPress={() => { }}
+                                    onPress={() =>
+                                        setShowHide((prevData) => ({
+                                            ...prevData,
+                                            showRepeatPassword: !prevData.showRepeatPassword
+                                        }))}
                                 >
-                                    <Images.Svg.hidePassword />
+                                    {showHide.showRepeatPassword ? <Images.Svg.hidePassword /> : <Images.Svg.showPassword />}
                                 </RN.TouchableOpacity>
 
                             </RN.View>
                             <RN.View style={styles.addBtn}>
                                 <StartBtn
-                                    onPress={() => console.log(userData)}
-                                    primary={true}
                                     text={'Ok'}
-                                    subWidth={70}
                                     elWidth={55}
+                                    subWidth={70}
+                                    primary={true}
+                                    onPress={() => navigation.goBack()}
                                 />
                             </RN.View>
                         </RN.View>
                     </RN.View>
-                </RN.ScrollView>
+                </RN.ScrollView >
             }
         />
     )

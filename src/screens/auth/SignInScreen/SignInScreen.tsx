@@ -65,13 +65,23 @@ const SignInScreen = () => {
   });
 
 
+  useEffect(() => {
+    const auth = authh();
+    console.log(auth.signInWithEmailAndPassword(email, password))
+  }, [])
 
-  const signIn = async (email, password) => {
+  const signIn = async (email: string, password: string) => {
     try {
       const userCredential = await authh().signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
       const token = await user.getIdToken();
-      console.log('user.emailVerifieduser.emailVerifieduser.emailVerified', user.emailVerified)
+      // const userSnapshot = await firestore().collection('users').where('email', '==', email).get();
+
+      // if (userSnapshot.empty) {
+      //   Alert.alert('Error', 'Email not found'); 
+      //   return;
+      // }
+      // console.log('user.emailVerifieduser.emailVerifieduser.emailVerified', user.emailVerified)
       if (user.emailVerified) {
         setAuthorized()
       } else {
@@ -80,7 +90,7 @@ const SignInScreen = () => {
       console.log(token, 77);
       // You can use the token or user object as needed
     } catch (error) {
-      console.error('Error signing in:', error.message);
+       console.error('Error signing in:', error.message);
       // Handle the error here, such as displaying a message to the user
     }
   }
