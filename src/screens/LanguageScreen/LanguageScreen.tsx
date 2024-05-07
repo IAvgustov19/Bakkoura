@@ -1,13 +1,14 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Images} from '../../assets';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import RN from '../../components/RN';
 import TextView from '../../components/Text/Text';
-import {COLORS} from '../../utils/colors';
-import {Languages} from '../../utils/languages';
+import { COLORS } from '../../utils/colors';
+import { Languages } from '../../utils/languages';
+import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 
 const LanguageScreen = () => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ const LanguageScreen = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-            <Images.Svg.bg style={styles.bg} />
+          <Images.Svg.bg style={styles.bg} />
           <HeaderContent
             leftItem={
               <RN.TouchableOpacity
@@ -31,7 +32,7 @@ const LanguageScreen = () => {
           <RN.FlatList
             style={styles.languages}
             data={Languages}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <RN.TouchableOpacity
                   style={styles.languagesBox}
@@ -42,6 +43,15 @@ const LanguageScreen = () => {
               );
             }}
           />
+          <RN.View style={styles.addBtn}>
+            <StartBtn
+              onPress={() => navigation.goBack()}
+              primary={true}
+              text={'Ok'}
+              subWidth={70}
+              elWidth={55}
+            />
+          </RN.View>
         </RN.View>
       }
     />
@@ -52,6 +62,7 @@ export default LanguageScreen;
 
 const styles = RN.StyleSheet.create({
   container: {
+    height: '100%',
     paddingHorizontal: 15,
     position: 'relative',
   },
@@ -76,4 +87,10 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
   },
+  addBtn: {
+    position: 'absolute',
+    alignItems: 'center',
+    bottom: 20,
+    width: '100%',
+},
 });

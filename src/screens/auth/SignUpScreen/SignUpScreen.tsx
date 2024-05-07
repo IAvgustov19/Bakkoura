@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import reactNativeBcrypt from 'react-native-bcrypt';
 import { Images } from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
-import GiveImage from '../../../components/GiveImage/GiveImage';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
 import {KeyboardAvoidingView} from '../../../components/KeyboardAvoidingView';
@@ -17,13 +17,11 @@ import authh from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
-// import bcrypt from 'bcrypt';
-import ReactNativeBcrypt from 'react-native-bcrypt';
+
 import { windowHeight } from '../../../utils/styles';
 
-// import {sendEmailVerification } from 'firebase/auth';
-
 const SignUpScreen = () => {
+
   const navigation = useNavigation();
   const { setAuthorized } = useRootStore().authStore;
   const [name, setName] = useState('');
@@ -49,28 +47,9 @@ const SignUpScreen = () => {
   }, []);
 
 
-  console.log('usersusersusers:', users)
-
-  // const saltRounds = 10;
-
-  // const hashPassword = (password, salt) => {
-  //   ReactNativeBcrypt.hash(password, salt, (error, hash) => {
-  //     if (error) {
-  //       console.error('Error hashing password:', error);
-  //       // Handle the error as needed
-  //     } else {
-  //       console.log('Hashed password:', hash);
-  //       // Use the hash for further processing
-  //     }
-  //   });
-  // };
-  
-  // hashPassword(password, 'hhisjis');
-
-
   const signUp = async () => {
     try {
-
+      const hashedPassword = reactNativeBcrypt.hashSync(password, 10);
       const userCredential = await authh().createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
       await user.updateProfile({
@@ -85,7 +64,7 @@ const SignUpScreen = () => {
         name,
         username,
         email,
-        password,
+        password: hashedPassword,
         country,
       });
       await AsyncStorage.setItem('userData', JSON.stringify(user));

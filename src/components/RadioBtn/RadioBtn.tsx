@@ -15,14 +15,16 @@ const RadioBtn: React.FC<Props> = ({ active = false, onPress, white = false }) =
       {active ? (
         <>
           {white ? < Images.Svg.ellipseSmallWhite
-            style={styles.activeRadio}
             width={15}
             height={15}
+            onPress={onPress}
+            style={styles.activeRadio}
           /> :
             <Images.Svg.ellipseSmall
-              style={styles.activeRadio}
               width={15}
               height={15}
+              onPress={onPress}
+              style={styles.activeRadio}
             />
           }
         </>

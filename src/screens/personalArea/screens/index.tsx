@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Images } from '../../../assets';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
+import * as ImagePicker from 'react-native-image-picker';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ListItemCont from '../../../components/ListItemCont/ListItemCont';
 import { APP_ROUTES } from '../../../navigation/routes';
@@ -9,7 +10,25 @@ import { windowHeight, windowWidth } from '../../../utils/styles';
 import { COLORS } from '../../../utils/colors';
 import RN from '../../../components/RN';
 
+
 const PersonalArea = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const openImagePicker = () => {
+        let options = {
+            mediaType: 'photo',
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+
+        ImagePicker.launchImageLibrary(options as never, response => {
+            if (response.assets) {
+                setSelectedImage(response.assets[0]?.uri);
+            }
+        });
+    };
+
     const navigation = useNavigation();
     return (
         <LinearContainer
@@ -27,12 +46,19 @@ const PersonalArea = () => {
                         title="Personal Area"
                     />
                     <RN.ScrollView showsVerticalScrollIndicator={false}>
-                        <RN.TouchableOpacity style={{ alignItems: 'center' }}>
-                            <Images.Svg.userIcon width={79} height={79} />
+                        <RN.TouchableOpacity style={{ alignItems: 'center' }} onPress={openImagePicker}>
+                            {selectedImage ? (
+                                <RN.View style={styles.imageContainer}>
+                                    <Images.Svg.profileBackground width={79} height={79} />
+                                    <RN.Image source={{ uri: selectedImage }} style={styles.profileImg} />
+                                </RN.View>
+                            ) : (
+                                <Images.Svg.userIcon width={79} height={79} />
+                            )}
                         </RN.TouchableOpacity>
                         <RN.TouchableOpacity
                             style={styles.chooseBtn}
-                            onPress={() => { }}>
+                            onPress={openImagePicker}>
                             <RN.Text style={styles.chooseText}>Choose a photo</RN.Text>
                         </RN.TouchableOpacity>
                         <RN.View style={styles.content}>
@@ -59,7 +85,7 @@ const PersonalArea = () => {
                                 <RN.View style={styles.eventsTypeList}>
                                     <ListItemCont
                                         title="Organize Menu"
-                                        onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)}
+                                        onPress={() => navigation.navigate(APP_ROUTES.CONTACT_US as never)}
                                     />
                                     <RN.View style={styles.line}></RN.View>
                                     <ListItemCont
@@ -121,6 +147,17 @@ const styles = RN.StyleSheet.create({
     cancelTxt: {
         color: COLORS.grey,
         fontSize: 16,
+    },
+    imageContainer: {
+        position: 'relative',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    profileImg: {
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        position: 'absolute',
     },
     chooseBtn: {
         paddingVertical: 11,

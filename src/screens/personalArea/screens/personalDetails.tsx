@@ -48,11 +48,11 @@ const PersonalDetails = () => {
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn
-                  onPress={() => { }}
                   primary={true}
                   text={'Ok'}
                   subWidth={70}
                   elWidth={55}
+                  onPress={() => navigation.goBack()}
                 />
               </RN.View>
             </RN.View>
@@ -79,10 +79,10 @@ const styles = RN.StyleSheet.create({
     height: windowHeight - windowHeight / 6,
   },
   addBtn: {
-    position: 'absolute',
-    alignItems: 'center',
     bottom: 20,
     width: '100%',
+    position: 'absolute',
+    alignItems: 'center',
   },
   back: {
     flexDirection: 'row',
