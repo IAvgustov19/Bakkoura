@@ -1,19 +1,19 @@
 import React, { useRef, useState } from 'react';
-import RN from '../../../components/RN';
-import HeaderContent from '../../../components/HeaderContent/HeaderContent';
-import { Images } from '../../../assets';
-import Cancel from '../../../components/Cancel/Cancel';
-import { useNavigation } from '@react-navigation/native';
-import { windowHeight, windowWidth } from '../../../utils/styles';
-import { APP_ROUTES } from '../../../navigation/routes';
-import RadioBtn from '../../../components/RadioBtn/RadioBtn';
-import { COLORS } from '../../../utils/colors';
-import useRootStore from '../../../hooks/useRootStore';
-import TextView from '../../../components/Text/Text';
-import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
-import FormContainer from '../../market/components/FormContainer/FormContainer';
-import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
+import useRootStore from '../../hooks/useRootStore';
+import { windowHeight } from '../../utils/styles';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import RN from '../../components/RN';
+import { Images } from '../../assets';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import Cancel from '../../components/Cancel/Cancel';
+import TextView from '../../components/Text/Text';
+import FormContainer from '../market/components/FormContainer/FormContainer';
+import RadioBtn from '../../components/RadioBtn/RadioBtn';
+import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
+import { COLORS } from '../../utils/colors';
+import { APP_ROUTES } from '../../navigation/routes';
 
 const SendIdea = () => {
     const navigation = useNavigation();
@@ -42,7 +42,9 @@ const SendIdea = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <Images.Svg.bg style={styles.bg} />
+                    <RN.View style={styles.bcContainer}>
+                        <Images.Svg.bg style={styles.bg} />
+                    </RN.View>
                     <HeaderContent
                         leftItem={<Images.Svg.btsRightLinear />}
                         rightItem={<Cancel onClose={() => navigation.goBack()} />}
@@ -62,7 +64,7 @@ const SendIdea = () => {
                             </RN.View>
                             <FormContainer bottomInputPress={Scroll} uploadAtTop />
                             <RN.View style={styles.privacyBox}>
-                                <RadioBtn active={accept} onPress={AcceptPrivacy} white/>
+                                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                                 <RN.View style={styles.privacyText}>
                                     <RN.Text style={styles.privacyInfo}>
                                         {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
@@ -86,9 +88,13 @@ export default SendIdea;
 const styles = RN.StyleSheet.create({
     container: {
         width: '100%',
-        position: 'relative',
         paddingHorizontal: 10,
         height: WINDOW_HEIGHT,
+    },
+    bcContainer: {
+        width: '100%',
+        position: 'relative',
+        alignItems: 'center',
     },
     bg: {
         zIndex: 1,

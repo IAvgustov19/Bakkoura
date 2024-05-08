@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {DarkTheme, NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {APP_ROUTES} from './routes';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { APP_ROUTES } from './routes';
 import BottomTabNavigation from './BottomTabNavigation';
 import OnBoardingScreen from '../screens/onBoarding/OnBoarding';
 import NewEvent from '../screens/calendar/NewEventScreen';
@@ -13,7 +13,7 @@ import SignUpScreen from '../screens/auth/SignUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/auth/RecoverPassword/RecoverPassword';
 import VerificationCodeScreen from '../screens/auth/VerificationCode/VerificationCode';
 import NewPasswordScreen from '../screens/auth/NewPassword/NewPasswordScreen';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import useRootStore from '../hooks/useRootStore';
 import LanguageScreen from '../screens/LanguageScreen/LanguageScreen';
 import StressTestDuring from '../screens/stressTest/StressTestDuring/StressTestDuring';
@@ -30,7 +30,7 @@ import FromDate from '../screens/timeTogether/FromDate';
 import LoverName from '../screens/timeTogether/LoverName';
 import Synchronyze from '../screens/timeTogether/Synchronyze';
 import Thanks from '../screens/timeTogether/Thanks';
-import {Keyboard} from 'react-native';
+import { Keyboard } from 'react-native';
 import CreateSector from '../screens/bakkouraWatch/CreateSector';
 import SectorName from '../screens/bakkouraWatch/SectorName';
 import SectorColor from '../screens/bakkouraWatch/SectorColor';
@@ -49,6 +49,14 @@ import TheBook from '../screens/timeClinic/TheBook';
 import JihadBakkouraTimeClinic from '../screens/timeClinic/JihadBakkouraTimeClinic';
 import Concept30h from '../screens/timeClinic/Concept30h';
 import PersonalStack from '../screens/personalArea/personalStack';
+import SendIdea from '../screens/timeBiotic/SendIdea';
+import ContactThanks from '../screens/timeBiotic/ContactThanks';
+import ContactUs from '../screens/timeBiotic/ContactUs';
+import WatchValuation from '../screens/timeBiotic/WatchValuation';
+import BtsNavigation from '../screens/timeBiotic/BtsNavigation';
+
+
+
 
 const Stack = createStackNavigator();
 
@@ -69,7 +77,7 @@ const AppNavigator = () => {
     };
   }, []);
 
-  const {isAuthorized} = useRootStore().authStore;
+  const { isAuthorized } = useRootStore().authStore;
 
   const renderPublicNavigators = () => {
     return (
@@ -389,13 +397,49 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.PERSONAL_STACK}
           component={PersonalStack}
           options={{
             headerTitleAlign: 'center',
           }}
         />
+        <Stack.Screen
+          name={APP_ROUTES.SEND_IDEA}
+          component={SendIdea}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CONTACT_THANKS}
+          component={ContactThanks}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CONTACT_US}
+          component={ContactUs}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.WATCH_VALUATION}
+          component={WatchValuation}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+         <Stack.Screen
+          name={APP_ROUTES.BTS_NAVIGATION}
+          component={BtsNavigation}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+
       </>
     );
   };

@@ -1,20 +1,20 @@
-import React, { useRef, useState } from 'react';
-
-import RN from '../../../components/RN';
-import { Images } from '../../../assets';
-import { COLORS } from '../../../utils/colors';
-import TextView from '../../../components/Text/Text';
-import useRootStore from '../../../hooks/useRootStore';
-import Cancel from '../../../components/Cancel/Cancel';
-import { APP_ROUTES } from '../../../navigation/routes';
 import { useNavigation } from '@react-navigation/native';
-import RadioBtn from '../../../components/RadioBtn/RadioBtn';
-import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
-import { windowHeight, windowWidth } from '../../../utils/styles';
-import OutlineBtn from '../../../components/OutlineBtn/OutlineBtn';
-import HeaderContent from '../../../components/HeaderContent/HeaderContent';
-import FormContainer from '../../market/components/FormContainer/FormContainer';
-import LinearContainer from '../../../components/LinearContainer/LinearContainer';
+import React, { useRef, useState } from 'react';
+import useRootStore from '../../hooks/useRootStore';
+import { windowHeight } from '../../utils/styles';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import RN from '../../components/RN';
+import { Images } from '../../assets';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import Cancel from '../../components/Cancel/Cancel';
+import TextView from '../../components/Text/Text';
+import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
+import FormContainer from '../market/components/FormContainer/FormContainer';
+import RadioBtn from '../../components/RadioBtn/RadioBtn';
+import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
+
 
 const ContactUs = () => {
   const navigation = useNavigation();
@@ -43,7 +43,9 @@ const ContactUs = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <Images.Svg.bg style={styles.bg} />
+          <RN.View style={styles.bcContainer}>
+            <Images.Svg.bg style={styles.bg} />
+          </RN.View>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
@@ -60,7 +62,7 @@ const ContactUs = () => {
                   style={styles.headerText}
                   text={`Select who you would like to contact `}
                 />
-                <OutlineBtn text='General Director' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey}/>
+                <OutlineBtn text='General Director' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey} />
                 <OutlineBtn text='Developer' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey} />
                 <OutlineBtn text='Technical Support' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey} />
                 <TextView
@@ -70,7 +72,7 @@ const ContactUs = () => {
               </RN.View>
               <FormContainer bottomInputPress={Scroll} />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} white/>
+                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
                     Your personal data are guaranteed to be safe and will not be
@@ -95,9 +97,13 @@ export default ContactUs;
 const styles = RN.StyleSheet.create({
   container: {
     width: '100%',
-    position: 'relative',
     height: windowHeight,
     paddingHorizontal: 10,
+  },
+  bcContainer: {
+    width: '100%',
+    position: 'relative',
+    alignItems: 'center',
   },
   bg: {
     zIndex: 1,

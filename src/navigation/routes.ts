@@ -23,13 +23,11 @@ export enum APP_ROUTES {
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
   MENU = 'Menu',
-  CONTACT_STACK = 'ContactStack',
-  // nested stack screens
   CONTACT_US = 'ContactUs',
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',
   CONTACT_THANKS = 'ContactThanks',
-  // lang
+  BTS_NAVIGATION = 'BtsNavigation',
 
 
 
@@ -54,6 +52,7 @@ export enum APP_ROUTES {
   TIME_CLINIC = 'TimeClinic',
   PODCASTS = 'Podcasts',
   H30_LEGEND = 'H30Legend',
+  TIME_BIOTIC = 'TimeBiotic',
 
   //calendar screens
   NEW_EVENT = 'NewEventScreen',

@@ -13,6 +13,7 @@ import Pomodoro from '../../screens/pomodoro/Pomodoro';
 import ProjectTimer from '../../screens/projectTimer/ProjectTimer';
 import StopWatch from '../../screens/stopWatch/StopWatch';
 import StressTest from '../../screens/stressTest/StressTest';
+import TimeBiotic from '../../screens/timeBiotic/TimeBiotic';
 import TimeClinic from '../../screens/timeClinic/TimeClinic';
 import TimerScreen from '../../screens/timers/TimerScreen';
 import TimeTogether from '../../screens/timeTogether/TimeTogether';
@@ -147,5 +148,11 @@ export const bottomTabBarOptions = {
       component: H30Legend,
       buttonLabel: '30h Legend',
     },
+    {
+      index: 20,
+      tabName: APP_ROUTES.TIME_BIOTIC,
+      component: TimeBiotic,
+      buttonLabel: 'Time Biotic',
+    }
   ],
 };

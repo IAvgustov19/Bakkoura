@@ -1,19 +1,20 @@
 import React, { useRef, useState } from 'react';
-import RN from '../../../components/RN';
-import HeaderContent from '../../../components/HeaderContent/HeaderContent';
-import { Images } from '../../../assets';
-import Cancel from '../../../components/Cancel/Cancel';
-import { useNavigation } from '@react-navigation/native';
-import { windowHeight } from '../../../utils/styles';
-import { APP_ROUTES } from '../../../navigation/routes';
-import RadioBtn from '../../../components/RadioBtn/RadioBtn';
-import { COLORS } from '../../../utils/colors';
-import useRootStore from '../../../hooks/useRootStore';
-import TextView from '../../../components/Text/Text';
-import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
-import FormContainer from '../../market/components/FormContainer/FormContainer';
-import LinearContainer from '../../../components/LinearContainer/LinearContainer';
+
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
+import useRootStore from '../../hooks/useRootStore';
+import { windowHeight } from '../../utils/styles';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import RN from '../../components/RN';
+import { Images } from '../../assets';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import Cancel from '../../components/Cancel/Cancel';
+import TextView from '../../components/Text/Text';
+import RadioBtn from '../../components/RadioBtn/RadioBtn';
+import FormContainer from '../market/components/FormContainer/FormContainer';
+import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
 
 const WatchValuation = () => {
   const navigation = useNavigation();

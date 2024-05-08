@@ -105,6 +105,19 @@ import bg from './svg/bg.svg';
 import profileBackground from './svg/profileBackground.svg';
 import checkIcon from './svg/checkIcon.svg';
 import checkbox from './svg/checkbox.svg';
+import timeBioticIcon from './svg/timeBioticIcon.svg';
+import watchAtelierIcon from './svg/watchAtelierIcon.svg';
+import wallpapersIcon from './svg/wallpapersIcon.svg';
+import timeManagementIcon from './svg/timeManagementIcon.svg';
+import sendIdeaIcon from './svg/sendIdeaIcon.svg';
+import recommendationsIcon from './svg/recommendationsIcon.svg';
+import francvilaWatchIcon from './svg/francvilaWatchIcon.svg';
+import contactIcon from './svg/contactIcon.svg';
+import btsNavigationIcon from './svg/btsNavigationIcon.svg';
+import assessmentWatchIcon from './svg/assessmentWatchIcon.svg';
+import aboutTimeIcon from './svg/aboutTimeIcon.svg';
+import menuIcon from './svg/menuIcon.svg';
+
 
 export const Images = {
   Svg: {
@@ -129,6 +142,20 @@ export const Images = {
     timeClinicIcon,
     podcastIcon,
     h30Icon,
+    timeBioticIcon,
+    watchAtelierIcon,
+    wallpapersIcon,
+    timeManagementIcon,
+    sendIdeaIcon,
+    recommendationsIcon,
+    francvilaWatchIcon,
+    contactIcon,
+    btsNavigationIcon,
+    assessmentWatchIcon,
+    aboutTimeIcon,
+    menuIcon,
+
+
 
     //other
     eye,
