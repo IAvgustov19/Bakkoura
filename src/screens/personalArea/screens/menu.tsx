@@ -1,31 +1,47 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ListItemCont from '../../../components/ListItemCont/ListItemCont';
+import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
+import Checkbox from '../../../components/Checkbox/Checkbox';
 import { windowHeight } from '../../../utils/styles';
 import TextView from '../../../components/Text/Text';
 import { MenuItems } from '../../../utils/menuItems';
 import { COLORS } from '../../../utils/colors';
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
-import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
-import Checkbox from '../../../components/Checkbox/Checkbox';
 
 
 const Menu = () => {
-    const [active, setActive] = useState<boolean>(false);
+    const [active, setActive] = useState<number[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
+
+    const onPress = (index: number, item: string) => {
+        setActive((prevActive) =>
+            prevActive.includes(index)
+                ? prevActive.filter((item) => item !== index)
+                : [...prevActive, index]
+        );
+        setSelected((prevSelected) =>
+            active.includes(index)
+                ? prevSelected.filter((selectedItem) => selectedItem !== item)
+                : [...prevSelected, item]
+        );
+    };
+
 
     const renderItem = ({ item, index }) => {
         return (
             <RN.View style={styles.eventsTypeList}>
                 <ListItemCont
                     title={item}
-                    onPress={() => setActive(index)}
+                    onPress={() => onPress(index, item)}
                     rightItem={
                         <Checkbox
-                            active={active == index}
-                            onPress={() => setActive(index)}
+                            active={active.includes(index)}
+                            onPress={() => onPress(index, item)}
                         />
                     }
                 />
@@ -103,7 +119,6 @@ const styles = RN.StyleSheet.create({
     },
     scrollView: {},
     content: {
-        // paddingBottom: 110,
     },
     eventsTypeList: {
         borderRadius: 3,

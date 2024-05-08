@@ -134,9 +134,9 @@ const styles = RN.StyleSheet.create({
         height: windowHeight,
         position: 'relative',
         paddingHorizontal: 15,
+        alignItems: 'center',
     },
     bg: {
-        left: 1,
         position: 'absolute',
     },
     cancelBtn: {

@@ -69,6 +69,8 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
           return <Images.Svg.podcastIcon />;
         case APP_ROUTES.H30_LEGEND:
           return <Images.Svg.h30Icon />;
+        case APP_ROUTES.TIME_BIOTIC:
+          return <Images.Svg.timeBioticIcon/>
         default:
           return <Images.Svg.homeIcon />;
       }
