@@ -73,6 +73,8 @@ const NewProjectTimer = () => {
                     height={100}
                     paddingTop={15}
                     onChangeText={e => setNewProjectTimeState('description', e)}
+                    textAlignVertical="top"
+                    maxLenght={100}
                   />
                 </RN.View>
                 <RN.View style={styles.form}>
@@ -113,7 +115,7 @@ export default observer(NewProjectTimer);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     height: windowHeight,
   },
   content: {

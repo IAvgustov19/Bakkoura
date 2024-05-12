@@ -1,4 +1,4 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import {makeAutoObservable, reaction, runInAction} from 'mobx';
 import {MetronomDataInitial, MetronomDataType} from '../../types/alarm';
 import Sound from 'react-native-sound';
 import {Sounds} from '../../assets';
@@ -8,11 +8,7 @@ Sound.setCategory('Playback');
 export class MetronomStore {
   constructor() {
     makeAutoObservable(this);
-    this.soundInterval();
     this.metronom();
-    this.sound.setSpeed(
-      Math.round(Math.abs(this.metronomState.countMinut / 60)),
-    );
   }
 
   metronomState: MetronomDataType = MetronomDataInitial;
@@ -28,10 +24,16 @@ export class MetronomStore {
 
   setMetronomCountMinut = (key: string) => {
     if (key === 'add') {
-      this.metronomState.countMinut++;
+      if (this.metronomState.beatCount < 240) {
+        this.metronomState.countMinut++;
+        this.metronomState.beatCount++;
+      }
     }
     if (key === 'remove') {
-      this.metronomState.countMinut--;
+      if (this.metronomState.beatCount > 1) {
+        this.metronomState.countMinut--;
+        this.metronomState.beatCount--;
+      }
     }
   };
   setMetronomState = (key: keyof MetronomDataType, value: any) => {
@@ -39,7 +41,7 @@ export class MetronomStore {
   };
 
   metronom = () => {
-    this.sound = new Sound(Sounds.metronom, error => {
+    this.sound = new Sound(Sounds.sound3, error => {
       if (error) {
         console.log('failed to load the sound', error);
         return;
@@ -49,49 +51,52 @@ export class MetronomStore {
     });
   };
 
+  newPlaySound = () => {};
+
   soundInterval = () => {
     this.soundIntervalState = setInterval(() => {
       if (this.sound && this.isPlaying) {
-        this.sound.play(success => {
-          if (!success) {
-            runInAction(() => {
-              this.isPlaying = false;
-            });
-          }
+        if (
+          this.metronomState.oneWithoutSound &&
+          this.metronomState.etapLine % 2 === 0
+        ) {
           runInAction(() => {
-            this.metronomState.beatCount--;
             if (this.metronomState.etapLine < 2) {
               this.metronomState.etapLine++;
             } else {
               this.metronomState.etapLine = 1;
             }
-
             if (this.metronomState.etap < this.metronomState.etapCount) {
               this.metronomState.etap++;
             } else {
               this.metronomState.etap = 1;
             }
-            if (this.metronomState.etapCount === 1) {
+          });
+        } else {
+          this.sound.play(success => {
+            if (!success) {
               runInAction(() => {
-                this.sound.stop();
-                clearInterval(this.soundIntervalState);
+                this.isPlaying = false;
               });
-            }
-            if (
-              this.metronomState.oneWithoutSound &&
-              this.metronomState.etap % 2 === 0
-            ) {
-              this.sound.setVolume(0);
             } else {
-              this.sound.setVolume(1);
+              this.sound.stop();
             }
           });
-        });
-        if (this.metronomState.beatCount === 0) {
           runInAction(() => {
-            this.clearState();
+            if (this.metronomState.etapLine < 2) {
+              this.metronomState.etapLine++;
+            } else {
+              this.metronomState.etapLine = 1;
+            }
+            if (this.metronomState.etap < this.metronomState.etapCount) {
+              this.metronomState.etap++;
+            } else {
+              this.metronomState.etap = 1;
+            }
           });
         }
+      } else {
+        return;
       }
     }, Math.round(60000 / this.metronomState.countMinut));
   };
@@ -108,33 +113,30 @@ export class MetronomStore {
   };
 
   playPause = () => {
-    this.soundInterval();
     if (!this.sound) {
       return;
     }
     if (this.isPlaying) {
-      runInAction(() => {
-        this.sound.pause();
-        this.isPlaying = false;
-      });
+      this.sound.stop();
+      clearInterval(this.soundIntervalState);
+      this.isPlaying = false;
     } else {
       this.isPlaying = true;
-      // this.soundInterval();
-
-      // this.sound.play(success => {
-      //   if (success) {
-      //     this.sound.play(secondSuccess => {
-      //       if (secondSuccess) {
-      //         runInAction(() => {
-      //           this.isPlaying = false;
-      //         });
-      //       } else {
-      //       }
-      //     });
-      //   } else {
-      //   }
-      // });
+      this.soundInterval();
     }
+  };
+
+  playSound = () => {
+    if (this.isPlaying) {
+      this.soundInterval();
+    }
+  };
+
+  stopSound = () => {
+    runInAction(() => {
+      this.sound.stop();
+      clearInterval(this.soundIntervalState);
+    });
   };
 
   clearState = () => {

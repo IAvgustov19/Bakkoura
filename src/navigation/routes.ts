@@ -94,4 +94,8 @@ export enum APP_ROUTES {
   THE_BOOK = 'TheBook',
   JIHAD_BAKKOURA_TIME_CLINIC = 'JihadBakkouraTimeClinic',
   CONCEPT_30H = 'Concept30h',
+  ABOUT_TIME = 'AboutTime',
+  ABOUT_TIME_INFO = 'AboutTimeInfo',
+  TIME_WEALTH = 'TimeWealth',
+  FRANS_VILA = 'FransVila',
 }

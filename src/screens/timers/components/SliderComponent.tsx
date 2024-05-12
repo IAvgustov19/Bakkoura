@@ -4,11 +4,12 @@ import {Slider} from '@rneui/themed';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import {observer} from 'mobx-react-lite';
+import LinearRangeSlider from '../../../components/LinearRangeSlider/LinearRangeSlider';
+import {COLORS} from '../../../utils/colors';
 
 type Props = {
   minValue?: number;
   maxValue?: number;
-  step?: number;
   value?: number;
   onChangeValue?: (e: number) => void;
   label?: string;
@@ -19,32 +20,23 @@ const SliderComponent: React.FC<Props> = ({
   maxValue,
   minValue,
   onChangeValue,
-  step,
   value,
 }) => {
   return (
     <View style={styles.container}>
       <RN.View style={styles.hoursBox}>
-        <RN.Text style={styles.hour}>{value}</RN.Text>
+        <RN.Text style={styles.hour}>{value ? value : '0'}</RN.Text>
         <TextView text={label} style={styles.label} />
       </RN.View>
-      <Slider
-        thumbStyle={{
-          height: 24,
-          width: 24,
-          backgroundColor: '#ECC271',
-          borderWidth: 2,
-          borderColor: '#7F642E',
-        }}
-        minimumTrackTintColor={'#1d4915'}
-        maximumTrackTintColor="#0D0D0D"
-        trackStyle={{height: 10, borderRadius: 20}}
-        style={styles.slider}
+      <LinearRangeSlider
+        minValue={minValue}
+        maxValue={maxValue}
         value={value}
-        step={step}
-        minimumValue={minValue}
-        maximumValue={maxValue}
-        onValueChange={onChangeValue}
+        onChangeValue={onChangeValue}
+        firstColor={COLORS.black}
+        secondColor={COLORS.green}
+        colors={[COLORS.black, COLORS.darkGreyText, COLORS.lightGreen]}
+        height={8}
       />
     </View>
   );

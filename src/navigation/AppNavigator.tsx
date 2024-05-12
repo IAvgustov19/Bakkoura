@@ -48,6 +48,10 @@ import ConsultationThanks from '../screens/timeClinic/Thanks';
 import TheBook from '../screens/timeClinic/TheBook';
 import JihadBakkouraTimeClinic from '../screens/timeClinic/JihadBakkouraTimeClinic';
 import Concept30h from '../screens/timeClinic/Concept30h';
+import AboutTime from '../screens/timeClinic/AboutTime';
+import AboutTimeInfo from '../screens/timeClinic/AboutTimeInfo';
+import TimeWealth from '../screens/timeClinic/TimeWealth';
+import FrancVila from '../screens/timeClinic/FrancVila';
 
 const Stack = createStackNavigator();
 
@@ -384,6 +388,34 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.CONCEPT_30H}
           component={Concept30h}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ABOUT_TIME}
+          component={AboutTime}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ABOUT_TIME_INFO}
+          component={AboutTimeInfo}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TIME_WEALTH}
+          component={TimeWealth}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.FRANS_VILA}
+          component={FrancVila}
           options={{
             headerTitleAlign: 'center',
           }}

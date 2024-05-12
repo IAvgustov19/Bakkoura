@@ -1,5 +1,5 @@
 import {observer} from 'mobx-react-lite';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -29,6 +29,7 @@ const TimerScreen = () => {
     selectedSound,
     resetTimerBack,
   } = useRootStore().timerStore;
+  const [isWork, setWork] = useState(true);
 
   const StartTimer = () => {
     if (timerStatus.isFirst) {
@@ -134,7 +135,7 @@ const TimerScreen = () => {
             />
           </RN.View>
           <RN.View style={styles.switchWork}>
-            <SwitchBtn title="Work" icon={<Images.Svg.sendIcon />} />
+            <SwitchBtn isWork={isWork} onPress={() => setWork(e => !e)} />
           </RN.View>
           <RN.TouchableOpacity
             style={styles.soundList}

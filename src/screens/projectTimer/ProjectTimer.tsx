@@ -27,6 +27,7 @@ const ProjectTimer = () => {
     handleDeleteProjectTimer,
     getOneProjectTimer,
   } = useRootStore().projectTimer;
+  const data = useMemo(() => projectTimerList, [projectTimerList]);
 
   const navigation = useNavigation();
 
@@ -62,7 +63,7 @@ const ProjectTimer = () => {
       onSwipeableWillOpen={() => handleSwipe(item.id)}>
       <ProjectTimerItem
         onEnter={() => onGetOneProject(item)}
-        key={index}
+        key={item.workTime}
         play={item.play}
         day={item.date}
         time={item.time}
@@ -130,7 +131,7 @@ export default observer(ProjectTimer);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: windowHeight - windowHeight / 3.5,

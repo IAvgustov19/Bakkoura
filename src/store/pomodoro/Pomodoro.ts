@@ -98,6 +98,7 @@ export class PomodoroStore {
     setTimeout(() => {
       runInAction(() => {
         this.taskList = this.taskList.filter(item => item.id !== id);
+        this.clearState();
       });
     }, 200);
   };

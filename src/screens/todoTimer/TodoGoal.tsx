@@ -72,7 +72,7 @@ export default observer(TodoGoal);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: windowHeight - windowHeight / 5,

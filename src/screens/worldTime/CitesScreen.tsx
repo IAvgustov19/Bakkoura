@@ -15,6 +15,7 @@ const CitesScreen = () => {
   const navigation = useNavigation();
   const {worldData, filterWorldData, setCountry} =
     useRootStore().worldTimeStore;
+
   return (
     <LinearContainer
       children={
@@ -61,7 +62,7 @@ export default observer(CitesScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     paddingBottom: 30,
   },
   content: {},

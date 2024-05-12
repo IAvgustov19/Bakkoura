@@ -51,7 +51,7 @@ export default LanguageScreen;
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
   back: {
     flexDirection: 'row',

@@ -78,6 +78,7 @@ const AddTaskScreen = () => {
                     height={110}
                     paddingTop={15}
                     value={newTaskState.description}
+                    textAlignVertical={'top'}
                     onChangeText={e => setNewTaskState('description', e)}
                   />
                 </RN.View>
@@ -140,7 +141,7 @@ export default observer(AddTaskScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   scrollView: {
     height: windowHeight,

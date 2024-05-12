@@ -92,7 +92,7 @@ export default observer(Consultation);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     gap: 15,

@@ -6,14 +6,18 @@ import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
 import {windowHeight} from '../../../utils/styles';
+import CurrentDate from './CurrentDate';
 
 const HomeWatch24 = () => {
-  const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {homeCurrentTime, today} = useRootStore().homeClockStore;
 
   return (
     <RN.View style={styles.container}>
-      <RN.View style={styles.other}>
+      <RN.View style={styles.logo}>
         <Images.Svg.timerLogo />
+      </RN.View>
+      <RN.View style={styles.currentDate}>
+        <CurrentDate day={today.day} month={today.monthYear} />
       </RN.View>
       <RN.View style={styles.watchBox}>
         <RN.Image style={styles.watch} source={Images.Img.homeWatch24} />
@@ -32,16 +36,12 @@ const HomeWatch24 = () => {
             transform: `rotate(${homeCurrentTime.hour}deg)`,
           },
         ]}></RN.View>
-      {/* <RN.View
-        style={[
-          styles.extraTimeLine,
-          {transform: `rotate(${homeCurrentTime.extraTime}deg)`},
-        ]}></RN.View> */}
       <RN.View
         style={[
           styles.second60Line,
           {transform: `rotate(${homeCurrentTime.minut}deg)`},
         ]}></RN.View>
+      <RN.Text style={styles.minut60}>{`${homeCurrentTime.minut24}M`}</RN.Text>
     </RN.View>
   );
 };
@@ -63,10 +63,15 @@ const styles = RN.StyleSheet.create({
     height: '100%',
     objectFit: 'contain',
   },
-  other: {
+  logo: {
     position: 'absolute',
-    right: 10,
+    left: 10,
     top: 10,
+  },
+  currentDate: {
+    position: 'absolute',
+    right: 0,
+    top: -15,
   },
   lineMinut: {
     width: 1,
@@ -98,5 +103,11 @@ const styles = RN.StyleSheet.create({
     width: 1.5,
     bottom: '67.5%',
     transformOrigin: 'bottom',
+  },
+  minut60: {
+    position: 'absolute',
+    color: COLORS.red,
+    fontSize: 9,
+    bottom: '58%',
   },
 });

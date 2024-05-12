@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -17,10 +17,14 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import LinearGradient from 'react-native-linear-gradient';
 import {AlarmListsItemType} from '../../types/alarm';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
+import AlarmClock from './components/AlarmClock';
+import SwitchContain from '../../components/SwitchContain/SwitchContain';
 
 const AlarmScreen = () => {
   const {alarmsListData, handleInactiveAlarm, handleDeleteAlarm} =
     useRootStore().alarmStore;
+  const [isClock, setClock] = useState(true);
+  const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
 
   const renderLeftActions = (id: number) => {
@@ -76,9 +80,21 @@ const AlarmScreen = () => {
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             title="Alarm clock"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={
+              isClock ? (
+                <SwitchContain
+                  title="24h"
+                  _title="30h"
+                  back={is24h}
+                  handlePress={() => setIs24h(e => !e)}
+                />
+              ) : (
+                <Images.Svg.timerLogo />
+              )
+            }
           />
-          <RN.View style={styles.alarmsBox}>
+          <AlarmClock is24h={is24h} />
+          {/* <RN.View style={styles.alarmsBox}>
             <RN.View style={styles.flatList}>
               <FlatList
                 showsVerticalScrollIndicator={false}
@@ -99,7 +115,7 @@ const AlarmScreen = () => {
                 }
               />
             </RN.View>
-          </RN.View>
+          </RN.View> */}
         </RN.View>
       }
     />
@@ -110,7 +126,7 @@ export default observer(AlarmScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
   },
   flatList: {
     height: '85%',

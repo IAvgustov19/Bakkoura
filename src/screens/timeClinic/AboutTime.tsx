@@ -1,0 +1,68 @@
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useCallback} from 'react';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import RN from '../../components/RN';
+import {AboutTimeData, TimeClinicList} from '../../constants/timeClicic';
+import useRootStore from '../../hooks/useRootStore';
+import {APP_ROUTES} from '../../navigation/routes';
+import {windowHeight} from '../../utils/styles';
+import TimeClinicListItem from './components/TimeClinicListItem';
+
+const AboutTime = () => {
+  const navigation = useNavigation();
+  const {setAboutTimeInfo} = useRootStore().timeClinicStore;
+
+  const onHandleAboutTime = (id: number, navigate: string) => {
+    setAboutTimeInfo(id);
+    navigation.navigate(navigate as never);
+  };
+
+  const renderItem = useCallback(
+    ({item}) => {
+      return (
+        <TimeClinicListItem
+          title={item.title}
+          onPressItem={() => onHandleAboutTime(item.id, item.navigate)}
+        />
+      );
+    },
+    [AboutTimeData],
+  );
+
+  return (
+    <LinearContainer
+      children={
+        <RN.View style={styles.container}>
+          <HeaderContent
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            title="About Time"
+          />
+          <RN.View style={styles.content}>
+            <RN.FlatList
+              showsVerticalScrollIndicator={false}
+              style={styles.flatlist}
+              data={AboutTimeData}
+              renderItem={({item}) => renderItem({item})}
+            />
+          </RN.View>
+        </RN.View>
+      }
+    />
+  );
+};
+
+export default observer(AboutTime);
+
+const styles = RN.StyleSheet.create({
+  container: {
+    paddingHorizontal: 5,
+  },
+  content: {
+    gap: 5,
+    paddingBottom: windowHeight / 6,
+  },
+  flatlist: {},
+});
