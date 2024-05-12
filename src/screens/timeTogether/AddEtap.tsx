@@ -164,9 +164,8 @@ const styles = RN.StyleSheet.create({
     fontSize: 16,
   },
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     height: '100%',
-    // backgroundColor: 'red',
   },
   scrollView: {
     height: windowHeight,
@@ -198,7 +197,6 @@ const styles = RN.StyleSheet.create({
     fontSize: 16,
     width: 200,
     paddingVertical: 10,
-    // backgroundColor: COLORS.white,
   },
   line: {
     backgroundColor: '#131F28',

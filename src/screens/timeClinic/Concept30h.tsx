@@ -49,7 +49,7 @@ export default Concept30h;
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     paddingBottom: windowHeight / 8,

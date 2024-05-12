@@ -5,19 +5,24 @@ import {COLORS} from '../../../utils/colors';
 
 type Props = {
   onPress?: () => void;
-  day?: string;
-  date?: string;
-  info?: string;
+  time24?: string;
+  extraTime?: string;
+  time30?: string;
 };
 
-const AlarmNotification: React.FC<Props> = ({onPress, date, day, info}) => {
+const AlarmNotification: React.FC<Props> = ({
+  onPress,
+  time24,
+  extraTime,
+  time30,
+}) => {
   return (
     <RN.TouchableOpacity style={styles.container} onPress={onPress}>
       <Images.Svg.alarmNotificatiion />
       <RN.View style={styles.info}>
-        <RN.Text style={styles.day}>{day}</RN.Text>
-        <RN.Text style={styles.birthDay}>{info}</RN.Text>
-        <RN.Text style={styles.date}>{date}</RN.Text>
+        <RN.Text style={styles.time}>{time24}</RN.Text>
+        <RN.Text style={styles.extraTime}>{extraTime}</RN.Text>
+        <RN.Text style={styles.time}>{time30}</RN.Text>
       </RN.View>
     </RN.TouchableOpacity>
   );
@@ -37,20 +42,15 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     height: '100%',
-    paddingBottom: 20,
-    paddingLeft: 15,
   },
-  day: {
-    color: COLORS.white,
-    fontSize: 11,
-  },
-  birthDay: {
+  extraTime: {
     color: COLORS.yellow,
     textAlign: 'center',
     fontSize: 12,
   },
-  date: {
+  time: {
     color: COLORS.white,
-    fontSize: 11,
+    fontSize: 14,
+    textAlign: 'center',
   },
 });

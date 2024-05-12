@@ -6,6 +6,7 @@ import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {Lotties} from '../../../lotties/lottie';
+import {horizontalScale, moderateScale} from '../../../utils/dimensions';
 import {windowWidth} from '../../../utils/styles';
 
 type Props = {stop?: boolean; finished?: boolean};
@@ -17,13 +18,13 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
   const timeLottie = React.useMemo(() => {
     return (
       <LottieContent
-        autoPlay={!timerStatus.stop}
+        autoPlay={!timerStatus.stop || !timerStatus.finished}
         source={Lotties.timer}
         width={windowWidth - 10}
-        speed={timerStatus.stop ? 0 : 1}
+        speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
       />
     );
-  }, [timerStatus.stop]);
+  }, [timerStatus.stop, timerStatus.finished]);
 
   return (
     <RN.View style={styles.container}>
@@ -39,7 +40,7 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
           )}
         </RN.View>
         <RN.View style={styles.currentTimeBox}>
-          {finished ? (
+          {timerStatus.finished ? (
             <Images.Svg.bellGreen />
           ) : (
             <>
@@ -49,7 +50,9 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
           )}
         </RN.View>
         {stop ? <RN.Text style={styles.pausa}>pausa</RN.Text> : null}
-        {finished ? <RN.Text style={styles.pausa}>Time is over</RN.Text> : null}
+        {timerStatus.finished ? (
+          <RN.Text style={styles.pausa}>Time is over</RN.Text>
+        ) : null}
       </RN.View>
     </RN.View>
   );
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   duringTimer: {
-    fontSize: 70,
+    fontSize: horizontalScale(55),
     fontWeight: '300',
     color: '#fff',
     textAlign: 'center',
@@ -86,6 +89,7 @@ const styles = StyleSheet.create({
     color: '#4FE733',
     textAlign: 'center',
     marginTop: 10,
+    zIndex: 1,
   },
   currentTimeBox: {
     flexDirection: 'row',

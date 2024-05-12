@@ -6,13 +6,17 @@ import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
 import {windowHeight} from '../../../utils/styles';
+import CurrentDate from './CurrentDate';
 
 const HomeWatch30h24h = () => {
-  const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {homeCurrentTime, today} = useRootStore().homeClockStore;
   return (
     <RN.View style={styles.container}>
-      <RN.View style={styles.other}>
+      <RN.View style={styles.logo}>
         <Images.Svg.timerLogo />
+      </RN.View>
+      <RN.View style={styles.currentDate}>
+        <CurrentDate day={today.day} month={today.monthYear} />
       </RN.View>
       <RN.View style={styles.watchBox}>
         <RN.Image style={styles.watch} source={Images.Img.homeWatch24and30} />
@@ -46,8 +50,12 @@ const HomeWatch30h24h = () => {
       <RN.View
         style={[
           styles.second48Line,
-          {transform: `rotate(${homeCurrentTime.minut}deg)`},
+          {
+            transform: `rotate(${homeCurrentTime.minut30 * 7.5}deg)`,
+          },
         ]}></RN.View>
+      <RN.Text style={styles.minut48}>{`${homeCurrentTime.minut30}M`}</RN.Text>
+      <RN.Text style={styles.minut60}>{`${homeCurrentTime.minut24}M`}</RN.Text>
     </RN.View>
   );
 };
@@ -69,16 +77,20 @@ const styles = RN.StyleSheet.create({
     height: '100%',
     objectFit: 'contain',
   },
-  other: {
+  currentDate: {
     position: 'absolute',
-    right: 10,
+    right: 0,
+    top: -15,
+  },
+  logo: {
+    position: 'absolute',
+    left: 10,
     top: 10,
   },
   lineMinut: {
     width: 1,
     height: '70%',
     position: 'absolute',
-    top: '15%',
     transform: 'rotate(45deg)',
   },
   lineHour: {
@@ -92,6 +104,7 @@ const styles = RN.StyleSheet.create({
     left: '32%',
     bottom: '51%',
     transformOrigin: 'bottom',
+    zIndex: 1,
   },
   second60Line: {
     position: 'absolute',
@@ -99,6 +112,7 @@ const styles = RN.StyleSheet.create({
     height: 25,
     width: 1.5,
     bottom: '32.5%',
+    zIndex: 1,
     transformOrigin: 'bottom',
   },
   second48Line: {
@@ -108,5 +122,18 @@ const styles = RN.StyleSheet.create({
     width: 1.5,
     bottom: '69%',
     transformOrigin: 'bottom',
+    zIndex: 1,
+  },
+  minut48: {
+    position: 'absolute',
+    color: COLORS.blue,
+    fontSize: 9,
+    bottom: '60%',
+  },
+  minut60: {
+    position: 'absolute',
+    color: COLORS.red,
+    fontSize: 9,
+    bottom: '24%',
   },
 });

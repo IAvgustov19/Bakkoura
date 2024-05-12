@@ -11,6 +11,7 @@ import {PomodoroStore} from './pomodoro/Pomodoro';
 import {ProjectTimer} from './projectTimer/ProjectTimer';
 import {StopWatchStore} from './stopWatch/StopWatch';
 import {StressTestStore} from './stressTest/StressTest';
+import {TimeClinicStore} from './timeClinic/TimeClinic';
 import {TimerStore} from './timer/Timer';
 import {TodoTimerStore} from './todoTimer/ToDoTimer';
 import {TogetherTimeStore} from './togetherTime/TogethetTime';
@@ -34,6 +35,7 @@ export class RootStore {
   todoTimer: TodoTimerStore;
   homeClockStore: HomeClockStore;
   marketStore: MarketStore;
+  timeClinicStore: TimeClinicStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -53,6 +55,7 @@ export class RootStore {
     this.todoTimer = new TodoTimerStore();
     this.homeClockStore = new HomeClockStore();
     this.marketStore = new MarketStore();
+    this.timeClinicStore = new TimeClinicStore();
   }
 }
 const rootStore = new RootStore();

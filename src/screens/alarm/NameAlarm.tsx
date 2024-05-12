@@ -42,7 +42,7 @@ export default observer(NameAlarm);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   inputBox: {
     paddingHorizontal: 10,

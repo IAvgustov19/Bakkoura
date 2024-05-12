@@ -227,7 +227,7 @@ const styles = RN.StyleSheet.create({
     fontSize: 16,
   },
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     height: '100%',
   },
   scrollView: {},

@@ -105,7 +105,6 @@ const styles = RN.StyleSheet.create({
   },
   row: {
     width: '100%',
-    // gap: 30,
   },
   rowContainer: {
     width: '100%',

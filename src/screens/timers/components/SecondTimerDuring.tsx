@@ -36,7 +36,11 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
               width: `${timerStatus.back ? percentage : increasePercentage}%`,
               height: '100%',
             }}
-            colors={['#0a0909', '#0f3c07', '#21C004']}></LinearGradient>
+            colors={[
+              COLORS.black2,
+              COLORS.darkGreyText,
+              COLORS.lightGreen,
+            ]}></LinearGradient>
         </RN.View>
         <RN.View style={styles.timerTimeBox}>
           {timerStatus.finished ? (

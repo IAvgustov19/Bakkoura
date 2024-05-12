@@ -112,6 +112,5 @@ const styles = RN.StyleSheet.create({
     height: windowHeight - windowHeight / 4,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'red',
   },
 });

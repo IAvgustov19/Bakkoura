@@ -36,7 +36,7 @@ const ProjectTimerItem: React.FC<Props> = ({
           <Images.Svg.circleDollar />
           <RN.View style={styles.timerInfo}>
             <RN.Text style={styles.whiteText}>{name}</RN.Text>
-            <RN.Text style={styles.darkGreyText}>{description}</RN.Text>
+            <RN.Text style={styles.description}>{description}</RN.Text>
           </RN.View>
         </RN.View>
         <RN.View style={styles.rightBox}>
@@ -88,9 +88,16 @@ const styles = RN.StyleSheet.create({
   leftBox: {
     flexDirection: 'row',
     gap: 10,
+    maxWidth: '60%',
   },
   timerInfo: {
     gap: 5,
+    width: '90%',
+  },
+  description: {
+    color: COLORS.darkGreyText,
+    fontSize: 14,
+    width: '100%',
   },
   rightBox: {
     flexDirection: 'row',

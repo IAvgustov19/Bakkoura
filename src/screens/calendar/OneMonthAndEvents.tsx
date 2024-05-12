@@ -72,14 +72,12 @@ export default observer(OneMonthAndEvents);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     gap: 5,
     height: '100%',
     alignItems: 'center',
   },
-  calendar: {
-    // height: '50%',
-  },
+  calendar: {},
   calendarBox: {
     width: '100%',
     backgroundColor: 'transparent',
@@ -91,7 +89,6 @@ const styles = RN.StyleSheet.create({
   events: {
     width: '100%',
     maxHeight: '20%',
-    // paddingBottom: 50,
   },
   createBtn: {
     position: 'absolute',
@@ -99,6 +96,5 @@ const styles = RN.StyleSheet.create({
     bottom: 5,
     justifyContent: 'center',
     width: '100%',
-    // backgroundColor: 'red',
   },
 });

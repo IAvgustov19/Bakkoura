@@ -12,10 +12,15 @@ import HomeWatch30h24h from './components/HomeWatch30and24';
 import useRootStore from '../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import {windowHeight} from '../../utils/styles';
-import {COLORS} from '../../utils/colors';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
-import firestore from '@react-native-firebase/firestore';
+import CurrentDate from './components/CurrentDate';
+import TodayEvent from './components/TodayEvent';
+import Animated, {
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 
 const HomeScreen = () => {
   // function getDate() {
@@ -86,17 +91,15 @@ const HomeScreen = () => {
               />
               <RN.View>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
-                <RN.View style={styles.todayBox}>
-                  <RN.Text style={styles.day}>{today.day}</RN.Text>
-                  <RN.Text style={styles.monthYear}>{today.monthYear}</RN.Text>
-                  <RN.View style={styles.dateLine}>
-                    <Images.Svg.dateBottomLine />
-                  </RN.View>
-                </RN.View>
-                <AlarmNotification
+                <TodayEvent
                   day={nearDay?.day}
-                  info={nearDay?.name}
-                  date={`${nearDay?.date}`}
+                  title={nearDay?.name}
+                  date={nearDay?.date}
+                />
+                <AlarmNotification
+                  time24={homeCurrentTime.time24}
+                  time30={homeCurrentTime.time30}
+                  extraTime={homeCurrentTime.timeExtra as never}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.EVENTS_SCREEN as never)
                   }
@@ -117,7 +120,7 @@ export default observer(HomeScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: windowHeight - windowHeight / 3.3,
@@ -137,21 +140,6 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     top: -40,
     width: '100%',
-  },
-  todayBox: {
-    alignItems: 'center',
-  },
-  day: {
-    fontSize: 30,
-    color: COLORS.yellow,
-    textAlign: 'center',
-  },
-  monthYear: {
-    fontSize: 14,
-    color: COLORS.yellow,
-  },
-  dateLine: {
-    marginTop: 5,
   },
   watchBox: {
     height: '90%',

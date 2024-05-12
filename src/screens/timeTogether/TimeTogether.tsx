@@ -120,11 +120,10 @@ export default observer(TimeTogether);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: windowHeight - windowHeight / 4,
-    // backgroundColor: 'red',
   },
   coupleBox: {
     height: windowHeight - windowHeight / 1.8,
@@ -137,7 +136,6 @@ const styles = RN.StyleSheet.create({
   },
   coupleInfo: {
     height: '100%',
-    // gap: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -174,7 +172,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 12,
-    // backgroundColor: 'red',
   },
   etapType: {
     fontSize: 18,

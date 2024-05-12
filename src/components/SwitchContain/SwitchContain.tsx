@@ -6,6 +6,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import {COLORS} from '../../utils/colors';
 import RN from '../RN';
 type Props = {
   title?: string;
@@ -64,6 +65,7 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     width: 'auto',
+    color: COLORS.black,
   },
   linear: {
     paddingHorizontal: 10,

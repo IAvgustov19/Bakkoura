@@ -1,5 +1,5 @@
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import {Images} from '../../assets';
@@ -26,8 +26,15 @@ const Metronom = () => {
     isPlaying,
     clearState,
     setEtapCount,
+    soundInterval,
+    stopSound,
+    playSound,
   } = useRootStore().metronomStore;
   const [one, isOne] = useState(true);
+
+  const SetEtap = (id: number) => {
+    setEtapCount(id);
+  };
 
   const renderCount = useCallback(() => {
     return etapCountData.map((item, index) => {
@@ -36,7 +43,7 @@ const Metronom = () => {
           key={index}
           number={`${item.id}`}
           isActive={item.id === metronomState.etapCount}
-          onPress={() => setEtapCount(item.id)}
+          onPress={() => SetEtap(item.id)}
         />
       );
     });
@@ -46,7 +53,7 @@ const Metronom = () => {
 
   const AddEtap = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({x: windowWidth / 2.5, animated: true});
+      scrollViewRef.current.scrollTo({x: windowWidth / 2.4, animated: true});
     }
   };
   const RemoveEtap = () => {
@@ -54,6 +61,27 @@ const Metronom = () => {
       scrollViewRef.current.scrollTo({x: 0, animated: true});
     }
   };
+
+  const OneWithoutSound = useMemo(() => {
+    return (
+      <SimpleSwitch
+        key={metronomState.oneWithoutSound as never}
+        active={metronomState.oneWithoutSound}
+        handlePress={() =>
+          setMetronomState('oneWithoutSound', !metronomState.oneWithoutSound)
+        }
+      />
+    );
+  }, [metronomState.oneWithoutSound]);
+
+  const changeEtap = (key: string) => {
+    setMetronomCountMinut(key);
+    stopSound();
+  };
+
+  useEffect(() => {
+    playSound();
+  }, [metronomState.beatCount]);
 
   return (
     <LinearContainer
@@ -89,16 +117,16 @@ const Metronom = () => {
                   <RN.View style={styles.child}>
                     <FirstMetronom
                       countMinut={metronomState.countMinut}
-                      addCount={() => setMetronomCountMinut('add')}
-                      removeCount={() => setMetronomCountMinut('remove')}
+                      addCount={() => changeEtap('add')}
+                      removeCount={() => changeEtap('remove')}
                       etap={metronomState.etap}
                     />
                   </RN.View>
                   <RN.View style={[styles.child]}>
                     <SecondMetronom
                       countMinut={metronomState.countMinut}
-                      addCount={() => setMetronomCountMinut('add')}
-                      removeCount={() => setMetronomCountMinut('remove')}
+                      addCount={() => changeEtap('add')}
+                      removeCount={() => changeEtap('remove')}
                       etap={metronomState.etap}
                     />
                   </RN.View>
@@ -111,21 +139,13 @@ const Metronom = () => {
                   />
                   <StartBtn
                     primary
-                    text={isPlaying ? 'Pausa' : 'Start'}
+                    text={isPlaying ? 'Stop' : 'Start'}
                     onPress={playPause}
                   />
                 </RN.View>
               </RN.View>
               <RN.View style={styles.typeBox}>
-                <SimpleSwitch
-                  active={metronomState.oneWithoutSound}
-                  handlePress={() =>
-                    setMetronomState(
-                      'oneWithoutSound',
-                      metronomState.oneWithoutSound ? false : true,
-                    )
-                  }
-                />
+                {OneWithoutSound}
                 <TextView text={'1 bar with sound and 1 bar without sound'} />
               </RN.View>
               <RN.View style={styles.bottomBox}>
@@ -156,7 +176,7 @@ export default observer(Metronom);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: windowHeight - windowHeight / 4,

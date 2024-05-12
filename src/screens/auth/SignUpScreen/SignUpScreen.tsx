@@ -85,12 +85,11 @@ export default SignUpScreen;
 const styles = StyleSheet.create({
   scrollView: {},
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     height: WINDOW_HEIGHT - 40,
   },
   content: {
     height: windowHeight - windowHeight / 6,
-    // backgroundColor: 'red',
   },
   formBox: {
     alignItems: 'flex-start',

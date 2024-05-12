@@ -80,7 +80,7 @@ export default observer(StressTestDuring);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: '90%',
@@ -97,8 +97,6 @@ const styles = RN.StyleSheet.create({
   },
   timeBox: {
     width: '100%',
-    // backgroundColor: 'red',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   panda: {},

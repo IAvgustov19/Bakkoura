@@ -138,7 +138,7 @@ export default observer(NewAlarmScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
     height: '100%',
   },
   content: {

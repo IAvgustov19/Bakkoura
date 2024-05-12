@@ -63,7 +63,7 @@ export default observer(NewProjectTimerPrice);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   priceBox: {
     justifyContent: 'center',
