@@ -14,13 +14,7 @@ import {observer} from 'mobx-react-lite';
 import {windowHeight} from '../../utils/styles';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
-import CurrentDate from './components/CurrentDate';
 import TodayEvent from './components/TodayEvent';
-import Animated, {
-  useSharedValue,
-  withDelay,
-  withTiming,
-} from 'react-native-reanimated';
 
 const HomeScreen = () => {
   // function getDate() {

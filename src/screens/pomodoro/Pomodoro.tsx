@@ -84,6 +84,7 @@ const Pomodoro = () => {
                   {BreakData.map((item, index) => {
                     return (
                       <OutlineBtn
+                        Width={'30%'}
                         key={index}
                         text={item.title}
                         textColor={
@@ -121,7 +122,7 @@ const Pomodoro = () => {
                   <RN.View style={styles.btnsBox}>
                     <StartBtn text="Stop" onPress={stopCurrentPomodoro} />
                     <StartBtn
-                      text={isStartCurrent ? 'Pausa' : 'Start'}
+                      text={isStartCurrent ? 'Pause' : 'Start'}
                       primary
                       onPress={startCurrentPomodoro}
                     />

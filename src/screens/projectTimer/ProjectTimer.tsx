@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import RN from '../../components/RN';
 import {StyleSheet} from 'react-native';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -16,6 +16,7 @@ import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {COLORS} from '../../utils/colors';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import {IosAndroidHeight, windowHeight} from '../../utils/styles';
+import ButtonComp from '../../components/Button/Button';
 
 const ProjectTimer = () => {
   const [play, setPlay] = useState(false);
@@ -27,7 +28,7 @@ const ProjectTimer = () => {
     handleDeleteProjectTimer,
     getOneProjectTimer,
   } = useRootStore().projectTimer;
-  const data = useMemo(() => projectTimerList, [projectTimerList]);
+  console.log(projectTimerList);
 
   const navigation = useNavigation();
 
@@ -56,24 +57,26 @@ const ProjectTimer = () => {
     handleDeleteProjectTimer(id);
   };
 
-  const renderProjects = ({item, index}) => (
-    <Swipeable
-      key={index}
-      renderRightActions={() => renderLeftActions(item.id)}
-      onSwipeableWillOpen={() => handleSwipe(item.id)}>
-      <ProjectTimerItem
-        onEnter={() => onGetOneProject(item)}
-        key={item.workTime}
-        play={item.play}
-        day={item.date}
-        time={item.time}
-        name={item.title}
-        description={item.description}
-        workTime={item.workTime}
-        onPlay={() => onPlayHandle(index)}
-      />
-    </Swipeable>
-  );
+  const RenderProjects = memo(({item, index}: {item: any; index: number}) => {
+    return (
+      <Swipeable
+        key={index}
+        renderRightActions={() => renderLeftActions(item.id)}
+        onSwipeableWillOpen={() => handleSwipe(item.id)}>
+        <ProjectTimerItem
+          onEnter={() => onGetOneProject(item)}
+          key={item.workTime}
+          play={item.play}
+          day={item.date}
+          time={item.time}
+          name={item.title}
+          description={item.description}
+          workTime={item.workTime}
+          onPlay={() => onPlayHandle(index)}
+        />
+      </Swipeable>
+    );
+  });
 
   const onCalculate = () => {
     if (projectTimerList.length) {
@@ -89,7 +92,14 @@ const ProjectTimer = () => {
           <HeaderContent
             title="Project Timer"
             leftItem={<Images.Svg.btsRightLinear />}
-            rightItem={<SwitchBtn title="Calculate" onPress={onCalculate} />}
+            rightItem={
+              <ButtonComp
+                width={90}
+                title="Calculate"
+                onPress={onCalculate}
+                paddingVertical={8}
+              />
+            }
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.projects}>
@@ -104,7 +114,9 @@ const ProjectTimer = () => {
                     <ListEmptyComp title="No project timer yet" />
                   }
                   data={projectTimerList}
-                  renderItem={renderProjects}
+                  renderItem={({item, index}) => (
+                    <RenderProjects item={item} index={index} />
+                  )}
                 />
               </RN.View>
             </RN.View>

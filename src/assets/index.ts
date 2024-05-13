@@ -105,6 +105,7 @@ import alarmClockFront24 from './svg/alarmClockFront24.svg';
 import aboutTimeLine from './svg/aboutTimeLine.svg';
 import francVila from './svg/francVila.svg';
 import alarmClockBang from './svg/alarmClockBang.svg';
+import btnAddIcon from './svg/btnAddIcon.svg';
 
 export const Images = {
   Svg: {
@@ -218,6 +219,7 @@ export const Images = {
     aboutTimeLine,
     francVila,
     alarmClockBang,
+    btnAddIcon,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

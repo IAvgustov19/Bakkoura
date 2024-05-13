@@ -54,7 +54,7 @@ const OneMonthAndEvents = () => {
           </RN.View>
           <RN.View style={styles.createBtn}>
             <StartBtn
-              text="+"
+              icon={<Images.Svg.btnAddIcon />}
               elWidth={55}
               subWidth={70}
               primary
@@ -88,7 +88,7 @@ const styles = RN.StyleSheet.create({
   },
   events: {
     width: '100%',
-    maxHeight: '20%',
+    maxHeight: '40%',
   },
   createBtn: {
     position: 'absolute',
