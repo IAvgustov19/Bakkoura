@@ -19,6 +19,8 @@ import {AlarmListsItemType} from '../../types/alarm';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import AlarmClock from './components/AlarmClock';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
+import ListFooter from '../../components/ListFooter/ListFooter';
+import {windowHeight} from '../../utils/styles';
 
 const AlarmScreen = () => {
   const {alarmsListData, handleInactiveAlarm, handleDeleteAlarm} =
@@ -73,6 +75,38 @@ const AlarmScreen = () => {
     );
   };
 
+  const renderClock = useCallback(() => {
+    if (isClock) {
+      return <AlarmClock is24h={is24h} />;
+    } else {
+      return (
+        <RN.View style={styles.alarmsBox}>
+          <RN.View style={styles.flatList}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={<ListEmptyComp title="No Alarm yet" />}
+              data={alarmsListData}
+              renderItem={renderItem}
+              ListFooterComponent={<ListFooter />}
+            />
+          </RN.View>
+          <RN.View style={styles.btnBox}>
+            <StartBtn
+              subWidth={70}
+              elWidth={55}
+              primary
+              text="+"
+              textSize={30}
+              onPress={() =>
+                navigation.navigate(APP_ROUTES.NEW_ALARM_SCREEN as never)
+              }
+            />
+          </RN.View>
+        </RN.View>
+      );
+    }
+  }, [isClock, is24h, alarmsListData]);
+
   return (
     <LinearContainer
       children={
@@ -93,29 +127,10 @@ const AlarmScreen = () => {
               )
             }
           />
-          <AlarmClock is24h={is24h} />
-          {/* <RN.View style={styles.alarmsBox}>
-            <RN.View style={styles.flatList}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={<ListEmptyComp title="No Alarm yet" />}
-                data={alarmsListData}
-                renderItem={renderItem}
-              />
-            </RN.View>
-            <RN.View>
-              <StartBtn
-                subWidth={70}
-                elWidth={55}
-                primary
-                text="+"
-                textSize={30}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.NEW_ALARM_SCREEN as never)
-                }
-              />
-            </RN.View>
-          </RN.View> */}
+          <RN.TouchableOpacity onPress={() => setClock(e => !e)}>
+            <Images.Svg.dotOpenBar />
+          </RN.TouchableOpacity>
+          {renderClock()}
         </RN.View>
       }
     />
@@ -129,7 +144,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   flatList: {
-    height: '85%',
+    height: '100%',
   },
   rightAction: {
     backgroundColor: COLORS.darkRed,
@@ -142,7 +157,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 15,
   },
   alarmsBox: {
-    height: '83%',
+    height: windowHeight - windowHeight / 6,
     justifyContent: 'space-between',
   },
   itemContainer: {
@@ -165,5 +180,11 @@ const styles = RN.StyleSheet.create({
   },
   desc: {
     textAlign: 'left',
+  },
+  btnBox: {
+    alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
+    bottom: 110,
   },
 });

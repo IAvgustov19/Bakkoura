@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {Switch} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
@@ -57,7 +57,10 @@ const NewEventScreen = () => {
             title="New Event"
             rightItem={<Cancel onClose={onHandleGoBack} />}
           />
-          <RN.ScrollView style={styles.scrollView}>
+          <RN.ScrollView
+            style={styles.scrollView}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <RN.View>
                 <RN.View style={styles.eventsTypeList}>
@@ -151,27 +154,23 @@ const NewEventScreen = () => {
                     onPress={() => setSound(true)}
                   />
                 </RN.View>
-                <KeyboardAvoidingView
-                  children={
-                    <RN.View style={styles.eventsTypeList}>
-                      <RN.View style={styles.listItem}>
-                        <TextInput
-                          multiline={true}
-                          onChangeText={e =>
-                            setNewEventState('comment', e as never)
-                          }
-                          style={[
-                            styles.listItemTextInput,
-                            {paddingTop: RN.Platform.OS === 'ios' ? 16 : 0},
-                          ]}
-                          placeholderTextColor={COLORS.grey}
-                          placeholder="Coment"
-                          value={newEventData.comment}
-                        />
-                      </RN.View>
-                    </RN.View>
-                  }
-                />
+                <RN.View style={styles.eventsTypeList}>
+                  <RN.View style={styles.listItem}>
+                    <TextInput
+                      multiline={true}
+                      onChangeText={e =>
+                        setNewEventState('comment', e as never)
+                      }
+                      style={[
+                        styles.listItemTextInput,
+                        {paddingTop: RN.Platform.OS === 'ios' ? 16 : 0},
+                      ]}
+                      placeholderTextColor={COLORS.grey}
+                      placeholder="Coment"
+                      value={newEventData.comment}
+                    />
+                  </RN.View>
+                </RN.View>
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn
@@ -228,9 +227,10 @@ const styles = RN.StyleSheet.create({
   },
   container: {
     paddingHorizontal: 5,
-    height: '100%',
   },
-  scrollView: {},
+  scrollView: {
+    height: windowHeight - 100,
+  },
   content: {
     justifyContent: 'space-between',
     height: windowHeight - windowHeight / 6,

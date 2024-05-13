@@ -73,7 +73,7 @@ export default observer(AlarmClock);
 
 const styles = StyleSheet.create({
   container: {
-    height: windowHeight - 110,
+    height: windowHeight - 130,
     justifyContent: 'space-between',
   },
   btnBox: {

@@ -16,6 +16,7 @@ type Props = {
   icon?: any;
   outline?: boolean;
   width?: DimensionValue;
+  paddingVertical?: number;
 };
 
 const ButtonComp: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const ButtonComp: React.FC<Props> = ({
   icon,
   outline,
   width,
+  paddingVertical,
 }) => {
   return (
     <LinearGradient
@@ -35,7 +37,16 @@ const ButtonComp: React.FC<Props> = ({
         },
       ]}
       colors={outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            paddingVertical: paddingVertical
+              ? paddingVertical
+              : verticalScale(10),
+          },
+        ]}
+        onPress={onPress}>
         <Text
           style={[
             styles.title,
@@ -65,8 +76,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    paddingVertical: verticalScale(10),
-    // backgroundColor: 'red',
   },
   title: {
     fontSize: 18,

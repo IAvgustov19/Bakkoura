@@ -20,6 +20,9 @@ export const COLORS = {
   linearRed: '#F20000',
   inActiveYellow: '#C29E57',
   darkGreen: '#0f3c07',
+  listGreen: '#008E63',
+  listDarkGreen: '#083C2C',
+  listCenterGreen: '#04694A',
 };
 
 export const SelectColorData = [

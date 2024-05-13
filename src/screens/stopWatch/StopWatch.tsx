@@ -60,7 +60,7 @@ const StopWatch = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="Stop Watch"
+            title="StopWatch"
             rightItem={<Images.Svg.timerLogo />}
           />
           <RN.View
@@ -102,7 +102,7 @@ const StopWatch = () => {
               ) : (
                 <RN.View style={[styles.child, styles.childTwo]}>
                   <RN.Text style={styles.text}>{maindis}</RN.Text>
-                  {stop ? <RN.Text style={styles.pausa}>Pausa</RN.Text> : null}
+                  {stop ? <RN.Text style={styles.pausa}>Pause</RN.Text> : null}
                 </RN.View>
               )}
             </RN.View>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(50),
     fontWeight: '100',
     width: '100%',
-    paddingLeft: '7%',
+    paddingLeft: '10%',
   },
 
   changeBtn: {

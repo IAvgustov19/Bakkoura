@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     paddingBottom: 12,
     color: '#cac9c9',
-    fontSize: 14,
+    fontSize: 12,
     right: 0,
   },
 });

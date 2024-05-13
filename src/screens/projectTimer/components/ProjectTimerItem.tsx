@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import RN from '../../../components/RN';
 import {Images} from '../../../assets/index';
 import {COLORS} from '../../../utils/colors';
 import {observer} from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   name?: string;
@@ -25,6 +26,16 @@ const ProjectTimerItem: React.FC<Props> = ({
   onPlay,
   onEnter,
 }) => {
+  const {projectTimerList} = useRootStore().projectTimer;
+  const renderWorkTime = useCallback(() => {
+    return (
+      <RN.Text
+        style={[styles.whiteText, {color: play ? COLORS.blue : COLORS.white}]}>
+        {workTime}
+      </RN.Text>
+    );
+  }, [projectTimerList]);
+
   return (
     <RN.Pressable onPress={onEnter} style={styles.container}>
       <RN.View style={styles.header}>
@@ -40,13 +51,7 @@ const ProjectTimerItem: React.FC<Props> = ({
           </RN.View>
         </RN.View>
         <RN.View style={styles.rightBox}>
-          <RN.Text
-            style={[
-              styles.whiteText,
-              {color: play ? COLORS.blue : COLORS.white},
-            ]}>
-            {workTime}
-          </RN.Text>
+          {renderWorkTime()}
           {play ? (
             <RN.TouchableOpacity onPress={onPlay}>
               <Images.Svg.play />
@@ -88,7 +93,7 @@ const styles = RN.StyleSheet.create({
   leftBox: {
     flexDirection: 'row',
     gap: 10,
-    maxWidth: '60%',
+    maxWidth: '55%',
   },
   timerInfo: {
     gap: 5,

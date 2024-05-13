@@ -171,7 +171,7 @@ const styles = RN.StyleSheet.create({
   activeDate: {
     backgroundColor: COLORS.yellow,
     color: COLORS.black,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   inActiveDate: {},
   dateText: {

@@ -49,7 +49,7 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
             </>
           )}
         </RN.View>
-        {stop ? <RN.Text style={styles.pausa}>pausa</RN.Text> : null}
+        {stop ? <RN.Text style={styles.pausa}>pause</RN.Text> : null}
         {timerStatus.finished ? (
           <RN.Text style={styles.pausa}>Time is over</RN.Text>
         ) : null}
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     zIndex: 1,
+    fontSize: 16,
   },
   currentTimeBox: {
     flexDirection: 'row',
