@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -17,10 +17,16 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import LinearGradient from 'react-native-linear-gradient';
 import {AlarmListsItemType} from '../../types/alarm';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
+import AlarmClock from './components/AlarmClock';
+import SwitchContain from '../../components/SwitchContain/SwitchContain';
+import ListFooter from '../../components/ListFooter/ListFooter';
+import {windowHeight} from '../../utils/styles';
 
 const AlarmScreen = () => {
   const {alarmsListData, handleInactiveAlarm, handleDeleteAlarm} =
     useRootStore().alarmStore;
+  const [isClock, setClock] = useState(true);
+  const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
 
   const renderLeftActions = (id: number) => {
@@ -69,6 +75,38 @@ const AlarmScreen = () => {
     );
   };
 
+  const renderClock = useCallback(() => {
+    if (isClock) {
+      return <AlarmClock is24h={is24h} />;
+    } else {
+      return (
+        <RN.View style={styles.alarmsBox}>
+          <RN.View style={styles.flatList}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={<ListEmptyComp title="No Alarm yet" />}
+              data={alarmsListData}
+              renderItem={renderItem}
+              ListFooterComponent={<ListFooter />}
+            />
+          </RN.View>
+          <RN.View style={styles.btnBox}>
+            <StartBtn
+              subWidth={70}
+              elWidth={55}
+              primary
+              text="+"
+              textSize={30}
+              onPress={() =>
+                navigation.navigate(APP_ROUTES.NEW_ALARM_SCREEN as never)
+              }
+            />
+          </RN.View>
+        </RN.View>
+      );
+    }
+  }, [isClock, is24h, alarmsListData]);
+
   return (
     <LinearContainer
       children={
@@ -76,30 +114,23 @@ const AlarmScreen = () => {
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             title="Alarm clock"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={
+              isClock ? (
+                <SwitchContain
+                  title="24h"
+                  _title="30h"
+                  back={is24h}
+                  handlePress={() => setIs24h(e => !e)}
+                />
+              ) : (
+                <Images.Svg.timerLogo />
+              )
+            }
           />
-          <RN.View style={styles.alarmsBox}>
-            <RN.View style={styles.flatList}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={<ListEmptyComp title="No Alarm yet" />}
-                data={alarmsListData}
-                renderItem={renderItem}
-              />
-            </RN.View>
-            <RN.View>
-              <StartBtn
-                subWidth={70}
-                elWidth={55}
-                primary
-                text="+"
-                textSize={30}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.NEW_ALARM_SCREEN as never)
-                }
-              />
-            </RN.View>
-          </RN.View>
+          <RN.TouchableOpacity onPress={() => setClock(e => !e)}>
+            <Images.Svg.dotOpenBar />
+          </RN.TouchableOpacity>
+          {renderClock()}
         </RN.View>
       }
     />
@@ -110,10 +141,10 @@ export default observer(AlarmScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 5,
   },
   flatList: {
-    height: '85%',
+    height: '100%',
   },
   rightAction: {
     backgroundColor: COLORS.darkRed,
@@ -126,7 +157,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 15,
   },
   alarmsBox: {
-    height: '83%',
+    height: windowHeight - windowHeight / 6,
     justifyContent: 'space-between',
   },
   itemContainer: {
@@ -149,5 +180,11 @@ const styles = RN.StyleSheet.create({
   },
   desc: {
     textAlign: 'left',
+  },
+  btnBox: {
+    alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
+    bottom: 110,
   },
 });

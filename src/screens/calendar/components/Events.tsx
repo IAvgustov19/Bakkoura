@@ -6,6 +6,7 @@ import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Images} from '../../../assets';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ListEmptyComp from '../../../components/ListEmptyComp/ListEmtyComp';
+import ListFooter from '../../../components/ListFooter/ListFooter';
 import RN from '../../../components/RN';
 import {formattedDate} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
@@ -27,6 +28,7 @@ const Events: React.FC<Props> = ({
 }) => {
   const {allEventsData, secondsToHMS, getOneEvent, handleDeleteEvent} =
     useRootStore().calendarStore;
+
   const navigation = useNavigation();
   
   const [isFinished, setIsFinished] = useState<boolean[]>([]);
@@ -78,6 +80,7 @@ const Events: React.FC<Props> = ({
             isShowDate={isShowDate}
             borderRadius={borderRaduis}
             leftLine={leftLine}
+            already={item.already}
             date={formattedDate(item.day, item.month, item.year, 2)}
             finished={isFinished[index]}
             time={`${item.stayedDay} days ${
@@ -100,6 +103,7 @@ const Events: React.FC<Props> = ({
           ListEmptyComponent={<ListEmptyComp title="No event yet" />}
           data={allEventsData}
           renderItem={renderItem}
+          ListFooterComponent={<ListFooter />}
         />
       </RN.View>
     </RN.View>
@@ -110,7 +114,7 @@ export default observer(Events);
 
 const styles = RN.StyleSheet.create({
   container: {
-    height: '85%',
+    height: '90%',
   },
   itemContainer: {},
   eventsTypeList: {

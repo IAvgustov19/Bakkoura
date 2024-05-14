@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Images} from '../../assets/index';
+import RN from '../RN';
 
 type componentNameProps = {
   text?: string;
@@ -10,11 +11,12 @@ type componentNameProps = {
   elWidth?: number | string;
   textSize?: string | any;
   color?: string;
+  icon?: React.ReactNode;
 };
 
 const StartBtn = (props: componentNameProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={props.onPress}>
+    <TouchableOpacity style={[styles.container]} onPress={props.onPress}>
       {props.primary ? (
         <>
           <Images.Svg.subtrack
@@ -38,6 +40,9 @@ const StartBtn = (props: componentNameProps) => {
           />
         </>
       )}
+      {props.icon ? (
+        <RN.View style={styles.addIcon}>{props.icon}</RN.View>
+      ) : null}
       <Text
         style={[
           props.primary ? styles.primaryText : styles.outlineText,
@@ -63,6 +68,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   ellipse: {},
+  addIcon: {
+    position: 'absolute',
+  },
   primaryText: {
     position: 'absolute',
     fontSize: 18,

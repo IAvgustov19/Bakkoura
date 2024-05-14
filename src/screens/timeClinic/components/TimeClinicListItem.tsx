@@ -26,8 +26,10 @@ const TimeClinicListItem: React.FC<Props> = ({
     <RN.Pressable style={styles.container} onPress={onPressItem}>
       <RN.View
         style={[styles.clinicItemLeft, {maxWidth: isBtn ? '55%' : '85%'}]}>
-        <TextView style={styles.title} title={title} />
-        <TextView text={text} style={styles.listInfo} />
+        <TextView style={styles.title} title={title} textAlign="left" />
+        {text ? (
+          <TextView text={text} style={styles.listInfo} textAlign="left" />
+        ) : null}
       </RN.View>
       <RN.View>
         {isBtn ? (

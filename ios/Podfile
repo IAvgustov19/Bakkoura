@@ -6,7 +6,7 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, 13.4
 prepare_react_native_project!
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
@@ -32,10 +32,7 @@ use_frameworks! :linkage => :static
 
 target 'bts' do
   config = use_native_modules!
-<<<<<<< HEAD
-
-<<<<<<< Updated upstream
-=======
+  
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
   pod 'Firebase', :modular_headers => true
@@ -44,12 +41,10 @@ target 'bts' do
   pod 'FirebaseFirestore', :modular_headers => true
 
 
->>>>>>> Stashed changes
-=======
   
   use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
->>>>>>> bakkoura-watch
+
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.

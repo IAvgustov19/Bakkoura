@@ -1,3 +1,5 @@
+import {ImageSourcePropType} from 'react-native';
+import {Images} from '../assets';
 import {APP_ROUTES} from '../navigation/routes';
 
 export const TimeManagementTexts = {
@@ -16,6 +18,42 @@ export type TimeClinicListType = {
   isbtn: boolean;
 };
 
+export type AboutTimeType = {
+  id: number;
+  title: string;
+  navigate: string;
+  info?: {
+    text: string;
+    author: string;
+  }[];
+};
+export const AboutTimeInitial = {
+  id: 0,
+  title: '',
+  navigate: '',
+  info: [
+    {
+      text: '',
+      author: '',
+    },
+  ],
+};
+
+export type TimeWealthDataType = {
+  id: number;
+  title: string;
+  navigate: string;
+  imageUrl: ImageSourcePropType;
+  texts: string[];
+};
+export const TimeWealthDataInitial: TimeWealthDataType = {
+  id: 0,
+  title: '',
+  navigate: '',
+  imageUrl: 0,
+  texts: [''],
+};
+
 export const TimeClinicList: TimeClinicListType[] = [
   {
     id: 1,
@@ -26,25 +64,212 @@ export const TimeClinicList: TimeClinicListType[] = [
   },
   {
     id: 2,
+    title: 'About Time',
+    info: 'Stories about the time...',
+    navigate: APP_ROUTES.ABOUT_TIME,
+    isbtn: false,
+  },
+  {
+    id: 3,
     title: 'The Book of The Time',
     info: 'Stories about the time...',
     navigate: APP_ROUTES.THE_BOOK,
     isbtn: false,
   },
   {
-    id: 3,
+    id: 4,
     title: '30H concept',
     info: 'Stories about the time...',
     navigate: APP_ROUTES.CONCEPT_30H,
     isbtn: false,
   },
   {
-    id: 4,
+    id: 5,
     title: 'Jihad Bakkoura',
     info: 'About the Founder...',
     navigate: APP_ROUTES.JIHAD_BAKKOURA_TIME_CLINIC,
     isbtn: false,
   },
+  {
+    id: 6,
+    title: 'Time Wealth',
+    info: 'Stories about the time...',
+    navigate: APP_ROUTES.TIME_WEALTH,
+    isbtn: false,
+  },
+  {
+    id: 7,
+    title: 'FrancVila Watch',
+    info: 'About the Founder....',
+    navigate: APP_ROUTES.FRANS_VILA,
+    isbtn: false,
+  },
+];
+
+export const AboutTimeData: AboutTimeType[] = [
+  {
+    id: 1,
+    title: 'Time and feelings',
+    navigate: APP_ROUTES.ABOUT_TIME_INFO,
+    info: [
+      {
+        text: 'Through love, time passes unnoticed, and through time, love passes unnoticed.',
+        author: '- Dorothy Parker',
+      },
+      {
+        text: 'Time strengthens friendship but weakens love',
+        author: '- Albert Einstein',
+      },
+      {
+        text: 'If love kills time, then time takes revenge and kills love.',
+        author: '- Margaret Thatcher',
+      },
+      {
+        text: 'When you sit next to a pretty girl, an hour seems like a minute, but when you sit on a hot griddle, a minute seems like an hour.',
+        author: '- Einstein',
+      },
+      {
+        text: 'We live by deeds, not years; in thought, not breath; by sensations, not numbers on a dial. We should count time by heartbeat. He who thinks the most, feels the noblest, acts the best lives the most.',
+        author: '- Aristotle',
+      },
+      {
+        text: 'Time cannot be stopped, but for the sake of love it sometimes stops.',
+        author: '- Pearl Buck',
+      },
+      {
+        text: 'The length of time depends on our mood. The dimensions of space are conditioned by our consciousness.',
+        author: '- Hong Zichen',
+      },
+      {
+        text: 'There is no time - life is so short - for squabbles, apologies, acrimony and calls to account. There is only time to love, and for that, so to speak, there is only a moment.',
+        author: '- Mark Twain',
+      },
+      {
+        text: 'True feeling will stand the test of time.',
+        author: '- Eric Segal',
+      },
+      {
+        text: 'There is a time to work, and there is a time to love. There is no other time.',
+        author: '- Coco Chanel',
+      },
+      {
+        text: 'Time spent with a woman cannot be called time lost.',
+        author: '- Andre Morois',
+      },
+      {
+        text: 'Time soothes, time clarifies, no mood can remain unchanged for hours on end.',
+        author: '- Thomas Mann',
+      },
+      {
+        text: 'Time does not pass in vain or roll on without any effect on our senses: it does marvelous things in the soul.',
+        author: '- Juan Trippe',
+      },
+      {
+        text: "Time cures love's longing.",
+        author: '- Ovid',
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Philosophical quotes',
+    navigate: APP_ROUTES.ABOUT_TIME_INFO,
+    info: [
+      {
+        text: 'Time is a storm in which we are all lost.',
+        author: '- William Carlos Williams',
+      },
+      {
+        text: 'There are no secrets that time does not reveal.',
+        author: '- Jean Racine',
+      },
+      {
+        text: 'The present tense has one advantage over all others - it is our own.',
+        author: '- Charles Colton',
+      },
+      {
+        text: 'Time is like a child led by the hand: looking backward....',
+        author: '- Julio Cortázar',
+      },
+      {
+        text: "The timing is always important. If it's too early, no one will understand. If it's too late, everyone will forget.",
+        author: '- Anna Wintour',
+      },
+      {
+        text: 'Time has the great power of giving everything legitimacy - even in the realm of morality.',
+        author: '- Henry Louis Mencken',
+      },
+      {
+        text: 'The two strongest warriors are patience and time.',
+        author: '- Leo Tolstoy',
+      },
+      {
+        text: 'Time is the test of all inclinations, all feelings, all connections.....',
+        author: '- Vissarion Belinsky',
+      },
+      {
+        text: 'I never think about the future: it comes quickly enough as it is.',
+        author: '- Albert Einstein',
+      },
+      {
+        text: 'Time is a great healer, but a bad beautician.',
+        author: '- Lucille S Harperer',
+      },
+      {
+        text: 'Time is plentiful, but it cannot be spared.',
+        author: '- Charles W. Chesnutt',
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Time and people',
+    navigate: APP_ROUTES.ABOUT_TIME_INFO,
+    info: [
+      {
+        text: 'Time, which changes people, does not change the way we think of them.',
+        author: '- Marcel Proust',
+      },
+      {
+        text: 'There is only one thing more valuable than our time, and that is who we spend it on.',
+        author: '- Christopher Leo',
+      },
+      {
+        text: 'How we spend our time determines who we are.',
+        author: '- Jonathan Estrin',
+      },
+    ],
+  },
+  // {
+  //   id: 4,
+  //   title: 'Time Immutability Quotes',
+  //   navigate: APP_ROUTES.ABOUT_TIME_INFO,
+  // },
+  // {
+  //   id: 5,
+  //   title: 'Time and wisdom',
+  //   navigate: APP_ROUTES.ABOUT_TIME_INFO,
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Time and the life flow',
+  //   navigate: APP_ROUTES.ABOUT_TIME_INFO,
+  // },
+  // {
+  //   id: 7,
+  //   title: 'Time and happines',
+  //   navigate: APP_ROUTES.ABOUT_TIME_INFO,
+  // },
+  // {
+  //   id: 8,
+  //   title: 'Time and business',
+  //   navigate: APP_ROUTES.ABOUT_TIME_INFO,
+  // },
+  // {
+  //   id: 9,
+  //   title: 'Motivational quotes',
+  //   navigate: APP_ROUTES.ABOUT_TIME_INFO,
+  // },
 ];
 
 export const TheBookTexts = [
@@ -132,6 +357,69 @@ export const JihadBakkouraTexts = [
     title: `Bakkoura family`,
     texts: [
       `Someone who looks like us is one of us.We strive to earn our existence`,
+    ],
+  },
+];
+
+export const FrancVillaTexts = {
+  id: 1,
+  title: `FrancVila`,
+  date: '07:08.2023 - Jihad Bakkoura',
+  image: Images.Svg.francVila,
+  texts: [
+    `oncept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. These timepieces live for everyone who has achieved success. And it doesn't matter who he is: an athlete, a politician, the head of a mafia clan, a star or an IT specialist. The company specializes in the production of all swiss watches with complications in super-limited series of 4, 8, 48 and 88 copies, which guarantees an exclusive high-tech design and a bright personality. The FRANC VILA watch is a mechanic created by a philosopher.`,
+    `Businessman, Poet, Designer, Creator Of Revolutionary Watch Concepts Of Time.Jihad Bakkoura Continues To Write A Story That Began In 2004 In Spain With No Less Passion And Imagination.He Has Come Up With An Exciting New Life For Each Model.`,
+    `A globally recognized independent all Swiss luxury watch brand. The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles. Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury».`,
+    `The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is completeness and individuality.`,
+    `A globally recognized independent all Swiss luxury watch brand.`,
+    `The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles.`,
+    `Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury».`,
+    `The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is completeness and individuality.`,
+    `A globally recognized independent all Swiss luxury watch brand.`,
+    `The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles`,
+    `Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury».`,
+  ],
+};
+
+export const TimeWealthData: TimeWealthDataType[] = [
+  {
+    id: 1,
+    imageUrl: Images.Img.tWCardImage,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Jihad Bakkura has dedicated 20 years to the luxury industry. First as a client, then as a distributor and finally as an owner and brand creator.',
+      ' He has spent part of his life in the East and part in the West: integrating the best of both cultures into his concepts and his projects.',
+    ],
+  },
+  {
+    id: 2,
+    imageUrl: Images.Img.tWCardImage1,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Jihad Bakkura has dedicated 20 years to the luxury industry. First as a client, then as a distributor and finally as an owner and brand creator.',
+      ' He has spent part of his life in the East and part in the West: integrating the best of both cultures into his concepts and his projects.',
+    ],
+  },
+  {
+    id: 3,
+    imageUrl: Images.Img.tWCardImage2,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Jihad Bakkura has dedicated 20 years to the luxury industry. First as a client, then as a distributor and finally as an owner and brand creator.',
+      ' He has spent part of his life in the East and part in the West: integrating the best of both cultures into his concepts and his projects.',
+    ],
+  },
+  {
+    id: 4,
+    imageUrl: Images.Img.tWCardImage3,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Jihad Bakkura has dedicated 20 years to the luxury industry. First as a client, then as a distributor and finally as an owner and brand creator.',
+      ' He has spent part of his life in the East and part in the West: integrating the best of both cultures into his concepts and his projects.',
     ],
   },
 ];

@@ -27,7 +27,7 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
-        {stop ? <RN.Text style={styles.pausa}>pausa</RN.Text> : null}
+        {stop ? <RN.Text style={styles.pausa}>pause</RN.Text> : null}
         <RN.View style={styles.timerPercentBox}>
           <LinearGradient
             start={{x: 0, y: 0}}
@@ -36,7 +36,11 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
               width: `${timerStatus.back ? percentage : increasePercentage}%`,
               height: '100%',
             }}
-            colors={['#0a0909', '#0f3c07', '#21C004']}></LinearGradient>
+            colors={[
+              COLORS.black2,
+              COLORS.darkGreyText,
+              COLORS.lightGreen,
+            ]}></LinearGradient>
         </RN.View>
         <RN.View style={styles.timerTimeBox}>
           {timerStatus.finished ? (
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
     top: 20,
     position: 'absolute',
     left: '45%',
+    fontSize: 16,
   },
   timerPercentBox: {
     width: '100%',

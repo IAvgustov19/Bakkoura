@@ -1,40 +1,29 @@
-import {
-  Canvas,
-  Circle,
-  Group,
-  Path,
-  PathProps,
-  Skia,
-} from '@shopify/react-native-skia';
+import {Canvas, Group, Path, PathProps, Skia} from '@shopify/react-native-skia';
 import {observer} from 'mobx-react-lite';
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect} from 'react';
 import {ImageSourcePropType, StyleSheet} from 'react-native';
 import {useSharedValue, withTiming} from 'react-native-reanimated';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
-import {windowHeight, windowWidth} from '../../../utils/styles';
+import {windowWidth} from '../../../utils/styles';
 
-const SIZE = 360;
-const STROKE_WIDTH = 12;
-const MARGIN = 15;
-const RADIUS = 130;
+const STROKE_WIDTH = 16;
+const RADIUS = 140;
+const xMargin =
+  windowWidth < 385
+    ? 35
+    : windowWidth > 415
+    ? windowWidth / 7
+    : windowWidth > 400
+    ? windowWidth / 7.5
+    : 45;
+const YMargin = 35;
 
 const path = Skia.Path.Make();
-let width =
-  windowHeight > 920
-    ? windowWidth / 9.5
-    : windowHeight > 850
-    ? windowWidth / 40
-    : windowWidth / 15;
 
-path.addCircle(
-  RADIUS + STROKE_WIDTH + MARGIN + width,
-  RADIUS + STROKE_WIDTH + MARGIN,
-  RADIUS,
-);
+path.addCircle(RADIUS + xMargin, RADIUS + YMargin, RADIUS);
 
 const basePathOption: PathProps = {
   path,
@@ -103,7 +92,8 @@ const Vertices: React.FC<VerticesType> = ({
               styles.hourLine,
               {
                 transform: `rotate(${
-                  Number(calendarCurrentTime.slice(0, 2)) * 30
+                  Number(calendarCurrentTime.slice(0, 2)) * 30 +
+                  Number(calendarCurrentTime.slice(3, 5)) / 2
                 }deg)`,
               },
             ]}></RN.View>
@@ -133,16 +123,14 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
   },
   bakkouraWatch: {
-    width: 320,
-    height: 315,
+    width: windowWidth - windowWidth / 12,
     objectFit: 'contain',
   },
   bakkouraWatchHours: {
     position: 'absolute',
     zIndex: 1,
-    width: 262,
+    width: 280,
     objectFit: 'contain',
-    height: 262,
   },
   canvasContainer: {
     flex: 1,

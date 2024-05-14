@@ -1,17 +1,21 @@
-import * as React from 'react';
+import React, {useMemo} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {Images} from '../../assets';
-import {COLORS} from '../../utils/colors';
-import RN from '../RN';
-import TextView from '../Text/Text';
+import {Images} from '../../../../assets';
+import {COLORS} from '../../../../utils/colors';
+import RN from '../../../../components/RN';
+import TextView from '../../../../components/Text/Text';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   hour?: number;
   minut?: number;
+  hour30?: number;
+  minut30?: number;
   time?: string;
   country?: string;
   weather?: string;
   date?: string;
+  is24?: boolean;
 };
 
 const WorldWatch: React.FC<Props> = ({
@@ -21,23 +25,33 @@ const WorldWatch: React.FC<Props> = ({
   minut,
   time,
   weather,
+  is24,
+  hour30,
+  minut30,
 }) => {
+  const renderClock = useMemo(() => {
+    return is24 ? <Images.Svg.worldWatch /> : <Images.Svg.worldWatch30 />;
+  }, [is24]);
+
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.watch}>
-        <Images.Svg.worldWatch />
+        {renderClock}
         <LinearGradient
           colors={['#ECC271', '#281F0E']}
           style={[
             styles.hourLine,
-
-            {transform: `rotate(${hour * 30 + minut / 2}deg)`},
+            {
+              transform: `rotate(${
+                is24 ? hour * 30 + minut / 2 : hour30 / 2
+              }deg)`,
+            },
           ]}></LinearGradient>
         <LinearGradient
           colors={['#E10000', '#792525', '#0152aa']}
           style={[
             styles.minutLine,
-            {transform: `rotate(${minut * 6}deg)`},
+            {transform: `rotate(${is24 ? minut * 6 : minut30 * 7.5}deg)`},
           ]}></LinearGradient>
       </RN.View>
       <RN.View style={styles.infoBox}>
@@ -49,7 +63,7 @@ const WorldWatch: React.FC<Props> = ({
   );
 };
 
-export default WorldWatch;
+export default observer(WorldWatch);
 
 const styles = RN.StyleSheet.create({
   container: {

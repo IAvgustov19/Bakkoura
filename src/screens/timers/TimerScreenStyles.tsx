@@ -53,6 +53,8 @@ export const styles = StyleSheet.create({
   },
   switchWork: {
     marginVertical: 20,
+    width: '100%',
+    alignItems: 'center',
   },
   soundList: {
     flexDirection: 'row',

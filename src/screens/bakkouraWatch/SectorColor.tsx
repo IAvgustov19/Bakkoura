@@ -58,7 +58,7 @@ export default observer(SectorColor);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     justifyContent: 'space-between',

@@ -1,12 +1,14 @@
 export const COLORS = {
   white: '#fff',
   black: '#0D0D0D',
+  black2: '#0a0909',
   blue: '#007AFF',
   transparent: 'transparent',
   grey: '#979DA2',
   yellow: '#ECC271',
   red: '#F20000',
   green: '#21C004',
+  lightGreen: '#59F03E',
   darkRed: '#DD0000',
   darkGreyText: '#2F4252',
   borderBottom: '#505072',
@@ -16,6 +18,13 @@ export const COLORS = {
   c3: '#3C3C3C',
   f5: '#5F5F5F',
   a: '#AAAAAA',
+  darkBlue: '#00448E',
+  linearRed: '#F20000',
+  inActiveYellow: '#C29E57',
+  darkGreen: '#0f3c07',
+  listGreen: '#008E63',
+  listDarkGreen: '#083C2C',
+  listCenterGreen: '#04694A',
 };
 
 export const SelectColorData = [
