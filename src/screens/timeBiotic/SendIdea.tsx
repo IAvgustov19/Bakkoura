@@ -14,6 +14,8 @@ import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
 import { COLORS } from '../../utils/colors';
 import { APP_ROUTES } from '../../navigation/routes';
+import ButtonComp from '../../components/Button/Button';
+import GiveImage from '../../components/GiveImage/GiveImage';
 
 const SendIdea = () => {
     const navigation = useNavigation();
@@ -38,11 +40,21 @@ const SendIdea = () => {
         }
     };
 
+    const options = [
+        { label: 'OAE', value: 'OAE' },
+        { label: 'USA', value: 'USA' },
+        { label: 'UK', value: 'UK' },
+    ];
+
+    const onSelect = (option: string) => {
+        console.log(option)
+    }
+
     return (
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <RN.View style={styles.bcContainer}>
+                    <RN.View style={styles.bgContainer}>
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View>
                     <HeaderContent
@@ -62,9 +74,9 @@ const SendIdea = () => {
                                     text={`Your preferences are very important to us. We strive to satisfy your most sophisticated tastes. Just imagine, \n you have the opportunity to realize your idea in the  \n most exquisite form!`}
                                 />
                             </RN.View>
-                            <FormContainer bottomInputPress={Scroll} uploadAtTop />
+                            <FormContainer bottomInputPress={Scroll} uploadAtTop withSelect options={options} onSelect={onSelect} black />
                             <RN.View style={styles.privacyBox}>
-                                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
+                                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                                 <RN.View style={styles.privacyText}>
                                     <RN.Text style={styles.privacyInfo}>
                                         {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
@@ -74,7 +86,11 @@ const SendIdea = () => {
                                     </RN.Text>
                                 </RN.View>
                             </RN.View>
-                            <SimpleBtn title="Send" onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)} />
+                            <ButtonComp
+                                title="Send"
+                                icon={<GiveImage source={Images.Img.eye} />}
+                                onPress={() => navigation.navigate(APP_ROUTES.IDEA_THANKS as never)}
+                            />
                         </RN.View>
                     </RN.ScrollView>
                 </RN.View>
@@ -91,7 +107,7 @@ const styles = RN.StyleSheet.create({
         paddingHorizontal: 10,
         height: WINDOW_HEIGHT,
     },
-    bcContainer: {
+    bgContainer: {
         width: '100%',
         position: 'relative',
         alignItems: 'center',
@@ -110,7 +126,7 @@ const styles = RN.StyleSheet.create({
         zIndex: 2,
     },
     content: {
-        gap: 50,
+        gap: 20,
         paddingBottom: 110,
     },
     ideaInfo: {
@@ -129,7 +145,7 @@ const styles = RN.StyleSheet.create({
         color: COLORS.white,
     },
     privacyLink: {
-        color: COLORS.blue,
+        color: '#ECC271',
     },
 
 });

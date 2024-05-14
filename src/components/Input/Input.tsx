@@ -10,6 +10,8 @@ type Props = {
   title?: string;
   placeholder: string;
   value?: any;
+  black?: boolean;
+  editable?: boolean;
   onChangeText?: (e) => void;
   icon?: React.ReactNode;
   height?: DimensionValue;
@@ -40,7 +42,9 @@ const Input: React.FC<Props> = ({
   paddingHorizontal,
   textAlignVertical,
   title,
+  black = false,
   onPressIn,
+  editable = true,
   secureTextEntry
 
 }) => {
@@ -50,12 +54,14 @@ const Input: React.FC<Props> = ({
       <RN.View
         style={[
           styles.inputBox,
+          black && styles.borderedInput,
           {
             paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
             backgroundColor: backColor ? backColor : COLORS.black,
           },
         ]}>
         <TextInput
+          editable={editable}
           secureTextEntry={secureTextEntry}
           multiline={multiLine}
           numberOfLines={numberOfLines}
@@ -114,4 +120,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 10,
   },
+  borderedInput: {
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderColor: '#304A66',
+  }
 });

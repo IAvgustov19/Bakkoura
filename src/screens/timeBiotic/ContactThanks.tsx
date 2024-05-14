@@ -12,9 +12,8 @@ import { Images } from '../../assets';
 import { windowHeight } from '../../utils/styles';
 
 
-
-
-const ContactThanks = (forIdea?: boolean) => {
+const ContactThanks = () => {
+  
   const navigation = useNavigation();
   return (
     <LinearContainer
@@ -26,7 +25,7 @@ const ContactThanks = (forIdea?: boolean) => {
           />
           <RN.View style={styles.content}>
             <TextView title="Thank You" />
-            <TextView text={forIdea ? `for your idea, we will definitely study it and \n contact you soon!`: `Your Idea has been sent. We will contact you \n shortly to clarify the details.`} />
+            <TextView text={'Your Idea has been sent. We will contact you \n shortly to clarify the details.'} />
             <ButtonComp
               title="OK"
               width={'50%'}

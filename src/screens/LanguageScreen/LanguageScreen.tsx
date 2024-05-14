@@ -1,23 +1,46 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { Images } from '../../assets';
-import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
-import RN from '../../components/RN';
+import useRootStore from '../../hooks/useRootStore';
 import TextView from '../../components/Text/Text';
 import { COLORS } from '../../utils/colors';
-import { Languages } from '../../utils/languages';
-import StartBtn from '../../components/StopStartBtn/StopStartBtn';
+import { observer } from 'mobx-react-lite';
+import RN from '../../components/RN';
 
 const LanguageScreen = () => {
   const navigation = useNavigation();
-  const [language, setlanguage] = useState(0);
+
+  const {
+    languages,
+    onLanguageItemPress,
+    selectedLanguage,
+  } = useRootStore().personalAreaStore;
+
+  console.log(selectedLanguage)
+
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <RN.TouchableOpacity
+        style={styles.languagesBox}
+        onPress={() => onLanguageItemPress(index)}>
+        <RadioBtn active={item.active} onPress={() => onLanguageItemPress(index)} />
+        <RN.Text style={styles.language}>{item.title}</RN.Text>
+      </RN.TouchableOpacity>
+    )
+  }
+
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <Images.Svg.bg style={styles.bg} />
+          <RN.View style={styles.bgContainer}>
+            <Images.Svg.bg style={styles.bg} />
+          </RN.View>
           <HeaderContent
             leftItem={
               <RN.TouchableOpacity
@@ -30,18 +53,10 @@ const LanguageScreen = () => {
             title="Languages"
           />
           <RN.FlatList
+            data={languages}
+            renderItem={renderItem}
             style={styles.languages}
-            data={Languages}
-            renderItem={({ item, index }) => {
-              return (
-                <RN.TouchableOpacity
-                  style={styles.languagesBox}
-                  onPress={() => setlanguage(index)}>
-                  <RadioBtn active={language === index} />
-                  <RN.Text style={styles.language}>{item}</RN.Text>
-                </RN.TouchableOpacity>
-              );
-            }}
+            keyExtractor={(item, index) => index.toString()}
           />
           <RN.View style={styles.addBtn}>
             <StartBtn
@@ -58,13 +73,17 @@ const LanguageScreen = () => {
   );
 };
 
-export default LanguageScreen;
+export default observer(LanguageScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
     height: '100%',
     paddingHorizontal: 15,
+  },
+  bgContainer: {
+    width: '100%',
     position: 'relative',
+    alignItems: 'center',
   },
   bg: {
     position: 'absolute',
@@ -92,5 +111,5 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     bottom: 20,
     width: '100%',
-},
+  },
 });

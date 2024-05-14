@@ -2,12 +2,13 @@ import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import { useNavigation } from '@react-navigation/native';
-import { windowHeight } from '../../../utils/styles';
+import { windowHeight, windowWidth } from '../../../utils/styles';
 import TextView from '../../../components/Text/Text';
 import Input from '../../../components/Input/Input';
 import React, { useState } from 'react'
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
+import { observer } from 'mobx-react-lite';
 
 const LoginPassword = () => {
     const navigation = useNavigation();
@@ -18,9 +19,10 @@ const LoginPassword = () => {
     return (
         <LinearContainer
             children={
-                <RN.ScrollView style={styles.scrollView}>
-                    <RN.View style={styles.container}>
-                        <Images.Svg.bg style={styles.bg} />
+                <RN.View style={styles.container}>
+                        <RN.View style={styles.bgContainer}>
+                            <Images.Svg.bg style={styles.bg} />
+                        </RN.View>
                         <HeaderContent
                             leftItem={
                                 <RN.TouchableOpacity
@@ -103,21 +105,23 @@ const LoginPassword = () => {
                                 />
                             </RN.View>
                         </RN.View>
-                    </RN.View>
-                </RN.ScrollView >
+                </RN.View>
             }
         />
     )
 }
 
-export default LoginPassword;
+export default observer(LoginPassword);
 
 
 const styles = RN.StyleSheet.create({
     container: {
         paddingHorizontal: 10,
-        height: '100%',
+    },
+    bgContainer: {
+        width: '100%',
         position: 'relative',
+        alignItems: 'center',
     },
     bg: {
         position: 'absolute',
@@ -130,7 +134,7 @@ const styles = RN.StyleSheet.create({
     },
     addBtn: {
         position: 'absolute',
-        alignItems: 'center',
+        // alignItems: 'center',
         bottom: 20,
         width: '100%',
     },

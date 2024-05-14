@@ -1,13 +1,14 @@
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import {Images} from '../../../assets';
+import { Images } from '../../../assets';
 import RN from '../../../components/RN';
-import {COLORS} from '../../../utils/colors';
+import { COLORS } from '../../../utils/colors';
 
 type Props = {
   eventName?: string;
   date?: string;
   time?: string;
+  finished?: boolean;
   onPress?: () => void;
   isShowDate?: boolean;
   leftLine?: boolean;
@@ -19,9 +20,10 @@ const EventItem: React.FC<Props> = ({
   date,
   time,
   onPress,
+  leftLine,
   isShowDate,
   borderRadius,
-  leftLine,
+  finished = false,
 }) => {
   return (
     <RN.Pressable
@@ -39,9 +41,17 @@ const EventItem: React.FC<Props> = ({
         {isShowDate ? <RN.Text style={styles.date}>{date}</RN.Text> : null}
         <RN.Text style={styles.time}>{time}</RN.Text>
       </RN.View>
-      <RN.TouchableOpacity style={styles.arrowRight}>
-        <Images.Svg.arrowRight />
-      </RN.TouchableOpacity>
+      <RN.View style={styles.innerContainer}>
+        {finished &&
+          <RN.View style={styles.finishedContainer}>
+            <RN.Text style={styles.already}>Already!</RN.Text>
+            <Images.Svg.bellGreenSmall />
+          </RN.View>
+        }
+        <RN.TouchableOpacity style={styles.arrowRight}>
+          <Images.Svg.arrowRight />
+        </RN.TouchableOpacity>
+      </RN.View>
     </RN.Pressable>
   );
 };
@@ -69,9 +79,25 @@ const styles = RN.StyleSheet.create({
     fontSize: 12,
     color: COLORS.white,
   },
+  already: {
+    fontSize: 14,
+    lineHeight: 38,
+    color: '#05AC4C',
+    fontWeight: '400',
+  },
   time: {
     fontSize: 14,
     color: COLORS.blue,
   },
   arrowRight: {},
+  innerContainer: {
+    gap: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  finishedContainer: {
+    gap: 4,
+    alignItems: 'center',
+    flexDirection: 'row',
+  }
 });

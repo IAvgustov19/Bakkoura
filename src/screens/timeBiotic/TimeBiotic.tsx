@@ -32,7 +32,7 @@ const TimeBiotic = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <RN.View style={styles.bcContainer}>
+                    <RN.View style={styles.bgContainer}>
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View>
                     <HeaderContent
@@ -60,7 +60,7 @@ const styles = RN.StyleSheet.create({
     container: {
         paddingHorizontal: 10,
     },
-    bcContainer: {
+    bgContainer: {
         width: '100%',
         position: 'relative',
         alignItems: 'center',

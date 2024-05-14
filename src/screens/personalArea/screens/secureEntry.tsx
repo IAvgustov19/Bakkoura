@@ -10,10 +10,18 @@ import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 
 import { SecureEntries } from '../../../utils/secureEntries';
+import { observer } from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
 
 const SecureEntry = () => {
     const navigation = useNavigation();
-    const [active, setActive] = useState(0);
+
+    const {
+        secureEntries,
+        onSecureEntryItemPress,
+    } = useRootStore().personalAreaStore;
+
+
 
     const renderItem = ({ item, index }) => {
         return (
@@ -21,11 +29,11 @@ const SecureEntry = () => {
                 <ListItemCont
                     rightItem={
                         <RadioBtn
-                            active={active == index}
-                            onPress={() => setActive(index)}
+                            active={item.active}
+                            onPress={() => onSecureEntryItemPress(index) as never}
                         />}
-                    title={item}
-                    onPress={() => setActive(index)}
+                    title={<RN.Text color={item.active ? '#fff' : '#7D7D7D'}>{item.title}</RN.Text>}
+                    onPress={() => onSecureEntryItemPress(index) as never}
                 />
                 <RN.View style={styles.line}></RN.View>
             </RN.View>
@@ -36,7 +44,9 @@ const SecureEntry = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <Images.Svg.bg style={styles.bg} />
+                    <RN.View style={styles.bgContainer}>
+                        <Images.Svg.bg style={styles.bg} />
+                    </RN.View>
                     <HeaderContent
                         leftItem={
                             <RN.TouchableOpacity
@@ -49,7 +59,7 @@ const SecureEntry = () => {
                         title="Secure Entry"
                     />
                     <RN.FlatList
-                        data={SecureEntries}
+                        data={secureEntries}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={renderItem}
                     />
@@ -69,14 +79,18 @@ const SecureEntry = () => {
 }
 
 
-export default SecureEntry;
+export default observer(SecureEntry);
 
 const styles = RN.StyleSheet.create({
     container: {
         height: '100%',
-        position: 'relative',
         paddingHorizontal: 10,
     },
+    bgContainer: {
+        width: '100%',
+        position: 'relative',
+        alignItems: 'center',
+      },
     bg: {
         position: 'absolute'
     },

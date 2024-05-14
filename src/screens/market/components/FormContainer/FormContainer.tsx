@@ -11,13 +11,25 @@ import UploadFileInput from '../../../../components/UploadFileInput/UploadFileIn
 import useRootStore from '../../../../hooks/useRootStore';
 import { COLORS } from '../../../../utils/colors';
 import { HITSLOP } from '../../../../utils/styles';
+import CustomDropdown from '../../../timeBiotic/components/CustomSelect';
 
 type Props = {
-  bottomInputPress?: () => void;
+  black?: boolean;
+  options?: any[];
+  withSelect?: boolean;
   uploadAtTop?: boolean;
+  bottomInputPress?: () => void;
+  onSelect?: (option: string) => void;
 };
 
-const FormContainer: React.FC<Props> = ({ bottomInputPress, uploadAtTop }) => {
+const FormContainer: React.FC<Props> = ({
+  options,
+  onSelect,
+  uploadAtTop,
+  black = false,
+  bottomInputPress,
+  withSelect = false,
+}) => {
   const { setOrderState, orderState, deleteFile } = useRootStore().marketStore;
 
   const openImagePicker = () => {
@@ -39,7 +51,7 @@ const FormContainer: React.FC<Props> = ({ bottomInputPress, uploadAtTop }) => {
     <RN.View style={styles.container}>
       {uploadAtTop ?
         <>
-          <UploadFileInput onPress={openImagePicker} />
+          <UploadFileInput onPress={openImagePicker} black={black} />
           {orderState.file ? (
             <RN.View style={styles.fileBox}>
               <Images.Svg.fileAttachIcon />
@@ -59,42 +71,53 @@ const FormContainer: React.FC<Props> = ({ bottomInputPress, uploadAtTop }) => {
           ) : null}
         </> : null}
       <Input
+        black={black}
         title="Name"
         placeholder="Name"
-        backColor={COLORS.c3}
+        backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => setOrderState('name', e)}
       />
       <Input
+        black={black}
         title="Phone"
         placeholder="Phone"
-        backColor={COLORS.c3}
+        backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => setOrderState('phone', e)}
         onPressIn={bottomInputPress}
       />
       <Input
+        black={black}
         title="E-mail"
         placeholder="E-mail"
-        backColor={COLORS.c3}
+        backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => setOrderState('email', e)}
         onPressIn={bottomInputPress}
       />
-      <Input
-        title="Your ideas"
-        height={100}
-        placeholder="Text"
-        backColor={COLORS.c3}
-        width="100%"
-        multiLine={true}
-        textAlignVertical="top"
-        onChangeText={e => setOrderState('comment', e)}
-        onPressIn={bottomInputPress}
-      />
+      {
+        !withSelect ?
+          <Input
+            black={black}
+            title="Your ideas"
+            height={100}
+            placeholder="Text"
+            width="100%"
+            multiLine={true}
+            textAlignVertical="top"
+            backColor={black ? COLORS.black : COLORS.c3}
+            onChangeText={e => setOrderState('comment', e)}
+            onPressIn={bottomInputPress}
+          /> :
+          <CustomDropdown
+            options={options}
+            onSelect={onSelect}
+          />
+      }
       {!uploadAtTop ?
         <>
-          <UploadFileInput onPress={openImagePicker} />
+          <UploadFileInput onPress={openImagePicker} black />
           {orderState.file ? (
             <RN.View style={styles.fileBox}>
               <Images.Svg.fileAttachIcon />

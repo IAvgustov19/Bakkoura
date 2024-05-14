@@ -69,8 +69,16 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
           return <Images.Svg.podcastIcon />;
         case APP_ROUTES.H30_LEGEND:
           return <Images.Svg.h30Icon />;
+        case APP_ROUTES.WATCH_VALUATION:
+          return <Images.Svg.assessmentWatchIcon/>;
+        case APP_ROUTES.SEND_IDEA:
+          return <Images.Svg.sendIdeaIcon/>;
         case APP_ROUTES.TIME_BIOTIC:
           return <Images.Svg.timeBioticIcon/>
+        case APP_ROUTES.CONTACT_US:
+          return <Images.Svg.contactIcon/>;
+        case APP_ROUTES.BTS_NAVIGATION:
+          return <Images.Svg.btsNavigationIcon/>
         default:
           return <Images.Svg.homeIcon />;
       }
@@ -112,7 +120,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
 
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 
-  const snapPoints = React.useMemo(() => [110, '80%'], []);
+  const snapPoints = React.useMemo(() => [110, '85%'], []);
 
   return (
     <BottomSheet

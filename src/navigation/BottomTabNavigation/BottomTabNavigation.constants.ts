@@ -13,13 +13,17 @@ import Pomodoro from '../../screens/pomodoro/Pomodoro';
 import ProjectTimer from '../../screens/projectTimer/ProjectTimer';
 import StopWatch from '../../screens/stopWatch/StopWatch';
 import StressTest from '../../screens/stressTest/StressTest';
+import BtsNavigation from '../../screens/timeBiotic/BtsNavigation';
+import ContactUs from '../../screens/timeBiotic/ContactUs';
+import SendIdea from '../../screens/timeBiotic/SendIdea';
 import TimeBiotic from '../../screens/timeBiotic/TimeBiotic';
+import WatchValuation from '../../screens/timeBiotic/WatchValuation';
 import TimeClinic from '../../screens/timeClinic/TimeClinic';
 import TimerScreen from '../../screens/timers/TimerScreen';
 import TimeTogether from '../../screens/timeTogether/TimeTogether';
 import ToDoTimer from '../../screens/todoTimer/ToDoTimer';
 import WorldTime from '../../screens/worldTime/WorldTime';
-import {APP_ROUTES} from '../routes';
+import { APP_ROUTES } from '../routes';
 
 export const bottomTabBarOptions = {
   options: {
@@ -40,119 +44,148 @@ export const bottomTabBarOptions = {
       component: MarketScreen,
       buttonLabel: 'Market',
     },
+    // {
+    //   index: 2,
+    //   tabName: APP_ROUTES.MESSENGER,
+    //   component: MessengerScreen,
+    //   buttonLabel: 'Messenger',
+    // },
     {
       index: 2,
-      tabName: APP_ROUTES.MESSENGER,
-      component: MessengerScreen,
-      buttonLabel: 'Messenger',
-    },
-    {
-      index: 3,
       tabName: APP_ROUTES.TODOTIMER,
       component: ToDoTimer,
       buttonLabel: 'To do timer',
     },
     {
-      index: 4,
+      index: 3,
       tabName: APP_ROUTES.TIMER,
       component: TimerScreen,
       buttonLabel: 'Timers',
     },
     {
-      index: 5,
+      index: 4,
       tabName: APP_ROUTES.PROJECT_TIMER,
       component: ProjectTimer,
       buttonLabel: 'Project timer',
     },
     {
-      index: 6,
+      index: 5,
       tabName: APP_ROUTES.WORLD_TIME,
       component: WorldTime,
       buttonLabel: 'World time',
     },
     {
-      index: 7,
+      index: 6,
       tabName: APP_ROUTES.STOP_WATCH,
       component: StopWatch,
       buttonLabel: 'Stop watch',
     },
     {
-      index: 8,
+      index: 7,
       tabName: APP_ROUTES.METRONOM,
       component: Metronom,
       buttonLabel: 'Metronom',
     },
     {
-      index: 9,
+      index: 8,
       tabName: APP_ROUTES.STRESS_TEST,
       component: StressTest,
       buttonLabel: 'Stress Test',
     },
     {
-      index: 10,
+      index: 9,
       tabName: APP_ROUTES.POMODORO,
       component: Pomodoro,
       buttonLabel: 'Pomodoro',
     },
     {
-      index: 11,
+      index: 10,
       tabName: APP_ROUTES.ALARM_SCREEN,
       component: AlarmScreen,
       buttonLabel: 'Alarm Clock',
     },
     {
-      index: 12,
+      index: 11,
       tabName: APP_ROUTES.EVENTS_SCREEN,
       component: EventsScreen,
       buttonLabel: 'Calendar',
     },
     {
-      index: 13,
+      index: 12,
       tabName: APP_ROUTES.TIME_TOGETHER,
       component: TimeTogether,
       buttonLabel: 'Time Together',
     },
     {
-      index: 14,
+      index: 13,
       tabName: APP_ROUTES.JIHAD_BAKKOURA,
       component: JihadBakkoura,
       buttonLabel: 'Jihad Bakkoura',
     },
+    // {
+    //   index: 15,
+    //   tabName: APP_ROUTES.FAMILY_TREE,
+    //   component: FamilyTree,
+    //   buttonLabel: 'Family Tree',
+    // },
     {
-      index: 15,
-      tabName: APP_ROUTES.FAMILY_TREE,
-      component: FamilyTree,
-      buttonLabel: 'Family Tree',
-    },
-    {
-      index: 16,
+      index: 14,
       tabName: APP_ROUTES.BAKKOURA_WATCH,
       component: BakkouraWatch,
       buttonLabel: 'Bakkoura Watch',
     },
     {
-      index: 17,
+      index: 15,
       tabName: APP_ROUTES.TIME_CLINIC,
       component: TimeClinic,
       buttonLabel: 'Time Clinic',
     },
+    // {
+    //   index: 17,
+    //   tabName: APP_ROUTES.PODCASTS,
+    //   component: Podcasts,
+    //   buttonLabel: 'Podcasts',
+    // },
     {
-      index: 18,
-      tabName: APP_ROUTES.PODCASTS,
-      component: Podcasts,
-      buttonLabel: 'Podcasts',
-    },
-    {
-      index: 19,
+      index: 16,
       tabName: APP_ROUTES.H30_LEGEND,
       component: H30Legend,
       buttonLabel: '30h Legend',
     },
     {
-      index: 20,
+      index: 17,
+      tabName: APP_ROUTES.WATCH_VALUATION,
+      component: WatchValuation,
+      buttonLabel: 'Assessment Watch',
+    },
+    {
+      index: 18,
+      tabName: APP_ROUTES.SEND_IDEA,
+      component: SendIdea,
+      buttonLabel: 'Send Your Idea',
+    },
+    {
+      index: 19,
       tabName: APP_ROUTES.TIME_BIOTIC,
       component: TimeBiotic,
       buttonLabel: 'Time Biotic',
-    }
+    },
+    // about time-francvila watch doesnt exist
+    {
+      index: 20,
+      tabName: APP_ROUTES.CONTACT_US,
+      component: ContactUs,
+      buttonLabel: 'Contact Us',
+    },
+    {
+      index: 21,
+      tabName: APP_ROUTES.BTS_NAVIGATION,
+      component: BtsNavigation,
+      buttonLabel: 'BTS Navigation',
+    },
+    // timeWealth screen doesnt exist
+
+
+
   ],
 };

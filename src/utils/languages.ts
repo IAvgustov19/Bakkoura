@@ -1,9 +1,18 @@
 export const Languages = [
-  'English',
-  'Русский',
-  'عرب',
-  'Français',
-  'Italiano',
-  'Deutsch',
-  '中國人',
+  {
+    id: 1,
+    title: 'English',
+    active: true,
+  },
+  {
+    id: 2,
+    title: 'عرب',
+    active: false,
+  },
 ];
+
+// 'Русский',
+// 'Français',
+// 'Italiano',
+// 'Deutsch',
+// '中國人',

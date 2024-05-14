@@ -11,6 +11,7 @@ type Props = {
   onPress?: () => void;
   Width?: DimensionValue;
   Height?: DimensionValue;
+  customStyle?: ViewStyle;
   
 };
 
@@ -21,12 +22,14 @@ const OutlineBtn: React.FC<Props> = ({
   onPress,
   Width,
   Height,
+  customStyle,
 }) => {
   return (
     <RN.TouchableOpacity
       onPress={onPress}
       style={[
         styles.container,
+        customStyle,
         {
           borderColor: borderColor ? borderColor : COLORS.darkGreyText,
           width: Width ? Width : 110,

@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   },
   renderTabBarsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
   },

@@ -16,6 +16,7 @@ import {TodoTimerStore} from './todoTimer/ToDoTimer';
 import {TogetherTimeStore} from './togetherTime/TogethetTime';
 import {VisibleStore} from './visible/Visible';
 import {WorldTimeStore} from './worldTime/WorldTime';
+import { PersonalAreaStore } from './personalArea/PersonalArea';
 
 export class RootStore {
   timerStore: TimerStore;
@@ -34,6 +35,7 @@ export class RootStore {
   todoTimer: TodoTimerStore;
   homeClockStore: HomeClockStore;
   marketStore: MarketStore;
+  personalAreaStore: PersonalAreaStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -53,6 +55,7 @@ export class RootStore {
     this.todoTimer = new TodoTimerStore();
     this.homeClockStore = new HomeClockStore();
     this.marketStore = new MarketStore();
+    this.personalAreaStore = new PersonalAreaStore();
   }
 }
 const rootStore = new RootStore();
