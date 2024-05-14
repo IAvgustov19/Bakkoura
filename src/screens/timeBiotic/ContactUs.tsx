@@ -14,6 +14,8 @@ import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
 import { APP_ROUTES } from '../../navigation/routes';
 import { COLORS } from '../../utils/colors';
+import ButtonComp from '../../components/Button/Button';
+import GiveImage from '../../components/GiveImage/GiveImage';
 
 
 const ContactUs = () => {
@@ -43,7 +45,7 @@ const ContactUs = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <RN.View style={styles.bcContainer}>
+          <RN.View style={styles.bgContainer}>
             <Images.Svg.bg style={styles.bg} />
           </RN.View>
           <HeaderContent
@@ -62,17 +64,17 @@ const ContactUs = () => {
                   style={styles.headerText}
                   text={`Select who you would like to contact `}
                 />
-                <OutlineBtn text='General Director' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey} />
-                <OutlineBtn text='Developer' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey} />
-                <OutlineBtn text='Technical Support' Width={'100%'} Height={45} borderColor={COLORS.f5} textColor={COLORS.lightGrey} />
+                <OutlineBtn text='General Director' Width={'100%'} Height={56} borderColor={'#496380'} textColor={COLORS.lightGrey} customStyle={styles.br40} />
+                <OutlineBtn text='Developer' Width={'100%'} Height={56} borderColor={'#496380'} textColor={COLORS.lightGrey} customStyle={styles.br40} />
+                <OutlineBtn text='Technical Support' Width={'100%'} Height={56} borderColor={'#496380'} textColor={COLORS.lightGrey} customStyle={styles.br40} />
                 <TextView
                   style={styles.text}
                   text={`Send Your letter now and We will contact you shortly \n to clarify the details.`}
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} />
+              <FormContainer bottomInputPress={Scroll} black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
                     Your personal data are guaranteed to be safe and will not be
@@ -83,7 +85,11 @@ const ContactUs = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-              <SimpleBtn title="Send" onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)} />
+              <ButtonComp
+                title="Send"
+                icon={<GiveImage source={Images.Img.eye} />}
+                onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)}
+              />
             </RN.View>
           </RN.ScrollView>
         </RN.View>
@@ -100,7 +106,7 @@ const styles = RN.StyleSheet.create({
     height: windowHeight,
     paddingHorizontal: 10,
   },
-  bcContainer: {
+  bgContainer: {
     width: '100%',
     position: 'relative',
     alignItems: 'center',
@@ -146,7 +152,11 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   privacyLink: {
-    color: COLORS.blue,
+    color: '#ECC271',
+  },
+  br40: {
+    borderRadius: 40,
+    backgroundColor: '#272F35',
   },
 
 });

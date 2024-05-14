@@ -5,7 +5,7 @@ import {COLORS} from '../../utils/colors';
 import RN from '../RN';
 
 type Props = {
-  title?: string;
+  title?: string | any;
   value?: string | React.ReactNode;
   onPress?: () => void;
   backBlack?: boolean;

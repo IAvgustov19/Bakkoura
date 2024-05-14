@@ -9,10 +9,21 @@ import { APP_ROUTES } from '../../../navigation/routes';
 import { windowHeight, windowWidth } from '../../../utils/styles';
 import { COLORS } from '../../../utils/colors';
 import RN from '../../../components/RN';
+import { observer } from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
+import SoundsContent from '../../../components/SoundsContent/SoundsContent';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 
 const PersonalArea = () => {
     const [selectedImage, setSelectedImage] = useState(null);
+    const [secureEntry, setSecureEntry] = useState(false);
+
+    const {
+        name,
+        selectedEntry,
+        selectedLanguage,
+    } = useRootStore().personalAreaStore;
 
     const openImagePicker = () => {
         let options = {
@@ -65,7 +76,7 @@ const PersonalArea = () => {
                             <RN.View>
                                 <RN.View style={styles.eventsTypeList}>
                                     <ListItemCont
-                                        title="Jihad Bakkoura"
+                                        title={name}
                                         onPress={() => navigation.navigate(APP_ROUTES.PERSONAL_DETAILS as never)}
                                     />
                                     <RN.View style={styles.line}></RN.View>
@@ -76,7 +87,7 @@ const PersonalArea = () => {
                                     <RN.View style={styles.line}></RN.View>
                                     <ListItemCont
                                         title="Secure Entry"
-                                        value={'Free'}
+                                        value={selectedEntry.title}
                                         onPress={() =>
                                             navigation.navigate(APP_ROUTES.SECURE_ENTRY as never)
                                         }
@@ -97,15 +108,17 @@ const PersonalArea = () => {
                                 <RN.View style={styles.eventsTypeList}>
                                     <ListItemCont
                                         title="Language"
-                                        value={'English'}
+                                        value={selectedLanguage.title}
+                                        // onPress={() => console.log(selectedLanguage)}
                                         onPress={() => navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)}
+
                                     />
-                                    <RN.View style={styles.line}></RN.View>
+                                    {/* <RN.View style={styles.line}></RN.View>
                                     <ListItemCont
                                         title="Theme"
                                         value={'Dark'}
                                         onPress={() => navigation.navigate(APP_ROUTES.THEME as never)}
-                                    />
+                                    /> */}
                                 </RN.View>
                                 <RN.View style={styles.eventsTypeList}>
                                     <ListItemCont
@@ -121,13 +134,23 @@ const PersonalArea = () => {
                             </RN.View>
                         </RN.View>
                     </RN.ScrollView>
+                    {/* <SoundsContent
+                        headerTitle="Secure Entry"
+                        data={secureEntries}
+                        onItemPress={onSecureEntryItemPress as never}
+                        headerLeftItem={
+                            <ArrowLeftBack onPress={() => setSecureEntry(e => !e)} title="Back" />
+                        }
+                        onClose={() => setSecureEntry(e => !e)}
+                        modalVisible={secureEntry}
+                    /> */}
                 </RN.View>
             }
         />
     );
 };
 
-export default PersonalArea;
+export default observer(PersonalArea);
 
 const styles = RN.StyleSheet.create({
     container: {

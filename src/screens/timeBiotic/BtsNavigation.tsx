@@ -17,7 +17,7 @@ const BtsNavigation = () => {
     const renderItem = ({ item, index }) => {
         return (
             <RN.View style={styles.itemContainer}>
-                <RN.View>
+                <RN.View style={styles.itemInfo}>
                     <item.image />
                     <TextView text={item.label} style={styles.label} />
                 </RN.View>
@@ -60,15 +60,16 @@ const styles = RN.StyleSheet.create({
     },
     content: {
         paddingTop: 18,
-        paddingBottom: windowHeight / 8,
+        paddingBottom: windowHeight / 4,
     },
     itemContainer: {
+        gap: 35,
         display: 'flex',
         paddingBottom: 24,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
     },
+    itemInfo: { alignItems: 'center', width: 80 },
     label: {
         fontSize: 13,
         textAlign: 'center',

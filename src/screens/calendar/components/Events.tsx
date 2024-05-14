@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {color} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Images} from '../../../assets';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
@@ -28,6 +28,25 @@ const Events: React.FC<Props> = ({
   const {allEventsData, secondsToHMS, getOneEvent, handleDeleteEvent} =
     useRootStore().calendarStore;
   const navigation = useNavigation();
+  
+  const [isFinished, setIsFinished] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const updatedFinishedStatus = allEventsData.map(event => {
+        const remainingTime =
+          event.stayedDay * 24 * 60 +
+          event.stayedHour * 60 +
+          event.stayedMinut;
+        return remainingTime == 0;
+      });
+      setIsFinished(updatedFinishedStatus);
+      console.log(isFinished)
+    }, 1000); 
+
+    return () => clearInterval(interval); 
+  }, [allEventsData]);
+
 
   const onGetHandle = (item: NewEventStateType) => {
     navigation.navigate(APP_ROUTES.NEW_EVENT as never);
@@ -60,6 +79,7 @@ const Events: React.FC<Props> = ({
             borderRadius={borderRaduis}
             leftLine={leftLine}
             date={formattedDate(item.day, item.month, item.year, 2)}
+            finished={isFinished[index]}
             time={`${item.stayedDay} days ${
               item.stayedHour < 10 ? `0${item.stayedHour}` : item.stayedHour
             }:${

@@ -8,17 +8,26 @@ import { windowHeight } from '../../../utils/styles';
 import TextView from '../../../components/Text/Text';
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
+import { observer } from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
 
 const PersonalDetails = () => {
   const navigation = useNavigation();
 
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
+
+  const {
+    name,
+    setName,
+  } = useRootStore().personalAreaStore;
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <Images.Svg.bg style={styles.bg} />
+          <RN.View style={styles.bgContainer}>
+            <Images.Svg.bg style={styles.bg} />
+          </RN.View>
           <HeaderContent
             leftItem={
               <RN.TouchableOpacity
@@ -63,14 +72,18 @@ const PersonalDetails = () => {
   )
 }
 
-export default PersonalDetails;
+export default observer(PersonalDetails);
 
 
 const styles = RN.StyleSheet.create({
   container: {
     height: '100%',
-    position: 'relative',
     paddingHorizontal: 10,
+  },
+  bgContainer: {
+    width: '100%',
+    position: 'relative',
+    alignItems: 'center',
   },
   scrollView: {},
   content: {

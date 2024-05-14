@@ -10,6 +10,7 @@ import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 
 import { Themes } from '../../../utils/themes';
+import { observer } from 'mobx-react-lite';
 
 const Theme = () => {
     const navigation = useNavigation();
@@ -36,7 +37,9 @@ const Theme = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <Images.Svg.bg style={styles.bg} />
+                    <RN.View style={styles.bgContainer}>
+                        <Images.Svg.bg style={styles.bg} />
+                    </RN.View>
                     <HeaderContent
                         leftItem={
                             <RN.TouchableOpacity
@@ -69,15 +72,18 @@ const Theme = () => {
     )
 }
 
-export default Theme;
+export default observer(Theme);
 
 const styles = RN.StyleSheet.create({
-
     container: {
         height: '100%',
-        position: 'relative',
         paddingHorizontal: 10,
     },
+    bgContainer: {
+        width: '100%',
+        position: 'relative',
+        alignItems: 'center',
+      },
     bg: {
         position: 'absolute',
     },

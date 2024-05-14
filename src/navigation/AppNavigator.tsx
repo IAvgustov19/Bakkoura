@@ -54,6 +54,8 @@ import ContactThanks from '../screens/timeBiotic/ContactThanks';
 import ContactUs from '../screens/timeBiotic/ContactUs';
 import WatchValuation from '../screens/timeBiotic/WatchValuation';
 import BtsNavigation from '../screens/timeBiotic/BtsNavigation';
+import WatchThanks from '../screens/timeBiotic/WatchThanks';
+import IdeaThanks from '../screens/timeBiotic/IdeaThanks';
 
 
 
@@ -414,6 +416,20 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.CONTACT_THANKS}
           component={ContactThanks}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.WATCH_THANKS}
+          component={WatchThanks}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.IDEA_THANKS}
+          component={IdeaThanks}
           options={{
             headerTitleAlign: 'center',
           }}

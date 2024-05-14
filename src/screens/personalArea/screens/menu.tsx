@@ -12,6 +12,7 @@ import { MenuItems } from '../../../utils/menuItems';
 import { COLORS } from '../../../utils/colors';
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
+import { observer } from 'mobx-react-lite';
 
 
 const Menu = () => {
@@ -56,7 +57,9 @@ const Menu = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <Images.Svg.bg style={styles.bg} />
+                    <RN.View style={styles.bgContainer}>
+                        <Images.Svg.bg style={styles.bg} />
+                    </RN.View>
                     <HeaderContent
                         leftItem={
                             <RN.TouchableOpacity
@@ -97,14 +100,18 @@ const Menu = () => {
     );
 };
 
-export default Menu;
+export default observer(Menu);
 
 const styles = RN.StyleSheet.create({
     container: {
         height: '100%',
-        position: 'relative',
         paddingHorizontal: 15,
     },
+    bgContainer: {
+        width: '100%',
+        position: 'relative',
+        alignItems: 'center',
+      },
     bg: {
         position: 'absolute',
     },
@@ -119,6 +126,7 @@ const styles = RN.StyleSheet.create({
     },
     scrollView: {},
     content: {
+        paddingBottom: 110,
     },
     eventsTypeList: {
         borderRadius: 3,

@@ -1,19 +1,20 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {Images} from '../../assets';
-import {COLORS} from '../../utils/colors';
+import { Text, View, StyleSheet } from 'react-native';
+import { Images } from '../../assets';
+import { COLORS } from '../../utils/colors';
 import RN from '../RN';
 
 type Props = {
+  black?: boolean;
   onPress?: () => void;
 };
 
-const UploadFileInput: React.FC<Props> = ({onPress}) => {
+const UploadFileInput: React.FC<Props> = ({ onPress, black }) => {
   return (
     <RN.Pressable style={styles.container}>
       <RN.Text style={styles.label}>File</RN.Text>
-      <RN.TouchableOpacity style={styles.file} onPress={onPress}>
-        <Images.Svg.uploadFile />
+      <RN.TouchableOpacity style={[styles.file,  black && styles.bordered]} onPress={onPress}>
+        {black ? <Images.Svg.darkUpArrow /> : <Images.Svg.uploadFile />}
       </RN.TouchableOpacity>
     </RN.Pressable>
   );
@@ -26,12 +27,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   file: {
-    backgroundColor: COLORS.darkGrey,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
     width: '100%',
     borderRadius: 50,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
     alignItems: 'flex-end',
+    backgroundColor: COLORS.darkGrey,
   },
   label: {
     marginLeft: 15,
@@ -39,4 +40,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: COLORS.grey,
   },
+  bordered: {
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderColor: '#304A66',
+    backgroundColor: COLORS.black
+  }
 });

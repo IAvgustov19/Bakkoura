@@ -1,20 +1,21 @@
 import React, { useRef, useState } from 'react';
 
-import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
-import useRootStore from '../../hooks/useRootStore';
-import { windowHeight } from '../../utils/styles';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import FormContainer from '../market/components/FormContainer/FormContainer';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import GiveImage from '../../components/GiveImage/GiveImage';
+import RadioBtn from '../../components/RadioBtn/RadioBtn';
+import { useNavigation } from '@react-navigation/native';
+import ButtonComp from '../../components/Button/Button';
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
+import { APP_ROUTES } from '../../navigation/routes';
+import useRootStore from '../../hooks/useRootStore';
+import Cancel from '../../components/Cancel/Cancel';
+import { windowHeight } from '../../utils/styles';
+import TextView from '../../components/Text/Text';
+import { COLORS } from '../../utils/colors';
 import RN from '../../components/RN';
 import { Images } from '../../assets';
-import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import Cancel from '../../components/Cancel/Cancel';
-import TextView from '../../components/Text/Text';
-import RadioBtn from '../../components/RadioBtn/RadioBtn';
-import FormContainer from '../market/components/FormContainer/FormContainer';
-import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
-import { APP_ROUTES } from '../../navigation/routes';
-import { COLORS } from '../../utils/colors';
 
 const WatchValuation = () => {
   const navigation = useNavigation();
@@ -66,9 +67,9 @@ const WatchValuation = () => {
                   text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} uploadAtTop />
+              <FormContainer bottomInputPress={Scroll} uploadAtTop black withSelect/>
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} white/>
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
@@ -78,7 +79,11 @@ const WatchValuation = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-                <SimpleBtn title="Send" onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)} />
+              <ButtonComp
+                title="Send"
+                icon={<GiveImage source={Images.Img.eye} />}
+                onPress={() => navigation.navigate(APP_ROUTES.WATCH_THANKS as never)}
+              />
               <TextView
                 style={[styles.text, styles.pv39]}
                 text={`But that's not all. To learn how to embody beautiful and strong \n souls in watches, we have spent years studying more than just \n watchmaking. Psychology, art history, biographies of great people,\n fine arts, philosophy - all this knowledge has taught us how to feel \n people and create brands.`}
@@ -117,7 +122,8 @@ const styles = RN.StyleSheet.create({
     color: COLORS.lightGrey,
   },
   pv39: {
-    paddingVertical: 39,
+    paddingTop: 39,
+    paddingBottom: 110,
   },
   scrollView: {
     zIndex: 2,
@@ -127,10 +133,10 @@ const styles = RN.StyleSheet.create({
     marginVertical: 20,
   },
   privacyBox: {
-    flexDirection: 'row',
     gap: 15,
     paddingTop: 20,
     paddingBottom: 35,
+    flexDirection: 'row',
   },
   privacyText: {
     gap: 5,
@@ -139,7 +145,6 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   privacyLink: {
-    color: COLORS.blue,
+    color: '#ECC271',
   },
-
 });

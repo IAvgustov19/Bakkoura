@@ -27,6 +27,8 @@ export enum APP_ROUTES {
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',
   CONTACT_THANKS = 'ContactThanks',
+  IDEA_THANKS = 'IdeaThanks',
+  WATCH_THANKS = 'WatchThanks',
   BTS_NAVIGATION = 'BtsNavigation',
 
 

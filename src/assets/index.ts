@@ -117,7 +117,9 @@ import btsNavigationIcon from './svg/btsNavigationIcon.svg';
 import assessmentWatchIcon from './svg/assessmentWatchIcon.svg';
 import aboutTimeIcon from './svg/aboutTimeIcon.svg';
 import menuIcon from './svg/menuIcon.svg';
-
+import bellGreenSmall from './svg/bellGreenSmall.svg';
+import darkUpArrow from './svg/darkUpArrow.svg';
+import darkDownArrow from './svg/darkDownArrow.svg';
 
 export const Images = {
   Svg: {
@@ -187,6 +189,7 @@ export const Images = {
     bellBlue,
     bellBlueLeft,
     bellGreen,
+    bellGreenSmall,
     timerLogo,
     arrowLeft,
     dateMenu,
@@ -245,6 +248,8 @@ export const Images = {
     fileAttachIcon,
     jihadBakkouraLogoTitle,
     jihadBakkouraSiteLogo,
+    darkUpArrow,
+    darkDownArrow,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
