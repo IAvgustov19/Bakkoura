@@ -59,6 +59,10 @@ import IdeaThanks from '../screens/timeBiotic/IdeaThanks';
 
 
 
+import AboutTime from '../screens/timeClinic/AboutTime';
+import AboutTimeInfo from '../screens/timeClinic/AboutTimeInfo';
+import TimeWealth from '../screens/timeClinic/TimeWealth';
+import FrancVila from '../screens/timeClinic/FrancVila';
 
 const Stack = createStackNavigator();
 
@@ -407,8 +411,22 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.ABOUT_TIME}
+          component={AboutTime}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.SEND_IDEA}
           component={SendIdea}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ABOUT_TIME_INFO}
+          component={AboutTimeInfo}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -421,8 +439,21 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.TIME_WEALTH}
+          component={TimeWealth}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.WATCH_THANKS}
           component={WatchThanks}
+          options={{
+            headerTitleAlign: 'center',
+          }} />
+        <Stack.Screen
+          name={APP_ROUTES.FRANS_VILA}
+          component={FrancVila}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -448,7 +479,7 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.BTS_NAVIGATION}
           component={BtsNavigation}
           options={{

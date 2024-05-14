@@ -57,27 +57,25 @@ const EventScreen = () => {
           />
           <RN.View style={styles.calendarBox}>{renderCalendar()}</RN.View>
           <RN.View style={styles.bottomMenu}>
-            <RN.TouchableOpacity>
-              <SimpleSwitch
-                active={switchCalendar}
-                width={60}
-                topMenu={-10}
-                paddingVertical={10}
-                handlePress={toggleSwitch}
-                icon={
-                  switchCalendar ? (
-                    <Images.Svg.calendarChangeIcon1 />
-                  ) : (
-                    <Images.Svg.calendarChangeIcon2 />
-                  )
-                }
-              />
-            </RN.TouchableOpacity>
+            <SimpleSwitch
+              active={switchCalendar}
+              width={60}
+              topMenu={-10}
+              paddingVertical={10}
+              handlePress={toggleSwitch}
+              icon={
+                switchCalendar ? (
+                  <Images.Svg.calendarChangeIcon1 />
+                ) : (
+                  <Images.Svg.calendarChangeIcon2 />
+                )
+              }
+            />
             <StartBtn
               subWidth={60}
               elWidth={45}
               primary={true}
-              text={'+'}
+              icon={<Images.Svg.btnAddIcon />}
               onPress={() => navigation.navigate(APP_ROUTES.NEW_EVENT as never)}
             />
           </RN.View>
@@ -91,7 +89,7 @@ export default observer(EventScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     height: '100%',
     width: '100%',
     alignItems: 'center',
@@ -106,7 +104,7 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     bottom: '13%',
-    paddingHorizontal: 10,
+    paddingRight: 5,
   },
   currentTime: {
     marginTop: 2,

@@ -12,7 +12,6 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 import CompanyCard from './components/companyCard/CompanyCard';
-import ProductCard from './components/productCard/ProductCard';
 import Thanks from './components/thanks/Thanks';
 
 const MarketScreen = () => {
@@ -69,7 +68,7 @@ export default observer(MarketScreen);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     justifyContent: 'space-between',

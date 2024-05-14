@@ -48,7 +48,7 @@ const DateScreen = () => {
     isDate?: boolean,
   ) => {
     if (preSelected === -1) {
-      return data.length - 2; // 2 ta element pastga
+      return data.length - 2;
     }
 
     let index = data.findIndex(item => {
@@ -60,7 +60,6 @@ const DateScreen = () => {
       return item.value === preSelected;
     });
 
-    // index - 1 orqali yana bitta yuqori indexni olish
     index = index - 1;
     index = index < 0 ? 0 : index;
 

@@ -120,6 +120,15 @@ import menuIcon from './svg/menuIcon.svg';
 import bellGreenSmall from './svg/bellGreenSmall.svg';
 import darkUpArrow from './svg/darkUpArrow.svg';
 import darkDownArrow from './svg/darkDownArrow.svg';
+import worldWatch30 from './svg/worldWatch30.svg';
+import alarmClock from './svg/alarmClock.svg';
+import alarmClockFront30 from './svg/alarmClockFront30.svg';
+import alarmClockFront24 from './svg/alarmClockFront24.svg';
+import aboutTimeLine from './svg/aboutTimeLine.svg';
+import francVila from './svg/francVila.svg';
+import alarmClockBang from './svg/alarmClockBang.svg';
+import btnAddIcon from './svg/btnAddIcon.svg';
+import timeWealthIcon from './svg/timeWealthIcon.svg';
 
 export const Images = {
   Svg: {
@@ -156,6 +165,7 @@ export const Images = {
     assessmentWatchIcon,
     aboutTimeIcon,
     menuIcon,
+    timeWealthIcon,
 
 
 
@@ -250,6 +260,14 @@ export const Images = {
     jihadBakkouraSiteLogo,
     darkUpArrow,
     darkDownArrow,
+    worldWatch30,
+    alarmClock,
+    alarmClockFront30,
+    alarmClockFront24,
+    aboutTimeLine,
+    francVila,
+    alarmClockBang,
+    btnAddIcon,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -257,6 +275,8 @@ export const Images = {
     bakkouraWatch30h: require('./images/justBakkuraWatch.png'),
     bakkouraWatch: require('./images/bakkouraWatch.png'),
     sectorWatch: require('./images/sectorWatch.png'),
+    bakkouraSector30: require('./images/bakkouraSector30.webp'),
+    bakkouraFront30: require('./images/bakkouraFront30.webp'),
     sectorWatchHours: require('./images/sectorWatchHours.png'),
     bakkouraWatchLines: require('./images/bakkouraWatchLines.png'),
     bakkouraWatchMain: require('./images/bakkouraWatchMain.png'),
@@ -271,6 +291,10 @@ export const Images = {
     bakkouraPr1: require('./images/bakkouraPr1.png'),
     jihadBakkouraAvatar: require('./images/jihadBakkouraAvatar.png'),
     concept30h: require('./images/concept30h.png'),
+    tWCardImage: require('./images/tWCardImage.webp'),
+    tWCardImage1: require('./images/tWCardImage1.webp'),
+    tWCardImage2: require('./images/tWCardImage2.webp'),
+    tWCardImage3: require('./images/tWCardImage3.webp'),
   },
 };
 
@@ -287,4 +311,10 @@ export const BG = {
 
 export const Sounds = {
   metronom: require('./sounds/metronom.mp3'),
+  sound0: require('./sounds/sound0.wav'),
+  sound1: require('./sounds/sound1.wav'),
+  sound2: require('./sounds/sound2.wav'),
+  sound3: require('./sounds/sound3.wav'),
+  sound4: require('./sounds/sound4.wav'),
+  sound5: require('./sounds/spund5.wav'),
 };

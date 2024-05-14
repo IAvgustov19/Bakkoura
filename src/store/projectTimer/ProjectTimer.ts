@@ -58,8 +58,10 @@ export class ProjectTimer {
   };
 
   clearState = () => {
-    this.newProjectTimerState = ProjectTimerDataInitial;
-    this.isUpdate = false;
+    runInAction(() => {
+      this.newProjectTimerState = ProjectTimerDataInitial;
+      this.isUpdate = false;
+    });
   };
 
   calculateTotalTime = () => {

@@ -44,7 +44,8 @@ const styles = RN.StyleSheet.create({
   watchBg: {
     top: 20,
     position: 'absolute',
-    width: windowWidth - 40,
+    width: windowWidth - 20,
+    objectFit: 'contain',
   },
   watch24: {
     marginTop: 82,

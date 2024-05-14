@@ -314,18 +314,18 @@ export const getCurrentTime = () => {
 };
 export function formatDayVaMonth(day: number, month: number, year: number) {
   const monthData = [
-    'yanvar',
-    'fevral',
-    'mart',
-    'aprel',
+    'january',
+    'february',
+    'march',
+    'april',
     'may',
-    'iyun',
-    'iyul',
-    'avgust',
-    'sentabr',
-    'oktabr',
-    'noyabr',
-    'dekabr',
+    'june',
+    'july',
+    'august',
+    'september',
+    'oktober',
+    'november',
+    'december',
   ];
 
   const today = new Date().getDay();
@@ -334,9 +334,9 @@ export function formatDayVaMonth(day: number, month: number, year: number) {
   if (day === today && Month + 1 === month) {
     return 'Today';
   } else {
-    const kun = day;
-    const oy = monthData[Month];
-    return `${kun}-${oy}`;
+    const today = day;
+    const month = monthData[Month];
+    return `${today}-${month}`;
   }
 }
 
@@ -397,6 +397,18 @@ export const secondsToHMS = (seconds: number) => {
     }:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
   } else {
     return '00:00:00';
+  }
+};
+export const secondsToHM = (seconds: number) => {
+  if (seconds > 0) {
+    const hours: number = Math.floor(seconds / 3600);
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    // const remainingSeconds: number = seconds % 60;
+    return `${hours < 10 ? `0${hours}` : hours}:${
+      minutes < 10 ? `0${minutes}` : minutes
+    }`;
+  } else {
+    return '00:00';
   }
 };
 export const secondsToMS = (seconds: number) => {

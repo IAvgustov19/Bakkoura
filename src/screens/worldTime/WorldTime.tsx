@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import RN from '../../components/RN';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -7,18 +7,41 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import {Images} from '../../assets';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
-import WorldWatch from '../../components/WorldWatch/WorldWatch';
+import WorldWatch from './components/WorldWatch/WorldWatch';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
+import {windowHeight} from '../../utils/styles';
 
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
   const {selectedCountries} = useRootStore().worldTimeStore;
   const navigation = useNavigation();
+
+  const renderClock = useCallback(() => {
+    return selectedCountries.map((item, index) => {
+      return (
+        <WorldWatch
+          key={index}
+          country={item.capital}
+          time={item.time}
+          weather={item.date}
+          hour={item.hour}
+          minut={item.minut}
+          hour30={item.hour30}
+          minut30={item.minut30}
+          is24={is24h}
+        />
+      );
+    });
+  }, [selectedCountries, is24h]);
+
+  // useEffect(() => {
+  //   updateCountriesWeather();
+  // }, [selectedCountries]);
 
   return (
     <LinearContainer
@@ -36,37 +59,24 @@ const WorldTime = () => {
               />
             }
           />
-          <RN.View style={styles.content}>
-            <RN.FlatList
-              showsVerticalScrollIndicator={false}
-              style={styles.countryList}
-              // ListEmptyComponent={<ListEmptyComp title='Emp'/>}
-              data={selectedCountries}
-              renderItem={({item, index}) => {
-                return (
-                  <WorldWatch
-                    key={index}
-                    country={item.capital}
-                    time={item.time}
-                    weather={item.date}
-                    hour={item.hour}
-                    minut={item.minut}
-                  />
-                );
-              }}
-            />
-            <RN.View>
-              <StartBtn
-                subWidth={70}
-                elWidth={55}
-                primary
-                text="+"
-                textSize={30}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.CITIES_SCREEN as never)
-                }
-              />
+          <RN.ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
+            <RN.View style={styles.content}>
+              <RN.View>{renderClock()}</RN.View>
             </RN.View>
+          </RN.ScrollView>
+          <RN.View style={styles.btnBox}>
+            <StartBtn
+              subWidth={70}
+              elWidth={55}
+              primary
+              text="+"
+              textSize={30}
+              onPress={() =>
+                navigation.navigate(APP_ROUTES.CITIES_SCREEN as never)
+              }
+            />
           </RN.View>
         </RN.View>
       }
@@ -78,12 +88,19 @@ export default observer(WorldTime);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
+    height: windowHeight,
   },
   content: {
-    justifyContent: 'space-between',
-    height: '82%',
-    // backgroundColor: 'red',
+    paddingBottom: windowHeight / 3.5,
   },
-  countryList: {},
+  countryList: {
+    height: windowHeight,
+  },
+  btnBox: {
+    position: 'absolute',
+    bottom: windowHeight / 5.5,
+    alignItems: 'center',
+    width: '100%',
+  },
 });

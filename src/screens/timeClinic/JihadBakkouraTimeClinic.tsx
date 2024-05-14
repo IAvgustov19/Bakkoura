@@ -11,6 +11,7 @@ import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';
+import TimeWebView from './components/TimeWebView';
 
 const JihadBakkouraTimeClinic = () => {
   const navigation = useNavigation();
@@ -49,12 +50,11 @@ const JihadBakkouraTimeClinic = () => {
                 </RN.View>
               </RN.View>
               <RN.View style={styles.textsBox}>{renderText()}</RN.View>
-              <RN.Pressable
-                style={styles.siteLinkBox}
-                onPress={onHandleCategory}>
-                <RN.Text style={styles.siteLink}>jihadbakkoura.com</RN.Text>
-                <Images.Svg.jihadBakkouraSiteLogo />
-              </RN.Pressable>
+              <TimeWebView
+                linkName="jihadbakkoura.com"
+                logo={<Images.Svg.jihadBakkouraSiteLogo />}
+                onHandleCategory={onHandleCategory}
+              />
             </RN.View>
           </RN.ScrollView>
         </RN.View>
@@ -67,7 +67,7 @@ export default JihadBakkouraTimeClinic;
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     paddingBottom: windowHeight / 8,
@@ -90,18 +90,5 @@ const styles = RN.StyleSheet.create({
   },
   textsBox: {
     top: -50,
-  },
-  siteLinkBox: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-  },
-  siteLink: {
-    color: '#DFC188',
-    fontSize: 18,
-    textDecorationColor: '#DFC188',
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'solid',
   },
 });

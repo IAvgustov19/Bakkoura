@@ -1,12 +1,12 @@
-import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import {BG, Images} from '../../../../assets';
+import { BG, Images } from '../../../../assets';
 import RN from '../../../../components/RN';
 import TextView from '../../../../components/Text/Text';
-import {APP_ROUTES} from '../../../routes';
-import {bottomTabBarOptions} from '../../BottomTabNavigation.constants';
-import {styles} from './MyTabbar.styles';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import { APP_ROUTES } from '../../../routes';
+import { bottomTabBarOptions } from '../../BottomTabNavigation.constants';
+import { styles } from './MyTabbar.styles';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 type TabBarItem = {
   route: any;
@@ -18,14 +18,14 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
-  const renderTabBar = ({route, index}: TabBarItem) => {
-    const {options} = descriptors[route.key];
+  const renderTabBar = ({ route, index }: TabBarItem) => {
+    const { options } = descriptors[route.key];
     const label =
       options.tabBarLabel !== undefined
         ? options.tabBarLabel
         : options.title !== undefined
-        ? options.title
-        : route.name;
+          ? options.title
+          : route.name;
 
     const renderIcon = () => {
       switch (label as APP_ROUTES) {
@@ -70,15 +70,21 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
         case APP_ROUTES.H30_LEGEND:
           return <Images.Svg.h30Icon />;
         case APP_ROUTES.WATCH_VALUATION:
-          return <Images.Svg.assessmentWatchIcon/>;
+          return <Images.Svg.assessmentWatchIcon />;
         case APP_ROUTES.SEND_IDEA:
-          return <Images.Svg.sendIdeaIcon/>;
+          return <Images.Svg.sendIdeaIcon />;
         case APP_ROUTES.TIME_BIOTIC:
-          return <Images.Svg.timeBioticIcon/>
+          return <Images.Svg.timeBioticIcon />
+        case APP_ROUTES.ABOUT_TIME:
+          return <Images.Svg.aboutTimeIcon />
         case APP_ROUTES.CONTACT_US:
-          return <Images.Svg.contactIcon/>;
+          return <Images.Svg.contactIcon />;
+        case APP_ROUTES.FRANS_VILA:
+          return <Images.Svg.francvilaWatchIcon />
         case APP_ROUTES.BTS_NAVIGATION:
-          return <Images.Svg.btsNavigationIcon/>
+          return <Images.Svg.btsNavigationIcon />
+        case APP_ROUTES.TIME_WEALTH:
+          return <Images.Svg.timeWealthIcon/>
         default:
           return <Images.Svg.homeIcon />;
       }
@@ -92,7 +98,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
       });
       bottomSheetRef.current?.collapse();
       if (!event.defaultPrevented) {
-        navigation.navigate({name: route.name, merge: true} as any);
+        navigation.navigate({ name: route.name, merge: true } as any);
       }
     };
 
@@ -116,11 +122,11 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
     );
   };
   const renderTabBars = () =>
-    state.routes.map((route, index) => renderTabBar({route, index}));
+    state.routes.map((route, index) => renderTabBar({ route, index }));
 
   const bottomSheetRef = React.useRef<BottomSheet>(null);
 
-  const snapPoints = React.useMemo(() => [110, '85%'], []);
+  const snapPoints = React.useMemo(() => [110, '90%'], []);
 
   return (
     <BottomSheet

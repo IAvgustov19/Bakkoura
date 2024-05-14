@@ -20,6 +20,7 @@ export type NewEventStateType = {
   stayedHour: number;
   stayedMinut: number;
   stayedSecond: number;
+  already: boolean;
 };
 
 export const NewEventStateInitial: NewEventStateType = {
@@ -44,6 +45,7 @@ export const NewEventStateInitial: NewEventStateType = {
   stayedHour: 0,
   stayedMinut: 0,
   stayedSecond: 0,
+  already: false,
 };
 
 export type DateDataType = {

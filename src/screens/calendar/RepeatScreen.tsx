@@ -48,7 +48,7 @@ const styles = RN.StyleSheet.create({
     fontSize: 16,
   },
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   eventsTypeList: {
     backgroundColor: '#0D0D0D',

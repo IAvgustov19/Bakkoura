@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { APP_ROUTES } from '../../navigation/routes';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TodayEvent from './components/TodayEvent';
 
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -96,17 +97,15 @@ const HomeScreen = () => {
               />
               <RN.View>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
-                <RN.View style={styles.todayBox}>
-                  <RN.Text style={styles.day}>{today.day}</RN.Text>
-                  <RN.Text style={styles.monthYear}>{today.monthYear}</RN.Text>
-                  <RN.View style={styles.dateLine}>
-                    <Images.Svg.dateBottomLine />
-                  </RN.View>
-                </RN.View>
-                <AlarmNotification
+                <TodayEvent
                   day={nearDay?.day}
-                  info={nearDay?.name}
-                  date={`${nearDay?.date}`}
+                  title={nearDay?.name}
+                  date={nearDay?.date}
+                />
+                <AlarmNotification
+                  time24={homeCurrentTime.time24}
+                  time30={homeCurrentTime.time30}
+                  extraTime={homeCurrentTime.timeExtra as never}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.EVENTS_SCREEN as never)
                   }
@@ -127,7 +126,7 @@ export default observer(HomeScreen);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     height: windowHeight - windowHeight / 3.3,
@@ -147,21 +146,6 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     top: -40,
     width: '100%',
-  },
-  todayBox: {
-    alignItems: 'center',
-  },
-  day: {
-    fontSize: 30,
-    color: COLORS.yellow,
-    textAlign: 'center',
-  },
-  monthYear: {
-    fontSize: 14,
-    color: COLORS.yellow,
-  },
-  dateLine: {
-    marginTop: 5,
   },
   watchBox: {
     height: '90%',

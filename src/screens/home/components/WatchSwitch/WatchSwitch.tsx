@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import RN from '../../../../components/RN';
 import useRootStore from '../../../../hooks/useRootStore';
+import {COLORS} from '../../../../utils/colors';
 type Props = {
   title?: string;
   handlePress?: () => void;
@@ -65,6 +66,7 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     width: 'auto',
+    color: COLORS.black,
   },
   linear: {
     paddingHorizontal: 5,

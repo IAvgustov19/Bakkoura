@@ -25,6 +25,7 @@ type Props = {
   iconPress?: () => void;
   textAlignVertical?: any;
   onPressIn?: () => void;
+  maxLenght?: number;
 };
 
 const Input: React.FC<Props> = ({
@@ -45,8 +46,8 @@ const Input: React.FC<Props> = ({
   black = false,
   onPressIn,
   editable = true,
-  secureTextEntry
-
+  secureTextEntry,
+  maxLenght,
 }) => {
   return (
     <RN.View style={styles.container}>
@@ -67,6 +68,7 @@ const Input: React.FC<Props> = ({
           numberOfLines={numberOfLines}
           placeholderTextColor={COLORS.grey}
           textAlignVertical={textAlignVertical}
+          maxLength={maxLenght}
           style={[
             styles.input,
             {

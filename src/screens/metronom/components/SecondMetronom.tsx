@@ -2,10 +2,9 @@ import {observer} from 'mobx-react-lite';
 import React, {useEffect, useMemo} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
-import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
-import SliderComp from './SliderComp';
+import LinearRange from '../../../components/LinearRangeSlider/LinearRangeSlider';
 
 type Props = {
   countMinut?: number;
@@ -20,22 +19,40 @@ const SecondMetronom: React.FC<Props> = ({
   removeCount,
   etap,
 }) => {
-  const {setMetronomState, etapData, metronomState} =
+  const {setMetronomState, etapData, stopSound, playSound, metronomState} =
     useRootStore().metronomStore;
+  const SetBpm = (value: number) => {
+    setMetronomState('countMinut', Math.round(value));
+    stopSound();
+  };
+
+  const BmpComplete = (value: number) => {
+    playSound();
+  };
+
+  const renderEtapData = useMemo(() => {
+    return etapData.map((item, index) => {
+      return (
+        <Images.Svg.ellipseDotLarge
+          key={index}
+          fill={
+            metronomState.etapCount === 1
+              ? metronomState.etapLine === 1
+                ? COLORS.yellow
+                : COLORS.black
+              : item === etap
+              ? COLORS.yellow
+              : COLORS.black
+          }
+        />
+      );
+    });
+  }, [metronomState.etapCount, etap, metronomState.etapLine]);
 
   return (
     <RN.View style={styles.container}>
       <RN.Text style={styles.activeNumber}>{etap ? etap : 1}</RN.Text>
-      <RN.View style={styles.dots}>
-        {etapData.map((item, index) => {
-          return (
-            <Images.Svg.ellipseDotLarge
-              key={index}
-              fill={item === etap ? COLORS.yellow : COLORS.black}
-            />
-          );
-        })}
-      </RN.View>
+      <RN.View style={styles.dots}>{renderEtapData}</RN.View>
       <RN.View style={styles.sliderBox}>
         <RN.TouchableOpacity onPress={removeCount}>
           <Images.Svg.removeCount />
@@ -45,11 +62,12 @@ const SecondMetronom: React.FC<Props> = ({
           <RN.Text style={styles.countType}>BPM</RN.Text>
         </RN.View>
         <RN.View style={styles.slider}>
-          <SliderComp
+          <LinearRange
+            onChangeValue={e => SetBpm(e)}
+            onSlidingComplete={e => BmpComplete(e)}
             value={countMinut}
             minValue={1}
-            maxValue={220}
-            onChangeValue={e => setMetronomState('countMinut', Math.round(e))}
+            maxValue={240}
           />
         </RN.View>
         <RN.TouchableOpacity onPress={addCount}>

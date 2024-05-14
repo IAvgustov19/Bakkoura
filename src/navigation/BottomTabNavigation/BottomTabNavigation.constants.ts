@@ -18,7 +18,10 @@ import ContactUs from '../../screens/timeBiotic/ContactUs';
 import SendIdea from '../../screens/timeBiotic/SendIdea';
 import TimeBiotic from '../../screens/timeBiotic/TimeBiotic';
 import WatchValuation from '../../screens/timeBiotic/WatchValuation';
+import AboutTime from '../../screens/timeClinic/AboutTime';
+import FrancVila from '../../screens/timeClinic/FrancVila';
 import TimeClinic from '../../screens/timeClinic/TimeClinic';
+import TimeWealth from '../../screens/timeClinic/TimeWealth';
 import TimerScreen from '../../screens/timers/TimerScreen';
 import TimeTogether from '../../screens/timeTogether/TimeTogether';
 import ToDoTimer from '../../screens/todoTimer/ToDoTimer';
@@ -170,20 +173,36 @@ export const bottomTabBarOptions = {
       component: TimeBiotic,
       buttonLabel: 'Time Biotic',
     },
-    // about time-francvila watch doesnt exist
     {
       index: 20,
+      tabName: APP_ROUTES.ABOUT_TIME,
+      component: AboutTime,
+      buttonLabel: 'About Time',
+    },
+    {
+      index: 21,
+      tabName: APP_ROUTES.FRANS_VILA,
+      component: FrancVila,
+      buttonLabel: 'Francvila Watch',
+    },
+    {
+      index: 22,
       tabName: APP_ROUTES.CONTACT_US,
       component: ContactUs,
       buttonLabel: 'Contact Us',
     },
     {
-      index: 21,
+      index: 23,
       tabName: APP_ROUTES.BTS_NAVIGATION,
       component: BtsNavigation,
       buttonLabel: 'BTS Navigation',
     },
-    // timeWealth screen doesnt exist
+    {
+      index: 24,
+      tabName: APP_ROUTES.TIME_WEALTH,
+      component: TimeWealth,
+      buttonLabel: 'Time Wealth',
+    },
 
 
 

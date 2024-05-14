@@ -24,6 +24,7 @@ export class CalendarStore {
     this.calculateRemainingTime();
     this.filterNearDay();
     this.generateCalendarMonths();
+    setInterval(() => this.updateAllEvents(), 300000);
   }
 
   date = new Date();
@@ -91,10 +92,12 @@ export class CalendarStore {
     if (this.currentDate === date) {
       this.allEventsData = this.cloneAllEventsData;
       this.currentDate = date;
+      this.updateAllEvents();
     } else {
       this.allEventsData = this.cloneAllEventsData.filter(
         event => event.date === (date as never),
       );
+      this.updateAllEvents();
       this.currentDate = date;
     }
   };
@@ -128,6 +131,7 @@ export class CalendarStore {
           calback();
           this.filterNearDay();
           this.clearState();
+          this.updateAllEvents();
         } else {
           console.log('enter time');
         }
@@ -150,6 +154,9 @@ export class CalendarStore {
     setTimeout(() => {
       runInAction(() => {
         this.allEventsData = this.allEventsData.filter(item => item.id !== id);
+        this.cloneAllEventsData = this.cloneAllEventsData.filter(
+          item => item.id !== id,
+        );
       });
     }, 200);
   };
@@ -259,5 +266,20 @@ export class CalendarStore {
       };
     });
     this.repeatData = newData;
+  };
+
+  updateAllEvents = () => {
+    const newDate = Date.now();
+    const list = this.allEventsData.map((item, i) => {
+      return new Date(item.date).getTime() <= newDate
+        ? {
+            ...item,
+            already: true,
+          }
+        : item;
+    });
+    runInAction(() => {
+      this.allEventsData = list;
+    });
   };
 }

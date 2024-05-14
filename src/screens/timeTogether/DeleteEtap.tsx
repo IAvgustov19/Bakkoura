@@ -40,7 +40,7 @@ export default observer(DeleteEtap);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   content: {
     paddingHorizontal: 10,

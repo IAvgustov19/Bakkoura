@@ -1,10 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {
-  getWeather,
-  dailyForecast,
-  showWeather,
-  getLocation,
-} from 'react-native-weather-api';
+import {getWeather, showWeather} from 'react-native-weather-api';
 import {SelectedCountriesType} from '../../types/worldTime';
 import {RootStore} from '../rootStore';
 
@@ -14,18 +9,18 @@ export class WorldTimeStore {
     makeAutoObservable(this);
     this.root = root;
     this.getAllCountries();
+    setInterval(this.updateCountriesData, 60000);
   }
 
-  worlTimeApiUrl = 'https://restcountries.com/v3.1/all';
+  worldTimeApiUrl = 'https://restcountries.com/v3.1/all';
   worldWeatherApiKey = '7b4f7ae10a69e7aafe6e2a44156625df';
+  worldWeatherApiBase = 'https://api.openweathermap.org/data/2.5/';
 
   worldData = [];
   cloneWorldData = [];
 
   hour = 0;
   minut = 0;
-
-  temp = '0';
 
   selectedCountries: SelectedCountriesType[] = [];
 
@@ -97,14 +92,14 @@ export class WorldTimeStore {
   };
 
   getAllCountries = async () => {
-    const response = await fetch(this.worlTimeApiUrl);
+    const response = await fetch(this.worldTimeApiUrl);
     const countries = await response.json();
-    this.worldData = this.sortCountriesByCapital(countries).filter(
-      e => e.capital !== undefined,
-    );
-    this.cloneWorldData = this.sortCountriesByCapital(countries).filter(
-      e => e.capital !== undefined,
-    );
+    this.worldData = this.sortCountriesByCapital(countries)
+      .filter(e => e.capital !== undefined)
+      .filter(e => e.timezones[0] !== 'UTC');
+    this.cloneWorldData = this.sortCountriesByCapital(countries)
+      .filter(e => e.capital !== undefined)
+      .filter(e => e.timezones[0] !== 'UTC');
   };
 
   filterWorldData = name => {
@@ -126,34 +121,59 @@ export class WorldTimeStore {
     }
   };
 
-  getWeather = (city?: string, country?: string) => {
-    getWeather({
-      key: this.worldWeatherApiKey,
-      city: city,
-      country: country ? country : '',
-    }).then(() => {
-      let data = new showWeather();
-      const tempFahrenheit = data.temp;
-      const tempCelsius = Math.round(((tempFahrenheit - 32) * 5) / 90);
-      this.temp = `${tempCelsius}`;
+  getWeather = async (city?: string) => {
+    return new Promise((resolve, reject) => {
+      fetch(
+        `https://api.weatherapi.com/v1/current.json?key=bb958a21cb6f4c8daa6105501240905&q=${city}&aqi=no`,
+      )
+        .then(response => response.json()) // Convert response to JSON
+        .then(data => {
+          const temp = `${data.current.temp_c}`;
+          resolve(temp);
+        })
+        .catch(error => {
+          console.error('Error fetching weather data:', error);
+          reject(error);
+        });
     });
   };
 
-  setCountry = (data: SelectedCountriesType, callback: () => void) => {
-    this.getWeather(data.capital, data.name?.common?.toString()) as never;
+  setCountry = async (data: SelectedCountriesType, callback: () => void) => {
+    const temp = await this.getWeather(data.capital);
     const time = this.getLocalTime(data.timezones);
     const date = this.getLocalDate(data.timezones);
+    const minutes = this.hour * 60 + this.minut;
     const newData = {
       id: this.selectedCountries.length + 1,
       capital: data.capital,
       name: data.name?.common?.toString(),
       time: time,
-      date: `Today ${this.temp}C  ${date}`,
+      date: `Today ${temp}C  ${date}`,
       hour: this.hour,
       minut: this.minut,
+      hour30: (minutes + minutes / 4) / 4,
+      minut30: time.slice(3, 5),
       timezones: data.timezones,
     };
-    this.selectedCountries = [...this.selectedCountries, newData] as never;
+    runInAction(() => {
+      this.selectedCountries = [...this.selectedCountries, newData] as never;
+    });
+    this.filterWorldData('');
     callback();
+  };
+
+  updateCountriesData = async () => {
+    runInAction(() => {
+      this.selectedCountries.forEach(country => {
+        const newLocalTime = this.getLocalTime(country.timezones);
+        country.time = newLocalTime;
+        (country.hour = this.hour),
+          (country.minut = this.minut),
+          (country.hour30 =
+            (this.hour * 60 + this.minut + (this.hour * 60 + this.minut / 4)) /
+            4),
+          (country.minut30 = Number(newLocalTime.slice(3, 5)));
+      });
+    });
   };
 }
