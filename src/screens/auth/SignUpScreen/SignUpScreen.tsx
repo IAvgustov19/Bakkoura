@@ -56,7 +56,7 @@ const SignUpScreen = () => {
         displayName: name,
       });
       try {
-        await authh().currentUser.sendEmailVerification();
+        // await authh().currentUser.sendEmailVerification();
       } catch (err) {
         Alert.alert(err)
       }
@@ -68,11 +68,12 @@ const SignUpScreen = () => {
         country,
       });
       await AsyncStorage.setItem('userData', JSON.stringify(user));
-      if (!user.emailVerified) {
-        Alert.alert('verify your email', 'press ok to get sign in page', [
-          { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
-        ])
-      }
+      // if (!user.emailVerified) {
+      //   Alert.alert('verify your email', 'press ok to get sign in page', [
+      //     { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
+      //   ])
+      // }
+      navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never);
 
     } catch (error) {
       Alert.alert(error.message);

@@ -48,14 +48,14 @@ const Pomodoro = () => {
           style={styles.taskListHeader}
           key={index}
           onPress={() => onHandleTask(item)}
-          >
+        >
           <RN.View>
             <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
             <TextView text={item.description} />
           </RN.View>
           <RN.View style={styles.spaceBetween}>
             <RN.Text style={styles.tasksText}>{`${0}`}/{`${newTaskState.estimatedHours}`}</RN.Text>
-            <Images.Svg.dots onPress={() => onHandleTask(item)}/>
+            <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.View>
         </RN.Pressable>
       );

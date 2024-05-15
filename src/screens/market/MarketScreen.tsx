@@ -13,6 +13,8 @@ import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 import CompanyCard from './components/companyCard/CompanyCard';
 import Thanks from './components/thanks/Thanks';
+import ButtonComp from '../../components/Button/Button';
+import GiveImage from '../../components/GiveImage/GiveImage';
 
 const MarketScreen = () => {
   const navigation = useNavigation();
@@ -50,12 +52,11 @@ const MarketScreen = () => {
                 }
               />
             </RN.View>
-            <SimpleBtn
-              title="Order the watch"
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.ORDER_SCREEN as never)
-              }
-            />
+            <ButtonComp
+                title="Watch Order"
+                icon={<GiveImage source={Images.Img.eye} />}
+                onPress={() => navigation.navigate(APP_ROUTES.ORDER_SCREEN as never)}
+              />
           </RN.View>
           <GeneralModal children={<Thanks />} visible={false} />
         </RN.View>

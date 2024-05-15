@@ -45,7 +45,7 @@ const PersonalArea = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
-                    <Images.Svg.bg style={styles.bg} />
+                    {/* <Images.Svg.bg style={styles.bg} /> */}
                     <HeaderContent
                         rightItem={
                             <RN.TouchableOpacity

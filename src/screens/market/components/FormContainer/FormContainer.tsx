@@ -117,7 +117,7 @@ const FormContainer: React.FC<Props> = ({
       }
       {!uploadAtTop ?
         <>
-          <UploadFileInput onPress={openImagePicker} black />
+          <UploadFileInput onPress={openImagePicker} black={black} />
           {orderState.file ? (
             <RN.View style={styles.fileBox}>
               <Images.Svg.fileAttachIcon />

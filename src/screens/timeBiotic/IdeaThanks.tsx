@@ -19,7 +19,7 @@ const IdeaThanks = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <Images.Svg.bg style={styles.bg} />
+          {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           />

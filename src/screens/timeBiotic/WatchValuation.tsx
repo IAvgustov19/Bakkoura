@@ -54,7 +54,7 @@ const onSelect = (option: string) => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <Images.Svg.bg style={styles.bg} />
+          {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}

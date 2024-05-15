@@ -35,7 +35,8 @@ export default CompanyCard;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: COLORS.darkGrey,
+    // backgroundColor: COLORS.darkGrey,
+    backgroundColor: '#0D0D0D',
     padding: 10,
   },
   companyCardRight: {

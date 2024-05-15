@@ -52,8 +52,10 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const { setAuthorized } = useRootStore().authStore;
   const [remember, setRemember] = useState(false);
-  const [email, setEmail] = useState('bakkouratimesystem@gmail.com');
-  const [password, setPassword] = useState('nifS4TT9Jvb9tH9');
+  // const [email, setEmail] = useState('bakkouratimesystem@gmail.com');
+  // const [password, setPassword] = useState('nifS4TT9Jvb9tH9');
+  const [email, setEmail] = useState('test@gmail.com');
+  const [password, setPassword] = useState('test123');
 
   const RememberMe = () => {
     setRemember(e => !e);
@@ -82,11 +84,11 @@ const SignInScreen = () => {
       //   return;
       // }
       // console.log('user.emailVerifieduser.emailVerifieduser.emailVerified', user.emailVerified)
-      if (user.emailVerified) {
+      // if (user.emailVerified) {
         setAuthorized()
-      } else {
-        Alert.alert('email doesnt exist')
-      }
+      // } else {
+        // Alert.alert('email doesnt exist')
+      // }
       console.log(token, 77);
       // You can use the token or user object as needed
     } catch (error) {

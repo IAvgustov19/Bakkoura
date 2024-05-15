@@ -13,6 +13,8 @@ import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import FormContainer from './components/FormContainer/FormContainer';
+import { APP_ROUTES } from '../../navigation/routes';
+import Thanks from './components/thanks/Thanks';
 
 const OrderScreen = () => {
   const navigation = useNavigation();
@@ -62,7 +64,7 @@ const OrderScreen = () => {
                   }
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} />
+              <FormContainer bottomInputPress={Scroll}/>
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
@@ -75,7 +77,7 @@ const OrderScreen = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-              <SimpleBtn title="Send" />
+              <SimpleBtn title="Send" onPress={() => navigation.navigate(APP_ROUTES.ORDER_THANKS as never)}/>
             </RN.View>
           </RN.ScrollView>
         </RN.View>
