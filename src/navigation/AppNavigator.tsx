@@ -63,6 +63,7 @@ import AboutTime from '../screens/timeClinic/AboutTime';
 import AboutTimeInfo from '../screens/timeClinic/AboutTimeInfo';
 import TimeWealth from '../screens/timeClinic/TimeWealth';
 import FrancVila from '../screens/timeClinic/FrancVila';
+import OrderThanks from '../screens/market/components/thanks/Thanks';
 
 const Stack = createStackNavigator();
 
@@ -350,6 +351,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.ORDER_SCREEN}
           component={OrderScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ORDER_THANKS}
+          component={OrderThanks}
           options={{
             headerTitleAlign: 'center',
           }}

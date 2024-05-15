@@ -45,9 +45,9 @@ const ContactUs = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          <RN.View style={styles.bgContainer}>
+          {/* <RN.View style={styles.bgContainer}>
             <Images.Svg.bg style={styles.bg} />
-          </RN.View>
+          </RN.View> */}
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}

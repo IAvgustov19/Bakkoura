@@ -103,6 +103,7 @@ export enum APP_ROUTES {
 
   //market
   ORDER_SCREEN = 'OrderScreen',
+  ORDER_THANKS = 'OrderThanks',
   MARKET_WEB_VIEW = 'MarketWebView',
 
   //time clinic
