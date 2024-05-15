@@ -1,7 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useState} from 'react';
-import {Images} from '../../assets';
+import { useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { Images } from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -11,12 +11,11 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import {COLORS} from '../../utils/colors';
-import {windowHeight} from '../../utils/styles';
+import { COLORS } from '../../utils/colors';
+import { windowHeight } from '../../utils/styles';
 
 const AddTaskScreen = () => {
   const navigation = useNavigation();
-  const [minut, setMinut] = useState(15);
   const {
     setNewTaskState,
     newTaskState,
@@ -28,14 +27,21 @@ const AddTaskScreen = () => {
     handleDeleteTask,
   } = useRootStore().pomodoroStore;
 
+  const [minut, setMinut] = useState(newTaskState.minut ?? 1);
   const addMinut = () => {
     setMinut(minut + 1);
     setNewTaskState('minut', minut + 1);
+    setNewTaskState('totalCycle', newTaskState.minut);
     calculateTime();
   };
   const subMinut = () => {
-    setMinut(minut - 1);
-    setNewTaskState('minut', minut - 1);
+    if (minut) {
+      setMinut(minut - 1);
+      setNewTaskState('minut', minut - 1);
+      setNewTaskState('totalCycle', newTaskState.minut);
+    } else {
+      return
+    }
     calculateTime();
   };
 
@@ -53,6 +59,7 @@ const AddTaskScreen = () => {
     navigation.goBack();
     handleDeleteTask(newTaskState.id);
   };
+
 
   return (
     <LinearContainer

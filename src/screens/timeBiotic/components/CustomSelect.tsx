@@ -23,8 +23,8 @@ const CustomDropdownInput = ({ options, onSelect }) => {
                     black={true}
                     title='Country'
                     editable={false}
-                    onPressIn={() => { }}
-                    onChangeText={() => { }}
+                    // onPressIn={() => { }}
+                    // onChangeText={() => { }}
                     placeholder="Select Option"
                     icon={<Images.Svg.darkDownArrow />}
                     iconPress={() => setIsOpen(!isOpen)}

@@ -129,6 +129,7 @@ import francVila from './svg/francVila.svg';
 import alarmClockBang from './svg/alarmClockBang.svg';
 import btnAddIcon from './svg/btnAddIcon.svg';
 import timeWealthIcon from './svg/timeWealthIcon.svg';
+import dots from './svg/dots.svg';
 
 export const Images = {
   Svg: {
@@ -268,6 +269,7 @@ export const Images = {
     francVila,
     alarmClockBang,
     btnAddIcon,
+    dots,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

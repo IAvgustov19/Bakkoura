@@ -70,6 +70,10 @@ export type PomodoroDataType = {
   time: string;
   hour: string;
   breackType: string;
+  estimatedPomodoros: number;
+  estimatedHours: number;
+  totalCycle: number;
+
 };
 
 export const PomodoroDataInitial: PomodoroDataType = {
@@ -78,10 +82,13 @@ export const PomodoroDataInitial: PomodoroDataType = {
   description: '',
   finishTime: '00:00',
   second: 0,
-  minut: 15,
+  minut: 1,
   time: '00:00',
   hour: '0',
   breackType: '',
+  estimatedPomodoros: 0,
+  estimatedHours: 0,
+  totalCycle: 1,
 };
 
 export type TogetherDataType = {
