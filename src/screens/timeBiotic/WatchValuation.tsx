@@ -41,6 +41,15 @@ const WatchValuation = () => {
   };
 
 
+  const options = [
+    { label: 'OAE', value: 'OAE' },
+    { label: 'USA', value: 'USA' },
+    { label: 'UK', value: 'UK' },
+];
+const onSelect = (option: string) => {
+  console.log(option)
+}
+
   return (
     <LinearContainer
       children={
@@ -67,7 +76,7 @@ const WatchValuation = () => {
                   text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} uploadAtTop black withSelect/>
+              <FormContainer bottomInputPress={Scroll} uploadAtTop black withSelect options={options} onSelect={onSelect}/>
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
