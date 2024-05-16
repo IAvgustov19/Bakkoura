@@ -12,7 +12,7 @@ import {SelectColorData} from '../../utils/colors';
 
 const SectorColor = () => {
   const navigation = useNavigation();
-  const {onSelectSectorColor, selectedSectorColor} =
+  const {onSelectSectorColor, newSelectState} =
     useRootStore().bakkouraWatchStore;
 
   return (
@@ -30,7 +30,7 @@ const SectorColor = () => {
                   <RN.TouchableOpacity
                     key={index}
                     onPress={() => onSelectSectorColor(item.id)}>
-                    {selectedSectorColor.id === item.id ? (
+                    {newSelectState.color === item.color ? (
                       <RN.Pressable style={styles.selected}>
                         <Images.Svg.colorBorder />
                       </RN.Pressable>

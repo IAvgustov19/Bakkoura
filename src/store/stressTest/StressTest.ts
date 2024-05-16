@@ -1,8 +1,9 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import {secondsToHMS} from '../../helper/helper';
 import {RootStore} from '../rootStore';
 
 type stressTestData = {
-  timeStamp: 0;
+  seconds: 0;
   time: string;
 };
 
@@ -21,7 +22,7 @@ export class StressTestStore {
   };
 
   stressTestData: stressTestData = {
-    timeStamp: 0,
+    seconds: 0,
     time: '',
   };
 
@@ -29,20 +30,11 @@ export class StressTestStore {
 
   setStressTestTime = () => {
     this.stressTimeInterval = setInterval(() => {
-      this.setTime();
       runInAction(() => {
-        this.stressTestData.timeStamp++;
+        this.stressTestData.seconds++;
+        this.stressTestData.time = secondsToHMS(this.stressTestData.seconds);
       });
     }, 1000);
-  };
-
-  setTime = () => {
-    const hours = Math.floor(this.stressTestData.timeStamp / 3600);
-    const minutes = Math.floor((this.stressTestData.timeStamp % 3600) / 60);
-    const seconds = this.stressTestData.timeStamp % 60;
-    this.stressTestData.time = `${hours < 10 ? `0${hours}` : hours}:${
-      minutes < 10 ? `0${minutes}` : minutes
-    }:${seconds < 10 ? `0${seconds}` : seconds}`;
   };
 
   stopStressTestTime = () => {
@@ -65,7 +57,7 @@ export class StressTestStore {
   clearStressTimerData = () => {
     runInAction(() => {
       this.stressTestData = {
-        timeStamp: 0,
+        seconds: 0,
         time: '',
       };
     });

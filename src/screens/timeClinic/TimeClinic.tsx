@@ -7,7 +7,7 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import ListFooter from '../../components/ListFooter/ListFooter';
 import LottieContent from '../../components/LottieContent/LottieContent';
 import RN from '../../components/RN';
-import {TimeClinicList, TimeClinicListType} from '../../constants/timeClicic';
+import {TimeClinicList, TimeClinicListType} from '../../constants/timeClinic';
 import {Lotties} from '../../lotties/lottie';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';

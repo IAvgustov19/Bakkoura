@@ -13,6 +13,7 @@ import useRootStore from '../../../hooks/useRootStore';
 import {Lotties} from '../../../lotties/lottie';
 import {APP_ROUTES} from '../../../navigation/routes';
 import {COLORS} from '../../../utils/colors';
+import {moderateScale} from '../../../utils/dimensions';
 import {windowWidth} from '../../../utils/styles';
 
 const StressTestDuring = () => {
@@ -32,9 +33,7 @@ const StressTestDuring = () => {
   };
 
   const pandaLottie = useMemo(() => {
-    return (
-      <LottieContent source={Lotties.stressTest} width={windowWidth - 20} />
-    );
+    return <LottieContent source={Lotties.stressTest} width={windowWidth} />;
   }, []);
 
   return (
@@ -64,8 +63,8 @@ const StressTestDuring = () => {
               <StartBtn text="Start" primary onPress={startStopStressTest} />
             )}
             <SwitchContain
-              title="30h"
-              _title="24h"
+              title="24h"
+              _title="30h"
               back={is24}
               handlePress={() => setIs24(e => !e)}
             />
@@ -102,9 +101,9 @@ const styles = RN.StyleSheet.create({
   panda: {},
   time: {
     position: 'absolute',
-    fontSize: 60,
+    fontSize: moderateScale(50),
     fontWeight: '300',
     color: COLORS.white,
-    bottom: '25%',
+    bottom: '30%',
   },
 });

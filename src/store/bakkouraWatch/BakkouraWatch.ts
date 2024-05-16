@@ -8,24 +8,14 @@ import {SelectColorData} from '../../utils/colors';
 export class BakkouraWatchStore {
   constructor() {
     makeAutoObservable(this);
-    this.isSameColor = this.listSelects.some(
-      item => this.selectedSectorColor.color === item.color,
-    );
-    this.setNewSelectState('color', this.selectedSectorColor.color);
   }
 
-  selectedSectorColor: {id?: number; color?: string} = SelectColorData[20];
-
   onSelectSectorColor = (id: number) => {
-    this.selectedSectorColor = SelectColorData.find(item => item.id === id);
-    if (
-      this.listSelects.some(
-        item => item.color !== this.selectedSectorColor.color,
-      )
-    ) {
-      this.setNewSelectState('color', this.selectedSectorColor.color);
-    } else {
+    const selectSectorColor = SelectColorData.find(item => item.id === id);
+    if (this.listSelects.some(item => item.color === selectSectorColor.color)) {
       Alert.alert('This color has already selected');
+    } else {
+      this.setNewSelectState('color', selectSectorColor.color);
     }
   };
 
@@ -58,38 +48,28 @@ export class BakkouraWatchStore {
   };
 
   selectStartEndTime = (callback?: () => void) => {
-    if (
-      !this.listSelects.some(
-        item => item.color === this.selectedSectorColor.color,
-      )
-    ) {
-      const startMins =
-        this.newSelectState.fromHour * 60 + this.newSelectState.fromMin;
-      const endMins =
-        this.newSelectState.toHour * 60 + this.newSelectState.toMin;
-      if (startMins < endMins) {
-        if (
-          !this.listSelects.some(
-            item =>
-              this.newSelectState.start >= item.start &&
-              this.newSelectState.end <= item.end,
-          )
-        ) {
-          this.setNewSelectState('id', this.listSelects.length + 1);
-          this.setNewSelectState('color', this.selectedSectorColor.color);
-          this.listSelects = [...this.listSelects, this.newSelectState];
-          callback();
-          this.isHas = true;
-        } else {
-          Alert.alert('This time has already selected');
-          return;
-        }
+    const startMins =
+      this.newSelectState.fromHour * 60 + this.newSelectState.fromMin;
+    const endMins = this.newSelectState.toHour * 60 + this.newSelectState.toMin;
+    if (startMins < endMins) {
+      if (
+        !this.listSelects.some(
+          item =>
+            this.newSelectState.start >= item.start &&
+            this.newSelectState.end <= item.end,
+        )
+      ) {
+        this.setNewSelectState('id', this.listSelects.length + 1);
+        this.listSelects = [...this.listSelects, this.newSelectState];
+        callback();
+        this.isHas = true;
       } else {
-        Alert.alert('End time should be high than start time');
+        Alert.alert('This time has already selected');
         return;
       }
     } else {
-      Alert.alert('This color has already selected');
+      Alert.alert('End time should be high than start time');
+      return;
     }
   };
 
@@ -100,9 +80,13 @@ export class BakkouraWatchStore {
       calback();
       this.clearState();
     } else {
-      if (this.newSelectState.start && this.newSelectState.name) {
+      if (
+        this.newSelectState.start &&
+        this.newSelectState.name &&
+        this.newSelectState.color
+      ) {
         this.setNewSelectState('id', this.listSelects.length + 1);
-        this.setNewSelectState('color', this.selectedSectorColor.color);
+        // this.setNewSelectState('color', this.selectedSectorColor.color);
         this.listSelects = [...this.listSelects, this.newSelectState];
         this.isHas = true;
         calback();

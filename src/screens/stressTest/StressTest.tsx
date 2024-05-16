@@ -31,8 +31,12 @@ const StressTest = () => {
         <>
           <Images.Svg.yellowPanda1 />
           <RN.View style={styles.textInfo}>
-            <TextView text="Stress has become the norm in our lives. The world is changing quickly, and we often have to adapt to new living conditions and develop new methods to solve the problems we face. " />
-            <TextView text="The stress and depression test is designed to diagnose the nervous system and emotional instability. Shall we get started?" />
+            <TextView
+              text={`The "subjective minute" test was developed by Dr. Litvak, a specialist in psychiatry, psychology, and stress management. Instructions: press the START button, close your eyes, and mentally imagine when 60 seconds have passed. It is IMPORTANT not to count the minute, but to feel the time.`}
+            />
+            <TextView
+              text={`When you feel: a minute has passed, press STOP,`}
+            />
           </RN.View>
         </>
       );

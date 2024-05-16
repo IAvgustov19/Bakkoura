@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
@@ -11,6 +11,7 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import ListItemCont from '../../components/ListItemCont/ListItemCont';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
+import {TodoTimerResults} from '../../constants/todoTimer';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
@@ -22,6 +23,8 @@ const NewTask = () => {
   const {taskState, isHas, createNewTask, clearState} =
     useRootStore().todoTimer;
 
+  console.log(taskState);
+
   const onCreateNewTask = () => {
     createNewTask(() => navigation.navigate(APP_ROUTES.TODOTIMER as never));
   };
@@ -30,6 +33,36 @@ const NewTask = () => {
     navigation.goBack();
     clearState();
   };
+
+  const renderRecomended = useCallback(() => {
+    if (taskState.key === 'sport') {
+      if (taskState.timestamp > 21600) {
+        return TodoTimerResults.sport.moreThan6;
+      } else if (taskState.timestamp < 21600 && taskState.timestamp > 14400) {
+        return TodoTimerResults.sport.between4_6;
+      } else if (taskState.timestamp < 14400 && taskState.timestamp > 7200) {
+        return TodoTimerResults.sport.between2_4;
+      } else if (taskState.timestamp < 7200) {
+        return TodoTimerResults.sport.lessThan2;
+      }
+    } else if (taskState.key === 'work') {
+      if (taskState.timestamp > 10800) {
+        return TodoTimerResults.work.moreThan3;
+      } else if (taskState.timestamp < 7200 && taskState.timestamp > 3600) {
+        return TodoTimerResults.work.between1_2;
+      } else if (taskState.timestamp < 3600) {
+        return TodoTimerResults.work.between1_2;
+      }
+    } else if (taskState.key === 'time_killers') {
+      if (taskState.timestamp > 7200) {
+        return TodoTimerResults.time_killer.moreThan2;
+      } else if (taskState.timestamp < 7200) {
+        return TodoTimerResults.time_killer.lessThan2;
+      }
+    } else {
+      return TodoTimerResults.default;
+    }
+  }, [taskState]);
 
   return (
     <LinearContainer
@@ -44,7 +77,11 @@ const NewTask = () => {
             <RN.View style={styles.box}>
               <ListItemCont
                 title="Task name"
-                value={taskState.name}
+                value={
+                  taskState.name.length > 20
+                    ? taskState.name.slice(0, 17) + '...'
+                    : taskState.name
+                }
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.TASK_NAME as never)
                 }
@@ -54,7 +91,7 @@ const NewTask = () => {
                 title="Goal"
                 value={
                   taskState.hours || taskState.minutes > 0
-                    ? `${taskState.hours}h ${taskState.minutes}m  ${
+                    ? `${taskState.hours}h  ${taskState.minutes}m  ${
                         taskState.goal ? `/${taskState.goal}` : ''
                       }`
                     : ''
@@ -71,9 +108,7 @@ const NewTask = () => {
                     <Images.Svg.timerLogo fill={COLORS.yellow} />
                     <RN.Text style={styles.recomendedText}>Recomended</RN.Text>
                     <RN.Text style={styles.recomendedInfo}>
-                      Daily exercise is not enough to maintain good physical
-                      shape and remove toxins. Running time does not match your
-                      goal. Please get together and do more!
+                      {renderRecomended()}
                     </RN.Text>
                   </RN.View>
                   <RN.View style={styles.taskBack}>
