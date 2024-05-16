@@ -3,7 +3,7 @@ import {
   AboutTimeData,
   AboutTimeInitial,
   AboutTimeType,
-} from '../../constants/timeClicic';
+} from '../../constants/timeClinic';
 
 export class TimeClinicStore {
   constructor() {

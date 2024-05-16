@@ -147,25 +147,25 @@ export class ProjectTimer {
     });
   };
 
-  selectedProject = this.projectTimerList[0];
-  recentlyCalculated = this.projectTimerList[0];
-
   deleteRecentlyCalculated = () => {
     this.recentlyCalculated = {} as never;
   };
 
+  selectedProject = ProjectTimerDataInitial;
+  recentlyCalculated: ProjectTimerDataType = {} as never;
+
   onSelectProject = (index: number) => {
     runInAction(() => {
-      this.selectedProject = this.projectTimerList.find((e, i) => i === index);
       this.recentlyCalculated = this.projectTimerList.find(
-        (e, i) => i === index,
+        e => e.active === true,
       );
+      this.selectedProject = this.projectTimerList.find((e, i) => i === index);
     });
   };
 
   onSoundItemPress = index => {
+    this.onSelectProject(index);
     const newData = this.projectTimerList.map((item, i) => {
-      this.onSelectProject(index);
       return {
         ...item,
         active: i === index ? !item.active : false,

@@ -48,6 +48,7 @@ const ProjectTimerCalculator = () => {
               title={selectedProject.title}
               value={selectedProject.workTime}
               onPress={onHandleProjects}
+              iconPress={onHandleProjects}
             />
             <RN.View style={styles.timePrice}>
               <RN.View style={styles.timeBox}>
@@ -66,19 +67,23 @@ const ProjectTimerCalculator = () => {
               <TextView text="Amount" style={styles.label} />
               <Input placeholder="1232" value={selectedProject.totalPrice} />
             </RN.View>
-            <RN.View style={styles.counted}>
-              <TextView text="Recently counted" style={styles.label} />
-              <SelectInput
-                title={recentlyCalculated.title}
-                value={`${
-                  recentlyCalculated.totalPrice
-                    ? recentlyCalculated.totalPrice
-                    : 0
-                }$`}
-                icon={<Images.Svg.deleteIcon />}
-                iconPress={deleteRecentlyCalculated}
-              />
-            </RN.View>
+            {recentlyCalculated?.id ? (
+              <RN.View style={styles.counted}>
+                <TextView text="Recently counted" style={styles.label} />
+                <SelectInput
+                  title={
+                    recentlyCalculated?.title ? recentlyCalculated.title : ''
+                  }
+                  value={`${
+                    recentlyCalculated?.totalPrice
+                      ? recentlyCalculated.totalPrice
+                      : 0
+                  }$`}
+                  icon={<Images.Svg.deleteIcon />}
+                  iconPress={deleteRecentlyCalculated}
+                />
+              </RN.View>
+            ) : null}
           </RN.View>
           <SoundsContent
             headerTitle="Projects"
@@ -91,6 +96,9 @@ const ProjectTimerCalculator = () => {
             }
             onClose={onHandleProjects}
             modalVisible={projectsVisible}
+            okBtn
+            okBtnText="Ok"
+            onPressBtn={onHandleProjects}
           />
         </RN.View>
       }

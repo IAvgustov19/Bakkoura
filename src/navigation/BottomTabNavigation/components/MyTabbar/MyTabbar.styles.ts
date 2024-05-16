@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     // justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
+    paddingHorizontal: 3,
   },
   borderContainer: {
     // borderTopWidth: 2,
@@ -29,13 +30,16 @@ export const styles = StyleSheet.create({
     backgroundColor: '#0D0D0D',
   },
   buttonContainer: {
-    justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
     width: '25%',
+    height: 115,
     paddingTop: 20,
   },
-
+  iconBox: {
+    height: 55,
+    justifyContent: 'center',
+  },
   dotMenu: {
     position: 'absolute',
     top: -5,

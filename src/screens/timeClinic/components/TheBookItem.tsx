@@ -26,7 +26,11 @@ const TheBookitem: React.FC<Props> = ({title, page = 1, texts}) => {
 
   return (
     <RN.View style={styles.container}>
-      {page === 1 ? <TextView title={title} /> : <TextView text={title} />}
+      {page === 1 ? (
+        <TextView title={title} textAlign="left" />
+      ) : (
+        <TextView text={title} textAlign="left" />
+      )}
       <RN.View>{renderText()}</RN.View>
       <TextView text={page} style={styles.pageNumber} />
     </RN.View>

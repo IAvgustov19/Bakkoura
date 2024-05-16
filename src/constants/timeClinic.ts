@@ -275,26 +275,65 @@ export const AboutTimeData: AboutTimeType[] = [
 export const TheBookTexts = [
   {
     id: 1,
-    title: 'The Book of the Time',
+    title: 'How time is called.',
     texts: [
-      `Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. These timepieces live for everyone who has achieved success. And it doesn't matter who he is: an athlete, a politician, the head of a mafia clan, a star or an IT specialist. The company specializes in the production of all swiss watches with complications in super-limited series of 4, 8, 48 and 88 copies, which guarantees an exclusive high-tech design and a bright personality. The FRANC VILA watch is a mechanic created by a philosopher.`,
-      `Businessman, Poet, Designer, Creator Of Revolutionary Watch Concepts Of Time.Jihad Bakkoura Continues To Write A Story That Began In 2004 In Spain With No Less Passion And Imagination.He Has Come Up With An Exciting New Life For Each Model.`,
-      `A globally recognized independent all Swiss luxury watch brand. The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental `,
+      `Psycholinguists - people who study the influence of language on people's behavior are sure that language determines our character. And life determines language, for example, in the language of northern peoples there are more than 30 words for snow, in southern countries one. Some languages do not know the word no, in other languages there is no “I” and it determines the worldview. The name of time in different languages can also tell a lot. `,
+      `For example, English time - goes back to Old English “tīma”, which is etymologically related to tīd. This word meant not only “time” but also “tide” and “ebb” (modern tide). English time has a peculiarity: it can denote both an interval and a point in time, when in other languages there are separate names for these concepts. `,
+      `Slavonic “time” is borrowed from Church Slavonic. This word is related to the ancient Indian word “vártma” - track. The verb “to spin” is related to the same root! Perhaps that is why Slavic peoples have an attitude to time as something fatal - unambiguous. `,
+      `In Chinese, time is 时间 (shijian). The main meaning of the word is concentrated in the first character 时 (shi). It is formed from two parts - “sun” and “to guide” (日 and 之). That is, it symbolizes the movement of the sun, which is time in the earthly sense. Its meaning is “time, hour, season, epoch”. `,
+      `The second character 间 (jian) in the word “time” is more of a service character. It means “gap, gap, distance.” This character consists of two parts - the gate (門), and in it the moon (月). It turns out that etymologically the word time means “interval of time”, not the concept of “time” as such. That is, for the Chinese, time is necessarily from something and to something, some distance measured in hours. In Arabic, time was originally denoted by the word “almanac”, which was borrowed by many languages of the world in the original meaning of guide, table, overview. The modern concept of the word “time” الوقت is close to the Slavic understanding of time - a form of being, the best moment for something`,
     ],
   },
   {
     id: 2,
-    title: 'principles.',
+    title: 'There is a special kind of time - business time ',
     texts: [
-      `perfection. Innovation, creativity and excellency are our fundamental principles. Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury». The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is completeness and individuality.`,
-      `A globally recognized independent all Swiss luxury watch brand. The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles. Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury». The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is `,
+      `In economics, time is the speed of reaction or response to changes that occur. The economy lives by its own clock, close in meaning to the Chinese concept - time is a period. K the economy has 4 times/periods: `,
+      `Instantaneous - a period of time during which it is impossible to change any of the factors affecting the business.`,
+      `Short-term - a period of time during which it is impossible to change the fixed factors of production (production area and equipment), but it is possible to change the variable factors of production (number of employees, amount of raw materials and energy). `,
+      `Short-term - a period of time during which it is impossible to change the fixed factors of production (number of employees, amount of raw materials and energy).  `,
+      `Long-term - it is possible to change all factors except technology. Production increases, demand increases, prices increase, costs increase.`,
+      `Super long - a period in which everything changes and company and technology, innovation comes. In English the word run is used to describe economic time: shortrun, longrun. Economic time in all its four dimensions cannot be tied to an astronomical period of time`,
     ],
   },
   {
     id: 3,
-    title: 'completeness and individuality.',
+    title: 'Chronophages or time-eaters',
     texts: [
-      `fundamental principles. Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury». The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is completeness and individuality.fundamental principles.`,
+      `The Tale of Lost Time is a story about children not cherishing and respecting time. Chronophages took advantage of this and stole time from children and turned them into old people. They don't need it... This is a fairy tale, but in life can you steal time? Time management experts say yes. Here are 5 of the most vicious time eaters, which, by the way, Bakkoura's NON SYSTEM watch is perfectly able to fight against, helping you to redistribute your time:`,
+      `1. the Internet 
+2.	Talking on the phone
+3.	Getting up late
+4.	Reflection - reflections from the series of “if only...”
+5.	Wrong prioritization The term “chronophage” is derived from the Greek words “chronos” (time) and “phage” (to devour). Behind this generalized concept can hide virtually any time management problems: from outright force majeure to errors in planning. They come in five types:
+1.	Activities
+2. people
+3.	External circumstances (force majeure)
+4.	Internal circumstances
+5.	Organizational miscalculations`,
+    ],
+  },
+  {
+    id: 4,
+    title: 'Time is a secret account opened by god in your name. ',
+    texts: [
+      `Crises and inflation kill business. And time is the rapid inflation of life. We don't need to get our hopes up about how much time is ahead of us, it's important to realize how much we've already missed. When approached wisely, time will become your 3rd hand - the one that catches luck by the tail. Jihad Bakkoura sought and found a way to live each hour with meaning and purpose: there are 30 parts in a day. We never know where we lose time.`,
+      `And time is the only personal account you will never know anything about. How much has the Almighty given you? How much is left? The only thing we can do is manage “spending.” Don't let time run out and zero out your life's account too early! How? Bakkoura devoted his life to the study of clocks and found 2,190 “hours” per year. Every year. Time that you spend doing the right things. After all, life is measured in actions, not hours.`,
+    ],
+  },
+  {
+    id: 5,
+    title: 'Time is water. ',
+    texts: [
+      `Time is water. When there are 2 hours to complete a task, handle it in 2, and if an hour is allotted, we'll handle it in an hour. How can we do that? Humans are amazing creatures, we can program ourselves. You wake up in the night, look at the clock and realize that you will definitely not get enough sleep, because there are only 4 hours left to sleep. And you definitely won't get enough sleep. And if you don't know what's “only” left, you'll wake up rested.`,
+      `A clock that divides the day into 30 parts is a bold idea that breaks the routine for those who aren't afraid to break the rules. We harvested 12 minutes from each hour and gained an extra 6 “hours” of life! Do everything on time and never regret anything!`,
+      `The BAKKOURA NON SYSTEM collection is dedicated to the daredevils and dreamers who find it hard to live in the grip of 24 hours! `,
+      `Time is conditional - value is determined by people. Is 1 real or 1 yuan a lot or a little? How do you know? You feel it. Somewhere in your brain there's a conventional ruler that tells you whether it's valuable or not. Nobody knows if 1 minute is a lot or a little. What can happen in a minute? Everything or nothing. `,
+      `Some are always late and some are always early Why? We all have a different sense of time. For some, a minute is not much, and for others, it's a lot. So, as with money, the unit of measurement seems to be the same for everyone, but in fact everyone has his own. But human beings are so organized that we have to be guided by something. 5 stars in the hotel, Michelin stars in the restaurant, ratings in the reviews. If you have 24 hours you will live 24, and if you have 30 you will live 30. The world lives by its own rules`,
+      `Pythagoras said the earth was round, and it wasn't until 1992 that the Vatican recognized that the earth was round. But in 2023, almost 15 million people believe the earth is round. We were told that there are 24 hours in a day. Although the academic hour is 45 minutes, in Europe the working hour is 50 minutes.`,
+      `The Slavs had 16 hours and 9 months in a year in a 24-hour day until the 18th century, but in Ethiopia there are 13 months. In the 18th century, decimal time was in effect in France for several years - the day was divided into ten parts. Although before France such a system was tried in ancient China. In parallel with the division of the day into 12 “shi”, the Chinese divided them into 100 “ke”, each of which, in turn, was divided into 60 “fen” The Eastern world lives by the lunar calendar, where there are 354 days in a year, and in lunar days can be from a minute to 48 hours. So, how much time do we have left? The metaphysics of time`,
+      `One physicist put forward the theory that time doesn't exist. If you try to take time in your hands, it always slips through your fingers. People are sure that time exists, but they can't access it. We can't touch time because it simply doesn't exist?`,
+      `An interesting observation is that time can only exist where something is happening, there is at least some matter and characteristics. For example, in space in a black hole there is no matter at all and absolutely nothing, nothing is happening and there is no time there. Before the big bang or the moment when the Almighty created everything - there was nothing, so there was no time. Did it appear together with the universe or did it appear together with consciousness? Where consciousness, subconsciousness or soul goes when we sleep - there is no time. Does it mean that when one sleeps time ceases to exist? In the external world it is there, but it is not there for you. `,
     ],
   },
 ];
@@ -422,4 +461,19 @@ export const TimeWealthData: TimeWealthDataType[] = [
       ' He has spent part of his life in the East and part in the West: integrating the best of both cultures into his concepts and his projects.',
     ],
   },
+];
+
+export const H30LegendDataTexts = [
+  `"Whoever controls time controls life. Using new concepts is the first and most correct step into the future. We gave customers the opportunity to redistribute time to make room for something they need" Jihad Bakkoura
+30H is convenient for adventurers and dreamers who feel the pressure of living in a 24-hour system.
+Time is a top-secret account opened by God in your Name. Own time is the only personal account you will never get to know anything about. `,
+  `How much did the Supreme creator gift you? How much is left?
+The only we can do is manage "expenses". Don't let the time run out and reduce your life account to null ahead of time! After all, life is measured in deeds, not in hours. `,
+  `We collected 12 minutes from each hour and got an additional 6 "hours" of life! The dial of each model is divided into 30 parts. The concept does not cancel but makes it possible to redistribute time during the day more efficiently. 
+30H is not just a watch, but a time management technique that helps to correctly redistribute time without exposing the body to stress.`,
+  `We never know where we are wasting time. Crises and inflation are killing business.  Time is an uncontrollable inflation of life.  30h –with a wise approach, it will become your 3rd hand.
+30H is like a pizza. It can be divided into 6 parts, 8 or 10. The diameter does not change but you can feed more people without any waste.`,
+  `30H is like a sandglass.  There is a strict number of grains of sand inside and they fall at the right speed, because the narrow neck. We didn't change the number of grains we narrowed the neck.`,
+  `30H is like a jar. There are big stones, small ones, and sand — these are deeds of your life. Imagine if you put sand first, then small, and then large stones - how much will fit? But if to do it the other way - may fit much more.
+The same way the watch divided into 30 parts works - redistribute time to make room for something necessary.`,
 ];

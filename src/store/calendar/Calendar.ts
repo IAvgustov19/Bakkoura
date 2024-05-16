@@ -44,6 +44,7 @@ export class CalendarStore {
   };
 
   calendarCurrentTime = '';
+  calendarCurrentTime30 = '';
   months = [];
 
   oneMonth: Date | string;

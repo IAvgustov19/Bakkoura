@@ -23,23 +23,22 @@ type Props = {
 const AlarmClock: React.FC<Props> = ({is24h}) => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
 
-  const translateX = useSharedValue(0);
+  // const translateX = useSharedValue(0);
 
-  const EtapHandle = useMemo(() => {
-    switch (homeCurrentTime.second % 2 == 0) {
-      case false:
-        translateX.value = -15;
-        break;
-      case true:
-        translateX.value = 15;
-        break;
-    }
-  }, [homeCurrentTime.second]);
+  // const EtapHandle = useMemo(() => {
+  //   switch (homeCurrentTime.second % 2 == 0) {
+  //     case false:
+  //       translateX.value = -15;
+  //       break;
+  //     case true:
+  //       translateX.value = 15;
+  //       break;
+  //   }
+  // }, [homeCurrentTime.second]);
 
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{rotate: withTiming(`${translateX.value}deg`)}],
-  }));
-
+  // const animatedStyles = useAnimatedStyle(() => ({
+  //   transform: [{rotate: withTiming(`${translateX.value}deg`)}],
+  // }));
   const renderClock = useMemo(() => {
     if (is24h) {
       return <AlarmClockFront24 />;
@@ -51,7 +50,7 @@ const AlarmClock: React.FC<Props> = ({is24h}) => {
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.clockBox}>
-        <Animated.View style={[styles.clockBang, animatedStyles]}>
+        <Animated.View style={[styles.clockBang]}>
           <Images.Svg.alarmClockBang />
         </Animated.View>
         <Images.Svg.alarmClock />
@@ -60,8 +59,10 @@ const AlarmClock: React.FC<Props> = ({is24h}) => {
       <RN.View style={styles.btnBox}>
         <StartBtn text="Later" />
         <RN.Text style={styles.time}>
-          02:30
-          <RN.Text style={styles.pmAm}>pm</RN.Text>
+          {is24h
+            ? homeCurrentTime.time24.slice(0, 5)
+            : homeCurrentTime.time30.slice(0, 5)}
+          {/* <RN.Text style={styles.pmAm}>pm</RN.Text> */}
         </RN.Text>
         <StartBtn text="Stop" primary />
       </RN.View>

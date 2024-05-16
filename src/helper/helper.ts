@@ -312,6 +312,33 @@ export const getCurrentTime = () => {
   const formattedSeconds: string = seconds < 10 ? `0${seconds}` : `${seconds}`;
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 };
+export const secondsToHM = (seconds: number) => {
+  if (seconds > 0) {
+    const hours: number = Math.floor(seconds / 3600);
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    // const remainingSeconds: number = seconds % 60;
+    return `${hours < 10 ? `0${hours}` : hours}:${
+      minutes < 10 ? `0${minutes}` : minutes
+    }`;
+  } else {
+    return '00:00';
+  }
+};
+export const getCurrentTime30and24 = (index: number) => {
+  const now: Date = new Date();
+  const hours: number = now.getHours();
+  const minutes: number = now.getMinutes();
+  const seconds: number = now.getSeconds();
+  const totalSeconds = hours * 3600 + minutes + 60 + seconds;
+  const totalSeconds30 = totalSeconds + totalSeconds / 4;
+
+  if (index === 24) {
+    return secondsToHM(totalSeconds);
+  } else {
+    return secondsToHM(totalSeconds30);
+  }
+};
+
 export function formatDayVaMonth(day: number, month: number, year: number) {
   const monthData = [
     'january',
@@ -397,18 +424,6 @@ export const secondsToHMS = (seconds: number) => {
     }:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
   } else {
     return '00:00:00';
-  }
-};
-export const secondsToHM = (seconds: number) => {
-  if (seconds > 0) {
-    const hours: number = Math.floor(seconds / 3600);
-    const minutes: number = Math.floor((seconds % 3600) / 60);
-    // const remainingSeconds: number = seconds % 60;
-    return `${hours < 10 ? `0${hours}` : hours}:${
-      minutes < 10 ? `0${minutes}` : minutes
-    }`;
-  } else {
-    return '00:00';
   }
 };
 export const secondsToMS = (seconds: number) => {

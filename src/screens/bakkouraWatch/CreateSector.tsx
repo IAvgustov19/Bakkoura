@@ -22,14 +22,9 @@ import Vertices from './components/Vertices';
 
 const CreateSector = () => {
   const navigation = useNavigation();
-  const {
-    selectedSectorColor,
-    addNewSelect,
-    newSelectState,
-    deleteSelect,
-    listSelects,
-    clearState,
-  } = useRootStore().bakkouraWatchStore;
+  const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
+    useRootStore().bakkouraWatchStore;
+  console.log(newSelectState.color);
 
   const CreateSector = () => {
     addNewSelect(() => navigation.navigate(APP_ROUTES.BAKKOURA_WATCH as never));
@@ -94,15 +89,17 @@ const CreateSector = () => {
                   <ListItemCont
                     title="Color"
                     value={
-                      <Images.Svg.smallColorBox
-                        fill={
-                          selectedSectorColor.color
-                            ? selectedSectorColor.color
-                            : newSelectState.color
-                            ? newSelectState.color
-                            : 'transparent'
-                        }
-                      />
+                      newSelectState.color ? (
+                        <Images.Svg.smallColorBox
+                          fill={
+                            newSelectState.color
+                              ? newSelectState.color
+                              : 'transparent'
+                          }
+                        />
+                      ) : (
+                        'not selected'
+                      )
                     }
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.SECTOR_COLOR as never)

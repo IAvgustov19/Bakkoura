@@ -99,8 +99,8 @@ const NewProjectTimer = () => {
               <StartBtn
                 primary
                 text={isUpdate ? 'Update' : 'Add'}
-                subWidth={70}
-                elWidth={55}
+                subWidth={80}
+                elWidth={65}
                 onPress={createProjectTimer}
               />
             </RN.View>
@@ -120,7 +120,8 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     justifyContent: 'space-between',
-    height: windowHeight - windowHeight / 6,
+    height: windowHeight,
+    paddingBottom: windowHeight - windowHeight / 1.2,
   },
   scrollView: {
     height: windowHeight,
