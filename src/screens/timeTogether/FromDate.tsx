@@ -113,6 +113,7 @@ const FromDate = () => {
     const month = secondSelectedValue.current;
     const year = thirdSelectedValue.current;
     setAddEtapState('fromDate', formattedDate(day, month, year));
+    setAddEtapState('fromDateFormat', formattedDate(day, month, year, 3));
   };
 
   return (

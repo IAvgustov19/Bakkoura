@@ -15,6 +15,7 @@ import {formatDateTime, secondsToHMS} from '../../helper/helper';
 import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {COLORS} from '../../utils/colors';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
+import ButtonComp from '../../components/Button/Button';
 
 const ToDoTimer = () => {
   const {visible, show} = useRootStore().visibleStore;
@@ -52,11 +53,13 @@ const ToDoTimer = () => {
             leftItem={<Images.Svg.btsRightLinear />}
             title="To do Timer"
             rightItem={
-              <SwitchBtn
+              <ButtonComp
+                width={90}
                 title="History"
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.TODO_TIMER_HISTORY as never)
                 }
+                paddingVertical={8}
               />
             }
           />
@@ -72,9 +75,8 @@ const ToDoTimer = () => {
               <StartBtn
                 elWidth={55}
                 subWidth={75}
-                text="+"
+                icon={<Images.Svg.btnAddIcon />}
                 primary
-                textSize={30}
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.NEW_TASK as never)
                 }

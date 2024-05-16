@@ -5,7 +5,7 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import {AboutTimeData, TimeClinicList} from '../../constants/timeClicic';
+import {AboutTimeData, TimeClinicList} from '../../constants/timeClinic';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';

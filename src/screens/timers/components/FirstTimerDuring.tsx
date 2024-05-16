@@ -1,7 +1,7 @@
 import {observer} from 'mobx-react-lite';
 import * as React from 'react';
 import {StyleSheet} from 'react-native';
-import {Images} from '../../../assets';
+import {BG, Images} from '../../../assets';
 import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
@@ -15,21 +15,22 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
   const {firstTimerValue, currentTime, firstTimerTime, timerStatus} =
     useRootStore().timerStore;
 
-  const timeLottie = React.useMemo(() => {
-    return (
-      <LottieContent
-        autoPlay={!timerStatus.stop || !timerStatus.finished}
-        source={Lotties.timer}
-        width={windowWidth - 10}
-        speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
-      />
-    );
-  }, [timerStatus.stop, timerStatus.finished]);
+  // const timeLottie = React.useMemo(() => {
+  //   return (
+  //     <LottieContent
+  //       autoPlay={!timerStatus.stop || !timerStatus.finished}
+  //       source={Lotties.timer}
+  //       width={windowWidth - 10}
+  //       speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
+  //     />
+  //   );
+  // }, [timerStatus.stop, timerStatus.finished]);
 
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
-        <RN.View style={styles.duringTimerBg}>{timeLottie}</RN.View>
+        <RN.Image style={styles.duringTimerBg} source={BG.duringTimerBg} />
+
         <RN.View style={styles.duringTimerBox}>
           {timerStatus.finished ? (
             <RN.Text style={styles.duringTimer}>{currentTime}</RN.Text>
@@ -72,6 +73,8 @@ const styles = StyleSheet.create({
     paddingTop: '35%',
   },
   duringTimerBg: {
+    width: '100%',
+    objectFit: 'contain',
     position: 'absolute',
   },
   duringTimerBox: {
