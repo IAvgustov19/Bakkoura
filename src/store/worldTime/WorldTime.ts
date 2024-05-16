@@ -1,7 +1,7 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {getWeather, showWeather} from 'react-native-weather-api';
-import {SelectedCountriesType} from '../../types/worldTime';
-import {RootStore} from '../rootStore';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { getWeather, showWeather } from 'react-native-weather-api';
+import { SelectedCountriesType } from '../../types/worldTime';
+import { RootStore } from '../rootStore';
 
 export class WorldTimeStore {
   private readonly root: RootStore;
@@ -13,7 +13,7 @@ export class WorldTimeStore {
   }
 
   worldTimeApiUrl = 'https://restcountries.com/v3.1/all';
-  worldWeatherApiKey = '7b4f7ae10a69e7aafe6e2a44156625df';
+  worldWeatherApiKey = 'b4ef214cd22d5ff1c1660876d1746e9a';
   worldWeatherApiBase = 'https://api.openweathermap.org/data/2.5/';
 
   worldData = [];
@@ -21,6 +21,7 @@ export class WorldTimeStore {
 
   hour = 0;
   minut = 0;
+  isLoading = true;
 
   selectedCountries: SelectedCountriesType[] = [];
 
@@ -124,22 +125,30 @@ export class WorldTimeStore {
   getWeather = async (city?: string) => {
     return new Promise((resolve, reject) => {
       fetch(
-        `https://api.weatherapi.com/v1/current.json?key=bb958a21cb6f4c8daa6105501240905&q=${city}&aqi=no`,
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.worldWeatherApiKey}`
       )
         .then(response => response.json()) // Convert response to JSON
         .then(data => {
-          const temp = `${data.current.temp_c}`;
+          runInAction(() => {
+            this.isLoading = false;
+          });          const temp = `${Math.round(data.main.temp - 273)}`;
           resolve(temp);
         })
         .catch(error => {
           console.error('Error fetching weather data:', error);
           reject(error);
-        });
+        }).finally(() => {
+          runInAction(() => {
+            this.isLoading = false;
+          });
+        })
     });
   };
 
   setCountry = async (data: SelectedCountriesType, callback: () => void) => {
+
     const temp = await this.getWeather(data.capital);
+    this.isLoading = false
     const time = this.getLocalTime(data.timezones);
     const date = this.getLocalDate(data.timezones);
     const minutes = this.hour * 60 + this.minut;
