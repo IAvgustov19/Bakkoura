@@ -28,21 +28,23 @@ end
 
 
 # use_modular_headers!
-use_frameworks! :linkage => :static
+# use_frameworks! :linkage => :static
+use_frameworks!
 
 target 'bts' do
   config = use_native_modules!
-  
+  pod 'FirebaseFirestore', '~> 10.24.0'
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
+  # pod 'FlipperKit', '0.201.0'
+  pod 'FlipperKit', '~> 0.201.0', :configuration => 'Debug'
+  pod 'FlipperKit/FBDefines', '~> 0.201.0', :configuration => 'Debug'
   # pod 'FirebaseDatabase', :modular_headers => true
-  pod 'FirebaseFirestore', :modular_headers => true
 
 
   
-  use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
 
   use_react_native!(

@@ -18,8 +18,11 @@ import {windowHeight} from '../../utils/styles';
 
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
-  const {selectedCountries} = useRootStore().worldTimeStore;
+  const {selectedCountries, isLoading} = useRootStore().worldTimeStore;
   const navigation = useNavigation();
+
+
+  console.log(isLoading)
 
   const renderClock = useCallback(() => {
     return selectedCountries.map((item, index) => {
@@ -31,6 +34,7 @@ const WorldTime = () => {
           weather={item.date}
           hour={item.hour}
           minut={item.minut}
+          isLoading={isLoading}
           hour30={item.hour30}
           minut30={item.minut30}
           is24={is24h}
