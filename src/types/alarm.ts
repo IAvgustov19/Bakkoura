@@ -96,6 +96,7 @@ export type TogetherDataType = {
   name: string;
   type: string;
   fromDate: string;
+  fromDateFormat: string;
   reminder: boolean;
   control: string;
   time: string;
@@ -108,6 +109,7 @@ export const TogetherDataInitial = {
   name: '',
   type: 'Dating',
   fromDate: '0',
+  fromDateFormat: '0',
   reminder: false,
   control: 'Stopped',
   time: '0',
@@ -159,6 +161,7 @@ export const MetronomDataInitial: MetronomDataType = {
 
 export type TodoTimerDataType = {
   id: number;
+  key: string;
   name: string;
   goal: string;
   time: string;
@@ -175,6 +178,7 @@ export type TodoTimerDataType = {
 };
 export const TodoTimerDataInitial: TodoTimerDataType = {
   id: 0,
+  key: '',
   name: '',
   goal: '',
   time: '',
@@ -188,4 +192,10 @@ export const TodoTimerDataInitial: TodoTimerDataType = {
   timestamp: 0,
   play: false,
   date: 0,
+};
+
+export type ToDoTaskNameDataType = {
+  id: number;
+  title: string;
+  key: string;
 };

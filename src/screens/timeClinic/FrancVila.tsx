@@ -5,7 +5,7 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import {Concept30hTexts, FrancVillaTexts} from '../../constants/timeClicic';
+import {Concept30hTexts, FrancVillaTexts} from '../../constants/timeClinic';
 import {COLORS} from '../../utils/colors';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';

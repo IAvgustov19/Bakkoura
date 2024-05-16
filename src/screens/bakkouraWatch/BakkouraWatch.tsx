@@ -64,9 +64,8 @@ const BakkouraWatch = () => {
               <StartBtn
                 elWidth={55}
                 subWidth={70}
-                text="+"
+                icon={<Images.Svg.btnAddIcon />}
                 primary
-                textSize={25}
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.CREATE_SECTOR as never)
                 }

@@ -34,7 +34,9 @@ const ToDoTimerItem: React.FC<Props> = ({
       <RN.View style={styles.itemContent}>
         <RN.View style={styles.leftBox}>
           <RN.View style={styles.timerInfo}>
-            <RN.Text style={styles.whiteText}>{name}</RN.Text>
+            <RN.Text style={styles.whiteText}>
+              {name.length > 30 ? name.slice(0, 27) + '...' : name}
+            </RN.Text>
             <RN.Text style={styles.darkGreyText}>{description}</RN.Text>
           </RN.View>
         </RN.View>

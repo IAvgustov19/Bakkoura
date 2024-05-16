@@ -9,7 +9,7 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import TextView from '../../components/Text/Text';
-import {TimeManagementTexts} from '../../constants/timeClicic';
+import {TimeManagementTexts} from '../../constants/timeClinic';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 

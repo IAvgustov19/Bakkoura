@@ -182,33 +182,41 @@ export const ToDoTaskNameData = [
   {
     id: 1,
     title: 'Work',
+    key: 'work',
   },
   {
     id: 2,
-    title: 'Rest',
+    title: 'Self-development (thinking counts here)',
+    key: 'self_develop',
   },
   {
     id: 3,
-    title: 'Run',
+    title: 'Sports',
+    key: 'sport',
   },
   {
     id: 4,
-    title: 'Reading',
+    title: 'Self-care (massage, masks etc)',
+    key: 'self_care',
   },
   {
     id: 5,
-    title: 'Selph time',
+    title: 'Rest and relax',
+    key: 'rest',
   },
   {
     id: 6,
-    title: 'Cleaning',
+    title: 'House keeping',
+    key: 'house_keep',
   },
   {
     id: 7,
-    title: 'Gim',
+    title: 'Time-killers (social nets, internet serfing,TV)',
+    key: 'time_killers',
   },
   {
     id: 8,
-    title: 'Walk',
+    title: 'Family and friends',
+    key: 'family',
   },
 ];
