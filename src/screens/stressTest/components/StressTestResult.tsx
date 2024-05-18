@@ -1,24 +1,40 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Images} from '../../../assets';
-import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
-import {APP_ROUTES} from '../../../navigation/routes';
 import {COLORS} from '../../../utils/colors';
 import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
+import {StresTestResult} from '../../../constants/stresTest';
 
 const StressTestResult = () => {
   const navigation = useNavigation();
-  const {stressTestData} = useRootStore().stressTestStore;
+  const {stressTestData, stressTestStatus} = useRootStore().stressTestStore;
+
+  const renderResult = useCallback(() => {
+    if (stressTestData.seconds > 70) {
+      return StresTestResult.moreThan70;
+    } else if (stressTestData.seconds < 70 && stressTestData.seconds > 65) {
+      return StresTestResult.between65_70;
+    } else if (stressTestData.seconds < 65 && stressTestData.seconds > 55) {
+      return StresTestResult.between55_64;
+    } else if (stressTestData.seconds < 55 && stressTestData.seconds > 45) {
+      return StresTestResult.between45_54;
+    } else if (stressTestData.seconds < 45 && stressTestData.seconds > 35) {
+      return StresTestResult.lessThan45;
+    } else if (stressTestData.seconds < 35) {
+      return StresTestResult.lessThan35;
+    }
+  }, [stressTestStatus]);
+
   return (
     <RN.View style={styles.content}>
       <Images.Svg.yellowPanda />
       <RN.View style={styles.textInfo}>
         <RN.Text style={styles.result}>{stressTestData.time}</RN.Text>
         <TextView title="Result" />
-        <TextView text="The stress and depression test is designed to diagnose the nervous system and emotional instability. " />
+        <TextView text={renderResult()} />
       </RN.View>
     </RN.View>
   );

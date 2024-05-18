@@ -95,8 +95,7 @@ const AlarmScreen = () => {
               subWidth={70}
               elWidth={55}
               primary
-              text="+"
-              textSize={30}
+              icon={<Images.Svg.btnAddIcon />}
               onPress={() =>
                 navigation.navigate(APP_ROUTES.NEW_ALARM_SCREEN as never)
               }

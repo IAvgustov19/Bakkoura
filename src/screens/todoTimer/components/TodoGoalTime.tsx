@@ -67,10 +67,7 @@ const TodoGoalTime: React.FC<Props> = ({okOnPress}) => {
           onChange={firstHandleChange}
           selectedValue={firstSelectedValue}
           label="Hours"
-          initialScrollIndex={getInitialScrollIndex(
-            selectedStartItem.current,
-            middleListData,
-          )}
+          initialScrollIndex={0}
         />
         <DateList
           data={middleListData}
@@ -79,10 +76,7 @@ const TodoGoalTime: React.FC<Props> = ({okOnPress}) => {
           onChange={secondHandleChange}
           label={'Min.'}
           style={styles.middleListStyle}
-          initialScrollIndex={getInitialScrollIndex(
-            selectedMiddleItem.current,
-            middleListData,
-          )}
+          initialScrollIndex={0}
         />
         <DataListLinearBack />
       </RN.View>

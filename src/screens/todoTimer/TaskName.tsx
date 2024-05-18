@@ -9,6 +9,7 @@ import RN from '../../components/RN';
 import SelectItem from '../../components/SelectItem/SelectItem';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
+import {ToDoTaskNameDataType, TodoTimerDataType} from '../../types/alarm';
 import {COLORS} from '../../utils/colors';
 import {ToDoTaskNameData} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
@@ -22,6 +23,11 @@ const TaskName = () => {
     if (taskState.name) {
       navigation.goBack();
     }
+  };
+
+  const onSelectName = (item: ToDoTaskNameDataType) => {
+    setNewTaskState('name', item.title);
+    setNewTaskState('key', item.key);
   };
 
   return (
@@ -40,7 +46,7 @@ const TaskName = () => {
                     <SelectItem
                       title={item.title}
                       isActive={taskState.name === item.title}
-                      onPress={() => setNewTaskState('name', item.title)}
+                      onPress={() => onSelectName(item)}
                     />
                     {ToDoTaskNameData.length !== item.id ? <Line /> : null}
                   </RN.View>

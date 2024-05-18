@@ -216,6 +216,5 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     bottom: 20,
     width: '100%',
-    marginLeft: 15,
   },
 });

@@ -17,6 +17,7 @@ import {COLORS} from '../../utils/colors';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import {IosAndroidHeight, windowHeight} from '../../utils/styles';
 import ButtonComp from '../../components/Button/Button';
+import RenderProjectTimer from './components/RenderProjectTimer';
 
 const ProjectTimer = () => {
   const [play, setPlay] = useState(false);
@@ -28,7 +29,6 @@ const ProjectTimer = () => {
     handleDeleteProjectTimer,
     getOneProjectTimer,
   } = useRootStore().projectTimer;
-  console.log(projectTimerList);
 
   const navigation = useNavigation();
 
@@ -63,16 +63,11 @@ const ProjectTimer = () => {
         key={index}
         renderRightActions={() => renderLeftActions(item.id)}
         onSwipeableWillOpen={() => handleSwipe(item.id)}>
-        <ProjectTimerItem
-          onEnter={() => onGetOneProject(item)}
-          key={item.workTime}
-          play={item.play}
-          day={item.date}
-          time={item.time}
-          name={item.title}
-          description={item.description}
-          workTime={item.workTime}
-          onPlay={() => onPlayHandle(index)}
+        <RenderProjectTimer
+          index={index}
+          item={item}
+          onPlayHandle={() => onPlayHandle(index)}
+          onGetOneProject={() => onGetOneProject(item)}
         />
       </Swipeable>
     );
@@ -81,7 +76,6 @@ const ProjectTimer = () => {
   const onCalculate = () => {
     if (projectTimerList.length) {
       navigation.navigate(APP_ROUTES.PROJECT_TIMER_CALCULATOR as never);
-      onSelectProject(0);
     }
   };
 
@@ -122,8 +116,7 @@ const ProjectTimer = () => {
             </RN.View>
             <RN.View style={styles.btnBox}>
               <StartBtn
-                text="+"
-                textSize={36}
+                icon={<Images.Svg.btnAddIcon />}
                 primary
                 elWidth={55}
                 subWidth={70}
