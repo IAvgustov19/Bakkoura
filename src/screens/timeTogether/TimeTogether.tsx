@@ -107,7 +107,11 @@ const TimeTogether = () => {
               />
             </RN.View>
             <RN.View style={styles.etapScrollView}>
-              <RN.ScrollView>{renderEtapList()}</RN.ScrollView>
+              <RN.ScrollView
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}>
+                {renderEtapList()}
+              </RN.ScrollView>
             </RN.View>
           </RN.View>
         </RN.View>
@@ -164,7 +168,7 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 10,
   },
   etapScrollView: {
-    height: windowHeight / 6,
+    height: windowHeight / 4,
   },
   etapList: {
     flexDirection: 'row',

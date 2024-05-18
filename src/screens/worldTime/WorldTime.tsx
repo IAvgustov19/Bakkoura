@@ -75,8 +75,7 @@ const WorldTime = () => {
               subWidth={70}
               elWidth={55}
               primary
-              text="+"
-              textSize={30}
+              icon={<Images.Svg.btnAddIcon />}
               onPress={() =>
                 navigation.navigate(APP_ROUTES.CITIES_SCREEN as never)
               }

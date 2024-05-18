@@ -4,7 +4,7 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import {TheBookTexts} from '../../constants/timeClicic';
+import {TheBookTexts} from '../../constants/timeClinic';
 import {windowHeight} from '../../utils/styles';
 import TheBookitem from './components/TheBookItem';
 

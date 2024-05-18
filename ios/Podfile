@@ -28,27 +28,26 @@ end
 
 
 # use_modular_headers!
-# use_frameworks! :linkage => :static
-use_frameworks!
+use_frameworks! :linkage => :static
 
 target 'bts' do
   config = use_native_modules!
-  pod 'FirebaseFirestore', '~> 10.24.0'
+  
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
-  # pod 'FlipperKit', '0.201.0'
-  pod 'FlipperKit', '~> 0.201.0', :configuration => 'Debug'
-  pod 'FlipperKit/FBDefines', '~> 0.201.0', :configuration => 'Debug'
-  # pod 'FirebaseDatabase', :modular_headers => true
+  pod 'FirebaseDatabase', :modular_headers => true
+  pod 'FirebaseFirestore', :modular_headers => true
 
 
   
+  use_frameworks! :linkage => :static
   $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],
+    # :hermes_enabled => false,
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and

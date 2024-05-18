@@ -1,4 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import {getCurrentTime30and24} from '../../helper/helper';
 import {AlarmListsItemInitial, AlarmListsItemType} from '../../types/alarm';
 import {WeekRepeatData} from '../../utils/repeat';
 import {lesSoundsData, SoundsData} from '../../utils/sounds';
@@ -9,11 +10,26 @@ export class AlarmStore {
   constructor(root: RootStore) {
     makeAutoObservable(this);
     this.root = root;
+    this.updateAlarmCurrentTime();
   }
 
   alarmsListData: AlarmListsItemType[] = [];
 
   alarmItemData: AlarmListsItemType = AlarmListsItemInitial;
+
+  alarmCurrentTime24 = '00:00';
+  alarmCurrentTime30 = '00:00';
+
+  updateAlarmCurrentTime = () => {
+    setInterval(() => {
+      const currentTime24 = getCurrentTime30and24(24);
+      const currentTime30 = getCurrentTime30and24(30);
+      runInAction(() => {
+        this.alarmCurrentTime24 = currentTime24;
+        this.alarmCurrentTime30 = currentTime30;
+      });
+    }, 10000);
+  };
 
   setNewAlarmState = (key: keyof AlarmListsItemType, value: any) => {
     runInAction(() => {
