@@ -1,7 +1,7 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { secondsToHMS, secondsToMS } from '../../helper/helper';
-import { PomodoroDataInitial, PomodoroDataType } from '../../types/alarm';
-import { BreakData } from '../../utils/repeat';
+import {makeAutoObservable, runInAction} from 'mobx';
+import {secondsToHMS, secondsToMS} from '../../helper/helper';
+import {PomodoroDataInitial, PomodoroDataType} from '../../types/alarm';
+import {BreakData} from '../../utils/repeat';
 
 export class PomodoroStore {
   constructor() {
@@ -13,7 +13,6 @@ export class PomodoroStore {
 
   newTaskState: PomodoroDataType = PomodoroDataInitial;
   taskList: PomodoroDataType[] = [];
-
 
   currentSecondInterval = null;
   currentSecond = 1500;
@@ -34,7 +33,7 @@ export class PomodoroStore {
 
   setNewTotalCycles = (key: keyof PomodoroDataType, value: number) => {
     this.newTaskState[key] = value as never;
-  }
+  };
 
   calculateTime = () => {
     const date = new Date();
@@ -42,11 +41,11 @@ export class PomodoroStore {
     this.setNewTaskState('second', this.newTaskState.minut * 60 * 30);
     let finishTime = secondsToHMS(
       date.getHours() * 60 * 60 +
-      date.getMinutes() * 60 + 600 +
-      date.getSeconds() +
-      this.newTaskState.second,
+        date.getMinutes() * 60 +
+        600 +
+        date.getSeconds() +
+        this.newTaskState.second,
     );
-    console.log(finishTime, 1111, this.newTaskState.second);
 
     this.setNewTaskState('finishTime', finishTime);
     this.setNewTaskState(
@@ -55,12 +54,10 @@ export class PomodoroStore {
     );
     this.setNewTaskState('time', secondsToMS(this.newTaskState.second));
 
-    const estimatedHours = (this.newTaskState.minut / 2);
-    console.log(estimatedHours, 777);
+    const estimatedHours = this.newTaskState.minut / 2;
 
     this.setNewTaskState('estimatedHours', estimatedHours);
   };
-
 
   createTask = (calback: () => void) => {
     this.calculateTime();
@@ -90,9 +87,9 @@ export class PomodoroStore {
     const list = this.taskList.map((item, i) => {
       return i === id
         ? {
-          ...item,
-          item: this.newTaskState,
-        }
+            ...item,
+            item: this.newTaskState,
+          }
         : item;
     });
     runInAction(() => {
@@ -115,15 +112,15 @@ export class PomodoroStore {
         this.currentBreakTime = selectedBreak;
         switch (id) {
           case 1:
-            this.currentSecond = 1500; 
+            this.currentSecond = 1500;
             this.currentTime = '25:00';
             break;
           case 2:
-            this.currentSecond = 300; 
+            this.currentSecond = 300;
             this.currentTime = '05:00';
             break;
           case 3:
-            this.currentSecond = 900; 
+            this.currentSecond = 900;
             this.currentTime = '15:00';
             break;
           default:
@@ -134,7 +131,6 @@ export class PomodoroStore {
       }
     });
   };
-
 
   startCurrentPomodoro = () => {
     clearInterval(this.currentSecondInterval);
@@ -152,16 +148,18 @@ export class PomodoroStore {
               if (this.currentBreakTime.id === 1) {
                 if (this.completedCycles < this.newTaskState.minut - 1) {
                   // Switch between id1 and id2 until completedCycles === minut - 1
-                  this.setCurrentBreakTime(this.currentBreakTime.id === 1 ? 2 : 1);
+                  this.setCurrentBreakTime(
+                    this.currentBreakTime.id === 1 ? 2 : 1,
+                  );
                   this.completedCycles++;
                   // this.estimatedPomodoros++;
-                  return
+                  return;
                 }
-                 if (this.estimatedPomodoros === this.newTaskState.minut - 1) {
+                if (this.estimatedPomodoros === this.newTaskState.minut - 1) {
                   // If completedCycles === minut - 1, switch to id3
                   this.estimatedPomodoros++;
                   this.setCurrentBreakTime(3);
-                  return
+                  return;
                 }
               }
             }
@@ -197,5 +195,4 @@ export class PomodoroStore {
     this.isStartCurrent = false;
     this.isRunCurrent = false;
   };
-
 }
