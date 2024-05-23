@@ -1,15 +1,17 @@
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import { Images } from '../../assets';
+import {Images} from '../../assets';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import useRootStore from '../../hooks/useRootStore';
 import TextView from '../../components/Text/Text';
-import { COLORS } from '../../utils/colors';
-import { observer } from 'mobx-react-lite';
+import {COLORS} from '../../utils/colors';
+import {observer} from 'mobx-react-lite';
 import RN from '../../components/RN';
+import {ActivityIndicator} from 'react-native';
+import {windowWidth} from '../../utils/styles';
 
 const LanguageScreen = () => {
   const navigation = useNavigation();
@@ -17,22 +19,33 @@ const LanguageScreen = () => {
   const {
     languages,
     onLanguageItemPress,
-    selectedLanguage,
+    updateLoading,
+    updateProfile,
+    personalAreaData,
   } = useRootStore().personalAreaStore;
+  const {newUser} = useRootStore().authStore;
 
-  console.log(selectedLanguage)
+  const update = () => {
+    updateProfile(() => navigation.goBack());
+  };
 
-
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({item, index}) => {
     return (
       <RN.TouchableOpacity
         style={styles.languagesBox}
         onPress={() => onLanguageItemPress(index)}>
-        <RadioBtn active={item.active} onPress={() => onLanguageItemPress(index)} />
+        <RadioBtn
+          active={
+            personalAreaData?.language
+              ? personalAreaData?.language === item.key
+              : newUser.language === item.key
+          }
+          onPress={() => onLanguageItemPress(index)}
+        />
         <RN.Text style={styles.language}>{item.title}</RN.Text>
       </RN.TouchableOpacity>
-    )
-  }
+    );
+  };
 
   return (
     <LinearContainer
@@ -60,9 +73,17 @@ const LanguageScreen = () => {
           />
           <RN.View style={styles.addBtn}>
             <StartBtn
-              onPress={() => navigation.goBack()}
+              onPress={update}
               primary={true}
-              text={'Ok'}
+              text={updateLoading ? '' : 'Ok'}
+              icon={
+                updateLoading ? (
+                  <ActivityIndicator
+                    color={COLORS.black}
+                    style={{marginTop: 3}}
+                  />
+                ) : null
+              }
               subWidth={70}
               elWidth={55}
             />
@@ -109,7 +130,8 @@ const styles = RN.StyleSheet.create({
   addBtn: {
     position: 'absolute',
     alignItems: 'center',
+    justifyContent: 'center',
     bottom: 20,
-    width: '100%',
+    width: windowWidth - 15,
   },
 });

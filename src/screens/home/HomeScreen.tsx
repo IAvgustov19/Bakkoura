@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Images } from '../../assets';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -10,24 +10,21 @@ import HomeWatch24 from './components/HomeWatch24';
 import HomeWatch30 from './components/HomeWatch30';
 import HomeWatch30h24h from './components/HomeWatch30and24';
 import useRootStore from '../../hooks/useRootStore';
-import { observer } from 'mobx-react-lite';
-import { windowHeight } from '../../utils/styles';
-import { COLORS } from '../../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { APP_ROUTES } from '../../navigation/routes';
-import SwitchContain from '../../components/SwitchContain/SwitchContain';
+import {observer} from 'mobx-react-lite';
+import {windowHeight} from '../../utils/styles';
+import {useNavigation} from '@react-navigation/native';
+import {APP_ROUTES} from '../../navigation/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TodayEvent from './components/TodayEvent';
-
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = () => {
-  const { setNotAuthorized } = useRootStore().authStore;
-  const { whichWatch, today, homeCurrentTime, changeWatch } =
+  const {whichWatch, today, homeCurrentTime, changeWatch} =
     useRootStore().homeClockStore;
   const [watch, setWatch] = useState(true);
-  const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
+  const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -38,19 +35,19 @@ const HomeScreen = () => {
     setWatch(e => !e);
   };
 
-  const logOut = async () => {
-    await AsyncStorage.removeItem('token');
-    setNotAuthorized();
-    const user = auth().currentUser;
-    if (user) {
-      await auth().signOut();
-    }
-    const googleUser = await GoogleSignin.getCurrentUser();
-    if (googleUser) {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-    }
-  }
+  // const logOut = async () => {
+  //   await AsyncStorage.removeItem('token');
+  //   setNotAuthorized();
+  //   const user = auth().currentUser;
+  //   if (user) {
+  //     await auth().signOut();
+  //   }
+  //   const googleUser = await GoogleSignin.getCurrentUser();
+  //   if (googleUser) {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //   }
+  // };
   const renderWatchs = useCallback(() => {
     switch (whichWatch) {
       case 1:
@@ -80,8 +77,10 @@ const HomeScreen = () => {
                   <Images.Svg.messageIcon />
                 </RN.TouchableOpacity>
                 <RN.TouchableOpacity
-                onPress={() => navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)}
-                // onPress={() => logOut()}
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)
+                  }
+                  // onPress={() => logOut()}
                 >
                   <Images.Svg.userIcon />
                 </RN.TouchableOpacity>

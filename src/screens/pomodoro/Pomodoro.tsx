@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { Images } from '../../assets';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useCallback, useEffect, useMemo} from 'react';
+import {Images} from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -9,14 +9,14 @@ import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import { APP_ROUTES } from '../../navigation/routes';
-import { COLORS } from '../../utils/colors';
-import { BreakData } from '../../utils/repeat';
+import {APP_ROUTES} from '../../navigation/routes';
+import {COLORS} from '../../utils/colors';
+import {BreakData} from '../../utils/repeat';
 import TextView from '../../components/Text/Text';
 import Line from '../../components/Line/Line';
 import LottieContent from '../../components/LottieContent/LottieContent';
-import { Lotties } from '../../lotties/lottie';
-import { windowHeight, windowWidth } from '../../utils/styles';
+import {Lotties} from '../../lotties/lottie';
+import {windowHeight, windowWidth} from '../../utils/styles';
 
 const Pomodoro = () => {
   const {
@@ -31,7 +31,7 @@ const Pomodoro = () => {
     taskList,
     getOneTask,
     estimatedPomodoros,
-    setCurrentBreakTime
+    setCurrentBreakTime,
   } = useRootStore().pomodoroStore;
 
   const navigation = useNavigation();
@@ -47,14 +47,15 @@ const Pomodoro = () => {
         <RN.Pressable
           style={styles.taskListHeader}
           key={index}
-          onPress={() => onHandleTask(item)}
-        >
+          onPress={() => onHandleTask(item)}>
           <RN.View>
             <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
             <TextView text={item.description} />
           </RN.View>
           <RN.View style={styles.spaceBetween}>
-            <RN.Text style={styles.tasksText}>{`${0}`}/{`${newTaskState.estimatedHours}`}</RN.Text>
+            <RN.Text style={styles.tasksText}>
+              {`${0}`}/{`${newTaskState.estimatedHours}`}
+            </RN.Text>
             <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.View>
         </RN.Pressable>
@@ -73,17 +74,9 @@ const Pomodoro = () => {
     );
   }, [isStartCurrent]);
 
-
   const handleBreakTimeSelection = (id: number) => {
     setCurrentBreakTime(id);
   };
-
-
-
-  console.log('newTaskStatenewTaskStatenewTaskState', newTaskState);
-
-  console.log()
-
 
   return (
     <LinearContainer
@@ -106,8 +99,12 @@ const Pomodoro = () => {
                         Width={'30%'}
                         key={index}
                         text={item.title}
-                        textColor={currentBreakTime.id === item.id && COLORS.yellow}
-                        borderColor={currentBreakTime.id === item.id && COLORS.yellow}
+                        textColor={
+                          currentBreakTime.id === item.id && COLORS.yellow
+                        }
+                        borderColor={
+                          currentBreakTime.id === item.id && COLORS.yellow
+                        }
                         onPress={() => handleBreakTimeSelection(item.id)}
                       />
                     );
@@ -130,7 +127,10 @@ const Pomodoro = () => {
                       <RN.Text style={styles.pomodoroInfoName}>
                         Finish At: {newTaskState.finishTime}
                       </RN.Text>
-                      <RN.Text style={styles.pomodoroInfoName}>{`(${newTaskState.estimatedHours}h)`}</RN.Text>
+                      <RN.Text
+                        style={
+                          styles.pomodoroInfoName
+                        }>{`(${newTaskState.estimatedHours}h)`}</RN.Text>
                     </RN.View>
                   )}
                 </RN.View>
