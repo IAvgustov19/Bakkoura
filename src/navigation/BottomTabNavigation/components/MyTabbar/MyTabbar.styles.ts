@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {COLORS} from '../../../../utils/colors';
 
 export const styles = StyleSheet.create({
   bottomSheet: {
@@ -6,9 +7,14 @@ export const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    height: '100%',
+    // height: '100%',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
+  },
+  bottomSheetScrollView: {
+    backgroundColor: COLORS.black,
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
   },
   renderTabBarsContainer: {
     flexDirection: 'row',

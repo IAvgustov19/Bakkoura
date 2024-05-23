@@ -1,4 +1,7 @@
 export enum APP_ROUTES {
+  //initial screen
+  INITIAL_SCREEN = 'InitialScreen',
+
   FIRST = 'First',
   ONBOARDING = 'Onboarding',
 
@@ -18,7 +21,7 @@ export enum APP_ROUTES {
   PERSONAL_STACK = 'PersonalStack',
   // nested stack screens
   PERSONAL_AREA = 'PersonalArea',
-  PERSONAL_DETAILS= 'PersonalDetails',
+  PERSONAL_DETAILS = 'PersonalDetails',
   SECURE_ENTRY = 'SecureEntry',
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
@@ -30,8 +33,6 @@ export enum APP_ROUTES {
   IDEA_THANKS = 'IdeaThanks',
   WATCH_THANKS = 'WatchThanks',
   BTS_NAVIGATION = 'BtsNavigation',
-
-
 
   //bottomsheet screens
   HOME_START = 'HomeScreen',
