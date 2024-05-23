@@ -30,25 +30,21 @@ const Events: React.FC<Props> = ({
     useRootStore().calendarStore;
 
   const navigation = useNavigation();
-  
+
   const [isFinished, setIsFinished] = useState<boolean[]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const updatedFinishedStatus = allEventsData.map(event => {
         const remainingTime =
-          event.stayedDay * 24 * 60 +
-          event.stayedHour * 60 +
-          event.stayedMinut;
+          event.stayedDay * 24 * 60 + event.stayedHour * 60 + event.stayedMinut;
         return remainingTime == 0;
       });
       setIsFinished(updatedFinishedStatus);
-      console.log(isFinished)
-    }, 1000); 
+    }, 1000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [allEventsData]);
-
 
   const onGetHandle = (item: NewEventStateType) => {
     navigation.navigate(APP_ROUTES.NEW_EVENT as never);

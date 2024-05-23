@@ -24,7 +24,6 @@ const CreateSector = () => {
   const navigation = useNavigation();
   const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
     useRootStore().bakkouraWatchStore;
-  console.log(newSelectState.color);
 
   const CreateSector = () => {
     addNewSelect(() => navigation.navigate(APP_ROUTES.BAKKOURA_WATCH as never));

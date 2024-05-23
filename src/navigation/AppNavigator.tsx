@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { DarkTheme, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { APP_ROUTES } from './routes';
+import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {APP_ROUTES} from './routes';
 import BottomTabNavigation from './BottomTabNavigation';
 import OnBoardingScreen from '../screens/onBoarding/OnBoarding';
 import NewEvent from '../screens/calendar/NewEventScreen';
@@ -13,7 +13,7 @@ import SignUpScreen from '../screens/auth/SignUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/auth/RecoverPassword/RecoverPassword';
 import VerificationCodeScreen from '../screens/auth/VerificationCode/VerificationCode';
 import NewPasswordScreen from '../screens/auth/NewPassword/NewPasswordScreen';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import useRootStore from '../hooks/useRootStore';
 import LanguageScreen from '../screens/LanguageScreen/LanguageScreen';
 import StressTestDuring from '../screens/stressTest/StressTestDuring/StressTestDuring';
@@ -30,7 +30,7 @@ import FromDate from '../screens/timeTogether/FromDate';
 import LoverName from '../screens/timeTogether/LoverName';
 import Synchronyze from '../screens/timeTogether/Synchronyze';
 import Thanks from '../screens/timeTogether/Thanks';
-import { Keyboard } from 'react-native';
+import {Keyboard} from 'react-native';
 import CreateSector from '../screens/bakkouraWatch/CreateSector';
 import SectorName from '../screens/bakkouraWatch/SectorName';
 import SectorColor from '../screens/bakkouraWatch/SectorColor';
@@ -57,18 +57,32 @@ import BtsNavigation from '../screens/timeBiotic/BtsNavigation';
 import WatchThanks from '../screens/timeBiotic/WatchThanks';
 import IdeaThanks from '../screens/timeBiotic/IdeaThanks';
 
-
-
 import AboutTime from '../screens/timeClinic/AboutTime';
 import AboutTimeInfo from '../screens/timeClinic/AboutTimeInfo';
 import TimeWealth from '../screens/timeClinic/TimeWealth';
 import FrancVila from '../screens/timeClinic/FrancVila';
 import OrderThanks from '../screens/market/components/thanks/Thanks';
+import firestore from '@react-native-firebase/firestore';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const [keyboardStatus, setKeyboardStatus] = React.useState('');
+  // const {getUsersState} = useRootStore().personalAreaStore;
+
+  // React.useEffect(() => {
+  //   const unsubscribe = firestore()
+  //     .collection('users')
+  //     .onSnapshot(snapshot => {
+  //       const usersData = snapshot.docs.map(doc => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       getUsersState(usersData);
+  //     });
+
+  //   return () => unsubscribe();
+  // }, []);
 
   React.useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -84,7 +98,7 @@ const AppNavigator = () => {
     };
   }, []);
 
-  const { isAuthorized } = useRootStore().authStore;
+  const {isAuthorized} = useRootStore().authStore;
 
   const renderPublicNavigators = () => {
     return (
@@ -458,7 +472,8 @@ const AppNavigator = () => {
           component={WatchThanks}
           options={{
             headerTitleAlign: 'center',
-          }} />
+          }}
+        />
         <Stack.Screen
           name={APP_ROUTES.FRANS_VILA}
           component={FrancVila}
@@ -494,7 +509,6 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-
       </>
     );
   };
@@ -503,6 +517,7 @@ const AppNavigator = () => {
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator
         initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
+        detachInactiveScreens={true}
         screenOptions={{
           headerShown: false,
           gestureEnabled: false,
