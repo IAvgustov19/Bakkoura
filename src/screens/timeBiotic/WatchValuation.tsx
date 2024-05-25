@@ -1,28 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import FormContainer from '../market/components/FormContainer/FormContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import GiveImage from '../../components/GiveImage/GiveImage';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ButtonComp from '../../components/Button/Button';
-import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-import { APP_ROUTES } from '../../navigation/routes';
+import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
+import {APP_ROUTES} from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
 import Cancel from '../../components/Cancel/Cancel';
-import { windowHeight } from '../../utils/styles';
+import {windowHeight} from '../../utils/styles';
 import TextView from '../../components/Text/Text';
-import { COLORS } from '../../utils/colors';
+import {COLORS} from '../../utils/colors';
 import RN from '../../components/RN';
-import { Images } from '../../assets';
+import {Images} from '../../assets';
+import {ActivityIndicator} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 const WatchValuation = () => {
   const navigation = useNavigation();
 
-
   const [accept, setAccept] = useState(false);
-  const { setOrderState, deleteFile } = useRootStore().marketStore;
+  const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
+  const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -40,15 +42,20 @@ const WatchValuation = () => {
     }
   };
 
-
   const options = [
-    { label: 'OAE', value: 'OAE' },
-    { label: 'USA', value: 'USA' },
-    { label: 'UK', value: 'UK' },
-];
-const onSelect = (option: string) => {
-  console.log(option)
-}
+    {label: 'OAE', value: 'OAE'},
+    {label: 'USA', value: 'USA'},
+    {label: 'UK', value: 'UK'},
+  ];
+  const onSelect = (option: string) => {
+    console.log(option);
+  };
+
+  const onSendEmail = () => {
+    onSubmitEmail(orderState, 'Send Idea', () =>
+      navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
+    );
+  };
 
   return (
     <LinearContainer
@@ -76,7 +83,14 @@ const onSelect = (option: string) => {
                   text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} uploadAtTop black withSelect options={options} onSelect={onSelect}/>
+              <FormContainer
+                bottomInputPress={Scroll}
+                uploadAtTop
+                black
+                withSelect
+                options={options}
+                onSelect={onSelect}
+              />
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
@@ -90,8 +104,17 @@ const onSelect = (option: string) => {
               </RN.View>
               <ButtonComp
                 title="Send"
-                icon={<GiveImage source={Images.Img.eye} />}
-                onPress={() => navigation.navigate(APP_ROUTES.WATCH_THANKS as never)}
+                icon={
+                  sendEmailLoading ? (
+                    <ActivityIndicator
+                      color={COLORS.black}
+                      style={{marginTop: 3}}
+                    />
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
+                }
+                onPress={onSendEmail}
               />
               <TextView
                 style={[styles.text, styles.pv39]}
@@ -105,7 +128,7 @@ const onSelect = (option: string) => {
   );
 };
 
-export default WatchValuation;
+export default observer(WatchValuation);
 
 const styles = RN.StyleSheet.create({
   container: {
@@ -132,7 +155,7 @@ const styles = RN.StyleSheet.create({
   },
   pv39: {
     paddingTop: 39,
-    paddingBottom: 110,
+    paddingBottom: windowHeight / 4,
   },
   scrollView: {
     zIndex: 2,
