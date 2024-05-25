@@ -1,20 +1,28 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Images } from '../../../../assets';
+import {Text, View, StyleSheet} from 'react-native';
+import {Images} from '../../../../assets';
 import ButtonComp from '../../../../components/Button/Button';
 import HeaderContent from '../../../../components/HeaderContent/HeaderContent';
 import RN from '../../../../components/RN';
 import SimpleBtn from '../../../../components/SimpleBtn/SimpleBtn';
 import TextView from '../../../../components/Text/Text';
-import { windowHeight } from '../../../../utils/styles';
-import { useNavigation } from '@react-navigation/native';
+import {windowHeight} from '../../../../utils/styles';
+import {useNavigation} from '@react-navigation/native';
 import LinearContainer from '../../../../components/LinearContainer/LinearContainer';
 import Cancel from '../../../../components/Cancel/Cancel';
+import {observer} from 'mobx-react-lite';
+import useRootStore from '../../../../hooks/useRootStore';
 
 type Props = {};
 
-const OrderThanks: React.FC<Props> = ({ }) => {
+const OrderThanks: React.FC<Props> = ({}) => {
+  const {responseText} = useRootStore().timeBiotic;
   const navigation = useNavigation();
+
+  const renderResponse = React.useMemo(() => {
+    return <TextView text={responseText} />;
+  }, [responseText]);
+
   return (
     <LinearContainer
       children={
@@ -28,20 +36,25 @@ const OrderThanks: React.FC<Props> = ({ }) => {
                 <TextView text="Back" />
               </RN.TouchableOpacity>
             }
-            rightItem={<Cancel onClose={() => navigation.goBack()}/>}
-            />
+            rightItem={<Cancel onClose={() => navigation.goBack()} />}
+          />
           {/* <HeaderContent leftItem={<Images.Svg.btsGreyLogo /> */}
           <RN.View style={styles.content}>
             <TextView title="Thank You" />
-            <TextView text="Your order has been sent. We will contact you shortly to clarify the details." />
-            <SimpleBtn title={'Ok'} width={150} onPress={() => navigation.goBack()}/>
+            {renderResponse}
+            <SimpleBtn
+              title={'Ok'}
+              width={150}
+              onPress={() => navigation.goBack()}
+            />
           </RN.View>
         </RN.View>
-      } />
+      }
+    />
   );
 };
 
-export default OrderThanks;
+export default observer(OrderThanks);
 
 const styles = StyleSheet.create({
   container: {

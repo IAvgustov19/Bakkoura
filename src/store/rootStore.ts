@@ -17,7 +17,8 @@ import {TodoTimerStore} from './todoTimer/ToDoTimer';
 import {TogetherTimeStore} from './togetherTime/TogethetTime';
 import {VisibleStore} from './visible/Visible';
 import {WorldTimeStore} from './worldTime/WorldTime';
-import { PersonalAreaStore } from './personalArea/PersonalArea';
+import {PersonalAreaStore} from './personalArea/PersonalArea';
+import {TimeBioticStore} from './timeBiotic/TimeBiotic';
 
 export class RootStore {
   timerStore: TimerStore;
@@ -38,6 +39,7 @@ export class RootStore {
   marketStore: MarketStore;
   personalAreaStore: PersonalAreaStore;
   timeClinicStore: TimeClinicStore;
+  timeBiotic: TimeBioticStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -56,9 +58,10 @@ export class RootStore {
     this.visibleStore = new VisibleStore(this);
     this.todoTimer = new TodoTimerStore();
     this.homeClockStore = new HomeClockStore();
-    this.marketStore = new MarketStore();
+    this.marketStore = new MarketStore(this);
     this.timeClinicStore = new TimeClinicStore();
     this.personalAreaStore = new PersonalAreaStore(this);
+    this.timeBiotic = new TimeBioticStore(this);
   }
 }
 const rootStore = new RootStore();
