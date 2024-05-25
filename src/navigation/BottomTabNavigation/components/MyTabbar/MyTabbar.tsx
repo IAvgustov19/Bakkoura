@@ -106,6 +106,12 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
         if (!event.defaultPrevented) {
           navigation.navigate({name: route.name, merge: true} as any);
         }
+        if (bottomScrollViewRef.current) {
+          bottomScrollViewRef.current.scrollTo({
+            y: 0,
+            animated: true,
+          });
+        }
       };
 
       const onLongPress = () => {
@@ -139,6 +145,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
     state.routes.map((route, index) => renderTabBar({route, index}));
 
   const bottomSheetRef = React.useRef<BottomSheet>(null);
+  const bottomScrollViewRef = React.useRef(null);
 
   const snapPoints = React.useMemo(() => [115, '80%'], []);
 
@@ -153,6 +160,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
       ref={bottomSheetRef}
       style={styles.bottomSheet}>
       <BottomSheetScrollView
+        ref={bottomScrollViewRef}
         style={styles.bottomSheetScrollView}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>

@@ -9,6 +9,7 @@ type Props = {
   backColor?: string;
   titleColor?: string;
   width?: DimensionValue;
+  icon?: React.ReactNode;
 };
 
 const SimpleBtn: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const SimpleBtn: React.FC<Props> = ({
   onPress,
   titleColor,
   width,
+  icon,
 }) => {
   return (
     <RN.TouchableOpacity
@@ -32,6 +34,7 @@ const SimpleBtn: React.FC<Props> = ({
         style={[styles.title, {color: titleColor ? titleColor : COLORS.black}]}>
         {title}
       </Text>
+      {icon ? <RN.View style={styles.iconBox}>{icon}</RN.View> : null}
     </RN.TouchableOpacity>
   );
 };
@@ -50,5 +53,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: COLORS.black,
+  },
+  iconBox: {
+    position: 'absolute',
+    right: 15,
+    top: 10,
+    zIndex: 1,
   },
 });
