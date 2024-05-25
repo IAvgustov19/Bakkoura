@@ -1,3 +1,5 @@
+import {OrderStateInitial, OrderStateType} from './market';
+
 export type PersonalAreaStateType = {
   secureEntry: string;
   language: string;
@@ -21,3 +23,17 @@ export const PersonalMenuInitial: PersonalMenuType[] = [
     key: '',
   },
 ];
+
+export type EmailDataType = {
+  service_id: string;
+  template_id: string;
+  user_id: string;
+  template_params: OrderStateType;
+};
+
+export const EmailDataTypeInitial = {
+  service_id: '',
+  template_id: '',
+  user_id: '',
+  template_params: OrderStateInitial,
+};

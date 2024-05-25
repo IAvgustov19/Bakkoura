@@ -1,29 +1,29 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
 import useRootStore from '../../hooks/useRootStore';
-import { windowHeight } from '../../utils/styles';
+import {windowHeight} from '../../utils/styles';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import { Images } from '../../assets';
+import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import Cancel from '../../components/Cancel/Cancel';
 import TextView from '../../components/Text/Text';
 import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import FormContainer from '../market/components/FormContainer/FormContainer';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
-import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
-import { APP_ROUTES } from '../../navigation/routes';
-import { COLORS } from '../../utils/colors';
+import {COLORS} from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
 import GiveImage from '../../components/GiveImage/GiveImage';
-
+import {observer} from 'mobx-react-lite';
+import {ActivityIndicator} from 'react-native';
+import {APP_ROUTES} from '../../navigation/routes';
 
 const ContactUs = () => {
   const navigation = useNavigation();
 
-
   const [accept, setAccept] = useState(false);
-  const { setOrderState, deleteFile } = useRootStore().marketStore;
+  const {setOrderState, orderState} = useRootStore().marketStore;
+  const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -39,6 +39,12 @@ const ContactUs = () => {
         animated: true,
       });
     }
+  };
+
+  const onSendEmail = () => {
+    onSubmitEmail(orderState, orderState.type, () =>
+      navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
+    );
   };
 
   return (
@@ -64,9 +70,43 @@ const ContactUs = () => {
                   style={styles.headerText}
                   text={`Select who you would like to contact `}
                 />
-                <OutlineBtn text='General Director' Width={'100%'} Height={56} borderColor={'#496380'} textColor={COLORS.lightGrey} customStyle={styles.br40} />
-                <OutlineBtn text='Developer' Width={'100%'} Height={56} borderColor={'#496380'} textColor={COLORS.lightGrey} customStyle={styles.br40} />
-                <OutlineBtn text='Technical Support' Width={'100%'} Height={56} borderColor={'#496380'} textColor={COLORS.lightGrey} customStyle={styles.br40} />
+                <OutlineBtn
+                  text="General Director"
+                  Width={'100%'}
+                  Height={56}
+                  borderColor={
+                    orderState.type === 'General Director'
+                      ? COLORS.yellow
+                      : '#496380'
+                  }
+                  textColor={COLORS.lightGrey}
+                  customStyle={styles.br40}
+                  onPress={() => setOrderState('type', 'General Director')}
+                />
+                <OutlineBtn
+                  text="Developer"
+                  Width={'100%'}
+                  Height={56}
+                  borderColor={
+                    orderState.type === 'Developer' ? COLORS.yellow : '#496380'
+                  }
+                  textColor={COLORS.lightGrey}
+                  customStyle={styles.br40}
+                  onPress={() => setOrderState('type', 'Developer')}
+                />
+                <OutlineBtn
+                  text="Technical Support"
+                  Width={'100%'}
+                  Height={56}
+                  borderColor={
+                    orderState.type === 'Technical Support'
+                      ? COLORS.yellow
+                      : '#496380'
+                  }
+                  textColor={COLORS.lightGrey}
+                  customStyle={styles.br40}
+                  onPress={() => setOrderState('type', 'Technical Support')}
+                />
                 <TextView
                   style={styles.text}
                   text={`Send Your letter now and We will contact you shortly \n to clarify the details.`}
@@ -74,7 +114,12 @@ const ContactUs = () => {
               </RN.View>
               <FormContainer bottomInputPress={Scroll} black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} />
+                <RadioBtn
+                  active={orderState.isAccept}
+                  onPress={() =>
+                    setOrderState('isAccept', !orderState.isAccept)
+                  }
+                />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
                     Your personal data are guaranteed to be safe and will not be
@@ -87,8 +132,17 @@ const ContactUs = () => {
               </RN.View>
               <ButtonComp
                 title="Send"
-                icon={<GiveImage source={Images.Img.eye} />}
-                onPress={() => navigation.navigate(APP_ROUTES.CONTACT_THANKS as never)}
+                icon={
+                  sendEmailLoading ? (
+                    <ActivityIndicator
+                      color={COLORS.black}
+                      style={{marginTop: 3}}
+                    />
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
+                }
+                onPress={onSendEmail}
               />
             </RN.View>
           </RN.ScrollView>
@@ -98,7 +152,7 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs;
+export default observer(ContactUs);
 
 const styles = RN.StyleSheet.create({
   container: {
@@ -133,7 +187,7 @@ const styles = RN.StyleSheet.create({
     zIndex: 2,
   },
   content: {
-    paddingBottom: 110,
+    paddingBottom: windowHeight / 5,
   },
   contactInfo: {
     gap: 20,
@@ -143,7 +197,7 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     gap: 15,
     paddingTop: 20,
-    paddingBottom: 35
+    paddingBottom: 35,
   },
   privacyText: {
     gap: 5,
@@ -158,5 +212,4 @@ const styles = RN.StyleSheet.create({
     borderRadius: 40,
     backgroundColor: '#272F35',
   },
-
 });

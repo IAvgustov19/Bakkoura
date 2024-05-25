@@ -1,17 +1,21 @@
 export type OrderStateType = {
+  type: string;
   name: string;
   phone: string;
   email: string;
-  comment: string;
+  message: string;
   file: string;
   isAccept: boolean;
+  country: string;
 };
 
 export const OrderStateInitial: OrderStateType = {
+  type: '',
   name: '',
   phone: '',
   email: '',
-  comment: '',
+  message: '',
   file: '',
   isAccept: false,
+  country: '',
 };
