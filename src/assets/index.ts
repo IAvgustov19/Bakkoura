@@ -131,6 +131,7 @@ import btnAddIcon from './svg/btnAddIcon.svg';
 import timeWealthIcon from './svg/timeWealthIcon.svg';
 import dots from './svg/dots.svg';
 import btsInitial from './svg/btsInitial.svg';
+import watchConstructorLogo from './svg/watchConstructorLogo.svg';
 
 export const Images = {
   Svg: {
@@ -168,6 +169,7 @@ export const Images = {
     aboutTimeIcon,
     menuIcon,
     timeWealthIcon,
+    watchConstructorLogo,
 
     //other
     eye,

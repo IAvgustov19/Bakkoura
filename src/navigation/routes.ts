@@ -50,6 +50,7 @@ export enum APP_ROUTES {
   POMODORO = 'Pomodoro',
   TIME_TOGETHER = 'TimeTogether',
   JIHAD_BAKKOURA = 'JihadBakkura',
+  WATCH_CONSTRUCTOR = 'WatchConstructor',
   FAMILY_TREE = 'FamilyTree',
   BAKKOURA_WATCH = 'BakkuraWatch',
   TIME_CLINIC = 'TimeClinic',

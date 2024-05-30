@@ -25,6 +25,7 @@ import TimeWealth from '../../screens/timeClinic/TimeWealth';
 import TimerScreen from '../../screens/timers/TimerScreen';
 import TimeTogether from '../../screens/timeTogether/TimeTogether';
 import ToDoTimer from '../../screens/todoTimer/ToDoTimer';
+import WatchConstructor from '../../screens/watchConstructor/WatchConstructor';
 import WorldTime from '../../screens/worldTime/WorldTime';
 import {APP_ROUTES} from '../routes';
 
@@ -184,48 +185,55 @@ export const bottomTabBarOptions = {
     },
     {
       index: 18,
+      tabName: APP_ROUTES.WATCH_CONSTRUCTOR,
+      component: WatchConstructor,
+      buttonLabel: 'Watch Constructor',
+      key: 'watch_constructor',
+    },
+    {
+      index: 19,
       tabName: APP_ROUTES.SEND_IDEA,
       component: SendIdea,
       buttonLabel: 'Send Your Idea',
       key: 'send_your_idea',
     },
     {
-      index: 19,
+      index: 20,
       tabName: APP_ROUTES.TIME_BIOTIC,
       component: TimeBiotic,
       buttonLabel: 'Time Biotic',
       key: 'time_biotic',
     },
     {
-      index: 20,
+      index: 21,
       tabName: APP_ROUTES.ABOUT_TIME,
       component: AboutTime,
       buttonLabel: 'About Time',
       key: 'about_time',
     },
     {
-      index: 21,
+      index: 22,
       tabName: APP_ROUTES.FRANS_VILA,
       component: FrancVila,
       buttonLabel: 'Francvila Watch',
       key: 'frankvila_watch',
     },
     {
-      index: 22,
+      index: 23,
       tabName: APP_ROUTES.CONTACT_US,
       component: ContactUs,
       buttonLabel: 'Contact Us',
       key: 'contact_us',
     },
     {
-      index: 23,
+      index: 24,
       tabName: APP_ROUTES.BTS_NAVIGATION,
       component: BtsNavigation,
       buttonLabel: 'BTS Navigation',
       key: 'bts_navigation',
     },
     {
-      index: 24,
+      index: 25,
       tabName: APP_ROUTES.TIME_WEALTH,
       component: TimeWealth,
       buttonLabel: 'Time Wealth',

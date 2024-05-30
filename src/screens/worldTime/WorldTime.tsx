@@ -18,11 +18,12 @@ import {windowHeight} from '../../utils/styles';
 
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
-  const {selectedCountries} = useRootStore().worldTimeStore;
+  const {selectedCountries, getSelectedCountries} =
+    useRootStore().worldTimeStore;
   const navigation = useNavigation();
 
   const renderClock = useCallback(() => {
-    return selectedCountries.map((item, index) => {
+    return getSelectedCountries.map((item, index) => {
       return (
         <WorldWatch
           key={index}
@@ -32,12 +33,12 @@ const WorldTime = () => {
           hour={item.hour}
           minut={item.minut}
           hour30={item.hour30}
-          minut30={item.minut30}
+          minut30={Number(item.minut30)}
           is24={is24h}
         />
       );
     });
-  }, [selectedCountries, is24h]);
+  }, [getSelectedCountries, is24h]);
 
   // useEffect(() => {
   //   updateCountriesWeather();
