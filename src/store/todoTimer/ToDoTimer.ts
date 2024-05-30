@@ -41,7 +41,7 @@ export class TodoTimerStore {
   createNewTask = (callback: () => void) => {
     if (!this.isHas) {
       const date = Date.now();
-      this.setNewTaskState('id', this.tasksList.length + 1);
+      this.setNewTaskState('id', this.taskState.name + Date.now());
       this.setNewTaskState('date', date);
       if (this.taskState.name) {
         this.tasksList = [...this.tasksList, this.taskState];
@@ -64,7 +64,7 @@ export class TodoTimerStore {
 
     // Filter vaqtini aniqlash
     if (this.filterType === timeFilter) {
-      this.tasksList = this.tasksListClone;
+      this.tasksListClone = this.tasksList;
       this.filterType = '';
     } else {
       switch (timeFilter) {
@@ -98,7 +98,7 @@ export class TodoTimerStore {
         return itemDate >= filterDate && itemDate <= today;
       }
 
-      this.tasksList = this.tasksListClone.filter(filterFunction);
+      this.tasksListClone = this.tasksList.filter(filterFunction);
     }
   };
 

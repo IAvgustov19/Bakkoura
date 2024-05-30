@@ -1,38 +1,98 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Keyboard} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
+import GeneralModal from '../../components/GeneralModal/GeneralModal';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import Input from '../../components/Input/Input';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import ListItemCont from '../../components/ListItemCont/ListItemCont';
+import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import RN from '../../components/RN';
 import SelectInput from '../../components/SelectInput/SelectInput';
 import SoundsContent from '../../components/SoundsContent/SoundsContent';
+import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
-import {HITSLOP} from '../../utils/styles';
+import {COLORS} from '../../utils/colors';
+import {HITSLOP, windowHeight} from '../../utils/styles';
 
 const ProjectTimerCalculator = () => {
   const navigation = useNavigation();
   const [projectsVisible, setProjectsVisible] = useState(false);
   const {
-    onSoundItemPress,
+    onProjectsItemPress,
     projectTimerList,
     selectedProject,
     recentlyCalculated,
     deleteRecentlyCalculated,
+    clearSelectedProject,
   } = useRootStore().projectTimer;
+
+  console.log('selectedProject', selectedProject);
 
   const onBackHandle = () => {
     navigation.goBack();
+    clearSelectedProject();
   };
 
   const onHandleProjects = () => {
     setProjectsVisible(e => !e);
   };
+
+  const renderData = useCallback(() => {
+    return (
+      <GeneralModal
+        visible={projectsVisible}
+        hide={onHandleProjects}
+        children={
+          <RN.View style={styles.projectsBox}>
+            <HeaderContent
+              leftItem={<ArrowLeftBack onPress={onHandleProjects} />}
+              title={'Projects'}
+            />
+            <RN.ScrollView
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}>
+              <RN.View style={styles.projects}>
+                <RN.View style={styles.projectList}>
+                  {projectTimerList.map((item, index) => {
+                    return (
+                      <ListItemCont
+                        key={index}
+                        title={item.title}
+                        onPress={() => onProjectsItemPress(index)}
+                        backBlack
+                        rightItem={
+                          <RadioBtn
+                            active={item.id === selectedProject.id}
+                            onPress={() => onProjectsItemPress(index)}
+                          />
+                        }
+                      />
+                    );
+                  })}
+                </RN.View>
+              </RN.View>
+            </RN.ScrollView>
+            <RN.View style={styles.okBtn}>
+              <StartBtn
+                elWidth={60}
+                subWidth={75}
+                primary
+                text="Ok"
+                onPress={onHandleProjects}
+              />
+            </RN.View>
+          </RN.View>
+        }
+      />
+    );
+  }, [projectTimerList, projectsVisible, selectedProject]);
 
   return (
     <LinearContainer
@@ -53,19 +113,37 @@ const ProjectTimerCalculator = () => {
             <RN.View style={styles.timePrice}>
               <RN.View style={styles.timeBox}>
                 <TextView text="Time" style={styles.label} />
-                <Input
-                  placeholder="00:00:00"
-                  value={selectedProject.workTime}
-                />
+                <RN.View style={styles.itemBox}>
+                  <RN.Text style={styles.itemTitle}>
+                    {selectedProject.workTime}
+                  </RN.Text>
+                </RN.View>
               </RN.View>
               <RN.View style={styles.priceBox}>
                 <TextView text="Price $" style={styles.label} />
-                <Input placeholder="0$" value={selectedProject.price} />
+                <RN.View style={styles.itemBox}>
+                  <RN.Text style={styles.itemTitle}>
+                    {selectedProject.price}
+                  </RN.Text>
+                </RN.View>
               </RN.View>
             </RN.View>
             <RN.View style={styles.amount}>
-              <TextView text="Amount" style={styles.label} />
-              <Input placeholder="1232" value={selectedProject.totalPrice} />
+              <TextView
+                text="Amount"
+                style={[styles.label, styles.amountLabel]}
+              />
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 0.8, y: 1}}
+                colors={[COLORS.green, COLORS.darkGreyText, '#007AFF54']}
+                style={styles.amounLinear}>
+                <RN.View style={[styles.itemBox]}>
+                  <RN.Text style={styles.itemTitle}>
+                    {selectedProject.totalPrice}
+                  </RN.Text>
+                </RN.View>
+              </LinearGradient>
             </RN.View>
             {recentlyCalculated?.id ? (
               <RN.View style={styles.counted}>
@@ -85,21 +163,7 @@ const ProjectTimerCalculator = () => {
               </RN.View>
             ) : null}
           </RN.View>
-          <SoundsContent
-            headerTitle="Projects"
-            data={projectTimerList}
-            onItemPress={onSoundItemPress as never}
-            headerLeftItem={
-              <RN.TouchableOpacity hitSlop={HITSLOP} onPress={onHandleProjects}>
-                <Images.Svg.arrowLeft />
-              </RN.TouchableOpacity>
-            }
-            onClose={onHandleProjects}
-            modalVisible={projectsVisible}
-            okBtn
-            okBtnText="Ok"
-            onPressBtn={onHandleProjects}
-          />
+          {renderData()}
         </RN.View>
       }
     />
@@ -140,5 +204,42 @@ const styles = RN.StyleSheet.create({
     alignItems: 'flex-start',
     gap: 6,
     marginTop: 50,
+  },
+  itemBox: {
+    justifyContent: 'center',
+    // alignItems: 'center',
+    width: '100%',
+    backgroundColor: COLORS.black,
+    borderRadius: 30,
+    height: 60,
+    paddingHorizontal: 20,
+  },
+  itemTitle: {
+    color: COLORS.white,
+    fontSize: 20,
+  },
+  amounLinear: {
+    padding: 0.8,
+    width: '100%',
+    borderRadius: 30,
+  },
+  amountLabel: {
+    color: COLORS.green,
+  },
+  projectsBox: {
+    height: windowHeight - 50,
+  },
+  projects: {
+    paddingBottom: 110,
+  },
+  projectList: {
+    backgroundColor: COLORS.black,
+    borderRadius: 3,
+  },
+  okBtn: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    alignItems: 'center',
   },
 });
