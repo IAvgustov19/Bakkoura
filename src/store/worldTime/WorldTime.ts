@@ -1,4 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import {Alert} from 'react-native';
 import {getWeather, showWeather} from 'react-native-weather-api';
 import {SelectedCountriesType} from '../../types/worldTime';
 import {RootStore} from '../rootStore';
@@ -22,7 +23,11 @@ export class WorldTimeStore {
   hour = 0;
   minut = 0;
 
-  selectedCountries: SelectedCountriesType[] = [];
+  selectedCountries = new Map<string, SelectedCountriesType>();
+
+  get getSelectedCountries() {
+    return Array.from(this.selectedCountries.values());
+  }
 
   getLocalTime = timezones => {
     let now = new Date();
@@ -94,12 +99,14 @@ export class WorldTimeStore {
   getAllCountries = async () => {
     const response = await fetch(this.worldTimeApiUrl);
     const countries = await response.json();
-    this.worldData = this.sortCountriesByCapital(countries)
-      .filter(e => e.capital !== undefined)
-      .filter(e => e.timezones[0] !== 'UTC');
-    this.cloneWorldData = this.sortCountriesByCapital(countries)
-      .filter(e => e.capital !== undefined)
-      .filter(e => e.timezones[0] !== 'UTC');
+    runInAction(() => {
+      this.worldData = this.sortCountriesByCapital(countries)
+        .filter(e => e.capital !== undefined)
+        .filter(e => e.timezones[0] !== 'UTC');
+      this.cloneWorldData = this.sortCountriesByCapital(countries)
+        .filter(e => e.capital !== undefined)
+        .filter(e => e.timezones[0] !== 'UTC');
+    });
   };
 
   filterWorldData = name => {
@@ -144,9 +151,9 @@ export class WorldTimeStore {
     const date = this.getLocalDate(data.timezones);
     const minutes = this.hour * 60 + this.minut;
     const newData = {
-      id: this.selectedCountries.length + 1,
+      id: data.capital + time.toString(),
       capital: data.capital,
-      name: data.name?.common?.toString(),
+      name: data.name,
       time: time,
       date: `Today ${temp}C  ${date}`,
       hour: this.hour,
@@ -156,7 +163,7 @@ export class WorldTimeStore {
       timezones: data.timezones,
     };
     runInAction(() => {
-      this.selectedCountries = [...this.selectedCountries, newData] as never;
+      this.selectedCountries.set(newData.id, newData);
     });
     this.filterWorldData('');
     callback();
@@ -172,7 +179,7 @@ export class WorldTimeStore {
           (country.hour30 =
             (this.hour * 60 + this.minut + (this.hour * 60 + this.minut / 4)) /
             4),
-          (country.minut30 = Number(newLocalTime.slice(3, 5)));
+          (country.minut30 = newLocalTime.slice(3, 5));
       });
     });
   };

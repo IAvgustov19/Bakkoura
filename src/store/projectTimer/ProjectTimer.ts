@@ -31,7 +31,10 @@ export class ProjectTimer {
   createNewProjectTimer = (calback?: () => void) => {
     if (!this.isUpdate) {
       runInAction(() => {
-        this.setNewProjectTimeState('id', this.projectTimerList.length + 1);
+        this.setNewProjectTimeState(
+          'id',
+          this.newProjectTimerState.title + Date.now(),
+        );
         this.setNewProjectTimeState('timestamp', this.date.getTime());
         this.setNewProjectTimeState('date', formatDate(this.date.getTime()));
         this.setNewProjectTimeState(
@@ -122,6 +125,7 @@ export class ProjectTimer {
         this.projectTimerList = this.projectTimerList.filter(
           item => item.id !== id,
         );
+        this.calculateTotalTime();
       });
     }, 200);
   };
@@ -154,23 +158,21 @@ export class ProjectTimer {
   selectedProject = ProjectTimerDataInitial;
   recentlyCalculated: ProjectTimerDataType = {} as never;
 
+  clearSelectedProject = () => {
+    runInAction(() => {
+      this.selectedProject = ProjectTimerDataInitial;
+      this.recentlyCalculated = {} as never;
+    });
+  };
+
   onSelectProject = (index: number) => {
     runInAction(() => {
-      this.recentlyCalculated = this.projectTimerList.find(
-        e => e.active === true,
-      );
+      this.recentlyCalculated = this.selectedProject;
       this.selectedProject = this.projectTimerList.find((e, i) => i === index);
     });
   };
 
-  onSoundItemPress = index => {
+  onProjectsItemPress = (index: number) => {
     this.onSelectProject(index);
-    const newData = this.projectTimerList.map((item, i) => {
-      return {
-        ...item,
-        active: i === index ? !item.active : false,
-      };
-    });
-    this.projectTimerList = newData;
   };
 }

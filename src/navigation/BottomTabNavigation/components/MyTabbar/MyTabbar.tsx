@@ -11,6 +11,8 @@ import BottomSheet, {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import useRootStore from '../../../../hooks/useRootStore';
+import {windowWidth} from '../../../../utils/styles';
+import {Dimensions} from 'react-native';
 
 type TabBarItem = {
   route: any;
@@ -77,6 +79,8 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
             return <Images.Svg.h30Icon />;
           case APP_ROUTES.WATCH_VALUATION:
             return <Images.Svg.assessmentWatchIcon />;
+          case APP_ROUTES.WATCH_CONSTRUCTOR:
+            return <Images.Svg.watchConstructorLogo />;
           case APP_ROUTES.SEND_IDEA:
             return <Images.Svg.sendIdeaIcon />;
           case APP_ROUTES.TIME_BIOTIC:
@@ -147,7 +151,12 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   const bottomSheetRef = React.useRef<BottomSheet>(null);
   const bottomScrollViewRef = React.useRef(null);
 
-  const snapPoints = React.useMemo(() => [115, '80%'], []);
+  const current = navigation.getState().index;
+
+  const snapPoints = React.useMemo(
+    () => [current === 18 ? 0.01 : 115, '80%'],
+    [current],
+  );
 
   return (
     <BottomSheet

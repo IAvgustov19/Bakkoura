@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, TextInput, DimensionValue } from 'react-native';
-import { COLORS } from '../../utils/colors';
-import { verticalScale } from '../../utils/dimensions';
-import { HITSLOP } from '../../utils/styles';
+import {StyleSheet, TextInput, DimensionValue} from 'react-native';
+import {COLORS} from '../../utils/colors';
+import {verticalScale} from '../../utils/dimensions';
+import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
 
@@ -126,5 +126,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomWidth: 0,
     borderColor: '#304A66',
-  }
+  },
 });
