@@ -71,7 +71,7 @@ export class PersonalAreaStore {
   };
 
   getPersonalState = () => {
-    if (this.users.length > 0) {
+    if (this.users?.length > 0) {
       const currentUser = auth().currentUser;
       if (currentUser !== null) {
         if (currentUser.email) {

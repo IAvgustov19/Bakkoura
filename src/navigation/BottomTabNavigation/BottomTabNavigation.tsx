@@ -27,7 +27,7 @@ const BottomTabNavigation: FC = () => {
     const unsubscribe = firestore()
       .collection('users')
       .onSnapshot(snapshot => {
-        const usersData = snapshot.docs.map(doc => ({
+        const usersData = snapshot?.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         }));
