@@ -73,15 +73,5 @@ export class AuthStore {
         this.setNewUser('language', 'EN' as never);
       }
     });
-    if (this.currentUser !== null) {
-      if (this.currentUser.email) {
-        runInAction(() => {
-          this.currentUserEmail = currentUser.email as never;
-          this.setAuthorized();
-        });
-      }
-    } else {
-      this.setNotAuthorized();
-    }
   };
 }

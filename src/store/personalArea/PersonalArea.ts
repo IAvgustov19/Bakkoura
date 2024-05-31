@@ -22,6 +22,7 @@ export class PersonalAreaStore {
   constructor(root: RootStore) {
     makeAutoObservable(this);
     this.root = root;
+    this.getPersonalState();
   }
 
   personalAreaData: UserType = UserInitial as never;
@@ -71,33 +72,42 @@ export class PersonalAreaStore {
   };
 
   getPersonalState = () => {
-    if (this.users?.length > 0) {
-      const currentUser = auth().currentUser;
-      if (currentUser !== null) {
-        if (currentUser.email) {
-          this.currentPerson === currentUser.email;
-          const user: UserType = this.users.find(
-            item => item.email === currentUser.email,
-          );
-
-          runInAction(() => {
-            this.personalAreaData = user;
-            this.personalAreaDataClone = user;
-            this.currentUserPassword = user.password;
-            this.inActiveMenus = this.personalAreaData.inActiveMenus
-              ? this.personalAreaData.inActiveMenus
-              : [];
-            this.currentInActiveMenus = this.personalAreaData.inActiveMenus
-              ? this.personalAreaData.inActiveMenus
-              : [];
-            this.loginState = {
-              email: this.personalAreaData?.email,
-              password: this.personalAreaData?.password,
-              repeatPassword: this.personalAreaData?.password,
-            };
+    const currentUser = auth().currentUser;
+    if (currentUser !== null) {
+      if (currentUser.email) {
+        this.root.authStore.setAuthorized();
+        this.currentPerson === currentUser.email;
+        firestore()
+          .collection('users')
+          .where('email', '==', currentUser.email)
+          .get()
+          .then(querySnapshot => {
+            runInAction(() => {
+              this.personalAreaData = querySnapshot.docs[0].data() as never;
+              this.personalAreaDataClone =
+                querySnapshot.docs[0].data() as never;
+              this.currentUserPassword = this.personalAreaData.password;
+              this.inActiveMenus = this.personalAreaData.inActiveMenus
+                ? this.personalAreaData.inActiveMenus
+                : [];
+              this.currentInActiveMenus = this.personalAreaData.inActiveMenus
+                ? this.personalAreaData.inActiveMenus
+                : [];
+              this.loginState = {
+                email: this.personalAreaData?.email,
+                password: this.personalAreaData?.password,
+                repeatPassword: this.personalAreaData?.password,
+              };
+            });
+          })
+          .catch(() => {
+            console.log('error user not found');
           });
-        }
+      } else {
+        this.root.authStore.setNotAuthorized();
       }
+    } else {
+      this.root.authStore.setNotAuthorized();
     }
   };
 
