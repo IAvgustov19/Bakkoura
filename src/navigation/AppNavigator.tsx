@@ -69,21 +69,6 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const [keyboardStatus, setKeyboardStatus] = React.useState('');
-  // const {getUsersState} = useRootStore().personalAreaStore;
-
-  // React.useEffect(() => {
-  //   const unsubscribe = firestore()
-  //     .collection('users')
-  //     .onSnapshot(snapshot => {
-  //       const usersData = snapshot.docs.map(doc => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-  //       getUsersState(usersData);
-  //     });
-
-  //   return () => unsubscribe();
-  // }, []);
 
   React.useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
