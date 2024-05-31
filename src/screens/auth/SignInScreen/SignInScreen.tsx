@@ -33,35 +33,8 @@ import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
 const SignInScreen = () => {
   const [loading, isLoading] = useState(false);
-  const {
-    setAuthorized,
-    setLoginUser,
-    loginUser,
-    getUserMe,
-    newUser,
-    currentUserEmail,
-    isAuthorized,
-  } = useRootStore().authStore;
-  const {getUsersState, getPersonalState, users} =
-    useRootStore().personalAreaStore;
-
-  React.useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('users')
-      .onSnapshot(snapshot => {
-        const usersData = snapshot?.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        getUsersState(usersData);
-      });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    getPersonalState();
-  }, [users, isAuthorized]);
+  const {setAuthorized, setLoginUser, loginUser, newUser} =
+    useRootStore().authStore;
 
   const navigation = useNavigation();
   const [remember, setRemember] = useState(false);

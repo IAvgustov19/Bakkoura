@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -14,26 +14,21 @@ import {observer} from 'mobx-react-lite';
 import {windowHeight} from '../../utils/styles';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import TodayEvent from './components/TodayEvent';
-import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = () => {
-  const {whichWatch, today, homeCurrentTime, changeWatch} =
-    useRootStore().homeClockStore;
-  const [watch, setWatch] = useState(true);
+  const {whichWatch, homeCurrentTime} = useRootStore().homeClockStore;
+  const {getPersonalState} = useRootStore().personalAreaStore;
   const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
   const navigation = useNavigation();
 
   useEffect(() => {
+    getPersonalState();
+  }, []);
+
+  useEffect(() => {
     filterNearDay();
   }, [allEventsData]);
-
-  const onChangeWatch = () => {
-    setWatch(e => !e);
-  };
 
   // const logOut = async () => {
   //   await AsyncStorage.removeItem('token');
