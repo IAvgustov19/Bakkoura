@@ -14,13 +14,20 @@ import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 
 const EventScreen = () => {
-  const {calendarCurrentTime, setSwitchCalendar, switchCalendar} =
-    useRootStore().calendarStore;
+  const {
+    calendarCurrentTime,
+    setSwitchCalendar,
+    switchCalendar,
+    setAllEvents,
+    allEventsData,
+  } = useRootStore().calendarStore;
   const navigation = useNavigation();
+  // console.log('e', allEventsData);
 
   const toggleSwitch = () => {
     setTimeout(() => {
       setSwitchCalendar();
+      setAllEvents();
     }, 1);
   };
 
@@ -110,6 +117,6 @@ const styles = RN.StyleSheet.create({
     marginTop: 2,
     color: '#fff',
     fontSize: 14,
-    width: 65,
+    width: 70,
   },
 });

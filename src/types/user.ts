@@ -9,7 +9,7 @@ export type UserType = {
   avatar: string;
   secureEntry: string;
   organizeMenu: string;
-  startScreen: string;
+  initialRouteName: string;
   emailVerified: boolean;
   isVerified: boolean;
   inActiveMenus: string[];
@@ -26,7 +26,7 @@ export const UserInitial: UserType = {
   avatar: '',
   secureEntry: 'Free',
   organizeMenu: '',
-  startScreen: '',
+  initialRouteName: 'HomeScreen',
   emailVerified: false,
   isVerified: false,
   inActiveMenus: [],
@@ -42,4 +42,15 @@ export const LoginStateInitial = {
   email: '',
   password: '',
   repeatPassword: '',
+};
+
+export type InitialRouteNameType = {
+  title: string;
+  key: string;
+  routeName: string;
+};
+export const InitialRouteNameInitial = {
+  title: 'Home',
+  key: 'home',
+  routeName: 'HomeScreen',
 };

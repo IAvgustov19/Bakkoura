@@ -15,12 +15,14 @@ export const PersonalAreaStateInitial: PersonalAreaStateType = {
 export type PersonalMenuType = {
   title: string;
   key: string;
+  routeName: string;
 };
 
 export const PersonalMenuInitial: PersonalMenuType[] = [
   {
     title: '',
     key: '',
+    routeName: '',
   },
 ];
 

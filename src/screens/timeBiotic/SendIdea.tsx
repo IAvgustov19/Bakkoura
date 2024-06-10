@@ -84,16 +84,9 @@ const SendIdea = () => {
                   text={`Your preferences are very important to us. We strive to satisfy your most sophisticated tastes. Just imagine, \n you have the opportunity to realize your idea in the  \n most exquisite form!`}
                 />
               </RN.View>
-              <FormContainer
-                bottomInputPress={Scroll}
-                uploadAtTop
-                withSelect
-                options={options}
-                onSelect={onSelect as never}
-                black
-              />
+              <FormContainer bottomInputPress={Scroll} uploadAtTop black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} />
+                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
@@ -103,7 +96,7 @@ const SendIdea = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-              <ButtonComp
+              <SimpleBtn
                 title="Send"
                 icon={
                   sendEmailLoading ? (
@@ -111,9 +104,7 @@ const SendIdea = () => {
                       color={COLORS.black}
                       style={{marginTop: 3}}
                     />
-                  ) : (
-                    <GiveImage source={Images.Img.eye} />
-                  )
+                  ) : null
                 }
                 onPress={onSendEmail}
               />

@@ -15,7 +15,7 @@ import {COLORS} from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
 import GiveImage from '../../components/GiveImage/GiveImage';
 import {observer} from 'mobx-react-lite';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 import {APP_ROUTES} from '../../navigation/routes';
 
 const ContactUs = () => {
@@ -42,9 +42,13 @@ const ContactUs = () => {
   };
 
   const onSendEmail = () => {
-    onSubmitEmail(orderState, orderState.type, () =>
-      navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
-    );
+    if (orderState.type) {
+      onSubmitEmail(orderState, orderState.type, () =>
+        navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
+      );
+    } else {
+      Alert.alert('Please select who you would like to contact');
+    }
   };
 
   return (

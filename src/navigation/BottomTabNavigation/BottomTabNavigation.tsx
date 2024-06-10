@@ -8,19 +8,25 @@ import MyTabbar from './components/MyTabbar';
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigation: FC = () => {
-  const renderTabScreenItem = (i: (typeof bottomTabBarOptions.list)[0]) => (
-    <Tab.Screen key={i.index} name={i.tabName} component={i.component} />
-  );
-  const {inActiveMenus} = useRootStore().personalAreaStore;
+  const {inActiveMenus, initialRouteName} = useRootStore().personalAreaStore;
+  // const renderTabScreenItem = useCallback(
+  //   (i: (typeof bottomTabBarOptions.list)[0]) => (
+  //     <Tab.Screen key={i.index} name={i.tabName} component={i.component} />
+  //   ),
+  //   [inActiveMenus, initialRouteName],
+  // );
 
   const renderTabScreens = useCallback(() => {
     return bottomTabBarOptions.list
       .filter(item => !inActiveMenus.includes(item.key))
-      .map(renderTabScreenItem);
-  }, [inActiveMenus]);
+      .map(i => (
+        <Tab.Screen key={i.index} name={i.tabName} component={i.component} />
+      ));
+  }, [inActiveMenus, initialRouteName]);
 
   return (
     <Tab.Navigator
+      initialRouteName={initialRouteName.routeName}
       tabBar={props => <MyTabbar {...props} />}
       screenOptions={bottomTabBarOptions.options}>
       {renderTabScreens()}

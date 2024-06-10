@@ -79,7 +79,7 @@ const WatchConstructor = () => {
         CameraRoll.save(destPath, {type: 'photo'})
           .then(() => {
             Alert.alert(
-              'Screenshot Saved',
+              'Screenshot successfully Saved',
               'Screenshot has been saved to your gallery',
             );
           })
