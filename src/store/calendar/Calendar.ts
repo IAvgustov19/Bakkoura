@@ -1,11 +1,13 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {
+  createRecurringEvents,
   formatDate,
   formatDayVaMonth,
   formattedDate,
   generateYearsData,
   getCalendarArray,
   getCurrentTime,
+  getDayOfYear,
 } from '../../helper/helper';
 import {
   DateDataType,
@@ -83,24 +85,24 @@ export class CalendarStore {
       runInAction(() => {
         this.nearDay.name = near.name;
         this.nearDay.day = formatDayVaMonth(near.day, near.month, near.year);
-        this.nearDay.date = near.date;
+        this.nearDay.date = near.date[0];
       });
     } else {
     }
   };
 
   filterEvents = (date: string) => {
-    if (this.currentDate === date) {
+    this.allEventsData = this.cloneAllEventsData.filter(event =>
+      event.date.some(item => item === (date as never)),
+    );
+    this.updateAllEvents();
+    this.currentDate = date;
+  };
+
+  setAllEvents = () => {
+    runInAction(() => {
       this.allEventsData = this.cloneAllEventsData;
-      this.currentDate = date;
-      this.updateAllEvents();
-    } else {
-      this.allEventsData = this.cloneAllEventsData.filter(
-        event => event.date === (date as never),
-      );
-      this.updateAllEvents();
-      this.currentDate = date;
-    }
+    });
   };
 
   addEvents = (calback?: () => void) => {
@@ -108,28 +110,38 @@ export class CalendarStore {
       const now = Date.now();
       this.setNewEventState('timeStamp', now as never);
       this.setNewEventState('id', (this.allEventsData.length + 1) as never);
-      this.setNewEventState(
-        'date',
-        formattedDate(
-          this.newEventData.day,
-          this.newEventData.month,
-          this.newEventData.year,
-          3,
-        ) as never,
-      );
       runInAction(() => {
         if (!this.newEventData.name) return;
         if (
-          this.newEventData.hour > 0 ||
-          this.newEventData.minut > 0 ||
-          (this.newEventData.second > 0 && this.newEventData.day > 0) ||
+          this.newEventData.day > 0 ||
           this.newEventData.month > 0 ||
           this.newEventData.year > 0
         ) {
+          let occurrences = 1;
+          if (this.newEventData.repeat.toLowerCase() === 'never') {
+            occurrences = 1;
+          } else if (this.newEventData.repeat.toLowerCase() === 'daily') {
+            occurrences = 732 - getDayOfYear(this.newEventData.date[0]);
+          } else if (this.newEventData.repeat.toLowerCase() === 'monthly') {
+            occurrences = 25 - this.newEventData.month;
+          } else if (this.newEventData.repeat.toLowerCase() === 'yearly') {
+            occurrences = 2;
+          }
+
+          this.newEventData.date = createRecurringEvents(
+            formattedDate(
+              this.newEventData.day,
+              this.newEventData.month,
+              this.newEventData.year,
+              3,
+            ),
+            this.newEventData.repeat.toLowerCase(),
+            occurrences,
+          );
           this.allEventsData = [...this.allEventsData, this.newEventData];
           this.cloneAllEventsData = this.allEventsData;
-          this.newEventData = {...NewEventStateInitial};
-          calback();
+          this.newEventData = NewEventStateInitial;
+          if (calback) calback();
           this.filterNearDay();
           this.clearState();
           this.updateAllEvents();
@@ -163,6 +175,27 @@ export class CalendarStore {
   };
 
   updateEventCalendar = (id: number) => {
+    let occurrences = 1;
+    if (this.newEventData.repeat.toLowerCase() === 'never') {
+      occurrences = 1;
+    } else if (this.newEventData.repeat.toLowerCase() === 'daily') {
+      occurrences = 732 - getDayOfYear(this.newEventData.date[0]);
+    } else if (this.newEventData.repeat.toLowerCase() === 'monthly') {
+      occurrences = 24 - this.newEventData.month;
+    } else if (this.newEventData.repeat.toLowerCase() === 'yearly') {
+      occurrences = 2;
+    }
+
+    this.newEventData.date = createRecurringEvents(
+      formattedDate(
+        this.newEventData.day,
+        this.newEventData.month,
+        this.newEventData.year,
+        3,
+      ),
+      this.newEventData.repeat.toLowerCase(),
+      occurrences,
+    );
     const list = this.allEventsData.map((item, i) => {
       return i === id
         ? {
@@ -272,7 +305,7 @@ export class CalendarStore {
   updateAllEvents = () => {
     const newDate = Date.now();
     const list = this.allEventsData.map((item, i) => {
-      return new Date(item.date).getTime() <= newDate
+      return new Date(item.date[0]).getTime() <= newDate
         ? {
             ...item,
             already: true,

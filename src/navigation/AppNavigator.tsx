@@ -68,7 +68,12 @@ import WatchConstructor from '../screens/watchConstructor/WatchConstructor';
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
+  const {getPersonalState} = useRootStore().personalAreaStore;
   const [keyboardStatus, setKeyboardStatus] = React.useState('');
+
+  React.useEffect(() => {
+    getPersonalState();
+  }, []);
 
   React.useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {

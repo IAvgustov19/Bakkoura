@@ -17,9 +17,16 @@ export class TimeBioticStore {
   formState: OrderStateType = OrderStateInitial;
   sendEmailLoading = false;
   responseText = null;
+  isvalidEmail = false;
 
   setFormState = (key: keyof OrderStateType, value: OrderStateType) => {
     this.formState[key] = value as never;
+  };
+
+  setIsEmail = (value: boolean) => {
+    runInAction(() => {
+      this.isvalidEmail = value;
+    });
   };
 
   onSubmitEmail = async (
@@ -41,11 +48,10 @@ export class TimeBioticStore {
         email: data.email,
         message: data.message,
         file: data.file,
-        isAccept: data.isAccept,
         country: data.country,
       },
     };
-    if (data.isAccept === true && data.phone && type) {
+    if ((data.isAccept === true && data.phone && type, this.isvalidEmail)) {
       try {
         const response = await fetch(
           'https://api.emailjs.com/api/v1.0/email/send',

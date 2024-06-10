@@ -19,8 +19,13 @@ import StorageApi, {
 } from '../../../store/personalArea/avatar';
 
 const PersonalArea = () => {
-  const {personalAreaData, setPersonalAreaState, updateProfile, updateLoading} =
-    useRootStore().personalAreaStore;
+  const {
+    personalAreaData,
+    setPersonalAreaState,
+    updateProfile,
+    updateLoading,
+    initialRouteNameChanged,
+  } = useRootStore().personalAreaStore;
   const [avatarLoading, setAvatarLoading] = useState(true);
 
   const onUploadImage = async () => {
@@ -128,8 +133,12 @@ const PersonalArea = () => {
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
                     title="Start Screen"
-                    value={'Bakkoura 1'}
-                    onPress={() => {}}
+                    value={initialRouteNameChanged?.title}
+                    onPress={() =>
+                      navigation.navigate(
+                        APP_ROUTES.PERSON_START_SCREEN as never,
+                      )
+                    }
                   />
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>

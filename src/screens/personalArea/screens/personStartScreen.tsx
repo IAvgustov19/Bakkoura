@@ -18,20 +18,18 @@ import useRootStore from '../../../hooks/useRootStore';
 import {PersonalMenuType} from '../../../types/personalArea';
 import {ActivityIndicator} from 'react-native';
 
-const Menu = () => {
+const PersonStartScreen = () => {
   const navigation = useNavigation();
   const {
     personalAreaData,
-    inActiveMenus,
-    setInActiveMenus,
+    setPersonStartScreen,
     updateProfile,
-    onSetMenus,
     updateLoading,
-    currentInActiveMenus,
+    initialRouteName,
+    onSetInitial,
   } = useRootStore().personalAreaStore;
-
   const onPress = (item: PersonalMenuType, index: number) => {
-    setInActiveMenus(item.key);
+    setPersonStartScreen(item);
   };
 
   const renderItem = useCallback(
@@ -44,9 +42,9 @@ const Menu = () => {
             rightItem={
               <Checkbox
                 active={
-                  personalAreaData.inActiveMenus
-                    ? !personalAreaData.inActiveMenus.includes(item.key)
-                    : !inActiveMenus.includes(item.key)
+                  personalAreaData.initialRouteName
+                    ? personalAreaData.initialRouteName === item.routeName
+                    : initialRouteName.routeName === item.routeName
                 }
                 onPress={() => onPress(item, index)}
               />
@@ -56,13 +54,13 @@ const Menu = () => {
         </RN.View>
       );
     },
-    [inActiveMenus, currentInActiveMenus],
+    [initialRouteName, personalAreaData.initialRouteName],
   );
 
   const onUpdateProfile = () => {
     updateProfile(() => {
-      onSetMenus();
-      navigation.goBack();
+      onSetInitial();
+      navigation.navigate(initialRouteName.routeName as never);
     });
   };
 
@@ -70,9 +68,6 @@ const Menu = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          {/* <RN.View style={styles.bgContainer}>
-                        <Images.Svg.bg style={styles.bg} />
-                    </RN.View> */}
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
@@ -87,7 +82,7 @@ const Menu = () => {
           <RN.View style={styles.content}>
             <RN.FlatList
               showsVerticalScrollIndicator={false}
-              data={MenuItems.slice(1)}
+              data={MenuItems}
               renderItem={renderItem}
               keyExtractor={item => item.key}
             />
@@ -115,7 +110,7 @@ const Menu = () => {
   );
 };
 
-export default observer(Menu);
+export default observer(PersonStartScreen);
 
 const styles = RN.StyleSheet.create({
   container: {

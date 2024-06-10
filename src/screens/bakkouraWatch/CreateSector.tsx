@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import {Canvas} from '@shopify/react-native-skia';
 import {observer} from 'mobx-react-lite';
 import React from 'react';
 import {Images} from '../../assets';
@@ -10,13 +9,10 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import ListItemCont from '../../components/ListItemCont/ListItemCont';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import TextView from '../../components/Text/Text';
-import {genPos} from '../../helper/chart';
-import {diagonalTime, formattedTime} from '../../helper/helper';
+import {formattedTime, formattedTimeHourMinut} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
-import {moderateScale} from '../../utils/dimensions';
 import {windowHeight} from '../../utils/styles';
 import Vertices from './components/Vertices';
 
@@ -108,12 +104,15 @@ const CreateSector = () => {
                   <ListItemCont
                     title="Time"
                     value={
-                      formattedTime(
+                      formattedTimeHourMinut(
                         newSelectState.fromHour,
                         newSelectState.fromMin,
                       ) +
                       '-' +
-                      formattedTime(newSelectState.toHour, newSelectState.toMin)
+                      formattedTimeHourMinut(
+                        newSelectState.toHour,
+                        newSelectState.toMin,
+                      )
                     }
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.SECTOR_TIME as never)

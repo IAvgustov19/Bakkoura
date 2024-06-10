@@ -11,8 +11,7 @@ import BottomSheet, {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import useRootStore from '../../../../hooks/useRootStore';
-import {windowWidth} from '../../../../utils/styles';
-import {Dimensions} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 type TabBarItem = {
   route: any;
@@ -151,10 +150,11 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   const bottomSheetRef = React.useRef<BottomSheet>(null);
   const bottomScrollViewRef = React.useRef(null);
 
-  const current = navigation.getState().index;
+  const current: {key: string; type: string}[] = navigation.getState()
+    .history as never;
 
   const snapPoints = React.useMemo(
-    () => [current === 18 ? 0.01 : 115, '80%'],
+    () => [current[1]?.key.includes('WatchConstructor') ? 0.0001 : 115, '80%'],
     [current],
   );
 
@@ -188,4 +188,4 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   );
 };
 
-export default MyTabbar;
+export default observer(MyTabbar);

@@ -71,6 +71,7 @@ export const CalendarComp: React.FC<Props> = ({
               item.value === today ? styles.activeDate : styles.inActiveDate,
             ]}>
             <RN.Text
+              fontFamily="RedHatDisplay-SemiBold"
               style={[
                 styles.dateText,
                 {
@@ -177,7 +178,6 @@ const styles = RN.StyleSheet.create({
   dateText: {
     textAlign: 'center',
     fontSize: 18,
-    fontWeight: '800',
   },
   currentDate: {
     fontWeight: '600',
