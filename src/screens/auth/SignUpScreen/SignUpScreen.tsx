@@ -46,7 +46,7 @@ const SignUpScreen = () => {
           Alert.alert(err);
           isLoading(false);
         }
-        await firestore().collection('users').add({
+        await firestore().collection('users').doc(userCredential.user.uid).set({
           name: newUser.name,
           username: newUser.username,
           email: newUser.email,
@@ -55,6 +55,8 @@ const SignUpScreen = () => {
           language: newUser.language,
           secureEntry: newUser.secureEntry,
           inActiveMenus: newUser.inActiveMenus,
+          startScreen: newUser.initialRouteName,
+          id: userCredential.user.uid,
         });
         await AsyncStorage.setItem('userData', JSON.stringify(user));
         isLoading(false);

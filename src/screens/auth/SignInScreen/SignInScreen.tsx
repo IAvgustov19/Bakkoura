@@ -35,6 +35,7 @@ const SignInScreen = () => {
   const [loading, isLoading] = useState(false);
   const {setAuthorized, setLoginUser, loginUser, newUser} =
     useRootStore().authStore;
+  const {getPersonalState} = useRootStore().personalAreaStore;
 
   const navigation = useNavigation();
   const [remember, setRemember] = useState(false);
@@ -75,7 +76,8 @@ const SignInScreen = () => {
       // }
       // console.log('user.emailVerifieduser.emailVerifieduser.emailVerified', user.emailVerified)
       // if (user.emailVerified) {
-      setAuthorized();
+      // setAuthorized();
+      getPersonalState();
       // } else {
       // Alert.alert('email doesnt exist')
       // }

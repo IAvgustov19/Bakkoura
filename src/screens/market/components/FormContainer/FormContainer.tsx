@@ -14,12 +14,13 @@ import {KeyboardAvoidingView} from '../../../../components/KeyboardAvoidingView'
 import RN from '../../../../components/RN';
 import TextView from '../../../../components/Text/Text';
 import UploadFileInput from '../../../../components/UploadFileInput/UploadFileInput';
+import {isValidEmail} from '../../../../helper/validation';
 import useRootStore from '../../../../hooks/useRootStore';
 import StorageApi, {
   pickImageFromDevice,
 } from '../../../../store/personalArea/avatar';
 import {COLORS} from '../../../../utils/colors';
-import {HITSLOP} from '../../../../utils/styles';
+import {HITSLOP, windowHeight, windowWidth} from '../../../../utils/styles';
 import CustomDropdown from '../../../timeBiotic/components/CustomSelect';
 
 type Props = {
@@ -40,15 +41,37 @@ const FormContainer: React.FC<Props> = ({
   withSelect = false,
 }) => {
   const {setOrderState, orderState, deleteFile} = useRootStore().marketStore;
+  const {setIsEmail} = useRootStore().timeBiotic;
   const [fileLoading, setFileLoading] = React.useState(false);
+  const [emailErr, setEmailErr] = React.useState(null);
+
+  const handleChange = React.useCallback(
+    (email: string) => {
+      if (email && isValidEmail(email)) {
+        setEmailErr(null);
+        setIsEmail(true);
+      } else if (!email) {
+        setEmailErr(null);
+        setIsEmail(true);
+      } else if (!isValidEmail(email)) {
+        setEmailErr('Email is invalid');
+        setIsEmail(false);
+      } else {
+        setEmailErr(null);
+        setIsEmail(true);
+      }
+      setOrderState('email', email);
+    },
+    [orderState.email],
+  );
 
   const onUploadImage = async () => {
     try {
       setFileLoading(true);
       const result = await pickImageFromDevice({
-        width: 400,
-        height: 400,
-        withCircleOverlay: true,
+        width: windowWidth * 2,
+        height: windowHeight + windowHeight / 2,
+        withCircleOverlay: false,
       });
 
       const url = await StorageApi.uploadImage({
@@ -60,7 +83,6 @@ const FormContainer: React.FC<Props> = ({
         setFileLoading(false);
       }
     } catch (err) {
-      console.log(['[Error-onUploadImage]:', err]);
       setFileLoading(false);
     }
   };
@@ -112,6 +134,7 @@ const FormContainer: React.FC<Props> = ({
         width="100%"
         onChangeText={e => setOrderState('phone', e)}
         onPressIn={bottomInputPress}
+        keyBoardType="numeric"
       />
       <Input
         value={orderState.email}
@@ -120,8 +143,10 @@ const FormContainer: React.FC<Props> = ({
         placeholder="E-mail"
         backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
-        onChangeText={e => setOrderState('email', e)}
+        onChangeText={e => handleChange(e)}
         onPressIn={bottomInputPress}
+        keyBoardType="email-address"
+        err={emailErr}
       />
       {!withSelect ? (
         <Input
@@ -176,6 +201,7 @@ export default observer(FormContainer);
 const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-start',
+    gap: 10,
   },
   fileBox: {
     flexDirection: 'row',

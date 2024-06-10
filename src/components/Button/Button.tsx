@@ -7,8 +7,10 @@ import {
   DimensionValue,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
+import RN from '../RN';
 
 type Props = {
   title: string;
@@ -47,6 +49,7 @@ const ButtonComp: React.FC<Props> = ({
           },
         ]}
         onPress={onPress}>
+        <RN.Image style={styles.btnTopLight} source={Images.Img.btnTopLight} />
         <Text
           style={[
             styles.title,
@@ -80,13 +83,23 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     textAlign: 'center',
-    fontWeight: '400',
     color: COLORS.black,
+    fontFamily: 'RedHatDisplay-SemiBold',
+    textShadowColor: 'rgba(255, 255, 255, 0.40)',
+    textShadowOffset: {width: -1, height: 0.1},
+    textShadowRadius: 10,
   },
   icon: {
     height: '100%',
     position: 'absolute',
     right: 10,
     top: 10,
+  },
+  btnTopLight: {
+    position: 'absolute',
+    top: 0,
+    left: 20,
+    width: '70%',
+    // objectFit: 'contain',
   },
 });

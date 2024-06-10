@@ -3,6 +3,7 @@ import {Text, View, StyleSheet, ImageSourcePropType} from 'react-native';
 import {Images} from '../../../../assets';
 import RN from '../../../../components/RN';
 import {COLORS} from '../../../../utils/colors';
+import {windowWidth} from '../../../../utils/styles';
 
 type Props = {
   companyImage?: ImageSourcePropType;
@@ -20,6 +21,7 @@ const CompanyCard: React.FC<Props> = ({
   return (
     <RN.Pressable style={styles.container} onPress={onPress}>
       <RN.View style={styles.companyCardLeft}>
+        <RN.Image style={styles.light} source={Images.Img.marketCardLight} />
         <RN.Image style={styles.company} source={companyImage} />
       </RN.View>
       <RN.View style={styles.companyCardRight}>
@@ -35,9 +37,8 @@ export default CompanyCard;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // backgroundColor: COLORS.darkGrey,
-    backgroundColor: '#0D0D0D',
-    padding: 10,
+    backgroundColor: COLORS.black,
+    height: 200,
   },
   companyCardRight: {
     width: '50%',
@@ -49,10 +50,20 @@ const styles = StyleSheet.create({
     color: COLORS.lightGrey,
   },
   companyCardLeft: {
+    height: '100%',
     width: '50%',
+    paddingLeft: 15,
+    justifyContent: 'center',
   },
   company: {
     width: '100%',
     objectFit: 'contain',
+  },
+  light: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: '100%',
+    width: windowWidth / 2,
   },
 });

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ActivityIndicator} from 'react-native';
 import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
@@ -23,10 +23,11 @@ const Calendars: React.FC<Props> = ({}) => {
     useRootStore().calendarStore;
 
   const [loading, setLoading] = useState(true);
-
-  setTimeout(() => {
-    setLoading(false);
-  }, 1);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1);
+  }, []);
 
   const selectMonth = (data?: Date | string) => {
     getOneMonth(data as never);

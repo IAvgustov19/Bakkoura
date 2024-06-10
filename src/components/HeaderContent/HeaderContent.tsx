@@ -15,7 +15,11 @@ const HeaderContent: React.FC<Props> = ({leftItem, rightItem, title}) => {
   return (
     <RN.View style={styles.header}>
       <RN.View style={styles.leftItem}>{leftItem}</RN.View>
-      <TextView style={styles.title} title={title} />
+      <TextView
+        fontFamily="RedHatDisplay-SemiBold"
+        style={styles.title}
+        title={title}
+      />
       <RN.View style={styles.rightItem}>{rightItem}</RN.View>
     </RN.View>
   );

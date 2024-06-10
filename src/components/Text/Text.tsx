@@ -7,15 +7,23 @@ type Props = {
   text?: string | number;
   textAlign?: string;
   style?: any;
+  fontFamily?: string;
 };
 
-const TextView: React.FC<Props> = ({text, title, style, textAlign}) => {
+const TextView: React.FC<Props> = ({
+  text,
+  title,
+  style,
+  textAlign,
+  fontFamily,
+}) => {
   return (
     <Text
       style={[
         title ? styles.title : styles.text,
         style,
         {textAlign: textAlign ? textAlign : 'center'},
+        {fontFamily: fontFamily ? fontFamily : 'RedHatDisplay-Regular'},
       ]}>
       {title || text}
     </Text>
@@ -28,14 +36,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: '#fff',
-    fontWeight: '400',
+    // fontWeight: '400',
     textAlign: 'center',
-    fontFamily: 'RedHatDisplay-Regular',
   },
   text: {
     fontSize: 14,
     color: COLORS.grey,
-    fontWeight: '400',
-    fontFamily: 'RedHatDisplay-Regular',
+    // fontWeight: '400',
   },
 });

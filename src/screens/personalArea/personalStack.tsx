@@ -8,6 +8,7 @@ import PersonalDetails from './screens/personalDetails';
 import {APP_ROUTES} from '../../navigation/routes';
 import LanguageScreen from '../LanguageScreen/LanguageScreen';
 import {createStackNavigator} from '@react-navigation/stack';
+import PersonStartScreen from './screens/personStartScreen';
 
 const Stack = createStackNavigator();
 
@@ -61,6 +62,13 @@ const PersonalStack = () => {
       <Stack.Screen
         name={APP_ROUTES.MENU}
         component={Menu}
+        options={{
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name={APP_ROUTES.PERSON_START_SCREEN}
+        component={PersonStartScreen}
         options={{
           headerTitleAlign: 'center',
         }}

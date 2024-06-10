@@ -18,6 +18,7 @@ import RN from '../../components/RN';
 import {Images} from '../../assets';
 import {ActivityIndicator} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
 
 const WatchValuation = () => {
   const navigation = useNavigation();
@@ -42,17 +43,8 @@ const WatchValuation = () => {
     }
   };
 
-  const options = [
-    {label: 'OAE', value: 'OAE'},
-    {label: 'USA', value: 'USA'},
-    {label: 'UK', value: 'UK'},
-  ];
-  const onSelect = (option: string) => {
-    console.log(option);
-  };
-
   const onSendEmail = () => {
-    onSubmitEmail(orderState, 'Send Idea', () =>
+    onSubmitEmail(orderState, 'Assestment Watch', () =>
       navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
     );
   };
@@ -83,16 +75,9 @@ const WatchValuation = () => {
                   text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
                 />
               </RN.View>
-              <FormContainer
-                bottomInputPress={Scroll}
-                uploadAtTop
-                black
-                withSelect
-                options={options}
-                onSelect={onSelect}
-              />
+              <FormContainer bottomInputPress={Scroll} uploadAtTop black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} />
+                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
@@ -102,7 +87,7 @@ const WatchValuation = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-              <ButtonComp
+              <SimpleBtn
                 title="Send"
                 icon={
                   sendEmailLoading ? (
@@ -110,9 +95,7 @@ const WatchValuation = () => {
                       color={COLORS.black}
                       style={{marginTop: 3}}
                     />
-                  ) : (
-                    <GiveImage source={Images.Img.eye} />
-                  )
+                  ) : null
                 }
                 onPress={onSendEmail}
               />
