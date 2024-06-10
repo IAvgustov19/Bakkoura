@@ -40,12 +40,12 @@ const MarketScreen = () => {
                   onHandleCategory('https://www.badreya.com/brand/bakkoura')
                 }
                 companyLogo={<Images.Svg.bakkouraLogo width={'100%'} />}
-                companyImage={Images.Img.companyCardImage}
+                companyImage={Images.Img.bakkouraMarket}
                 companyInfo={'We decided to be!'}
               />
               <CompanyCard
                 companyLogo={<Images.Svg.francvilaLogo />}
-                companyImage={Images.Img.companyCardImage}
+                companyImage={Images.Img.francvillaMarket}
                 companyInfo={'Espirit Unique'}
                 onPress={() =>
                   onHandleCategory('https://www.badreya.com/brand/franc-vila')
@@ -53,10 +53,13 @@ const MarketScreen = () => {
               />
             </RN.View>
             <ButtonComp
-                title="Watch Order"
-                icon={<GiveImage source={Images.Img.eye} />}
-                onPress={() => navigation.navigate(APP_ROUTES.ORDER_SCREEN as never)}
-              />
+              // width={150}
+              title="Watch Order"
+              icon={<GiveImage source={Images.Img.eye} />}
+              onPress={() =>
+                navigation.navigate(APP_ROUTES.ORDER_SCREEN as never)
+              }
+            />
           </RN.View>
           <GeneralModal children={<Thanks />} visible={false} />
         </RN.View>

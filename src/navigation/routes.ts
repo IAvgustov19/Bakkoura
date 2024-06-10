@@ -26,6 +26,7 @@ export enum APP_ROUTES {
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
   MENU = 'Menu',
+  PERSON_START_SCREEN = 'PersonStartScreen',
   CONTACT_US = 'ContactUs',
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',

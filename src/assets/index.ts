@@ -132,6 +132,7 @@ import timeWealthIcon from './svg/timeWealthIcon.svg';
 import dots from './svg/dots.svg';
 import btsInitial from './svg/btsInitial.svg';
 import watchConstructorLogo from './svg/watchConstructorLogo.svg';
+import marketWCardLight from './svg/marketCardLight.svg';
 
 export const Images = {
   Svg: {
@@ -272,6 +273,7 @@ export const Images = {
     btnAddIcon,
     dots,
     btsInitial,
+    marketWCardLight,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -299,6 +301,10 @@ export const Images = {
     tWCardImage1: require('./images/tWCardImage1.webp'),
     tWCardImage2: require('./images/tWCardImage2.webp'),
     tWCardImage3: require('./images/tWCardImage3.webp'),
+    bakkouraMarket: require('./images/bakkouraMarket.png'),
+    francvillaMarket: require('./images/francvillaMarket.png'),
+    marketCardLight: require('./images/marketCardlight.png'),
+    btnTopLight: require('./images/btnTopLight.png'),
   },
 };
 

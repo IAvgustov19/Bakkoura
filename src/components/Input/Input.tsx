@@ -1,5 +1,10 @@
 import * as React from 'react';
-import {StyleSheet, TextInput, DimensionValue} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  DimensionValue,
+  KeyboardTypeOptions,
+} from 'react-native';
 import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
 import {HITSLOP} from '../../utils/styles';
@@ -26,6 +31,8 @@ type Props = {
   textAlignVertical?: any;
   onPressIn?: () => void;
   maxLenght?: number;
+  keyBoardType?: KeyboardTypeOptions;
+  err?: string;
 };
 
 const Input: React.FC<Props> = ({
@@ -48,6 +55,8 @@ const Input: React.FC<Props> = ({
   editable = true,
   secureTextEntry,
   maxLenght,
+  keyBoardType,
+  err,
 }) => {
   return (
     <RN.View style={styles.container}>
@@ -68,6 +77,7 @@ const Input: React.FC<Props> = ({
           numberOfLines={numberOfLines}
           placeholderTextColor={COLORS.grey}
           textAlignVertical={textAlignVertical}
+          keyboardType={keyBoardType}
           maxLength={maxLenght}
           style={[
             styles.input,
@@ -91,6 +101,7 @@ const Input: React.FC<Props> = ({
           </RN.TouchableOpacity>
         ) : null}
       </RN.View>
+      {err ? <RN.Text style={styles.err}>{err}</RN.Text> : null}
     </RN.View>
   );
 };
@@ -126,5 +137,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderBottomWidth: 0,
     borderColor: '#304A66',
+  },
+  err: {
+    color: COLORS.red,
+    position: 'absolute',
+    bottom: -15,
+    left: 15,
+    fontSize: 12,
   },
 });

@@ -28,6 +28,22 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
 
   let rows = [];
 
+  const renderDateDot = React.useCallback(
+    date => {
+      if (!date.value) {
+        return null;
+      }
+      return selectedDays?.map(item => {
+        return item.map((e, index) =>
+          e.includes(date.value) ? (
+            <RN.View key={index} style={styles.activeDot}></RN.View>
+          ) : null,
+        );
+      });
+    },
+    [selectedDays],
+  );
+
   rows = matrix.map((row, rowIndex: number) => {
     let rowItems = row.map((item, colIndex: number) => {
       return (
@@ -42,6 +58,7 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
                 : styles.inActiveDate,
             ]}>
             <RN.Text
+              fontFamily="RedHatDisplay-SemiBold"
               style={[
                 styles.dateText,
                 {
@@ -59,9 +76,7 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
               {item.id != -1 ? item.id : ''}
             </RN.Text>
           </RN.TouchableOpacity>
-          {selectedDays?.includes(item.value) && (
-            <RN.View style={styles.activeDot}></RN.View>
-          )}
+          {renderDateDot(item)}
         </RN.View>
       );
     });
@@ -127,7 +142,7 @@ const styles = RN.StyleSheet.create({
   inActiveDate: {},
   dateText: {
     textAlign: 'center',
-    fontWeight: '600',
+    fontFamily: 'RedHatDisplay-SemiBold',
   },
   currentDate: {
     fontWeight: '600',

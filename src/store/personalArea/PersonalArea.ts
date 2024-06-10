@@ -1,21 +1,20 @@
 import {RootStore} from '../rootStore';
 import {SecureEntries} from '../../utils/secureEntries';
 import {makeAutoObservable, runInAction} from 'mobx';
-import {
-  PersonalAreaStateInitial,
-  PersonalAreaStateType,
-} from '../../types/personalArea';
 import {Languages} from '../../utils/languages';
 import firestore from '@react-native-firebase/firestore';
 import {
+  InitialRouteNameInitial,
+  InitialRouteNameType,
   LoginStateInitial,
   LoginStateType,
   UserInitial,
   UserType,
 } from '../../types/user';
-import {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
+import {bottomTabBarOptions} from '../../navigation/BottomTabNavigation/BottomTabNavigation.constants';
+import {MenuItems} from '../../utils/menuItems';
 
 export class PersonalAreaStore {
   private readonly root: RootStore;
@@ -35,6 +34,21 @@ export class PersonalAreaStore {
   currentInActiveMenus: string[] = [];
   activateMenuLoading = false;
   currentPerson = null;
+  initialRouteName: InitialRouteNameType = InitialRouteNameInitial;
+  initialRouteNameChanged: InitialRouteNameType = InitialRouteNameInitial;
+
+  setPersonStartScreen = (value: InitialRouteNameType) => {
+    runInAction(() => {
+      this.initialRouteName = value;
+      this.personalAreaData.initialRouteName = this.initialRouteName.routeName;
+    });
+  };
+
+  onSetInitial = () => {
+    runInAction(() => {
+      this.initialRouteNameChanged = this.initialRouteName;
+    });
+  };
 
   setInActiveMenus = (key: string) => {
     runInAction(() => {
@@ -75,7 +89,6 @@ export class PersonalAreaStore {
     const currentUser = auth().currentUser;
     if (currentUser !== null) {
       if (currentUser.email) {
-        this.root.authStore.setAuthorized();
         this.currentPerson === currentUser.email;
         firestore()
           .collection('users')
@@ -83,10 +96,18 @@ export class PersonalAreaStore {
           .get()
           .then(querySnapshot => {
             runInAction(() => {
+              this.root.authStore.setAuthorized();
               this.personalAreaData = querySnapshot.docs[0].data() as never;
               this.personalAreaDataClone =
                 querySnapshot.docs[0].data() as never;
               this.currentUserPassword = this.personalAreaData.password;
+              if (this.personalAreaData.initialRouteName) {
+                this.initialRouteName = MenuItems.find(
+                  item =>
+                    item.routeName === this.personalAreaData.initialRouteName,
+                );
+                this.initialRouteNameChanged = this.initialRouteName;
+              }
               this.inActiveMenus = this.personalAreaData.inActiveMenus
                 ? this.personalAreaData.inActiveMenus
                 : [];
@@ -102,6 +123,8 @@ export class PersonalAreaStore {
           })
           .catch(() => {
             console.log('error user not found');
+            auth().signOut();
+            this.root.authStore.setNotAuthorized();
           });
       } else {
         this.root.authStore.setNotAuthorized();

@@ -5,7 +5,7 @@ export type OrderStateType = {
   email: string;
   message: string;
   file: string;
-  isAccept: boolean;
+  isAccept?: boolean;
   country: string;
 };
 
