@@ -163,7 +163,7 @@ const FormContainer: React.FC<Props> = ({
           onPressIn={bottomInputPress}
         />
       ) : (
-        <CustomDropdown options={options} onSelect={onSelect} />
+        <CustomDropdown options={options} onSelect={onSelect} black={true} />
       )}
       {!uploadAtTop ? (
         <>

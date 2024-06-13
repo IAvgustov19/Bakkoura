@@ -36,5 +36,6 @@ const LottieContent: React.FC<Props> = ({
 export default LottieContent;
 
 const styles = RN.StyleSheet.create({
-  container: {},
+  container: {
+  },
 });

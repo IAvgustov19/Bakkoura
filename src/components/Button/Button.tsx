@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     textAlign: 'center',
+    fontWeight: '600',
+    lineHeight: 24,
     color: COLORS.black,
     fontFamily: 'RedHatDisplay-SemiBold',
     textShadowColor: 'rgba(255, 255, 255, 0.40)',

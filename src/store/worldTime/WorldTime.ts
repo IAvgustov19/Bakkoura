@@ -3,6 +3,7 @@ import {Alert} from 'react-native';
 import {getWeather, showWeather} from 'react-native-weather-api';
 import {SelectedCountriesType} from '../../types/worldTime';
 import {RootStore} from '../rootStore';
+import auth from  '@react-native-firebase/auth';
 
 export class WorldTimeStore {
   private readonly root: RootStore;
@@ -154,6 +155,7 @@ export class WorldTimeStore {
 
   setCountry = async (data: SelectedCountriesType, callback: () => void) => {
 
+    const userId = auth().currentUser.uid;
     const temp = await this.getWeather(data.capital);
     this.isLoading = false
     const time = this.getLocalTime(data.timezones);
@@ -161,6 +163,7 @@ export class WorldTimeStore {
     const minutes = this.hour * 60 + this.minut;
     const newData = {
       id: data.capital + time.toString(),
+      uid: userId,
       capital: data.capital,
       name: data.name,
       time: time,

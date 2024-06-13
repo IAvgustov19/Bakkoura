@@ -7,9 +7,9 @@ import Input from '../../../components/Input/Input';
 import {verticalScale} from '../../../utils/dimensions';
 import {observer} from 'mobx-react-lite';
 
-const CustomDropdownInput = ({options, onSelect}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+const CustomDropdownInput = ({ options, onSelect, black }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null);
 
   const handleSelect = option => {
     setSelectedOption(option);

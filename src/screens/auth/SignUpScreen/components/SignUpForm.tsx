@@ -4,6 +4,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import Input from '../../../../components/Input/Input';
 import RN from '../../../../components/RN';
 import useRootStore from '../../../../hooks/useRootStore';
+import CustomSelect from '../../../timeBiotic/components/CustomSelect';
 
 type Props = {
   bottomInputPress?: () => void;
@@ -39,13 +40,14 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress}) => {
         secureTextEntry
         onPressIn={bottomInputPress}
       />
-      <Input
+      <CustomSelect options={undefined} onSelect={undefined} black={true}/>
+      {/* <Input
         title="Country"
         placeholder="Country"
         value={newUser.country}
         onChangeText={e => setNewUser('country', e)}
         onPressIn={bottomInputPress}
-      />
+      /> */}
     </RN.View>
   );
 };

@@ -1,8 +1,11 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {ProjectTimerDataInitial, ProjectTimerDataType} from '../../types/alarm';
-import {RootStore} from '../rootStore';
-import {useEffect} from 'react';
-import {formatDate, formatDateTime, secondsToHMS} from '../../helper/helper';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { ProjectTimerDataInitial, ProjectTimerDataType } from '../../types/alarm';
+import { RootStore } from '../rootStore';
+import { useEffect } from 'react';
+import { formatDate, formatDateTime, secondsToHMS } from '../../helper/helper';
+import { addProjectTimerToFirestore, deleteProjectTimerFromFirestore, fetchProjectTimersFromFirestore, updateProjectTimerInFirestore } from '../../services/firestoreService';
+
+import auth from '@react-native-firebase/auth';
 
 export class ProjectTimer {
   private readonly root: RootStore;
@@ -29,12 +32,11 @@ export class ProjectTimer {
   isUpdate = false;
 
   createNewProjectTimer = (calback?: () => void) => {
+    const userId = auth().currentUser.uid;
     if (!this.isUpdate) {
-      runInAction(() => {
-        this.setNewProjectTimeState(
-          'id',
-          this.newProjectTimerState.title + Date.now(),
-        );
+      runInAction(async () => {
+        this.setNewProjectTimeState('uid', userId);
+        this.setNewProjectTimeState('id', this.projectTimerList.length + 1);
         this.setNewProjectTimeState('timestamp', this.date.getTime());
         this.setNewProjectTimeState('date', formatDate(this.date.getTime()));
         this.setNewProjectTimeState(
@@ -49,6 +51,7 @@ export class ProjectTimer {
             ...this.projectTimerList,
             this.newProjectTimerState,
           ];
+          await addProjectTimerToFirestore(this.newProjectTimerState);
           calback();
           this.clearState();
         }
@@ -59,6 +62,14 @@ export class ProjectTimer {
       this.clearState();
     }
   };
+  fetchProjectTimers = async () => {
+    const timers = await fetchProjectTimersFromFirestore();
+    console.log('timers', JSON.stringify(timers, null, 2))
+    runInAction(() => {
+      this.projectTimerList = timers;
+    });
+  };
+
 
   clearState = () => {
     runInAction(() => {
@@ -88,6 +99,7 @@ export class ProjectTimer {
               item.totalPrice = ((item.second * Number(item.price)) / 3600)
                 .toString()
                 .slice(0, 5);
+                updateProjectTimerInFirestore(item.id, { second: item.second, workTime: item.workTime, totalPrice: item.totalPrice });
             });
           }, 1000);
         }
@@ -107,9 +119,9 @@ export class ProjectTimer {
     const list = this.projectTimerList.map((item, i) => {
       return i === index
         ? {
-            ...item,
-            play: !item.play,
-          }
+          ...item,
+          play: !item.play,
+        }
         : item;
     });
     runInAction(() => {
@@ -119,7 +131,8 @@ export class ProjectTimer {
     this.calculateTotalTime();
   };
 
-  handleDeleteProjectTimer = (id: number) => {
+  handleDeleteProjectTimer = async (id: number | string) => {
+    await deleteProjectTimerFromFirestore(id.toString());
     setTimeout(() => {
       runInAction(() => {
         this.projectTimerList = this.projectTimerList.filter(
@@ -137,18 +150,19 @@ export class ProjectTimer {
     });
   };
 
-  updateProjectTimer = (id: number) => {
+  updateProjectTimer = async (id: number | string) => {
     const list = this.projectTimerList.map((item, i) => {
       return i === id
         ? {
-            ...item,
-            item: this.newProjectTimerState,
-          }
+          ...item,
+          item: this.newProjectTimerState,
+        }
         : item;
     });
     runInAction(() => {
       this.projectTimerList = list;
     });
+    await updateProjectTimerInFirestore(id.toString(), this.newProjectTimerState);
   };
 
   deleteRecentlyCalculated = () => {
