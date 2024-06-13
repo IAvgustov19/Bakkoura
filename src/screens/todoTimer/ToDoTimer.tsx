@@ -19,7 +19,7 @@ import ButtonComp from '../../components/Button/Button';
 
 const ToDoTimer = () => {
   const {visible, show} = useRootStore().visibleStore;
-  const {getOneTask, tasksList, playProject, handleDeleteTask} =
+  const {getOneTask, tasksList, playProject, handleDeleteTask, tasksListClone} =
     useRootStore().todoTimer;
   const navigation = useNavigation();
 
@@ -43,7 +43,7 @@ const ToDoTimer = () => {
         />
       );
     });
-  }, [tasksList]);
+  }, [tasksList, tasksListClone]);
 
   return (
     <LinearContainer

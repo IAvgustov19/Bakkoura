@@ -1,9 +1,12 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {OrderStateInitial, OrderStateType} from '../../types/market';
+import {RootStore} from '../rootStore';
 
 export class MarketStore {
-  constructor() {
+  private readonly root: RootStore;
+  constructor(root: RootStore) {
     makeAutoObservable(this);
+    this.root = root;
   }
 
   webViewLink: string = '';

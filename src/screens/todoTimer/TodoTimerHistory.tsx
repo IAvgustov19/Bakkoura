@@ -16,7 +16,7 @@ import HistoryListItem from './components/HistoryListItem';
 
 const ToDoTimerHistory = () => {
   const {hide} = useRootStore().visibleStore;
-  const {tasksList, getOneTask, filterItemsByTime, filterType} =
+  const {tasksListClone, getOneTask, filterItemsByTime, filterType} =
     useRootStore().todoTimer;
   const navifation = useNavigation();
 
@@ -26,8 +26,8 @@ const ToDoTimerHistory = () => {
 
   const renderList = useCallback(() => {
     {
-      return tasksList.length > 0 ? (
-        tasksList.map((item, index) => {
+      return tasksListClone.length > 0 ? (
+        tasksListClone.map((item, index) => {
           return (
             <HistoryListItem
               key={index}
@@ -45,7 +45,7 @@ const ToDoTimerHistory = () => {
         <ListEmptyComp title="No to do timer" />
       );
     }
-  }, [tasksList]);
+  }, [tasksListClone]);
 
   return (
     <LinearContainer

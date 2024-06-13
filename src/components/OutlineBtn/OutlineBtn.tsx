@@ -12,7 +12,7 @@ type Props = {
   Width?: DimensionValue;
   Height?: DimensionValue;
   customStyle?: ViewStyle;
-  
+  icon?: React.ReactNode;
 };
 
 const OutlineBtn: React.FC<Props> = ({
@@ -23,6 +23,7 @@ const OutlineBtn: React.FC<Props> = ({
   Width,
   Height,
   customStyle,
+  icon,
 }) => {
   return (
     <RN.TouchableOpacity
@@ -33,12 +34,13 @@ const OutlineBtn: React.FC<Props> = ({
         {
           borderColor: borderColor ? borderColor : COLORS.darkGreyText,
           width: Width ? Width : 110,
-          height: Height? Height : 35,
+          height: Height ? Height : 35,
         },
       ]}>
       <RN.Text style={{color: textColor ? textColor : COLORS.grey}}>
         {text}
       </RN.Text>
+      {icon ? <RN.View style={styles.icon}>{icon}</RN.View> : null}
     </RN.TouchableOpacity>
   );
 };
@@ -53,5 +55,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  icon: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
 });

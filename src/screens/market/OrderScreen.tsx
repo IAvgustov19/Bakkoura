@@ -13,13 +13,15 @@ import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import FormContainer from './components/FormContainer/FormContainer';
-import { APP_ROUTES } from '../../navigation/routes';
+import {APP_ROUTES} from '../../navigation/routes';
 import Thanks from './components/thanks/Thanks';
+import {ActivityIndicator} from 'react-native';
 
 const OrderScreen = () => {
   const navigation = useNavigation();
   const [accept, setAccept] = useState(false);
-  const {setOrderState, deleteFile} = useRootStore().marketStore;
+  const {setOrderState, orderState} = useRootStore().marketStore;
+  const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -35,6 +37,12 @@ const OrderScreen = () => {
         animated: true,
       });
     }
+  };
+
+  const onSendEmail = () => {
+    onSubmitEmail(orderState, 'Order', () =>
+      navigation.navigate(APP_ROUTES.ORDER_THANKS as never),
+    );
   };
 
   return (
@@ -64,7 +72,7 @@ const OrderScreen = () => {
                   }
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll}/>
+              <FormContainer bottomInputPress={Scroll} />
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
@@ -77,7 +85,18 @@ const OrderScreen = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-              <SimpleBtn title="Send" onPress={() => navigation.navigate(APP_ROUTES.ORDER_THANKS as never)}/>
+              <SimpleBtn
+                title="Send"
+                onPress={onSendEmail}
+                icon={
+                  sendEmailLoading ? (
+                    <ActivityIndicator
+                      color={COLORS.black}
+                      style={{marginTop: 6}}
+                    />
+                  ) : null
+                }
+              />
             </RN.View>
           </RN.ScrollView>
         </RN.View>

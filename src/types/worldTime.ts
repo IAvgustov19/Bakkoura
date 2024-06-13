@@ -1,5 +1,10 @@
+import React, {FC} from 'react';
+import {ImageSourcePropType} from 'react-native';
+import {SvgProps} from 'react-native-svg';
+import {ConstructorSvgs} from '../assets/constructor/index';
+
 export type SelectedCountriesType = {
-  id: number;
+  id: string;
   capital: string;
   name: {common: string};
   time: string;
@@ -7,12 +12,12 @@ export type SelectedCountriesType = {
   hour: number;
   minut: number;
   hour30: number;
-  minut30: number;
+  minut30: string;
   timezones: string;
 };
 
 export const SelectedCountriesInitial: SelectedCountriesType = {
-  id: 0,
+  id: '',
   capital: '',
   name: {common: ''},
   time: '',
@@ -21,7 +26,7 @@ export const SelectedCountriesInitial: SelectedCountriesType = {
   minut: 0,
   timezones: '',
   hour30: 0,
-  minut30: 0,
+  minut30: '',
 };
 
 export type StopWatchType = {
@@ -32,4 +37,22 @@ export type StopWatchType = {
 export const StopWatchInitial = {
   ms: 0,
   time: '',
+};
+
+export type ConstructorWatchType = {
+  bodyTypes: React.FC<SvgProps>;
+  faceTypes: React.FC<SvgProps>;
+  backStyles: React.FC<SvgProps>;
+  numbers: React.FC<SvgProps>;
+  options: React.FC<SvgProps> | ImageSourcePropType | string;
+  arrows: React.FC<SvgProps>;
+};
+
+export const ConstructorWatchInitial: ConstructorWatchType = {
+  bodyTypes: ConstructorSvgs.bodyType1,
+  faceTypes: null,
+  backStyles: null,
+  numbers: null,
+  options: null,
+  arrows: null,
 };

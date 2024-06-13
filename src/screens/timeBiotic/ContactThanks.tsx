@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useMemo} from 'react';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -8,13 +8,18 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import TextView from '../../components/Text/Text';
 import ButtonComp from '../../components/Button/Button';
 import GiveImage from '../../components/GiveImage/GiveImage';
-import { Images } from '../../assets';
-import { windowHeight } from '../../utils/styles';
-
+import {Images} from '../../assets';
+import {windowHeight} from '../../utils/styles';
+import useRootStore from '../../hooks/useRootStore';
 
 const ContactThanks = () => {
-  
+  const {responseText} = useRootStore().timeBiotic;
   const navigation = useNavigation();
+
+  const renderResponse = useMemo(() => {
+    return <TextView text={responseText} />;
+  }, [responseText]);
+
   return (
     <LinearContainer
       children={
@@ -25,7 +30,7 @@ const ContactThanks = () => {
           />
           <RN.View style={styles.content}>
             <TextView title="Thank You" />
-            <TextView text={'Your Idea has been sent. We will contact you \n shortly to clarify the details.'} />
+            {renderResponse}
             <ButtonComp
               title="OK"
               width={'50%'}

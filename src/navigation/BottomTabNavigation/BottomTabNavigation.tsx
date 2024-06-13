@@ -1,21 +1,32 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React, {FC} from 'react';
-import RN from '../../components/RN';
+import {observer} from 'mobx-react-lite';
+import React, {FC, useCallback} from 'react';
+import useRootStore from '../../hooks/useRootStore';
 import {bottomTabBarOptions} from './BottomTabNavigation.constants';
 import MyTabbar from './components/MyTabbar';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigation: FC = () => {
-  const renderTabScreenItem = (i: (typeof bottomTabBarOptions.list)[0]) => (
-    <Tab.Screen key={i.index} name={i.tabName} component={i.component} />
-  );
+  const {inActiveMenus, initialRouteName} = useRootStore().personalAreaStore;
+  // const renderTabScreenItem = useCallback(
+  //   (i: (typeof bottomTabBarOptions.list)[0]) => (
+  //     <Tab.Screen key={i.index} name={i.tabName} component={i.component} />
+  //   ),
+  //   [inActiveMenus, initialRouteName],
+  // );
 
-  const renderTabScreens = () =>
-    bottomTabBarOptions.list.map(renderTabScreenItem);
+  const renderTabScreens = useCallback(() => {
+    return bottomTabBarOptions.list
+      .filter(item => !inActiveMenus.includes(item.key))
+      .map(i => (
+        <Tab.Screen key={i.index} name={i.tabName} component={i.component} />
+      ));
+  }, [inActiveMenus, initialRouteName]);
 
   return (
     <Tab.Navigator
+      initialRouteName={initialRouteName.routeName}
       tabBar={props => <MyTabbar {...props} />}
       screenOptions={bottomTabBarOptions.options}>
       {renderTabScreens()}
@@ -23,4 +34,4 @@ const BottomTabNavigation: FC = () => {
   );
 };
 
-export default BottomTabNavigation;
+export default observer(BottomTabNavigation);

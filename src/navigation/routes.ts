@@ -1,4 +1,7 @@
 export enum APP_ROUTES {
+  //initial screen
+  INITIAL_SCREEN = 'InitialScreen',
+
   FIRST = 'First',
   ONBOARDING = 'Onboarding',
 
@@ -18,11 +21,12 @@ export enum APP_ROUTES {
   PERSONAL_STACK = 'PersonalStack',
   // nested stack screens
   PERSONAL_AREA = 'PersonalArea',
-  PERSONAL_DETAILS= 'PersonalDetails',
+  PERSONAL_DETAILS = 'PersonalDetails',
   SECURE_ENTRY = 'SecureEntry',
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
   MENU = 'Menu',
+  PERSON_START_SCREEN = 'PersonStartScreen',
   CONTACT_US = 'ContactUs',
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',
@@ -30,8 +34,6 @@ export enum APP_ROUTES {
   IDEA_THANKS = 'IdeaThanks',
   WATCH_THANKS = 'WatchThanks',
   BTS_NAVIGATION = 'BtsNavigation',
-
-
 
   //bottomsheet screens
   HOME_START = 'HomeScreen',
@@ -49,6 +51,7 @@ export enum APP_ROUTES {
   POMODORO = 'Pomodoro',
   TIME_TOGETHER = 'TimeTogether',
   JIHAD_BAKKOURA = 'JihadBakkura',
+  WATCH_CONSTRUCTOR = 'WatchConstructor',
   FAMILY_TREE = 'FamilyTree',
   BAKKOURA_WATCH = 'BakkuraWatch',
   TIME_CLINIC = 'TimeClinic',

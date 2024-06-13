@@ -42,7 +42,7 @@ export class TogetherTimeStore {
   };
 
   clearLoverName = () => {
-    this.setAddEtapState('name', '');
+    this.setAddEtapState('name', ' ');
   };
 
   onDeleteOneEtap = () => {

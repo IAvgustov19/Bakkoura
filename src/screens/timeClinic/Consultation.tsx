@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
 import React, {useRef, useState} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
 import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import ButtonComp from '../../components/Button/Button';
@@ -24,8 +24,11 @@ type Props = {};
 const Consultation: React.FC<Props> = ({}) => {
   const [accept, setAccept] = React.useState(false);
   const navigation = useNavigation();
+  const {setOrderState, orderState} = useRootStore().marketStore;
+  const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
 
   const AcceptPrivacy = () => {
+    setOrderState('isAccept', !accept);
     setAccept(e => !e);
   };
 
@@ -40,8 +43,10 @@ const Consultation: React.FC<Props> = ({}) => {
     }
   };
 
-  const onHandleSend = () => {
-    navigation.navigate(APP_ROUTES.CONSULTATION_THANKS as never);
+  const onSendEmail = () => {
+    onSubmitEmail(orderState, 'Consultation', () =>
+      navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
+    );
   };
 
   return (
@@ -77,8 +82,17 @@ const Consultation: React.FC<Props> = ({}) => {
               </RN.View>
               <ButtonComp
                 title="Send"
-                icon={<GiveImage source={Images.Img.eye} />}
-                onPress={onHandleSend}
+                icon={
+                  sendEmailLoading ? (
+                    <ActivityIndicator
+                      color={COLORS.black}
+                      style={{marginTop: 3}}
+                    />
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
+                }
+                onPress={onSendEmail}
               />
             </RN.View>
           </RN.ScrollView>

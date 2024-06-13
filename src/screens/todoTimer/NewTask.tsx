@@ -23,8 +23,6 @@ const NewTask = () => {
   const {taskState, isHas, createNewTask, clearState} =
     useRootStore().todoTimer;
 
-  console.log(taskState);
-
   const onCreateNewTask = () => {
     createNewTask(() => navigation.navigate(APP_ROUTES.TODOTIMER as never));
   };

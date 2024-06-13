@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, DimensionValue} from 'react-native';
+import {Text, View, StyleSheet, DimensionValue, Pressable} from 'react-native';
 import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
@@ -22,7 +22,7 @@ const ListItemCont: React.FC<Props> = ({
   rightVertical,
 }) => {
   return (
-    <RN.TouchableOpacity
+    <RN.Pressable
       style={[
         styles.listItem,
         {backgroundColor: backBlack ? COLORS.black : COLORS.transparent},
@@ -42,7 +42,7 @@ const ListItemCont: React.FC<Props> = ({
           <Images.Svg.arrowRight />
         </RN.TouchableOpacity>
       )}
-    </RN.TouchableOpacity>
+    </RN.Pressable>
   );
 };
 

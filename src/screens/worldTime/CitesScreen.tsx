@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {Images} from '../../assets';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -13,8 +13,36 @@ import {COLORS} from '../../utils/colors';
 
 const CitesScreen = () => {
   const navigation = useNavigation();
-  const {worldData, filterWorldData, setCountry} =
-    useRootStore().worldTimeStore;
+  const {
+    worldData,
+    filterWorldData,
+    setCountry,
+    selectedCountries,
+    getAllCountries,
+  } = useRootStore().worldTimeStore;
+
+  useEffect(() => {
+    getAllCountries();
+  }, []);
+
+  const countries = useCallback(() => {
+    return worldData.length > 0
+      ? worldData.map((e, index) => {
+          return (
+            <RN.View key={index} style={styles.countryBox}>
+              <RN.TouchableOpacity
+                onPress={() => setCountry(e, () => navigation.goBack())}>
+                <RN.Text
+                  style={
+                    styles.country
+                  }>{`${e.capital}, ${e.name.common}`}</RN.Text>
+              </RN.TouchableOpacity>
+              <Line />
+            </RN.View>
+          );
+        })
+      : null;
+  }, [worldData, selectedCountries]);
 
   return (
     <LinearContainer
@@ -33,24 +61,7 @@ const CitesScreen = () => {
             />
           </RN.View>
           <RN.ScrollView style={styles.countryList}>
-            {worldData.length
-              ? worldData.map((e, index) => {
-                  return (
-                    <RN.View key={index} style={styles.countryBox}>
-                      <RN.TouchableOpacity
-                        onPress={() =>
-                          setCountry(e, () => navigation.goBack())
-                        }>
-                        <RN.Text
-                          style={
-                            styles.country
-                          }>{`${e.capital}, ${e.name.common}`}</RN.Text>
-                      </RN.TouchableOpacity>
-                      <Line />
-                    </RN.View>
-                  );
-                })
-              : null}
+            {countries()}
           </RN.ScrollView>
         </RN.View>
       }

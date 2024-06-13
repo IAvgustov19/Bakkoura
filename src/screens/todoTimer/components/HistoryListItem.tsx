@@ -13,7 +13,7 @@ const HistoryListItem: React.FC<Props> = ({name, time, onPress}) => {
   return (
     <RN.TouchableOpacity style={styles.container} onPress={onPress}>
       <RN.Text style={styles.name}>
-        {name.length > 30 ? name.slice(0, 27) + '...' : name}
+        {name.length > 25 ? name.slice(0, 22) + '...' : name}
       </RN.Text>
       <RN.Text style={styles.time}>Total {time}</RN.Text>
     </RN.TouchableOpacity>

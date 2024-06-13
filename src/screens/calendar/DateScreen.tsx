@@ -5,6 +5,7 @@ import {
   numberOfDaysIn,
   _getTimeData,
   _getDateData,
+  formattedDate,
 } from '../../helper/helper';
 import dayjs from 'dayjs';
 import {useRef, useState} from 'react';
@@ -79,31 +80,39 @@ const DateScreen = () => {
     selectedMiddleItem.current,
     middleListData,
   );
+  const initialScrollIndexLast = getInitialScrollIndex(
+    selectedMiddleItem.current,
+    lastListData,
+  );
 
   const firstSelectedValue = useRef<number | Date>(1);
   const secondSelectedValue = useRef<number | Date>(1);
-  const thirdSelectedValue = useRef<number | Date>(2024);
+  const thirdSelectedValue = useRef<number | Date>(1);
+
+  const [day, setDay] = useState(newEventData.day);
+  const [month, setMonth] = useState(newEventData.month);
+  const [year, setyear] = useState(
+    newEventData.year ? newEventData.year : new Date().getFullYear(),
+  );
 
   const firstHandleChange = () => {
     const value = firstSelectedValue.current;
-    const newValue = value;
-    setNewEventState('day', newValue as never);
+    setDay(value as never);
   };
   const secondHandleChange = () => {
     const value = secondSelectedValue.current;
-    const newValue = value;
-    setNewEventState('month', newValue as never);
+    setMonth(value as never);
   };
   const thirdHandleChange = () => {
     const value = thirdSelectedValue.current;
-    const newValue = value as never;
-    setNewEventState('year', newValue as never);
+    setyear(value as never);
   };
 
   const okDate = () => {
-    firstHandleChange();
-    secondHandleChange();
-    thirdHandleChange();
+    setNewEventState('day', day as never);
+    setNewEventState('month', month as never);
+    setNewEventState('year', year as never);
+    setNewEventState('date', [formattedDate(day, month, year, 3)] as never);
     calculateRemainingTime();
     navigation.navigate(APP_ROUTES.NEW_EVENT as never);
   };
@@ -147,10 +156,7 @@ const DateScreen = () => {
               onChange={thirdHandleChange}
               style={styles.middleListStyle}
               label={'Year'}
-              initialScrollIndex={getInitialScrollIndex(
-                selectedMiddleItem.current,
-                lastListData,
-              )}
+              initialScrollIndex={0}
             />
             <DataListLinearBack />
           </RN.View>
