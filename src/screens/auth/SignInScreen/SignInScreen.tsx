@@ -1,116 +1,114 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import TextView from '../../../components/Text/Text';
-import { BG, Images } from '../../../assets';
-import { useNavigation } from '@react-navigation/native';
-import { APP_ROUTES } from '../../../navigation/routes';
+import {BG, Images} from '../../../assets';
+import {useNavigation} from '@react-navigation/native';
+import {APP_ROUTES} from '../../../navigation/routes';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import RN from '../../../components/RN';
-import { windowHeight } from '../../../utils/styles';
+import {windowHeight} from '../../../utils/styles';
 import useRootStore from '../../../hooks/useRootStore';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import auth, { Auth, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithCredential, TwitterAuthProvider, signInWithPopup, AuthCredential } from '@firebase/auth';
-import * as firebase from '@firebase/app';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 import authh from '@react-native-firebase/auth';
 
 import firestore from '@react-native-firebase/firestore';
-// import database from '@react-native-firebase/database';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-
+import {observer} from 'mobx-react-lite';
+import {COLORS} from '../../../utils/colors';
+import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
 const SignInScreen = () => {
-
-
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('users')
-      .onSnapshot((snapshot) => {
-        const usersData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(usersData);
-      });
-
-    return () => unsubscribe();
-  }, []);
-
-
-  console.log('usersusersusers:', users)
-
+  const [loading, isLoading] = useState(false);
+  const {setAuthorized, setLoginUser, loginUser, newUser} =
+    useRootStore().authStore;
+  const {getPersonalState} = useRootStore().personalAreaStore;
 
   const navigation = useNavigation();
-  const { setAuthorized } = useRootStore().authStore;
   const [remember, setRemember] = useState(false);
-  // const [email, setEmail] = useState('bakkouratimesystem@gmail.com');
-  // const [password, setPassword] = useState('nifS4TT9Jvb9tH9');
-  const [email, setEmail] = useState('test@gmail.com');
-  const [password, setPassword] = useState('test123');
 
   const RememberMe = () => {
     setRemember(e => !e);
   };
 
-
   GoogleSignin.configure({
-    webClientId: '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
+    webClientId:
+      '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
   });
-
 
   useEffect(() => {
     const auth = authh();
-    console.log(auth.signInWithEmailAndPassword(email, password))
-  }, [])
+    // console.log(
+    //   auth.signInWithEmailAndPassword(loginUser.email, loginUser.password),
+    // );
+  }, []);
 
   const signIn = async (email: string, password: string) => {
+    // if (email && password) {
+    isLoading(true);
     try {
-      const userCredential = await authh().signInWithEmailAndPassword(email, password);
+      const userCredential = await authh().signInWithEmailAndPassword(
+        email,
+        password,
+      );
       const user = userCredential.user;
       const token = await user.getIdToken();
+      await AsyncStorage.setItem('userState', JSON.stringify(user));
+      await AsyncStorage.setItem('userUid', JSON.stringify(user.uid));
       // const userSnapshot = await firestore().collection('users').where('email', '==', email).get();
 
       // if (userSnapshot.empty) {
-      //   Alert.alert('Error', 'Email not found'); 
+      //   Alert.alert('Error', 'Email not found');
       //   return;
       // }
       // console.log('user.emailVerifieduser.emailVerifieduser.emailVerified', user.emailVerified)
       // if (user.emailVerified) {
-        setAuthorized()
+      // setAuthorized();
+      getPersonalState();
       // } else {
-        // Alert.alert('email doesnt exist')
+      // Alert.alert('email doesnt exist')
       // }
-      console.log(token, 77);
+      // console.log(token, 77);
+      // console.log('user', user);
       // You can use the token or user object as needed
     } catch (error) {
-       console.error('Error signing in:', error.message);
+      Alert.alert('Error signing in:', error.message);
       // Handle the error here, such as displaying a message to the user
+    } finally {
+      isLoading(false);
     }
-  }
+    // }
+  };
+
   const signInWithGoogle = async () => {
     try {
       const has = await GoogleSignin.hasPlayServices();
 
-      const { idToken } = await GoogleSignin.signIn();
+      const {idToken} = await GoogleSignin.signIn();
       const googleCredentials = authh.GoogleAuthProvider.credential(idToken);
       await AsyncStorage.setItem('token', idToken);
 
-      const userCredential = await authh().signInWithCredential(googleCredentials);
+      const userCredential = await authh().signInWithCredential(
+        googleCredentials,
+      );
 
       const user = userCredential.user;
       console.log('Signed in user:', user);
 
       setAuthorized();
-
       return user;
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -120,12 +118,10 @@ const SignInScreen = () => {
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
       } else {
-        // 
+        //
       }
     }
   };
-
-
 
   return (
     <LinearContainer
@@ -142,13 +138,12 @@ const SignInScreen = () => {
                 </View>
               }
               rightItem={
-                <TouchableOpacity
-                  style={styles.localize}
+                <LanguageBtn
+                  value={newUser.language}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-                  }>
-                  <Images.Svg.en width={50} />
-                </TouchableOpacity>
+                  }
+                />
               }
             />
             <View style={styles.titleBox}>
@@ -158,14 +153,15 @@ const SignInScreen = () => {
             <View style={styles.formBox}>
               <TextView style={styles.label} text="Login" />
               <Input
-                placeholder="JB"
-                onChangeText={(text) => setEmail(text)}
-                value={email}
+                placeholder="Email"
+                onChangeText={text => setLoginUser('email', text)}
+                value={loginUser ? loginUser?.email : ''}
               />
               <TextView style={styles.label} text="Password" />
-              <Input placeholder="77777"
-                onChangeText={(text) => setPassword(text)}
-                value={password}
+              <Input
+                placeholder="77777"
+                onChangeText={text => setLoginUser('password', text)}
+                value={loginUser ? loginUser?.password : ''}
                 secureTextEntry
               />
             </View>
@@ -184,14 +180,21 @@ const SignInScreen = () => {
             <View style={styles.signUp}>
               <ButtonComp
                 title="Sign in"
-                // icon={<Images.Svg.eye />}
-                onPress={() => signIn(email, password)}
+                icon={
+                  loading ? (
+                    <ActivityIndicator
+                      color={COLORS.black}
+                      style={{marginTop: 3}}
+                    />
+                  ) : null
+                }
+                onPress={() => signIn(loginUser.email, loginUser.password)}
               />
             </View>
             <View style={styles.orWithSocial}>
               <TextView text="Or Sign Up using" />
               <View style={styles.socialBox}>
-                <TouchableOpacity onPress={() => { }}>
+                <TouchableOpacity onPress={() => {}}>
                   <Images.Svg.f />
                 </TouchableOpacity>
                 <TouchableOpacity>
@@ -217,7 +220,7 @@ const SignInScreen = () => {
     />
   );
 };
-export default SignInScreen;
+export default observer(SignInScreen);
 
 const styles = StyleSheet.create({
   Russs: {

@@ -81,11 +81,7 @@ const SoundsContent: React.FC<Props> = ({
         children={
           <RN.View style={styles.centeredView}>
             <RN.View style={styles.modalView}>
-              <HeaderContent
-                title={headerTitle}
-                leftItem={headerLeftItem}
-                rightItem={<Cancel onClose={onClose} />}
-              />
+              <HeaderContent title={headerTitle} leftItem={headerLeftItem} />
               <RN.View style={styles.listsBox}>
                 <RN.FlatList
                   data={data}

@@ -1,9 +1,9 @@
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
-import { COLORS } from '../../../utils/colors';
+import {COLORS} from '../../../utils/colors';
 
 type Props = {
   eventName?: string;
@@ -15,6 +15,7 @@ type Props = {
   leftLine?: boolean;
   borderRadius?: number;
   already?: boolean;
+  allDay?: boolean;
 };
 
 const EventItem: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const EventItem: React.FC<Props> = ({
   borderRadius,
   leftLine,
   already,
+  allDay,
 }) => {
   return (
     <LinearGradient

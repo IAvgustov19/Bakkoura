@@ -18,6 +18,7 @@ import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import {IosAndroidHeight, windowHeight} from '../../utils/styles';
 import ButtonComp from '../../components/Button/Button';
 import RenderProjectTimer from './components/RenderProjectTimer';
+import ListFooter from '../../components/ListFooter/ListFooter';
 
 const ProjectTimer = () => {
   const [play, setPlay] = useState(false);
@@ -108,6 +109,7 @@ const ProjectTimer = () => {
                     <ListEmptyComp title="No project timer yet" />
                   }
                   data={projectTimerList}
+                  ListFooterComponent={<ListFooter />}
                   renderItem={({item, index}) => (
                     <RenderProjects item={item} index={index} />
                   )}
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    height: windowHeight - windowHeight / 3.5,
+    height: windowHeight - 110,
     justifyContent: 'space-between',
   },
   flatList: {
@@ -165,5 +167,8 @@ const styles = StyleSheet.create({
   },
   btnBox: {
     alignItems: 'center',
+    position: 'absolute',
+    bottom: 120,
+    width: '100%',
   },
 });

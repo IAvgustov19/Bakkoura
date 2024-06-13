@@ -40,6 +40,15 @@ const NewEventScreen = () => {
   const {onSoundItemPress, soundsData, selectedSound} =
     useRootStore().timerStore;
 
+  const onSetAllDay = () => {
+    setTimeout(() => {
+      setNewEventState('allDay', !newEventData.allDay as never);
+      setNewEventState('hour', 0 as never);
+      setNewEventState('minut', 0 as never);
+      setNewEventState('second', 0 as never);
+    }, 200);
+  };
+
   useEffect(() => {
     calculateRemainingTime();
   }, [allEventsData.length]);
@@ -47,6 +56,21 @@ const NewEventScreen = () => {
   const onHandleGoBack = () => {
     navigation.goBack();
     clearState();
+  };
+
+  const scrollViewRef = useRef(null);
+
+  const Scroll = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        y: windowHeight - windowHeight / 4,
+        animated: true,
+      });
+    }
+  };
+
+  const addEvent = () => {
+    addEvents(() => navigation.goBack());
   };
 
   return (
@@ -58,6 +82,7 @@ const NewEventScreen = () => {
             rightItem={<Cancel onClose={onHandleGoBack} />}
           />
           <RN.ScrollView
+            ref={scrollViewRef}
             style={styles.scrollView}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
@@ -93,18 +118,22 @@ const NewEventScreen = () => {
                       navigation.navigate(APP_ROUTES.DATE_SCREEN as never)
                     }
                   />
-                  <RN.View style={styles.line}></RN.View>
-                  <ListItemCont
-                    title="Time"
-                    value={formattedTime(
-                      newEventData.hour,
-                      newEventData.minut,
-                      newEventData.second,
-                    )}
-                    onPress={() =>
-                      navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
-                    }
-                  />
+                  {!newEventData.allDay ? (
+                    <>
+                      <RN.View style={styles.line}></RN.View>
+                      <ListItemCont
+                        title="Time"
+                        value={formattedTime(
+                          newEventData.hour,
+                          newEventData.minut,
+                          newEventData.second,
+                        )}
+                        onPress={() =>
+                          navigation.navigate(APP_ROUTES.TIME_SCREEN as never)
+                        }
+                      />
+                    </>
+                  ) : null}
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
@@ -113,15 +142,9 @@ const NewEventScreen = () => {
                     rightItem={
                       <SimpleSwitch
                         active={newEventData.allDay}
-                        handlePress={() =>
-                          setNewEventState(
-                            'allDay',
-                            !newEventData.allDay as never,
-                          )
-                        }
+                        handlePress={onSetAllDay}
                       />
                     }
-                    onPress={() => setSound(true)}
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
@@ -145,7 +168,6 @@ const NewEventScreen = () => {
                         }
                       />
                     }
-                    onPress={() => setSound(true)}
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
@@ -168,13 +190,15 @@ const NewEventScreen = () => {
                       placeholderTextColor={COLORS.grey}
                       placeholder="Coment"
                       value={newEventData.comment}
+                      onPressIn={Scroll}
+                      onKeyPress={Scroll}
                     />
                   </RN.View>
                 </RN.View>
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn
-                  onPress={() => addEvents(() => navigation.goBack())}
+                  onPress={addEvent}
                   primary={true}
                   text={isUpdate ? 'Ok' : 'Add'}
                   subWidth={70}
@@ -227,13 +251,14 @@ const styles = RN.StyleSheet.create({
   },
   container: {
     paddingHorizontal: 5,
+    height: windowHeight,
   },
   scrollView: {
-    height: windowHeight - 100,
+    // height: windowHeight / 5,
   },
   content: {
     justifyContent: 'space-between',
-    height: windowHeight - windowHeight / 6,
+    paddingBottom: windowHeight / 2.2,
   },
   eventsTypeList: {
     backgroundColor: '#0D0D0D',
@@ -272,7 +297,7 @@ const styles = RN.StyleSheet.create({
   addBtn: {
     position: 'absolute',
     alignItems: 'center',
-    bottom: 20,
     width: '100%',
+    bottom: windowHeight / 4,
   },
 });

@@ -12,84 +12,41 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
+import Cancel from '../../components/Cancel/Cancel';
 
 const TimeScreen = () => {
   const {setNewEventState, newEventData} = useRootStore().calendarStore;
   const navigation = useNavigation();
-
   const startListData = _getTimeData(0, {is24Hour: true, minuteInterval: 0});
-
   const middleListData = _getTimeData(1, {minuteInterval: 0});
   const lastListData = _getTimeData(1, {minuteInterval: 0});
-
-  const selectedStartItem = useRef<number>(
-    'date' === 'date'
-      ? new Date().getDate()
-      : false
-      ? new Date().getHours()
-      : new Date().getHours() < 13
-      ? new Date().getHours() === 0
-        ? 12
-        : new Date().getHours()
-      : new Date().getHours() - 12,
-  );
-
-  const selectedMiddleItem = useRef<number>(
-    'date' === 'date' ? new Date().getMonth() : new Date().getMinutes(),
-  );
-
-  const getInitialScrollIndex = (
-    preSelected: number | Date,
-    data: Array<ItemType>,
-    isDate?: boolean,
-  ) => {
-    if (preSelected === -1) {
-      return data.length - 2;
-    }
-
-    let index = data.findIndex(item => {
-      if (isDate)
-        return (
-          dayjs(item.value).format('DD/MM/YYYY') ===
-          dayjs(preSelected).format('DD/MM/YYYY')
-        );
-      return item.value === preSelected;
-    });
-    index = index - 1;
-    index = index < 0 ? 0 : index;
-
-    return index;
-  };
 
   const firstSelectedValue = useRef<number | Date>(0);
   const secondSelectedValue = useRef<number | Date>(0);
   const thirdSelectedValue = useRef<number | Date>(0);
 
+  const [hours, setHours] = useState(newEventData.hour);
+  const [minutes, setMinutes] = useState(newEventData.minut);
+  const [secons, setSeconds] = useState(newEventData.second);
+
   const firstHandleChange = () => {
-    const value = firstSelectedValue.current;
-    const newValue = value;
-    setNewEventState('hour', newValue as never);
+    const hours = firstSelectedValue.current;
+    setHours(hours as never);
   };
   const secondHandleChange = () => {
-    const value = secondSelectedValue.current;
-    const newValue = value;
-    setNewEventState('minut', newValue as never);
+    const minutes = secondSelectedValue.current;
+    setMinutes(minutes as never);
   };
   const thirdHandleChange = () => {
-    const value = thirdSelectedValue.current;
-    const newValue = value;
-    setNewEventState('second', newValue as never);
+    const seconds = thirdSelectedValue.current;
+    setSeconds(seconds as never);
   };
 
   const okTime = () => {
-    if (newEventData.hour > 0 || newEventData.minut > 0) {
-      firstHandleChange();
-      secondHandleChange();
-      thirdHandleChange();
-      navigation.navigate(APP_ROUTES.NEW_EVENT as never);
-    } else {
-      console.log('choose time');
-    }
+    setNewEventState('hour', hours as never);
+    setNewEventState('minut', minutes as never);
+    setNewEventState('second', secons as never);
+    navigation.navigate(APP_ROUTES.NEW_EVENT as never);
   };
 
   return (
@@ -98,13 +55,7 @@ const TimeScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title="Time"
-            rightItem={
-              <RN.TouchableOpacity
-                style={styles.cancelBtn}
-                onPress={() => navigation.goBack()}>
-                <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-              </RN.TouchableOpacity>
-            }
+            rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.row}>
             <DateList
@@ -113,7 +64,7 @@ const TimeScreen = () => {
               onChange={firstHandleChange}
               selectedValue={firstSelectedValue}
               label="Hours"
-              initialScrollIndex={0}
+              initialScrollIndex={newEventData.hour}
             />
             <DateList
               data={middleListData}
@@ -122,7 +73,7 @@ const TimeScreen = () => {
               onChange={secondHandleChange}
               label={'Min.'}
               style={styles.middleListStyle}
-              initialScrollIndex={0}
+              initialScrollIndex={newEventData.minut}
             />
             <DateList
               data={lastListData}
@@ -131,7 +82,7 @@ const TimeScreen = () => {
               onChange={thirdHandleChange}
               label={'Sec.'}
               style={styles.middleListStyle}
-              initialScrollIndex={0}
+              initialScrollIndex={newEventData.second}
             />
             <DataListLinearBack />
           </RN.View>

@@ -450,7 +450,12 @@ export const formattedTime = (
 ) => {
   return `${hours < 10 ? `0${hours}` : hours}:${
     minutes < 10 ? `0${minutes}` : minutes
-  }${seconds ? `:${seconds < 10 ? `0${seconds}` : seconds}` : ''}`;
+  }:${seconds < 10 ? `0${seconds}` : seconds}`;
+};
+export const formattedTimeHourMinut = (hours: number, minutes: number) => {
+  return `${hours < 10 ? `0${hours}` : hours}:${
+    minutes < 10 ? `0${minutes}` : minutes
+  }`;
 };
 
 export const formattedDate = (
@@ -593,4 +598,57 @@ export const generateYearsData = () => {
     yearsData.push({year: year.toString(), months: monthsData});
   }
   return yearsData;
+};
+
+export function getDayOfYear(dateString) {
+  // Berilgan sanani Date ob'ektiga aylantirish
+  const date = new Date(dateString);
+
+  // Yilning birinchi kuni (1-yanvar)
+  const startOfYear = new Date(date.getFullYear(), 0, 1);
+
+  // Yil boshidan berilgan sanagacha o'tgan millisekundlarni hisoblash
+  const diffInMillis = date - startOfYear;
+
+  // Millisekundlarni kunlarga aylantirish
+  const millisecondsInDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diffInMillis / millisecondsInDay) + 1; // +1, chunki 1-yanvar birinchi kun
+
+  return dayOfYear;
+}
+
+export const createRecurringEvents = (
+  startDateStr: string,
+  recurrence: string,
+  occurrences: number,
+) => {
+  let startDate = new Date(startDateStr);
+  let events = [];
+
+  for (let i = 0; i < occurrences; i++) {
+    let newDate = new Date(startDate);
+
+    switch (recurrence) {
+      case 'daily':
+        newDate.setDate(newDate.getDate() + i);
+        break;
+      case 'monthly':
+        newDate.setMonth(newDate.getMonth() + i);
+        break;
+      case 'yearly':
+        newDate.setFullYear(newDate.getFullYear() + i);
+        break;
+      case 'never':
+        if (i > 0) {
+          return events;
+        }
+        break;
+      default:
+        throw new Error('Invalid recurrence type');
+    }
+
+    events = [...events, newDate.toISOString().split('T')[0]];
+  }
+
+  return events;
 };
