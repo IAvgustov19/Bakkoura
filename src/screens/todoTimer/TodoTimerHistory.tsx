@@ -1,13 +1,13 @@
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import RN from '../../components/RN';
-import {secondsToHMS} from '../../helper/helper';
+import {secondsToHM, secondsToHMS} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
@@ -16,9 +16,10 @@ import HistoryListItem from './components/HistoryListItem';
 
 const ToDoTimerHistory = () => {
   const {hide} = useRootStore().visibleStore;
-  const {tasksListClone, getOneTask, filterItemsByTime, filterType} =
+  const {tasksList, getOneTask, filterItemsByTime, filterType, fetchTasks, tasksListClone} =
     useRootStore().todoTimer;
   const navifation = useNavigation();
+  const isFocused = useIsFocused();
 
   const onFilterTasks = (time: string) => {
     filterItemsByTime(time);

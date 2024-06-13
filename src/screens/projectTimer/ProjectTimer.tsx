@@ -1,21 +1,21 @@
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import RN from '../../components/RN';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets/index';
+import { Images } from '../../assets/index';
 import SwitchBtn from '../../components/SwitchBtn/SwitchBtn';
 import ProjectTimerItem from './components/ProjectTimerItem';
 import TextView from '../../components/Text/Text';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import {useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
-import {observer} from 'mobx-react-lite';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
+import { observer } from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
-import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
-import {COLORS} from '../../utils/colors';
+import { FlatList, RectButton, Swipeable } from 'react-native-gesture-handler';
+import { COLORS } from '../../utils/colors';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
-import {IosAndroidHeight, windowHeight} from '../../utils/styles';
+import { IosAndroidHeight, windowHeight } from '../../utils/styles';
 import ButtonComp from '../../components/Button/Button';
 import RenderProjectTimer from './components/RenderProjectTimer';
 import ListFooter from '../../components/ListFooter/ListFooter';
@@ -29,9 +29,15 @@ const ProjectTimer = () => {
     calculatedTotalTime,
     handleDeleteProjectTimer,
     getOneProjectTimer,
+    fetchProjectTimers,
   } = useRootStore().projectTimer;
 
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchProjectTimers();
+  }, [isFocused])
 
   const onPlayHandle = (index: number) => {
     playProject(index);
@@ -58,7 +64,7 @@ const ProjectTimer = () => {
     handleDeleteProjectTimer(id);
   };
 
-  const RenderProjects = memo(({item, index}: {item: any; index: number}) => {
+  const RenderProjects = memo(({ item, index }: { item: any; index: number }) => {
     return (
       <Swipeable
         key={index}
@@ -109,8 +115,7 @@ const ProjectTimer = () => {
                     <ListEmptyComp title="No project timer yet" />
                   }
                   data={projectTimerList}
-                  ListFooterComponent={<ListFooter />}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <RenderProjects item={item} index={index} />
                   )}
                 />

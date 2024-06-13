@@ -1,8 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useCallback, useMemo, useState} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
-import {Images} from '../../assets';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { FlatList } from 'react-native-gesture-handler';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -10,24 +10,29 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
-import {APP_ROUTES} from '../../navigation/routes';
-import {COLORS} from '../../utils/colors';
-import {RectButton} from 'react-native-gesture-handler';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
+import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import LinearGradient from 'react-native-linear-gradient';
-import {AlarmListsItemType} from '../../types/alarm';
+import { AlarmListsItemType } from '../../types/alarm';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import AlarmClock from './components/AlarmClock';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import ListFooter from '../../components/ListFooter/ListFooter';
-import {windowHeight} from '../../utils/styles';
+import { windowHeight } from '../../utils/styles';
 
 const AlarmScreen = () => {
-  const {alarmsListData, handleInactiveAlarm, handleDeleteAlarm} =
+  const { alarmsListData, handleInactiveAlarm, handleDeleteAlarm, fetchAlarmsData } =
     useRootStore().alarmStore;
   const [isClock, setClock] = useState(true);
   const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    fetchAlarmsData();
+  }, [isFocused])
 
   const renderLeftActions = (id: number) => {
     return (
@@ -41,15 +46,15 @@ const AlarmScreen = () => {
     );
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <Swipeable
         key={index}
         renderRightActions={() => renderLeftActions(item.id)}
         onSwipeableWillOpen={() => handleDeleteAlarm(item.id)}>
         <LinearGradient
-          start={{x: 0, y: 0.5}}
-          end={{x: 1, y: 0.5}}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
           colors={
             item.isActive
               ? ['#0D0D0D', '#051222', '#00448E']
@@ -60,7 +65,7 @@ const AlarmScreen = () => {
             <RN.Text
               style={[
                 styles.time,
-                {color: item.isActive ? COLORS.green : COLORS.white},
+                { color: item.isActive ? COLORS.green : COLORS.white },
               ]}>
               {item.time}
             </RN.Text>
@@ -68,7 +73,7 @@ const AlarmScreen = () => {
           </RN.View>
           <SimpleSwitch
             active={item.isActive}
-            handlePress={() => handleInactiveAlarm(index)}
+            handlePress={() => handleInactiveAlarm(item.id)}
           />
         </LinearGradient>
       </Swipeable>

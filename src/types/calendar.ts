@@ -1,7 +1,8 @@
 export type NewEventStateType = {
-  id: number;
+  uid?: string;
+  id: string;
   name: string;
-  date: string[];
+  date: string[] | string;
   time: string;
   timeStamp: number;
   allDay: boolean;
@@ -24,9 +25,10 @@ export type NewEventStateType = {
 };
 
 export const NewEventStateInitial: NewEventStateType = {
-  id: 0,
+  id: '',
+  uid: '',
   name: '',
-  date: [],
+  date: '',
   time: '',
   timeStamp: 0,
   allDay: false,

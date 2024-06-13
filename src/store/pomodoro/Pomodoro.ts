@@ -1,7 +1,10 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {secondsToHMS, secondsToMS} from '../../helper/helper';
-import {PomodoroDataInitial, PomodoroDataType} from '../../types/alarm';
-import {BreakData} from '../../utils/repeat';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { secondsToHMS, secondsToMS } from '../../helper/helper';
+import { PomodoroDataInitial, PomodoroDataType } from '../../types/alarm';
+import { BreakData } from '../../utils/repeat';
+import { addPomodoroTaskToFirestore, deletePomodoroTaskFromFirestore, getPomodoroTasksFromFirestore, updatePomodoroTaskInFirestore } from '../../services/firestoreService';
+import { Alert } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 export class PomodoroStore {
   constructor() {
@@ -11,7 +14,7 @@ export class PomodoroStore {
 
   currentBreakTime = BreakData[0];
 
-  newTaskState: PomodoroDataType = PomodoroDataInitial;
+  newTaskState: PomodoroDataType = { ...PomodoroDataInitial };
   taskList: PomodoroDataType[] = [];
 
   currentSecondInterval = null;
@@ -37,7 +40,7 @@ export class PomodoroStore {
 
   calculateTime = () => {
     const date = new Date();
-    this.setNewTaskState('id', this.taskList.length + 1);
+    // this.setNewTaskState('id', this.taskList.length + 1);
     this.setNewTaskState('second', this.newTaskState.minut * 60 * 30);
     let finishTime = secondsToHMS(
       date.getHours() * 60 * 60 +
@@ -59,10 +62,18 @@ export class PomodoroStore {
     this.setNewTaskState('estimatedHours', estimatedHours);
   };
 
-  createTask = (calback: () => void) => {
+
+  createTask = async (calback: () => void) => {
+    const userId = auth().currentUser.uid;
+    this.setNewTaskState('uid', userId);
+    if (!this.newTaskState.name) {
+      Alert.alert('Enter task name');
+      return;
+    }
     this.calculateTime();
     if (this.newTaskState.minut) {
       this.taskList = [...this.taskList, this.newTaskState];
+      await addPomodoroTaskToFirestore(this.newTaskState);
     }
     calback();
   };
@@ -74,26 +85,30 @@ export class PomodoroStore {
     });
   };
 
-  handleDeleteTask = (id: number) => {
+  setData = (data: PomodoroDataType) => {
+    runInAction(() => {
+      this.newTaskState = data;
+      this.isUpdate = false;
+    });
+  };
+
+  handleDeleteTask = (id: number | string) => {
     setTimeout(() => {
-      runInAction(() => {
+      runInAction(async () => {
         this.taskList = this.taskList.filter(item => item.id !== id);
         this.clearState();
+        await deletePomodoroTaskFromFirestore(id);
       });
     }, 200);
   };
 
-  updateTask = (id: number) => {
-    const list = this.taskList.map((item, i) => {
-      return i === id
-        ? {
-            ...item,
-            item: this.newTaskState,
-          }
-        : item;
-    });
+  updateTask = async (id: string | number) => {
+    console.log('id', id);
+    console.log(this.newTaskState)
+    await updatePomodoroTaskInFirestore(id, this.newTaskState);
     runInAction(() => {
-      this.taskList = list;
+      this.taskList = this.taskList.map(item => item.id === id ? this.newTaskState : item);
+      this.isUpdate = false;
     });
   };
 
@@ -194,5 +209,16 @@ export class PomodoroStore {
     }
     this.isStartCurrent = false;
     this.isRunCurrent = false;
+  };
+
+  getAllPomodorosFromFirestore = async () => {
+    try {
+      const pomodoros = await getPomodoroTasksFromFirestore();
+      runInAction(() => {
+        this.taskList = pomodoros;
+      });
+    } catch (error) {
+      console.error('Error', error);
+    }
   };
 }

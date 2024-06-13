@@ -5,6 +5,7 @@ import {ConstructorSvgs} from '../assets/constructor/index';
 
 export type SelectedCountriesType = {
   id: string;
+  uid: string;
   capital: string;
   name: {common: string};
   time: string;
@@ -18,6 +19,7 @@ export type SelectedCountriesType = {
 
 export const SelectedCountriesInitial: SelectedCountriesType = {
   id: '',
+  uid: '',
   capital: '',
   name: {common: ''},
   time: '',

@@ -44,6 +44,8 @@ const CitesScreen = () => {
       : null;
   }, [worldData, selectedCountries]);
 
+    console.log(worldData)
+
   return (
     <LinearContainer
       children={

@@ -16,11 +16,17 @@ import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
 import TodayEvent from './components/TodayEvent';
 
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { authentication } from '../../config/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const HomeScreen = () => {
   const {whichWatch, homeCurrentTime} = useRootStore().homeClockStore;
   const {getPersonalState} = useRootStore().personalAreaStore;
   const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
   const navigation = useNavigation();
+  const {setNotAuthorized} = useRootStore().authStore;
 
   useEffect(() => {
     getPersonalState();
@@ -30,19 +36,27 @@ const HomeScreen = () => {
     filterNearDay();
   }, [allEventsData]);
 
-  // const logOut = async () => {
-  //   await AsyncStorage.removeItem('token');
-  //   setNotAuthorized();
-  //   const user = auth().currentUser;
-  //   if (user) {
-  //     await auth().signOut();
-  //   }
-  //   const googleUser = await GoogleSignin.getCurrentUser();
-  //   if (googleUser) {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //   }
+  // const onChangeWatch = () => {
+  //   setWatch(e => !e);
   // };
+
+  // useEffect(() => {
+  //   console.log('just', auth().currentUser)
+  // })
+
+  const logOut = async () => {
+    await AsyncStorage.removeItem('token');
+    setNotAuthorized();
+    const user = auth().currentUser;
+    if (user) {
+      await auth().signOut();
+    }
+    const googleUser = await GoogleSignin.getCurrentUser();
+    if (googleUser) {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    }
+  }
   const renderWatchs = useCallback(() => {
     switch (whichWatch) {
       case 1:
