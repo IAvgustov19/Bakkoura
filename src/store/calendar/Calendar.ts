@@ -91,7 +91,7 @@ export class CalendarStore {
       runInAction(() => {
         this.nearDay.name = near.name;
         this.nearDay.day = formatDayVaMonth(near.day, near.month, near.year);
-        this.nearDay.date = near.date;
+        this.nearDay.date = near.date[0];
       });
     } else {
     }
