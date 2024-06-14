@@ -2,6 +2,12 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import {getCurrentTime, secondsToHMS} from '../../helper/helper';
 import {SoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
+import Sound from 'react-native-sound';
+import {TimerNotification} from '../../notification/Notification';
+import {Sounds} from '../../assets';
+import BackgroundTimer from 'react-native-background-timer';
+
+Sound.setCategory('Playback');
 
 type firstTimerValueType = {
   hours: number;
@@ -107,6 +113,21 @@ export class TimerStore {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
 
+  playSound = (soundName: string) => {
+    const sound = new Sound(soundName, error => {
+      if (error) {
+        console.log('error', error);
+        return;
+      }
+      sound.play(success => {
+        if (!success) {
+          console.log('no work');
+        }
+        sound.release();
+      });
+    });
+  };
+
   updateCurrentTime = (time: string) => {
     runInAction(() => {
       this.currentTime = time;
@@ -142,7 +163,7 @@ export class TimerStore {
 
   startFirstDecreaseTimer = () => {
     this.updateCurrentTime(this.getFinishedTime(this.firstTimerValue));
-    this.firstDecreaseInterval = setInterval(() => {
+    this.firstDecreaseInterval = BackgroundTimer.setInterval(() => {
       runInAction(() => {
         if (this.firstTimerValue.second > 0) {
           this.firstTimerValue.second--;
@@ -156,9 +177,11 @@ export class TimerStore {
               this.firstTimerValue.minut = 59;
               this.firstTimerValue.second = 59;
             } else {
-              clearInterval(this.firstDecreaseInterval);
+              BackgroundTimer.clearInterval(this.firstDecreaseInterval);
               this.active('finished');
               this.inActive('start');
+              this.playSound(Sounds.ringtone1);
+              TimerNotification('BTS', 'Timer', Sounds.ringtone1);
             }
           }
         }
@@ -169,7 +192,7 @@ export class TimerStore {
 
   increaseFirstTimerValues = () => {
     this.updateCurrentTime(this.getFinishedTime(this.firstTimerValue));
-    this.firstIncreaseInterval = setInterval(() => {
+    this.firstIncreaseInterval = BackgroundTimer.setInterval(() => {
       runInAction(() => {
         if (
           this.firstTimerTime.hours < this.firstTimerValue.hours ||
@@ -187,28 +210,28 @@ export class TimerStore {
               this.firstTimerTime.minut = 0;
               this.firstTimerTime.hours++;
               if (this.firstTimerTime.hours >= 24) {
-                clearInterval(this.firstIncreaseInterval);
+                BackgroundTimer.clearInterval(this.firstIncreaseInterval);
                 this.active('finished');
                 this.inActive('start');
               }
             }
           }
         } else {
-          clearInterval(this.firstIncreaseInterval);
+          BackgroundTimer.clearInterval(this.firstIncreaseInterval);
           this.active('finished');
           this.inActive('start');
         }
         this.setAllTime();
       });
-      clearInterval(this.firstDecreaseInterval);
+      BackgroundTimer.clearInterval(this.firstDecreaseInterval);
     }, 1000);
   };
 
   StartStopFirstTimer = () => {
     if (this.timerStatus.start) {
       this.active('stop');
-      clearInterval(this.firstDecreaseInterval);
-      clearInterval(this.firstIncreaseInterval);
+      BackgroundTimer.clearInterval(this.firstDecreaseInterval);
+      BackgroundTimer.clearInterval(this.firstIncreaseInterval);
       this.firstIsRunning = false;
       this.inActive('start');
     } else if (
@@ -235,7 +258,7 @@ export class TimerStore {
 
   startSecondDecreaseTimer = () => {
     this.updateCurrentTime(this.getFinishedTime(this.secondTimerValue));
-    this.secondDecreaseInterval = setInterval(() => {
+    this.secondDecreaseInterval = BackgroundTimer.setInterval(() => {
       this.calculatePercentage();
       runInAction(() => {
         if (this.secondTimerValue.second > 0) {
@@ -250,7 +273,7 @@ export class TimerStore {
               this.secondTimerValue.minut = 59;
               this.secondTimerValue.second = 59;
             } else {
-              clearInterval(this.secondDecreaseInterval);
+              BackgroundTimer.clearInterval(this.secondDecreaseInterval);
               this.active('finished');
               this.inActive('start');
               this.totalDurationSeconds = 0;
@@ -265,7 +288,7 @@ export class TimerStore {
 
   increaseSecondTimerValues = () => {
     this.updateCurrentTime(this.getFinishedTime(this.secondTimerValue));
-    this.secondIncreaseInterval = setInterval(() => {
+    this.secondIncreaseInterval = BackgroundTimer.setInterval(() => {
       this.calculateIncreasePercentage();
       runInAction(() => {
         if (
@@ -284,20 +307,20 @@ export class TimerStore {
               this.secondTimerTime.minut = 0;
               this.secondTimerTime.hours++;
               if (this.secondTimerTime.hours >= 24) {
-                clearInterval(this.secondIncreaseInterval);
+                BackgroundTimer.clearInterval(this.secondIncreaseInterval);
                 this.active('finished');
                 this.inActive('start');
               }
             }
           }
         } else {
-          clearInterval(this.secondIncreaseInterval);
+          BackgroundTimer.clearInterval(this.secondIncreaseInterval);
           this.active('finished');
           this.inActive('start');
         }
         this.setAllTime();
       });
-      clearInterval(this.secondDecreaseInterval);
+      BackgroundTimer.clearInterval(this.secondDecreaseInterval);
     }, 1000);
   };
 
@@ -307,8 +330,8 @@ export class TimerStore {
     } else {
       if (this.timerStatus.start) {
         this.active('stop');
-        clearInterval(this.secondDecreaseInterval);
-        clearInterval(this.secondIncreaseInterval);
+        BackgroundTimer.clearInterval(this.secondDecreaseInterval);
+        BackgroundTimer.clearInterval(this.secondIncreaseInterval);
         this.secondIsRunning = false;
         this.inActive('start');
       } else if (
@@ -389,10 +412,10 @@ export class TimerStore {
       this.active('back');
       this.active('h24');
       this.inActive('finished');
-      clearInterval(this.firstIncreaseInterval);
-      clearInterval(this.firstDecreaseInterval);
-      clearInterval(this.secondIncreaseInterval);
-      clearInterval(this.secondDecreaseInterval);
+      BackgroundTimer.clearInterval(this.firstIncreaseInterval);
+      BackgroundTimer.clearInterval(this.firstDecreaseInterval);
+      BackgroundTimer.clearInterval(this.secondIncreaseInterval);
+      BackgroundTimer.clearInterval(this.secondDecreaseInterval);
     });
   };
   resetTimerBack = () => {

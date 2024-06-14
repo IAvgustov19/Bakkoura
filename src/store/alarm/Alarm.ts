@@ -1,12 +1,18 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { getCurrentTime30and24 } from '../../helper/helper';
-import { AlarmListsItemInitial, AlarmListsItemType } from '../../types/alarm';
-import { WeekRepeatData } from '../../utils/repeat';
-import { lesSoundsData, SoundsData } from '../../utils/sounds';
-import { RootStore } from '../rootStore';
-import { addAlarmToFirestore, deleteAlarmFromFirestore, getAlarmsFromFirestore, updateAlarmInFirestore } from '../../services/firestoreService';
-
+import {
+  addAlarmToFirestore,
+  deleteAlarmFromFirestore,
+  getAlarmsFromFirestore,
+  updateAlarmInFirestore,
+} from '../../services/firestoreService';
 import auth from '@react-native-firebase/auth';
+import {makeAutoObservable, runInAction} from 'mobx';
+import {getCurrentTime30and24} from '../../helper/helper';
+import {cancelAllAlarms, scheduleAlarm} from '../../notification/Notification';
+// import {scheduleAlarm} from '../../notification/Notification';
+import {AlarmListsItemInitial, AlarmListsItemType} from '../../types/alarm';
+import {WeekRepeatData} from '../../utils/repeat';
+import {lesSoundsData, SoundsData} from '../../utils/sounds';
+import {RootStore} from '../rootStore';
 
 export class AlarmStore {
   private readonly root: RootStore;
@@ -14,7 +20,7 @@ export class AlarmStore {
     makeAutoObservable(this);
     this.root = root;
     this.updateAlarmCurrentTime();
-    this.fetchAlarmsData(); 
+    this.fetchAlarmsData();
   }
 
   alarmsListData: AlarmListsItemType[] = [];
@@ -47,7 +53,7 @@ export class AlarmStore {
     this.setNewAlarmState('uid', userId);
     if (this.alarmItemData.time) {
       this.alarmsListData = [...this.alarmsListData, this.alarmItemData];
-      await addAlarmToFirestore(this.alarmItemData);
+      scheduleAlarm(this.alarmItemData);
       this.clearAlarmItemData();
     }
   };
@@ -62,11 +68,13 @@ export class AlarmStore {
     try {
       await deleteAlarmFromFirestore(id);
       runInAction(() => {
-        this.alarmsListData = this.alarmsListData.filter(item => item.id !== id);
+        this.alarmsListData = this.alarmsListData.filter(
+          item => item.id !== id,
+        );
       });
     } catch (error) {
       console.error('Error:', error);
-    };
+    }
   };
 
   fetchAlarmsData = async () => {
@@ -82,30 +90,32 @@ export class AlarmStore {
 
   handleInactiveAlarm = async (id: number | string) => {
     try {
-      console.log()
+      console.log();
       const alarmToUpdate = this.alarmsListData.find(item => item.id === id);
       console.log(id);
-      console.log(this.alarmsListData)
+      console.log(this.alarmsListData);
       if (!alarmToUpdate) {
         throw new Error('Alarm not found.');
       }
-  
-      const updatedAlarm = { ...alarmToUpdate, isActive: !alarmToUpdate.isActive };
+
+      const updatedAlarm = {
+        ...alarmToUpdate,
+        isActive: !alarmToUpdate.isActive,
+      };
       await updateAlarmInFirestore(id, updatedAlarm); // Update the alarm in Firestore
-  
+
       runInAction(() => {
         this.alarmsListData = this.alarmsListData.map(item =>
-          item.id === id ? updatedAlarm : item
+          item.id === id ? updatedAlarm : item,
         );
       });
     } catch (error) {
       console.error('Error updating alarm in Firestore:', error);
     }
   };
-  
 
   // handleInactiveAlarm = (index: number) => {
-    
+
   //   runInAction(() => {
   //     this.alarmsListData = this.alarmsListData.map((item, i) => {
   //       return i === index
@@ -123,10 +133,10 @@ export class AlarmStore {
     });
   };
 
-  selectedSound = { title: AlarmListsItemInitial.sound };
+  selectedSound = {title: AlarmListsItemInitial.sound};
   soundData = lesSoundsData;
 
-  selectedRepeat = { title: AlarmListsItemInitial.repeat };
+  selectedRepeat = {title: AlarmListsItemInitial.repeat};
   weekRepeatData = WeekRepeatData;
 
   onSelectRepeat = (index: number) => {
