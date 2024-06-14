@@ -115,6 +115,13 @@ export class CalendarStore {
       });
   };
 
+  setAllEvents = () => {
+    runInAction(() => {
+      this.allEventsData = this.cloneAllEventsData;
+    });
+  };
+
+
     addEvents = async (callback?: () => void) => {
         if (!this.isUpdate) {
             const now = Date.now();

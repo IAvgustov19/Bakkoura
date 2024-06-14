@@ -1,12 +1,12 @@
 import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
-import {useNavigation} from '@react-navigation/native';
-import {windowHeight, windowWidth} from '../../../utils/styles';
+import { useNavigation } from '@react-navigation/native';
+import { windowHeight, windowWidth } from '../../../utils/styles';
 import TextView from '../../../components/Text/Text';
 import Input from '../../../components/Input/Input';
-import React, {useState} from 'react';
-import {Images} from '../../../assets';
+import React, { useState } from 'react';
+import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 import { observer } from 'mobx-react-lite';
 import { db } from '../../../config/firebase';
@@ -20,11 +20,13 @@ import useRootStore from '../../../hooks/useRootStore';
 
 const LoginPassword = () => {
     const navigation = useNavigation();
-  const {  setNotAuthorized} = useRootStore().authStore;
+    const { setNotAuthorized } = useRootStore().authStore;
+    const [updateLoading, isUpdateLoading] = useState(false);
 
 
     const [userData, setUserData] = useState({ login: '', newPassword: '' });
     const [showHide, setShowHide] = useState({ showPassword: false, showRepeatPassword: true });
+
 
 
     const updateUser = async () => {
@@ -52,7 +54,7 @@ const LoginPassword = () => {
 
             Alert.alert('User password updated');
             // setNotAuthorized();
-            
+
         } catch (error) {
             Alert.alert('Error updating user: ' + error.message);
             console.log(error.message)
@@ -128,47 +130,47 @@ const LoginPassword = () => {
                     </RN.View>
                 </RN.View>
             }
-          />
-  );
+        />
+    );
 };
 
 export default observer(LoginPassword);
 
 const styles = RN.StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-  },
-  bgContainer: {
-    width: '100%',
-    position: 'relative',
-    alignItems: 'center',
-  },
-  bg: {
-    position: 'absolute',
-  },
-  scrollView: {},
-  content: {
-    gap: 15,
-    paddingTop: 25,
-    height: windowHeight - windowHeight / 6,
-  },
-  addBtn: {
-    position: 'absolute',
-    // alignItems: 'center',
-    bottom: 20,
-    width: '100%',
-  },
-  back: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-  },
-  inputBox: {
-    paddingHorizontal: 5,
-  },
-  deleteBox: {
-    position: 'absolute',
-    right: '7%',
-    top: '30%',
-  },
+    container: {
+        paddingHorizontal: 10,
+    },
+    bgContainer: {
+        width: '100%',
+        position: 'relative',
+        alignItems: 'center',
+    },
+    bg: {
+        position: 'absolute',
+    },
+    scrollView: {},
+    content: {
+        gap: 15,
+        paddingTop: 25,
+        height: windowHeight - windowHeight / 6,
+    },
+    addBtn: {
+        position: 'absolute',
+        // alignItems: 'center',
+        bottom: 20,
+        width: '100%',
+    },
+    back: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 5,
+    },
+    inputBox: {
+        paddingHorizontal: 5,
+    },
+    deleteBox: {
+        position: 'absolute',
+        right: '7%',
+        top: '30%',
+    },
 });

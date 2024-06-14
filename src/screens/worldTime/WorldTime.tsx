@@ -18,7 +18,7 @@ import { windowHeight } from '../../utils/styles';
 
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
-  const { selectedCountries, isLoading, fetchCountriesFromFirestore, getSelectedCountries } = useRootStore().worldTimeStore;
+  const { selectedCountries, isLoading, fetchCountriesFromFirestore, } = useRootStore().worldTimeStore;
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -29,7 +29,7 @@ const WorldTime = () => {
 
 
   const renderClock = useCallback(() => {
-    return getSelectedCountries.map((item, index) => {
+    return selectedCountries.map((item, index) => {
       return (
         <WorldWatch
           key={index}
@@ -45,7 +45,7 @@ const WorldTime = () => {
         />
       );
     });
-  }, [getSelectedCountries, is24h]);
+  }, [selectedCountries, is24h]);
 
   // useEffect(() => {
   //   updateCountriesWeather();
