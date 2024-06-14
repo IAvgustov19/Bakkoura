@@ -72,10 +72,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   primaryText: {
-    position: 'absolute',
     fontSize: 18,
     color: '#000',
+    fontWeight: '500',
     textAlign: 'center',
+    position: 'absolute',
+    fontFamily: 'RedHatDisplay',
   },
   outlineText: {
     position: 'absolute',

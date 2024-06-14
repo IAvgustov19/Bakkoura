@@ -510,7 +510,8 @@ const AppNavigator = () => {
       </>
     );
   };
-
+  console.log(isAuthorized,"isAuthorized");
+  
   return (
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator

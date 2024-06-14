@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Images} from '../../assets';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -10,29 +10,93 @@ import HomeWatch24 from './components/HomeWatch24';
 import HomeWatch30 from './components/HomeWatch30';
 import HomeWatch30h24h from './components/HomeWatch30and24';
 import useRootStore from '../../hooks/useRootStore';
-import {observer} from 'mobx-react-lite';
-import {windowHeight} from '../../utils/styles';
-import {useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
+import { observer } from 'mobx-react-lite';
+import { windowHeight } from '../../utils/styles';
+import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 import TodayEvent from './components/TodayEvent';
 
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { db } from '../../config/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Keychain from 'react-native-keychain';
+import ReactNativeBiometrics from 'react-native-biometrics';
+import { Alert, Modal, View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
+import PasswordPrompt from './secureEntry/SecureAuth';
+
+const rnBiometrics = new ReactNativeBiometrics();
+
 const HomeScreen = () => {
-  const {whichWatch, homeCurrentTime} = useRootStore().homeClockStore;
-  const {getPersonalState} = useRootStore().personalAreaStore;
-  const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
+  const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
+  const { getPersonalState } = useRootStore().personalAreaStore;
+  const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
   const navigation = useNavigation();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isPromptVisible, setPromptVisible] = useState(false);
 
   useEffect(() => {
     getPersonalState();
+    filterNearDay();
+    // checkAuthentication(); 
   }, []);
 
-  useEffect(() => {
-    filterNearDay();
-  }, [allEventsData]);
+  // const checkAuthentication = async () => {
+  //   const authType = await fetchUserAuthType();
+  //   if (authType === 'Password') {
+  //     console.log('haaaa')
+  //     promptForPassword();
+  //   } else if (authType === 'FingerPrint') {
+  //     promptForFingerprint();
+  //   }
+  // };
+
+  // const fetchUserAuthType = async () => {
+  //   const user = auth().currentUser;
+  //   if (user) {
+  //     const userDoc = await db.collection('users').doc(user.uid).get();
+  //     return userDoc.data()?.secureEntry;
+  //   }
+  //   return null;
+  // };
+
+  // const promptForPassword = async () => {
+  //   const storedCredentials = await Keychain.getGenericPassword();
+  //   console.log(storedCredentials)
+  //   if (!storedCredentials) {
+  //     setPromptVisible(true);
+  //   }
+  // };
+
+  // const handleSubmitPassword = (inputPassword) => {
+  //   // Handle password submission here
+  //   console.log('Submitted password:', inputPassword);
+  //   setPromptVisible(false);
+  //   setIsAuthenticated(true);
+  // };
+
+  // const handleCancelPrompt = () => {
+  //   // Handle cancel action
+  //   console.log('Prompt canceled');
+  //   setPromptVisible(false);
+  // };
+
+  // const promptForFingerprint = async () => {
+  //   const { available } = await rnBiometrics.isSensorAvailable();
+  //   if (available) {
+  //     const { success } = await rnBiometrics.simplePrompt({ promptMessage: 'Confirm fingerprint' });
+  //     if (success) {
+  //       setIsAuthenticated(true);
+  //     } else {
+  //       Alert.alert('Authentication Failed', 'Fingerprint authentication failed');
+  //     }
+  //   } else {
+  //     Alert.alert('Fingerprint not supported', 'Your device does not support fingerprint authentication');
+  //   }
+  // };
 
   // const logOut = async () => {
   //   await AsyncStorage.removeItem('token');
-  //   setNotAuthorized();
   //   const user = auth().currentUser;
   //   if (user) {
   //     await auth().signOut();
@@ -43,6 +107,7 @@ const HomeScreen = () => {
   //     await GoogleSignin.signOut();
   //   }
   // };
+
   const renderWatchs = useCallback(() => {
     switch (whichWatch) {
       case 1:
@@ -55,6 +120,22 @@ const HomeScreen = () => {
         return <HomeWatch30h24h />;
     }
   }, [whichWatch]);
+
+  // if (!isAuthenticated) {
+  //   return (
+  //     <LinearContainer>
+  //       <RN.View style={styles.container}>
+  //         <TextView title="Please authenticate to continue" />
+  //       </RN.View>
+  //       <PasswordPrompt // Render PasswordPrompt when authentication is required
+  //         isVisible={isPromptVisible}
+  //         onSubmit={handleSubmitPassword}
+  //         onCancel={handleCancelPrompt}
+  //         hasBiometrics={true} // You can set this based on your logic
+  //       />
+  //     </LinearContainer>
+  //   );
+  // }
 
   return (
     <LinearContainer

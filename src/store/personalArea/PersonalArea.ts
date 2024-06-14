@@ -123,14 +123,14 @@ export class PersonalAreaStore {
           })
           .catch(() => {
             console.log('error user not found');
-            auth().signOut();
-            this.root.authStore.setNotAuthorized();
+            // auth().signOut();
+            // this.root.authStore.setNotAuthorized();
           });
       } else {
-        this.root.authStore.setNotAuthorized();
+        // this.root.authStore.setNotAuthorized();
       }
     } else {
-      this.root.authStore.setNotAuthorized();
+      // this.root.authStore.setNotAuthorized();
     }
   };
 

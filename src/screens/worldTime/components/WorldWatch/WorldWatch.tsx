@@ -1,10 +1,11 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {Images} from '../../../../assets';
-import {COLORS} from '../../../../utils/colors';
+import { Images } from '../../../../assets';
+import { COLORS } from '../../../../utils/colors';
 import RN from '../../../../components/RN';
 import TextView from '../../../../components/Text/Text';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
+import * as Progress from 'react-native-progress';
 
 type Props = {
   hour?: number;
@@ -16,6 +17,7 @@ type Props = {
   weather?: string;
   date?: string;
   is24?: boolean;
+  isLoading?: boolean;
 };
 
 const WorldWatch: React.FC<Props> = ({
@@ -27,6 +29,7 @@ const WorldWatch: React.FC<Props> = ({
   weather,
   is24,
   hour30,
+  isLoading,
   minut30,
 }) => {
   const renderClock = useMemo(() => {
@@ -42,22 +45,23 @@ const WorldWatch: React.FC<Props> = ({
           style={[
             styles.hourLine,
             {
-              transform: `rotate(${
-                is24 ? hour * 30 + minut / 2 : hour30 / 2
-              }deg)`,
+              transform: `rotate(${is24 ? hour * 30 + minut / 2 : hour30 / 2
+                }deg)`,
             },
           ]}></LinearGradient>
         <LinearGradient
           colors={['#E10000', '#792525', '#0152aa']}
           style={[
             styles.minutLine,
-            {transform: `rotate(${is24 ? minut * 6 : minut30 * 7.5}deg)`},
+            { transform: `rotate(${is24 ? minut * 6 : minut30 * 7.5}deg)` },
           ]}></LinearGradient>
       </RN.View>
       <RN.View style={styles.infoBox}>
         <RN.Text style={styles.country}>{country}</RN.Text>
-        <RN.Text style={styles.weather}>{weather}</RN.Text>
-        <RN.Text style={styles.time}>{time}</RN.Text>
+        {!isLoading ?
+          <RN.Text style={styles.weather}>{weather}</RN.Text> :
+          <Progress.Circle size={20} indeterminate={true} color={COLORS.yellow}/>
+        }
       </RN.View>
     </RN.View>
   );

@@ -1,7 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useMemo} from 'react';
-import {Images} from '../../assets';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { Images } from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -26,20 +26,37 @@ const Pomodoro = () => {
     isRunCurrent,
     newTaskState,
     isStartCurrent,
+    clearState,
+    setData,
     isCurrentPomodoro,
     stopCurrentPomodoro,
     taskList,
     getOneTask,
     estimatedPomodoros,
     setCurrentBreakTime,
+    getAllPomodorosFromFirestore,
   } = useRootStore().pomodoroStore;
 
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const onHandleTask = (data: any) => {
+    clearState();
     getOneTask(data);
     navigation.navigate(APP_ROUTES.ADD_TASK_SCREEN as never);
   };
+
+
+  const calculateFinishTime = (hours) => {
+    const now = new Date();
+    now.setHours(now.getHours() + hours);
+    return now.toLocaleTimeString('en-US', { hour12: false });
+  };
+
+  useEffect(() => {
+    getAllPomodorosFromFirestore();
+  }, [isFocused]);
+
 
   const renderTasks = useCallback(() => {
     return taskList.map((item, index) => {
@@ -47,15 +64,14 @@ const Pomodoro = () => {
         <RN.Pressable
           style={styles.taskListHeader}
           key={index}
-          onPress={() => onHandleTask(item)}>
+          onPress={() => {setData(item)}}
+        >
           <RN.View>
             <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
             <TextView text={item.description} />
           </RN.View>
           <RN.View style={styles.spaceBetween}>
-            <RN.Text style={styles.tasksText}>
-              {`${0}`}/{`${newTaskState.estimatedHours}`}
-            </RN.Text>
+            <RN.Text style={styles.tasksText}>{`${0}`}/{`${item.estimatedHours}`}</RN.Text>
             <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.View>
         </RN.Pressable>
@@ -87,9 +103,9 @@ const Pomodoro = () => {
             title="Pomodoro"
             rightItem={<Images.Svg.timerLogo />}
           />
-          <RN.ScrollView
+          {/* <RN.ScrollView
             showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}>
+            showsVerticalScrollIndicator={false}>  */}
             <RN.View style={styles.content}>
               <RN.View style={styles.pomodoro}>
                 <RN.View style={styles.breakTimeBox}>
@@ -112,7 +128,7 @@ const Pomodoro = () => {
                 </RN.View>
                 <RN.View style={styles.pomodoroBox}>
                   <RN.View style={styles.breakTime}>
-                    <TextView text={'#Design'} />
+                    <TextView text={newTaskState.name} />
                     <RN.Text style={styles.breakTimeText}>Long Break</RN.Text>
                   </RN.View>
                   {pomodoroLottie}
@@ -125,7 +141,7 @@ const Pomodoro = () => {
                         Pomos: {`${estimatedPomodoros} / ${newTaskState.minut}`}
                       </RN.Text>
                       <RN.Text style={styles.pomodoroInfoName}>
-                        Finish At: {newTaskState.finishTime}
+                        Finish At: {calculateFinishTime(newTaskState.estimatedHours)}
                       </RN.Text>
                       <RN.Text
                         style={
@@ -182,7 +198,7 @@ const Pomodoro = () => {
                 </RN.View>
               )}
             </RN.View>
-          </RN.ScrollView>
+          {/* </RN.ScrollView> */}
         </RN.View>
       }
     />
@@ -213,6 +229,7 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   pomodoroBox: {
+    bottom: 40,
     alignItems: 'center',
     height: windowHeight / 2.2,
   },
@@ -242,14 +259,16 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 10,
-    top: -40,
+    bottom: 90,
   },
   btnBox: {
     alignItems: 'center',
     paddingHorizontal: 10,
-    top: -40,
+    bottom: 90,
   },
-  taskListBox: {},
+  taskListBox: {
+    bottom: 60,
+  },
   taskListHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -263,7 +282,7 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   renderTask: {
-    height: 55,
+    height: 105,
   },
   addTaskBtn: {
     marginTop: 20,

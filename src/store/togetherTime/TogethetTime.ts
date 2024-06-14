@@ -1,9 +1,12 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {formatDateTime, formattedTime} from '../../helper/helper';
-import {TogetherDataInitial, TogetherDataType} from '../../types/alarm';
-import {ControlData, RepeatData, StatusData} from '../../utils/repeat';
-import {RootStore} from '../rootStore';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { formatDateTime, formattedTime } from '../../helper/helper';
+import { TogetherDataInitial, TogetherDataType } from '../../types/alarm';
+import { ControlData, RepeatData, StatusData } from '../../utils/repeat';
+import { RootStore } from '../rootStore';
 import format from 'format-number-with-string';
+import { addEtapToFirestore, getEtapsFromFirestore } from '../../services/firestoreService';
+
+import auth from '@react-native-firebase/auth';
 
 export class TogetherTimeStore {
   private readonly root: RootStore;
@@ -23,10 +26,13 @@ export class TogetherTimeStore {
     this.addEtapState[key] = value as never;
   };
 
-  createNewEtap = (calback: () => void) => {
+  createNewEtap = async (calback: () => void) => {
+    const userId = auth().currentUser.uid;
     if (this.addEtapState.fromDate != '0' && this.addEtapState.type) {
       this.setAddEtapState('id', this.etapList.length + 1);
       this.setAddEtapState('timeStamp', Date.now());
+      this.setAddEtapState('uid', userId);
+      await addEtapToFirestore(this.addEtapState);
       runInAction(() => {
         this.etapList = [...this.etapList, this.addEtapState];
       });
@@ -54,7 +60,7 @@ export class TogetherTimeStore {
     this.clearState();
   };
 
-  SelectOneEtap = (id: number) => {
+  SelectOneEtap = (id: number | string) => {
     this.selcetedEtap = this.etapList.find(item => item.id === id);
     if (this.selectedInterval) {
       clearInterval(this.selectedInterval);
@@ -74,6 +80,7 @@ export class TogetherTimeStore {
             this.selcetedEtap.time = '00:00:00';
             this.selcetedEtap.days = days as never;
           } else {
+            console.log('blabla')
             this.selcetedEtap.days = days as never;
             this.selcetedEtap.time = `${format(
               today.getHours(),
@@ -125,7 +132,7 @@ export class TogetherTimeStore {
     this.etapList = newData as never;
   };
 
-  selectedStatus = {title: 'Dating'};
+  selectedStatus = { title: 'Dating' };
   statusData = StatusData;
 
   onSelectStatus = (index: number) => {
@@ -146,7 +153,7 @@ export class TogetherTimeStore {
     this.statusData = newData;
   };
 
-  selectedControl = {title: 'Stopped'};
+  selectedControl = { title: 'Stopped' };
   controlData = ControlData;
 
   onSelectControl = (index: number) => {
@@ -165,5 +172,31 @@ export class TogetherTimeStore {
       };
     });
     this.controlData = newData;
+  };
+
+  getAllEtapsFromFirestore = async () => {
+    try {
+      const etaps = await getEtapsFromFirestore();
+      runInAction(() => {
+        this.etapList = etaps;
+      });
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
+  calculateDaysDifference = (fromDate) => {
+    if (!fromDate || fromDate === '0') return '0';
+    const [month, day, year] = fromDate.split('/').map(Number);
+    const parsedDate = new Date(year, month - 1, day);
+
+    if (isNaN(parsedDate.getTime())) {
+      console.error('Invalid date format:', fromDate);
+      return 'Invalid Date';
+    }
+    const now = new Date();
+    const differenceInTime = parsedDate.getTime() - now.getTime();
+    const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+
+    return differenceInDays.toString();
   };
 }

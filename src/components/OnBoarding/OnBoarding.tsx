@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,9 +14,31 @@ import LinearGradient from 'react-native-linear-gradient';
 import {APP_ROUTES} from '../../navigation/routes';
 import GiveImage from '../GiveImage/GiveImage';
 import {Images} from '../../assets';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import useRootStore from '../../hooks/useRootStore';
+
 
 const OnBoarding = () => {
   const navigation = useNavigation();
+  const { setAuthorized } = useRootStore().authStore;
+
+
+  useEffect(() => {
+    const checkUserLoggedIn = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        // console.log(token)
+        // if (token) {
+        //   setAuthorized();
+        // }
+      } catch (error) {
+        console.error('Failed to check login status:', error);
+      }
+    };
+    checkUserLoggedIn();
+  }, []);
+
+
   return (
     <Swiper
       style={styles.wrapper}

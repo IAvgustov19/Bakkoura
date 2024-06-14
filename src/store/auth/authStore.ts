@@ -22,6 +22,27 @@ export class AuthStore {
   currentUser: UserType = null as never;
   currentUserEmail: string = null as never;
 
+  // initAuthListener() {
+  //   auth().onAuthStateChanged(user => {
+  //     console.log(user,8888);
+      
+  //     if (user) {
+  //       this.setCurrentUser(user);
+  //       this.setAuthorized();
+  //     } else {
+  //       this.setNotAuthorized();
+  //     }
+  //   });
+  // }
+
+  setCurrentUser(user) {
+    this.currentUser = user;
+  }
+
+  clearCurrentUser() {
+    this.currentUser = null;
+  }
+
   setAuthorized = () => {
     runInAction(() => {
       this.isAuthorized = true;
@@ -33,7 +54,6 @@ export class AuthStore {
       this.isAuthorized = false;
     });
   };
-
   setNewUser = (key: keyof UserType, value: UserType) => {
     this.newUser[key] = value as never;
     this.loginUser[key] = value as never;
@@ -75,3 +95,5 @@ export class AuthStore {
     });
   };
 }
+
+
