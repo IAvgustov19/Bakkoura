@@ -11,9 +11,7 @@ import {COLORS} from '../../../utils/colors';
 import RN from '../../../components/RN';
 import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../hooks/useRootStore';
-import firestore from '@react-native-firebase/firestore';
 import {ActivityIndicator} from 'react-native';
-import storage from '@react-native-firebase/storage';
 import StorageApi, {
   pickImageFromDevice,
 } from '../../../store/personalArea/avatar';

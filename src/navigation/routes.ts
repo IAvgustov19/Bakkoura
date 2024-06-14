@@ -34,6 +34,7 @@ export enum APP_ROUTES {
   IDEA_THANKS = 'IdeaThanks',
   WATCH_THANKS = 'WatchThanks',
   BTS_NAVIGATION = 'BtsNavigation',
+  WALLPAPERS = 'Wallpapers',
 
   //bottomsheet screens
   HOME_START = 'HomeScreen',

@@ -49,7 +49,7 @@
 	<key>NSCameraUsageDescription</key>
   	<string>This app requires access to the camera.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Your message to the user why you need access to the photo library.</string>
+	<string>We need your permission to save photos to your photo library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>RedHatDisplay-Black.ttf</string>
