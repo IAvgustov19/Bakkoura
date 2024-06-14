@@ -21,7 +21,7 @@ const CustomDropdownInput = ({ options, onSelect, black }) => {
     <RN.View style={styles.container}>
       <RN.TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
         <Input
-          black={true}
+          black={black}
           title="Country"
           editable={false}
           // onPressIn={() => { }}

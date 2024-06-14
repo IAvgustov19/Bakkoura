@@ -2,7 +2,6 @@ import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect, useRef} from 'react';
 import {Images} from '../../assets';
-import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import Input from '../../components/Input/Input';
 import Line from '../../components/Line/Line';
@@ -10,6 +9,7 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
+import Cancel from '../../components/Cancel/Cancel';
 
 const CitesScreen = () => {
   const navigation = useNavigation();

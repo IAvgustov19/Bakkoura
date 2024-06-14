@@ -1,9 +1,10 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {Alert} from 'react-native';
-import {getWeather, showWeather} from 'react-native-weather-api';
-import {SelectedCountriesType} from '../../types/worldTime';
-import {RootStore} from '../rootStore';
-import auth from  '@react-native-firebase/auth';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { getWeather, showWeather } from 'react-native-weather-api';
+import { SelectedCountriesType } from '../../types/worldTime';
+import { RootStore } from '../rootStore';
+import { addCountryToFirestore, getAllCountriesFromFirestore } from '../../services/firestoreService';
+
+import auth from '@react-native-firebase/auth';
 
 export class WorldTimeStore {
   private readonly root: RootStore;
@@ -11,25 +12,23 @@ export class WorldTimeStore {
     makeAutoObservable(this);
     this.root = root;
     this.getAllCountries();
+    this.fetchCountriesFromFirestore();
     setInterval(this.updateCountriesData, 60000);
   }
 
-  worldTimeApiUrl = 'https://restcountries.com/v3.1/all';
-  worldWeatherApiKey = 'b4ef214cd22d5ff1c1660876d1746e9a';
-  worldWeatherApiBase = 'https://api.openweathermap.org/data/2.5/';
+  worlTimeApiUrl = 'https://restcountries.com/v3.1/all';
+  worldWeatherApiKey = '7b4f7ae10a69e7aafe6e2a44156625df';
 
   worldData = [];
   cloneWorldData = [];
 
   hour = 0;
   minut = 0;
-  isLoading = true;
+  isLoading = false;
 
-  selectedCountries = new Map<string, SelectedCountriesType>();
+  temp = '0';
 
-  get getSelectedCountries() {
-    return Array.from(this.selectedCountries.values());
-  }
+  selectedCountries: SelectedCountriesType[] = [];
 
   getLocalTime = timezones => {
     let now = new Date();
@@ -99,16 +98,14 @@ export class WorldTimeStore {
   };
 
   getAllCountries = async () => {
-    const response = await fetch(this.worldTimeApiUrl);
+    const response = await fetch(this.worlTimeApiUrl);
     const countries = await response.json();
-    runInAction(() => {
-      this.worldData = this.sortCountriesByCapital(countries)
-        .filter(e => e.capital !== undefined)
-        .filter(e => e.timezones[0] !== 'UTC');
-      this.cloneWorldData = this.sortCountriesByCapital(countries)
-        .filter(e => e.capital !== undefined)
-        .filter(e => e.timezones[0] !== 'UTC');
-    });
+    this.worldData = this.sortCountriesByCapital(countries).filter(
+      e => e.capital !== undefined,
+    );
+    this.cloneWorldData = this.sortCountriesByCapital(countries).filter(
+      e => e.capital !== undefined,
+    );
   };
 
   filterWorldData = name => {
@@ -135,11 +132,11 @@ export class WorldTimeStore {
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.worldWeatherApiKey}`
       )
-        .then(response => response.json()) // Convert response to JSON
+        .then(response => response.json())
         .then(data => {
           runInAction(() => {
             this.isLoading = false;
-          });          const temp = `${Math.round(data.main.temp - 273)}`;
+          }); const temp = `${Math.round(data.main.temp - 273)}`;
           resolve(temp);
         })
         .catch(error => {
@@ -154,31 +151,32 @@ export class WorldTimeStore {
   };
 
   setCountry = async (data: SelectedCountriesType, callback: () => void) => {
-
-    const userId = auth().currentUser.uid;
-    const temp = await this.getWeather(data.capital);
-    this.isLoading = false
+    this.getWeather(data.capital) as never;
     const time = this.getLocalTime(data.timezones);
     const date = this.getLocalDate(data.timezones);
     const minutes = this.hour * 60 + this.minut;
+    const userId = auth().currentUser.uid;
     const newData = {
-      id: data.capital + time.toString(),
       uid: userId,
+      id: this.selectedCountries.length + 1,
       capital: data.capital,
-      name: data.name,
+      name: data.name?.common?.toString(),
       time: time,
-      date: `Today ${temp}C  ${date}`,
+      date: `Today ${this.temp}C  ${date}`,
       hour: this.hour,
       minut: this.minut,
-      hour30: (minutes + minutes / 4) / 4,
-      minut30: time.slice(3, 5),
       timezones: data.timezones,
     };
-    runInAction(() => {
-      this.selectedCountries.set(newData.id, newData);
-    });
-    this.filterWorldData('');
+    this.selectedCountries = [...this.selectedCountries, newData] as never;
     callback();
+
+    try {
+      // Add country to Firebase Firestore
+      await addCountryToFirestore(newData);
+      console.log('Country added to Firebase!');
+    } catch (error) {
+      console.error('Error adding country to Firebase:', error);
+    }
   };
 
   updateCountriesData = async () => {
@@ -191,8 +189,38 @@ export class WorldTimeStore {
           (country.hour30 =
             (this.hour * 60 + this.minut + (this.hour * 60 + this.minut / 4)) /
             4),
-          (country.minut30 = newLocalTime.slice(3, 5));
+          (country.minut30 = Number(newLocalTime.slice(3, 5)));
       });
     });
+  };
+
+  fetchCountriesFromFirestore = async () => {
+    try {
+      const countries = await getAllCountriesFromFirestore();
+      const updatedCountries = await Promise.all(countries.map(async (country) => {
+        const temp = await this.getWeather(country.capital);
+        const time = this.getLocalTime(country.timezones);
+        const date = this.getLocalDate(country.timezones);
+        return {
+          ...country,
+          time,
+          date: `Today ${temp}°C ${date}`,
+          hour: this.hour,
+          minut: this.minut,
+          hour30: this.hour + this.hour / 4,
+          minut30: this.minut + this.minut / 4,
+        };
+      }));
+
+      runInAction(() => {
+        this.selectedCountries = updatedCountries;
+        this.isLoading = false;
+      });
+    } catch (error) {
+      console.error('Error fetching countries from Firebase:', error);
+      runInAction(() => {
+        this.isLoading = false;
+      });
+    }
   };
 }

@@ -13,7 +13,7 @@ export type SelectedCountriesType = {
   hour: number;
   minut: number;
   hour30: number;
-  minut30: string;
+  minut30: string | number;
   timezones: string;
 };
 

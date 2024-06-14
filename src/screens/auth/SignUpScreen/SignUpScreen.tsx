@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-import { StyleSheet, View, TouchableOpacity, Alert, Platform, TextInput } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert, Platform, TextInput, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import reactNativeBcrypt from 'react-native-bcrypt';
-import {Images} from '../../../assets';
+import { Images } from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
@@ -12,7 +12,7 @@ import LinearContainer from '../../../components/LinearContainer/LinearContainer
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
-import {APP_ROUTES} from '../../../navigation/routes';
+import { APP_ROUTES } from '../../../navigation/routes';
 import authh from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
@@ -23,6 +23,9 @@ import { windowHeight } from '../../../utils/styles';
 import GiveImage from '../../../components/GiveImage/GiveImage';
 import LoadingScreen from '../Loading/LoadingScreen';
 import { observer } from 'mobx-react-lite';
+import SignUpForm from './components/SignUpForm';
+import { COLORS } from '../../../utils/colors';
+import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
 type ISelect = { label: string; value: string; };
 
@@ -41,6 +44,9 @@ const SignUpScreen = () => {
     password: null,
   });
 
+  const { newUser, clearNewUserState, clearLoginUseState, setNewUser } =
+    useRootStore().authStore;
+
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState([]);
   const options = [
@@ -53,136 +59,157 @@ const SignUpScreen = () => {
     setCountry({ value: option.value, label: option.value })
   }
 
-  const focusInput = (refName: string) => {
-    inputRefs.current[refName]?.focus();
-  }
 
 
   useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('users')
-      .onSnapshot((snapshot) => {
-        const usersData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(usersData);
-      });
+    // const unsubscribe = firestore()
+    //   .collection('users')
+    //   .onSnapshot((snapshot) => {
+    //     const usersData = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setUsers(usersData);
+    //   });
 
-    return () => unsubscribe();
+    // return () => unsubscribe();
   }, []);
 
 
   const signUp = async () => {
-    if (name === '' || username === '' || email === '' || password === '' || country.value === '') {
-      Alert.alert('Please fill out all fields');
-      return;
-    }
-    setLoading(true);
-    try {
-      const userCredential = await authh().createUserWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-
-      await user.updateProfile({
-        displayName: name,
-      });
-  
+    if (newUser.email && newUser.password) {
+      setLoading(true);
       try {
-        await authh().currentUser.sendEmailVerification();
-      } catch (err) {
-        Alert.alert(err.message);
+        const userCredential = await authh().createUserWithEmailAndPassword(
+          newUser.email,
+          newUser.password,
+        );
+        const user = userCredential.user;
+
+        await user.updateProfile({
+          displayName: newUser.name,
+        });
+
+        await firestore().collection('users').doc(user.uid).set({
+          name: newUser.name,
+          username: newUser.username,
+          email: newUser.email,
+          password: newUser.password,
+          country: newUser.country,
+          language: newUser.language,
+          secureEntry: newUser.secureEntry,
+          inActiveMenus: newUser.inActiveMenus,
+          startScreen: newUser.initialRouteName,
+          id: user.uid,
+        });
+
+        await AsyncStorage.setItem('userData', JSON.stringify(user));
+
+        try {
+          await authh().currentUser.sendEmailVerification();
+        } catch (err) {
+          Alert.alert('Error', 'Failed to send verification email.');
+          setLoading(false);
+          return;
+        }
+
+        if (!user.emailVerified) {
+          Alert.alert('Verify your email', 'Press OK to go to the sign-in page', [
+            { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
+          ]);
+        } else {
+          navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never);
+        }
+
+        clearNewUserState();
+      } catch (error) {
+        switch (error.code) {
+          case 'auth/weak-password':
+            Alert.alert("Password is too weak. Please enter a stronger password.");
+            break;
+          case 'auth/invalid-email':
+            Alert.alert("Email address is badly formatted. Please enter a valid email.");
+            break;
+          case 'auth/email-already-in-use':
+            Alert.alert("The email address is already in use by another account.");
+            break;
+          default:
+            Alert.alert("Sign-up error:", error.message);
+        }
+        clearNewUserState();
+        clearLoginUseState();
+      } finally {
+        setLoading(false);
       }
-  
-      await firestore().collection('users').add({
-        name,
-        username,
-        email,
-        uid: authh().currentUser.uid,
-        password: reactNativeBcrypt.hashSync(password, 10),
-        country: country.value,
-      });
-  
-      await AsyncStorage.setItem('userData', JSON.stringify(user));
-  
-      if (!user.emailVerified) {
-        Alert.alert('Verify your email', 'Press OK to go to the sign-in page', [
-          { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
-        ]);
-      } else {
-        navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never);
-      }
-    } catch (error) {
-      switch (error.code) {
-        case 'auth/weak-password':
-          Alert.alert("Password is too weak. Please enter a stronger password.");
-          break;
-        case 'auth/invalid-email':
-          Alert.alert("Email address is badly formatted. Please enter a valid email.");
-          break;
-        case 'auth/email-already-in-use':
-          Alert.alert("The email address is already in use by another account.");
-          break;
-        default:
-          Alert.alert("Sign-up error:", error.message);
-      }
+    } else {
+      Alert.alert('Please fill out all fields');
     }
-    setLoading(false);
   };
+
+
+
+  const scrollViewRef = useRef(null);
+
+  const Scroll = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        y: windowHeight - windowHeight / 10,
+        animated: true,
+      });
+    }
+  };
+
 
   return (
     <>
       <LoadingScreen loading={loading} setLoading={setLoading} />
       <LinearContainer
-        children={<KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        children={
+        <KeyboardAvoidingView
           style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
         >
-          <RN.ScrollView contentContainerStyle={styles.scrollView}>
-            <HeaderContent
-              leftItem={<Images.Svg.btsRightLinear />}
-              rightItem={<RN.TouchableOpacity
-                onPress={() => navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)}>
-                <Images.Svg.en width={50} />
-              </RN.TouchableOpacity>} />
-            <TextView title="Sign up" textAlign="center" />
-            <RN.View style={styles.formBox}>
-              <TextView style={styles.label} text="Name" />
-              <Input placeholder="" value={name} onChangeText={setName}
-                inputRef={(ref) => (inputRefs.current.name = ref)}
-                onPressIn={() => focusInput('name')} />
-              <TextView style={styles.label} text="Username" />
-              <Input placeholder="" value={username} onChangeText={setUsername}
-                inputRef={(ref) => (inputRefs.current.username = ref)}
-                onPressIn={() => focusInput('username')} />
-              <TextView style={styles.label} text="Email" />
-              <Input placeholder="" value={email} onChangeText={setEmail}
-                inputRef={(ref) => (inputRefs.current.email = ref)}
-                onPressIn={() => focusInput('email')} />
-              <TextView style={styles.label} text="Password" />
-              <Input placeholder="" value={password} onChangeText={setPassword} secureTextEntry
-                inputRef={(ref) => (inputRefs.current.password = ref)}
-                onPressIn={() => focusInput('password')} />
-              <CustomDropdown
-                black={false}
-                options={options}
-                onSelect={onSelect} />
-              {/* <TextView style={styles.label} text="Country" />
-        <Input placeholder="" value={country} onChangeText={setCountry} /> */}
+          <HeaderContent
+            leftItem={<Images.Svg.btsRightLinear />}
+            rightItem={
+              <LanguageBtn
+                value={newUser?.language}
+                onPress={() =>
+                  navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+                }
+              />
+            }
+          />
+          <RN.ScrollView
+            ref={scrollViewRef}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
+            <RN.View style={styles.content}>
+              <TextView title="Sign up" textAlign="center" />
+              <SignUpForm bottomInputPress={Scroll} options={options} onSelect={() => onSelect} />
+              <RN.View style={styles.signUpBtn}>
+                <ButtonComp
+                  onPress={signUp}
+                  title={'Sign Up'}
+                  icon={
+                    loading ? (
+                      <ActivityIndicator
+                        color={COLORS.black}
+                        style={{ marginTop: 3 }}
+                      />
+                    ) : null
+                  }
+                />
+              </RN.View>
             </RN.View>
-            <RN.View style={styles.signUpBtn}>
-              <ButtonComp
-                onPress={signUp}
-                title="Sign Up"
-                icon={<GiveImage source={Images.Img.eye} />} />
-            </RN.View>
-            <View style={styles.needAcc}>
-              <TextView text="Already have an Account?" />
-              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)}>
-                <TextView style={styles.signUpText} text="Sign In" />
-              </RN.TouchableOpacity>
-            </View>
           </RN.ScrollView>
+          <View style={styles.needAcc}>
+            <TextView text="Already have an Account?" />
+            <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)}>
+              <TextView style={styles.signUpText} text="Sign In" />
+            </RN.TouchableOpacity>
+          </View>
         </KeyboardAvoidingView>} />
     </>
   );
@@ -198,7 +225,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    height: '100%',
+    height: windowHeight,
     paddingHorizontal: 5,
   },
   formBox: {
@@ -215,7 +242,7 @@ const styles = StyleSheet.create({
     paddingBottom: 110,
   },
   signUpBtn: {
-    marginTop: 10,
+    marginTop: 30,
     paddingHorizontal: 15,
   },
   needAcc: {
