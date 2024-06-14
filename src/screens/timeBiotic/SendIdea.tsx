@@ -43,17 +43,6 @@ const SendIdea = () => {
     }
   };
 
-  const options = [
-    {label: 'OAE', value: 'OAE'},
-    {label: 'USA', value: 'USA'},
-    {label: 'UK', value: 'UK'},
-  ];
-
-  const onSelect = (option: any) => {
-    console.log(option);
-    setOrderState('country', option.value);
-  };
-
   const onSendEmail = () => {
     onSubmitEmail(orderState, 'Send Idea', () =>
       navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
