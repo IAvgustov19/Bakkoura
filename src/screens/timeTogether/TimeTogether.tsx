@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Images} from '../../assets';
@@ -17,13 +17,18 @@ import {windowHeight, windowWidth} from '../../utils/styles';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [back, setBack] = useState(true);
-  const {etapList, selcetedEtap, SelectOneEtap} =
+  const {etapList, selcetedEtap, SelectOneEtap, getAllEtapsFromFirestore, calculateDaysDifference} =
     useRootStore().togetherTimeStore;
 
   const onLongHandle = () => {
     navigation.navigate(APP_ROUTES.DELETE_ETAP as never);
   };
+  
+  useEffect(() => {
+    getAllEtapsFromFirestore();
+  }, [isFocused])
 
   const renderEtapList = useCallback(() => {
     return etapList.map((item, index) => {
@@ -36,7 +41,7 @@ const TimeTogether = () => {
             style={styles.etapList}>
             <RN.Text style={styles.etapType}>{item.type}</RN.Text>
             <TextView text={item.fromDate} />
-            <RN.Text style={styles.etapDays}>{`${item.days}days`}</RN.Text>
+            <RN.Text style={styles.etapDays}>{`${calculateDaysDifference(item.fromDate)} days`}</RN.Text>
           </RN.Pressable>
           <Line />
         </RN.View>
@@ -80,7 +85,7 @@ const TimeTogether = () => {
                   {selcetedEtap.time != '0' ? selcetedEtap.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                  {selcetedEtap.days} days
+                {calculateDaysDifference(selcetedEtap.fromDate)} days
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
                   {selcetedEtap.fromDate != '0'

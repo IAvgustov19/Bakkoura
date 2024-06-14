@@ -1,6 +1,10 @@
-import {makeAutoObservable, runInAction} from 'mobx';
-import {formattedTime, hoursSecondsToS} from '../../helper/helper';
-import {TodoTimerDataInitial, TodoTimerDataType} from '../../types/alarm';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { formattedTime, hoursSecondsToS } from '../../helper/helper';
+import { TodoTimerDataInitial, TodoTimerDataType } from '../../types/alarm';
+import { addTaskToFirestore, fetchTasksFromFirestore, updateTaskInFirestore } from '../../services/firestoreService';
+
+import auth from '@react-native-firebase/auth';
+
 
 export class TodoTimerStore {
   constructor() {
@@ -37,15 +41,18 @@ export class TodoTimerStore {
       );
     });
   };
-
-  createNewTask = (callback: () => void) => {
+  
+  createNewTask = async (callback) => {
     if (!this.isHas) {
       const date = Date.now();
-      this.setNewTaskState('id', this.taskState.name + Date.now());
+      const userId = auth().currentUser.uid;
+      this.setNewTaskState('uid', userId);
+      this.setNewTaskState('date', date);
       this.setNewTaskState('date', date);
       if (this.taskState.name) {
-        this.tasksList = [...this.tasksList, this.taskState];
-        this.tasksListClone = this.tasksList;
+        await addTaskToFirestore(this.taskState);
+        this.tasksList.push(this.taskState);
+        this.tasksListClone = [...this.tasksList];
         callback();
         this.clearState();
       }
@@ -110,6 +117,7 @@ export class TodoTimerStore {
           item.secondInterval = setInterval(() => {
             runInAction(() => {
               item.timestamp += 1;
+              updateTaskInFirestore(item.id, { timestamp: item.timestamp, startTime: item.startTime, endTime: item.endTime });
             });
           }, 1000);
         }
@@ -126,22 +134,22 @@ export class TodoTimerStore {
     });
   }
 
-  updateTodoTimer = (id: number) => {
-    const list = this.tasksList.map((item, i) => {
-      return i === id
-        ? {
-            ...item,
-            item: this.taskState,
-          }
-        : item;
-    });
-    runInAction(() => {
-      this.tasksList = list;
-      this.tasksListClone = list;
-    });
+
+  updateTodoTimer = async (id: string) => {
+    const updatedTask = this.taskState;
+    try {
+      await updateTaskInFirestore(id, updatedTask);
+      const list = this.tasksList.map((item, i) => (item.id === id ? updatedTask : item));
+      runInAction(() => {
+        this.tasksList = list;
+        this.tasksListClone = list;
+      });
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
-  handleDeleteTask = (id: number) => {
+  handleDeleteTask = (id: string) => {
     setTimeout(() => {
       runInAction(() => {
         this.tasksList = this.tasksList.filter(item => item.id !== id);
@@ -154,11 +162,11 @@ export class TodoTimerStore {
     const list = this.tasksList.map((item, i) => {
       return i === index
         ? {
-            ...item,
-            play: !item.play,
-            startTime: item.startTime > 0 ? item.startTime : date,
-            endTime: date,
-          }
+          ...item,
+          play: !item.play,
+          startTime: item.startTime > 0 ? item.startTime : date,
+          endTime: item.startTime > 0 ? item.startTime + item.timestamp * 1000: date,
+        }
         : item;
     });
     runInAction(() => {
@@ -166,6 +174,14 @@ export class TodoTimerStore {
       this.tasksListClone = list;
     });
     this.increaseSeconds();
+  };
+
+  fetchTasks = async () => {
+    const tasks = await fetchTasksFromFirestore();
+    runInAction(() => {
+      this.tasksList = tasks;
+      this.tasksListClone = [...tasks];
+    });
   };
 
   clearState = () => {

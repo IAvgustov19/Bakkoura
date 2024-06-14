@@ -11,6 +11,7 @@ import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
 
+
 type Props = {
   title?: string;
   placeholder: string;
@@ -33,6 +34,7 @@ type Props = {
   maxLenght?: number;
   keyBoardType?: KeyboardTypeOptions;
   err?: string;
+  inputRef?: React.Ref<TextInput>; 
 };
 
 const Input: React.FC<Props> = ({
@@ -57,51 +59,53 @@ const Input: React.FC<Props> = ({
   maxLenght,
   keyBoardType,
   err,
+  inputRef
 }) => {
   return (
     <RN.View style={styles.container}>
       {title ? <TextView style={styles.title} text={title} /> : null}
-      <RN.View
-        style={[
-          styles.inputBox,
-          black && styles.borderedInput,
-          {
-            paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
-            backgroundColor: backColor ? backColor : COLORS.black,
-          },
-        ]}>
-        <TextInput
-          editable={editable}
-          secureTextEntry={secureTextEntry}
-          multiline={multiLine}
-          numberOfLines={numberOfLines}
-          placeholderTextColor={COLORS.grey}
-          textAlignVertical={textAlignVertical}
-          keyboardType={keyBoardType}
-          maxLength={maxLenght}
+      <RN.TouchableWithoutFeedback onPress={onPressIn} onPressIn={() => inputRef?.current?.focus()}>
+        <RN.View
           style={[
-            styles.input,
+            styles.inputBox,
+            black && styles.borderedInput,
             {
-              height: height,
-              paddingTop: paddingTop,
-              width: width ? width : '80%',
+              paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
+              backgroundColor: backColor ? backColor : COLORS.black,
             },
-          ]}
-          onChangeText={onChangeText}
-          onPressIn={onPressIn}
-          value={value}
-          autoCapitalize="none"
-          placeholder={placeholder}></TextInput>
-        {icon ? (
-          <RN.TouchableOpacity
-            hitSlop={HITSLOP}
-            onPress={iconPress}
-            style={styles.iconBox}>
-            {icon}
-          </RN.TouchableOpacity>
-        ) : null}
-      </RN.View>
-      {err ? <RN.Text style={styles.err}>{err}</RN.Text> : null}
+          ]}>
+          <TextInput
+            ref={inputRef}
+            editable={editable}
+            secureTextEntry={secureTextEntry}
+            multiline={multiLine}
+            numberOfLines={numberOfLines}
+            placeholderTextColor={COLORS.grey}
+            textAlignVertical={textAlignVertical}
+            maxLength={maxLenght}
+            style={[
+              styles.input,
+              {
+                height: height,
+                paddingTop: paddingTop,
+                width: width ? width : '80%',
+              },
+            ]}
+            onChangeText={onChangeText}
+            onPressIn={onPressIn}
+            value={value}
+            autoCapitalize="none"
+            placeholder={placeholder}></TextInput>
+          {icon ? (
+            <RN.TouchableOpacity
+              hitSlop={HITSLOP}
+              onPress={iconPress}
+              style={styles.iconBox}>
+              {icon}
+            </RN.TouchableOpacity>
+          ) : null}
+        </RN.View>
+      </RN.TouchableWithoutFeedback>
     </RN.View>
   );
 };
@@ -125,6 +129,10 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: verticalScale(15),
     color: '#fff',
+    fontFamily: 'RedHatDisplay-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 20,
     width: '80%',
   },
   iconBox: {},

@@ -1,11 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image, Alert, ActivityIndicator, NativeModules, Linking } from 'react-native';
 import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import TextView from '../../../components/Text/Text';
@@ -15,85 +9,115 @@ import {APP_ROUTES} from '../../../navigation/routes';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import RN from '../../../components/RN';
-import {windowHeight} from '../../../utils/styles';
+import { windowHeight, windowWidth } from '../../../utils/styles';
 import useRootStore from '../../../hooks/useRootStore';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { signInWithCredential, AuthCredential, getAdditionalUserInfo, signInWithRedirect } from '@firebase/auth';
+import * as firebase from '@firebase/app';
+import { getAuth, signInWithPopup, FacebookAuthProvider, TwitterAuthProvider } from '@firebase/auth';
 
 import authh from '@react-native-firebase/auth';
+
+import auth from '@react-native-firebase/auth';
 
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {observer} from 'mobx-react-lite';
 import {COLORS} from '../../../utils/colors';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
+import GiveImage from '../../../components/GiveImage/GiveImage';
+import LoadingScreen from '../Loading/LoadingScreen';
 
 const SignInScreen = () => {
-  const [loading, isLoading] = useState(false);
-  const {setAuthorized, setLoginUser, loginUser, newUser} =
+  const [loading, setLoading] = useState(false);
+  const {setAuthorized, setLoginUser, loginUser, newUser, isAuthorized} =
     useRootStore().authStore;
   const {getPersonalState} = useRootStore().personalAreaStore;
 
   const navigation = useNavigation();
   const [remember, setRemember] = useState(false);
+  const [email, setEmail] = useState('bakkouratimesystem@gmail.com');
+  const [password, setPassword] = useState('nifS4TT9Jvb9tH9');
+  // old pass nifS4TT9Jvb9tH9
+  // new pass nifS4TT9Jvb9tH1
 
   const RememberMe = () => {
     setRemember(e => !e);
   };
+  // passs nifS4TT9Jvb9tH9
+
+
+  useEffect(() => {
+    // const checkUserLoggedIn = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const token = await AsyncStorage.getItem('token');
+    //     if (token) {
+    //       setAuthorized();
+    //     }
+    //   } catch (error) {
+    //     console.error('Failed to check login status:', error);
+    //   }
+    //   setLoading(false);
+    // };
+
+    // checkUserLoggedIn();
+  }, []);
+
 
   GoogleSignin.configure({
     webClientId:
       '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
   });
 
-  useEffect(() => {
-    const auth = authh();
-    // console.log(
-    //   auth.signInWithEmailAndPassword(loginUser.email, loginUser.password),
-    // );
-  }, []);
+
+  // useEffect(() => {
+  //   const auth = authh();
+  //   console.log(auth.signInWithEmailAndPassword(email, password))
+  // }, [])
+
+
 
   const signIn = async (email: string, password: string) => {
-    // if (email && password) {
-    isLoading(true);
+    setLoading(true);
     try {
       const userCredential = await authh().signInWithEmailAndPassword(
         email,
         password,
       );
+      console.log(userCredential,userCredential,222);
+      
       const user = userCredential.user;
       const token = await user.getIdToken();
-      await AsyncStorage.setItem('userState', JSON.stringify(user));
-      await AsyncStorage.setItem('userUid', JSON.stringify(user.uid));
-      // const userSnapshot = await firestore().collection('users').where('email', '==', email).get();
+      console.log(token,"token");
+      
+      await AsyncStorage.setItem('token', token);
+      const userSnapshot = await firestore().collection('users').where('email', '==', email).get();
 
-      // if (userSnapshot.empty) {
-      //   Alert.alert('Error', 'Email not found');
-      //   return;
-      // }
-      // console.log('user.emailVerifieduser.emailVerifieduser.emailVerified', user.emailVerified)
-      // if (user.emailVerified) {
-      // setAuthorized();
-      getPersonalState();
-      // } else {
-      // Alert.alert('email doesnt exist')
-      // }
-      // console.log(token, 77);
-      // console.log('user', user);
-      // You can use the token or user object as needed
+      await new Promise(resolve => authh().onAuthStateChanged(resolve));
+      console.log(user.emailVerified,55);
+      
+      console.log('userSnapshot', userSnapshot)
+      if (user.emailVerified) {
+        console.log(777);
+      console.log('isAuthorizedisAuthorizedisAuthorized', isAuthorized);
+
+        
+        setAuthorized() 
+      console.log('isAuthorizedisAuthorizedisAuthorized', isAuthorized);
+
+      } else {
+        Alert.alert('email doesnt exist')
+      }
     } catch (error) {
-      Alert.alert('Error signing in:', error.message);
-      // Handle the error here, such as displaying a message to the user
-    } finally {
-      isLoading(false);
+      Alert.alert('Wrong email or password')
     }
-    // }
-  };
+    setLoading(false);
 
+  }
   const signInWithGoogle = async () => {
+    setLoading(true);
     try {
       const has = await GoogleSignin.hasPlayServices();
 
@@ -111,6 +135,7 @@ const SignInScreen = () => {
       setAuthorized();
       return user;
     } catch (error) {
+      console.log(error, 11111111)
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -121,31 +146,27 @@ const SignInScreen = () => {
         //
       }
     }
+    setLoading(false);
   };
 
   return (
-    <LinearContainer
-      children={
-        <RN.ScrollView>
+    <>
+      <LoadingScreen loading={loading} setLoading={setLoading} />
+      <LinearContainer
+        children={<RN.ScrollView>
           <View style={styles.container}>
             {/* <View style={styles.light}>
-              <Image source={BG.light} />
-            </View> */}
+          <Image source={BG.light} />
+        </View> */}
             <HeaderContent
-              leftItem={
-                <View style={styles.logo}>
-                  <Images.Svg.btsRightLinear width={80} />
-                </View>
-              }
-              rightItem={
-                <LanguageBtn
-                  value={newUser.language}
-                  onPress={() =>
-                    navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-                  }
-                />
-              }
-            />
+              leftItem={<View style={styles.logo}>
+                <Images.Svg.btsRightLinear width={80} />
+              </View>}
+              rightItem={<TouchableOpacity
+                style={styles.localize}
+                onPress={() => navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)}>
+                <Images.Svg.en width={50} />
+              </TouchableOpacity>} />
             <View style={styles.titleBox}>
               <TextView title="Hello Friend!" />
               <TextView text="Start tracking and improving Your Live!" />
@@ -153,43 +174,30 @@ const SignInScreen = () => {
             <View style={styles.formBox}>
               <TextView style={styles.label} text="Login" />
               <Input
-                placeholder="Email"
-                onChangeText={text => setLoginUser('email', text)}
-                value={loginUser ? loginUser?.email : ''}
-              />
+                placeholder="JB"
+                onChangeText={(text) => setEmail(text)}
+                value={email} />
               <TextView style={styles.label} text="Password" />
-              <Input
-                placeholder="77777"
-                onChangeText={text => setLoginUser('password', text)}
-                value={loginUser ? loginUser?.password : ''}
-                secureTextEntry
-              />
+              <Input placeholder="77777"
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                secureTextEntry />
             </View>
             <View style={styles.forgotBox}>
-              <TouchableOpacity style={styles.rememberMe} onPress={RememberMe}>
-                <RadioBtn active={remember} onPress={RememberMe} />
-                <TextView text="Remember me" />
-              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.rememberMe} onPress={RememberMe}>
+          <RadioBtn active={remember} onPress={RememberMe} />
+          <TextView text="Remember me" />
+        </TouchableOpacity> */}
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)
-                }>
+                onPress={() => navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)}>
                 <TextView style={styles.forgot} text="Forgot Your Password?" />
               </TouchableOpacity>
             </View>
             <View style={styles.signUp}>
               <ButtonComp
-                title="Sign in"
-                icon={
-                  loading ? (
-                    <ActivityIndicator
-                      color={COLORS.black}
-                      style={{marginTop: 3}}
-                    />
-                  ) : null
-                }
-                onPress={() => signIn(loginUser.email, loginUser.password)}
-              />
+                title="Sign In"
+                icon={<GiveImage source={Images.Img.eye} />}
+                onPress={() => signIn(email, password)} />
             </View>
             <View style={styles.orWithSocial}>
               <TextView text="Or Sign Up using" />
@@ -197,7 +205,7 @@ const SignInScreen = () => {
                 <TouchableOpacity onPress={() => {}}>
                   <Images.Svg.f />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => { }}>
                   <Images.Svg.x />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => signInWithGoogle()}>
@@ -206,18 +214,15 @@ const SignInScreen = () => {
               </View>
             </View>
             <View style={styles.needAcc}>
-              <TextView text="Need un Account?" />
+              <TextView text="Need an Account?" />
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)
-                }>
+                onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)}>
                 <TextView style={styles.signUpText} text="Sign Up" />
               </TouchableOpacity>
             </View>
           </View>
-        </RN.ScrollView>
-      }
-    />
+        </RN.ScrollView>} />
+    </>
   );
 };
 export default observer(SignInScreen);
@@ -257,7 +262,7 @@ const styles = StyleSheet.create({
   },
   forgotBox: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginTop: 20,
     paddingHorizontal: 10,
     alignItems: 'center',

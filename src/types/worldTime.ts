@@ -5,6 +5,7 @@ import {ConstructorSvgs} from '../assets/constructor/index';
 
 export type SelectedCountriesType = {
   id: string;
+  uid: string;
   capital: string;
   name: {common: string};
   time: string;
@@ -12,12 +13,13 @@ export type SelectedCountriesType = {
   hour: number;
   minut: number;
   hour30: number;
-  minut30: string;
+  minut30: string | number;
   timezones: string;
 };
 
 export const SelectedCountriesInitial: SelectedCountriesType = {
   id: '',
+  uid: '',
   capital: '',
   name: {common: ''},
   time: '',

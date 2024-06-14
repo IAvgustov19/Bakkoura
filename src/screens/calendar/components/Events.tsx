@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {color} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect, useState} from 'react';
@@ -26,36 +26,47 @@ const Events: React.FC<Props> = ({
   isShowDate = true,
   leftLine,
 }) => {
-  const {allEventsData, secondsToHMS, getOneEvent, handleDeleteEvent} =
+  const {allEventsData, secondsToHMS, getOneEvent, handleDeleteEvent, calculateRemainingTime, fetchAllEvents} =
     useRootStore().calendarStore;
 
   const navigation = useNavigation();
-
+  const isFocused = useIsFocused();
+  
   const [isFinished, setIsFinished] = useState<boolean[]>([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const updatedFinishedStatus = allEventsData.map(event => {
-        const remainingTime =
-          event.stayedDay * 24 * 60 + event.stayedHour * 60 + event.stayedMinut;
-        return remainingTime == 0;
-      });
-      setIsFinished(updatedFinishedStatus);
-    }, 1000);
+    fetchAllEvents();
+  }, [isFocused])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+        const updatedFinishedStatus = allEventsData.map(event => {
+            const remainingTime =
+                event.stayedDay * 24 * 60 + 
+                event.stayedHour * 60 + 
+                event.stayedMinut; 
+
+            return remainingTime <= 0; 
+        });
+        setIsFinished(updatedFinishedStatus);
+    }, 1000); 
     return () => clearInterval(interval);
-  }, [allEventsData]);
+}, [allEventsData]); 
 
   const onGetHandle = (item: NewEventStateType) => {
     navigation.navigate(APP_ROUTES.NEW_EVENT as never);
-    getOneEvent(item);
+    getOneEvent(item.id);
   };
+
+  useEffect(() => {
+    calculateRemainingTime(); 
+  }, [isFocused]); 
 
   const renderLeftActions = (id: number) => {
     return (
       <RectButton
         style={styles.rightAction}
-        onPress={() => handleDeleteEvent(id)}>
+        onPress={() => handleDeleteEvent(id.toString())}>
         <RN.View>
           <Images.Svg.whiteDelete />
         </RN.View>

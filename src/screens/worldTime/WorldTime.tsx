@@ -1,29 +1,35 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import RN from '../../components/RN';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TextView from '../../components/Text/Text';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets';
+import { Images } from '../../assets';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import WorldWatch from './components/WorldWatch/WorldWatch';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import {useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
-import {windowHeight} from '../../utils/styles';
+import { windowHeight } from '../../utils/styles';
 
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
-  const {selectedCountries, getSelectedCountries} =
-    useRootStore().worldTimeStore;
+  const { selectedCountries, isLoading, fetchCountriesFromFirestore, } = useRootStore().worldTimeStore;
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+
+  useEffect(() => {
+    fetchCountriesFromFirestore();
+  }, [isFocused])
+
 
   const renderClock = useCallback(() => {
-    return getSelectedCountries.map((item, index) => {
+    return selectedCountries.map((item, index) => {
       return (
         <WorldWatch
           key={index}
@@ -32,13 +38,14 @@ const WorldTime = () => {
           weather={item.date}
           hour={item.hour}
           minut={item.minut}
+          isLoading={isLoading}
           hour30={item.hour30}
           minut30={Number(item.minut30)}
           is24={is24h}
         />
       );
     });
-  }, [getSelectedCountries, is24h]);
+  }, [selectedCountries, is24h]);
 
   // useEffect(() => {
   //   updateCountriesWeather();

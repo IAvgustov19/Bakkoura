@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Switch} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
 import React, {useEffect, useRef, useState} from 'react';

@@ -1,5 +1,6 @@
 export type AlarmListsItemType = {
-  id: number;
+  uid: string;
+  id: number | string;
   name: string;
   description: string;
   time: string;
@@ -12,7 +13,8 @@ export type AlarmListsItemType = {
 };
 
 export const AlarmListsItemInitial: AlarmListsItemType = {
-  id: 0,
+  uid: '',
+  id: '',
   name: 'Alarm',
   time: '',
   hours: '',
@@ -25,7 +27,8 @@ export const AlarmListsItemInitial: AlarmListsItemType = {
 };
 
 export type ProjectTimerDataType = {
-  id: number;
+  uid: string;
+  id: number | string;
   title: string;
   description: string;
   date: string;
@@ -44,6 +47,7 @@ export type ProjectTimerDataType = {
 
 export const ProjectTimerDataInitial: ProjectTimerDataType = {
   id: 0,
+  uid: '',
   title: '',
   description: '',
   date: '',
@@ -61,7 +65,8 @@ export const ProjectTimerDataInitial: ProjectTimerDataType = {
 };
 
 export type PomodoroDataType = {
-  id: number;
+  uid: string,
+  id: number | string;
   name: string;
   description: string;
   finishTime: string;
@@ -77,6 +82,7 @@ export type PomodoroDataType = {
 };
 
 export const PomodoroDataInitial: PomodoroDataType = {
+  uid: '',
   id: 0,
   name: '',
   description: '',
@@ -92,7 +98,8 @@ export const PomodoroDataInitial: PomodoroDataType = {
 };
 
 export type TogetherDataType = {
-  id: number;
+  uid: string;
+  id: string;
   name: string;
   type: string;
   fromDate: string;
@@ -105,7 +112,8 @@ export type TogetherDataType = {
 };
 
 export const TogetherDataInitial = {
-  id: 0,
+  uid: '',
+  id: '',
   name: '',
   type: 'Dating',
   fromDate: '0',
@@ -118,7 +126,8 @@ export const TogetherDataInitial = {
 };
 
 export type SelectListDataType = {
-  id: number;
+  uid: string;
+  id: string;
   name: string;
   color: string;
   fromHour: number;
@@ -130,7 +139,8 @@ export type SelectListDataType = {
 };
 
 export const SelectListDataInitial: SelectListDataType = {
-  id: 0,
+  uid: '',
+  id: '',
   name: '',
   color: '',
   fromHour: 0,
@@ -160,7 +170,8 @@ export const MetronomDataInitial: MetronomDataType = {
 };
 
 export type TodoTimerDataType = {
-  id: number;
+  uid: string,
+  id: string;
   key: string;
   name: string;
   goal: string;
@@ -177,7 +188,8 @@ export type TodoTimerDataType = {
   date: number;
 };
 export const TodoTimerDataInitial: TodoTimerDataType = {
-  id: 0,
+  uid: '',
+  id: '',
   key: '',
   name: '',
   goal: '',

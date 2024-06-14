@@ -1,52 +1,96 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
-import {StyleSheet, View, Alert, ActivityIndicator} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
+import { StyleSheet, View, TouchableOpacity, Alert, Platform, TextInput, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import reactNativeBcrypt from 'react-native-bcrypt';
-import {Images} from '../../../assets';
+import { Images } from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
+import { KeyboardAvoidingView } from '../../../components/KeyboardAvoidingView';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
-import {APP_ROUTES} from '../../../navigation/routes';
+import { APP_ROUTES } from '../../../navigation/routes';
 import authh from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
-import {windowHeight} from '../../../utils/styles';
-import {COLORS} from '../../../utils/colors';
-import {observer} from 'mobx-react-lite';
-import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
+import CustomDropdown from '../../timeBiotic/components/CustomSelect';
+
+import { windowHeight } from '../../../utils/styles';
+import GiveImage from '../../../components/GiveImage/GiveImage';
+import LoadingScreen from '../Loading/LoadingScreen';
+import { observer } from 'mobx-react-lite';
 import SignUpForm from './components/SignUpForm';
+import { COLORS } from '../../../utils/colors';
+import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
+
+type ISelect = { label: string; value: string; };
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-  const {newUser, clearNewUserState, clearLoginUseState} =
+  const { setAuthorized } = useRootStore().authStore;
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [country, setCountry] = useState<ISelect>({ label: '', value: '' });
+  const inputRefs = useRef<{ [key: string]: TextInput }>({
+    name: null,
+    username: null,
+    email: null,
+    password: null,
+  });
+
+  const { newUser, clearNewUserState, clearLoginUseState, setNewUser } =
     useRootStore().authStore;
-  const [loading, isLoading] = useState(false);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [users, setUsers] = useState([]);
+  const options = [
+    { label: 'OAE', value: 'OAE' },
+    { label: 'USA', value: 'USA' },
+    { label: 'UK', value: 'UK' },
+  ];
+
+  const onSelect = (option: ISelect) => {
+    setCountry({ value: option.value, label: option.value })
+  }
+
+
+
+  useEffect(() => {
+    // const unsubscribe = firestore()
+    //   .collection('users')
+    //   .onSnapshot((snapshot) => {
+    //     const usersData = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setUsers(usersData);
+    //   });
+
+    // return () => unsubscribe();
+  }, []);
+
 
   const signUp = async () => {
     if (newUser.email && newUser.password) {
-      isLoading(true);
+      setLoading(true);
       try {
         const userCredential = await authh().createUserWithEmailAndPassword(
           newUser.email,
           newUser.password,
         );
         const user = userCredential.user;
+
         await user.updateProfile({
           displayName: newUser.name,
         });
-        try {
-          // await authh().currentUser.sendEmailVerification();
-        } catch (err) {
-          Alert.alert(err);
-          isLoading(false);
-        }
-        await firestore().collection('users').doc(userCredential.user.uid).set({
+
+        await firestore().collection('users').doc(user.uid).set({
           name: newUser.name,
           username: newUser.username,
           email: newUser.email,
@@ -56,43 +100,76 @@ const SignUpScreen = () => {
           secureEntry: newUser.secureEntry,
           inActiveMenus: newUser.inActiveMenus,
           startScreen: newUser.initialRouteName,
-          id: userCredential.user.uid,
+          id: user.uid,
         });
+
         await AsyncStorage.setItem('userData', JSON.stringify(user));
-        isLoading(false);
-        // if (!user.emailVerified) {
-        //   Alert.alert('verify your email', 'press ok to get sign in page', [
-        //     { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
-        //   ])
-        // }
-        navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never);
+
+        try {
+          await authh().currentUser.sendEmailVerification();
+        } catch (err) {
+          Alert.alert('Error', 'Failed to send verification email.');
+          setLoading(false);
+          return;
+        }
+
+        if (!user.emailVerified) {
+          Alert.alert('Verify your email', 'Press OK to go to the sign-in page', [
+            { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
+          ]);
+        } else {
+          navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never);
+        }
+
         clearNewUserState();
       } catch (error) {
-        Alert.alert(error.message);
-        isLoading(false);
+        switch (error.code) {
+          case 'auth/weak-password':
+            Alert.alert("Password is too weak. Please enter a stronger password.");
+            break;
+          case 'auth/invalid-email':
+            Alert.alert("Email address is badly formatted. Please enter a valid email.");
+            break;
+          case 'auth/email-already-in-use':
+            Alert.alert("The email address is already in use by another account.");
+            break;
+          default:
+            Alert.alert("Sign-up error:", error.message);
+        }
         clearNewUserState();
         clearLoginUseState();
       } finally {
-        isLoading(false);
+        setLoading(false);
       }
+    } else {
+      Alert.alert('Please fill out all fields');
     }
   };
+
+
 
   const scrollViewRef = useRef(null);
 
   const Scroll = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({
-        y: windowHeight - windowHeight / 4,
+        y: windowHeight - windowHeight / 10,
         animated: true,
       });
     }
   };
 
+
   return (
-    <LinearContainer
-      children={
-        <RN.View style={styles.container}>
+    <>
+      <LoadingScreen loading={loading} setLoading={setLoading} />
+      <LinearContainer
+        children={
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={
@@ -110,7 +187,7 @@ const SignUpScreen = () => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <TextView title="Sign up" textAlign="center" />
-              <SignUpForm bottomInputPress={Scroll} />
+              <SignUpForm bottomInputPress={Scroll} options={options} onSelect={() => onSelect} />
               <RN.View style={styles.signUpBtn}>
                 <ButtonComp
                   onPress={signUp}
@@ -119,7 +196,7 @@ const SignUpScreen = () => {
                     loading ? (
                       <ActivityIndicator
                         color={COLORS.black}
-                        style={{marginTop: 3}}
+                        style={{ marginTop: 3 }}
                       />
                     ) : null
                   }
@@ -129,32 +206,43 @@ const SignUpScreen = () => {
           </RN.ScrollView>
           <View style={styles.needAcc}>
             <TextView text="Already have an Account?" />
-            <RN.TouchableOpacity
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
-              }>
+            <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)}>
               <TextView style={styles.signUpText} text="Sign In" />
             </RN.TouchableOpacity>
           </View>
-        </RN.View>
-      }
-    />
+        </KeyboardAvoidingView>} />
+    </>
   );
 };
 
 export default observer(SignUpScreen);
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+    paddingVertical: 20,
+    justifyContent: 'center',
+  },
   container: {
+    flex: 1,
+    height: windowHeight,
     paddingHorizontal: 5,
-    height: WINDOW_HEIGHT - 50,
+  },
+  formBox: {
+    alignItems: 'flex-start',
+    gap: 8,
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  label: {
+    marginLeft: 10,
   },
   content: {
     height: windowHeight,
     paddingBottom: 110,
   },
   signUpBtn: {
-    marginTop: 10,
+    marginTop: 30,
     paddingHorizontal: 15,
   },
   needAcc: {
@@ -163,7 +251,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 10,
+    bottom: 0,
     gap: 10,
     left: 15,
   },
