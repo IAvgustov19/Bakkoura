@@ -33,13 +33,11 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
       if (!date.value) {
         return null;
       }
-      return selectedDays?.map(item => {
-        return item.map((e, index) =>
-          e.includes(date.value) ? (
-            <RN.View key={index} style={styles.activeDot}></RN.View>
-          ) : null,
-        );
-      });
+      return selectedDays.map((e, index) =>
+        e.includes(date.value) ? (
+          <RN.View key={index} style={styles.activeDot}></RN.View>
+        ) : null,
+      );
     },
     [selectedDays],
   );

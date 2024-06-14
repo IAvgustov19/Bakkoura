@@ -1,4 +1,6 @@
+import {WallpapersImages} from '../assets';
 import {APP_ROUTES} from '../navigation/routes';
+import {ImageSourcePropType} from 'react-native';
 
 export type TimeBioticListType = {
   id: number;
@@ -41,7 +43,7 @@ export const TimeBioticList: TimeBioticListType[] = [
     id: 5,
     title: 'Wallpapers',
     info: 'An updated list of wallpapers of brand watches',
-    navigate: APP_ROUTES.CONTACT_THANKS,
+    navigate: APP_ROUTES.WALLPAPERS,
     isbtn: false,
   },
   {

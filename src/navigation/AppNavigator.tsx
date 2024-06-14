@@ -64,6 +64,7 @@ import FrancVila from '../screens/timeClinic/FrancVila';
 import OrderThanks from '../screens/market/components/thanks/Thanks';
 import firestore from '@react-native-firebase/firestore';
 import WatchConstructor from '../screens/watchConstructor/WatchConstructor';
+import Wallpapers from '../screens/timeBiotic/Wallpapers';
 
 const Stack = createStackNavigator();
 
@@ -503,6 +504,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.WATCH_CONSTRUCTOR}
           component={WatchConstructor}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.WALLPAPERS}
+          component={Wallpapers}
           options={{
             headerTitleAlign: 'center',
           }}

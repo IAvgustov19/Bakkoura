@@ -1,3 +1,5 @@
+import {ImageSourcePropType} from 'react-native';
+
 export type OrderStateType = {
   type: string;
   name: string;
@@ -18,4 +20,14 @@ export const OrderStateInitial: OrderStateType = {
   file: '',
   isAccept: false,
   country: '',
+};
+
+export type WallpapersType = {
+  id: string;
+  imgUrl: string;
+};
+
+export const WallpapersInitial = {
+  id: '',
+  imgUrl: '',
 };

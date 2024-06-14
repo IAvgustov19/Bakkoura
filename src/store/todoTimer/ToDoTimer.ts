@@ -70,10 +70,7 @@ export class TodoTimerStore {
     let filterDate;
 
     // Filter vaqtini aniqlash
-    if (this.filterType === timeFilter) {
-      this.tasksListClone = this.tasksList;
-      this.filterType = '';
-    } else {
+    if (timeFilter) {
       switch (timeFilter) {
         case 'lastMonth':
           filterDate = new Date(

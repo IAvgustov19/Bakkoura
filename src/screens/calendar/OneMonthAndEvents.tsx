@@ -16,8 +16,7 @@ import Events from './components/Events';
 import OneMonth from './components/OneMonth';
 
 const OneMonthAndEvents = () => {
-  const {oneMonth, cloneAllEventsData, currentDate} =
-    useRootStore().calendarStore;
+  const {oneMonth, cloneAllEventsData} = useRootStore().calendarStore;
   const navigation = useNavigation();
 
   const currentDay = new Date();
