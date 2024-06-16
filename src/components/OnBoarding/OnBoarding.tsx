@@ -23,21 +23,7 @@ const OnBoarding = () => {
   const { setAuthorized } = useRootStore().authStore;
 
 
-  useEffect(() => {
-    const checkUserLoggedIn = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        // console.log(token)
-        // if (token) {
-        //   setAuthorized();
-        // }
-      } catch (error) {
-        console.error('Failed to check login status:', error);
-      }
-    };
-    checkUserLoggedIn();
-  }, []);
-
+  
 
   return (
     <Swiper
