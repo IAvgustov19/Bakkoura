@@ -70,6 +70,8 @@ const BottomTabNavigation: FC = () => {
           setAuthType('Password');
         } else if (authType === 'FingerPrint') {
           setAuthType('FingerPrint');
+        }else {
+          setIsAuthenticated(true);
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
