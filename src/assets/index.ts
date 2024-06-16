@@ -327,4 +327,10 @@ export const Sounds = {
   sound3: require('./sounds/sound3.wav'),
   sound4: require('./sounds/sound4.wav'),
   sound5: require('./sounds/spund5.wav'),
+  ringtone1: require('./sounds/ringtone1.mp3'),
+  ringtone2: require('./sounds/ringtone2.mp3'),
+  ringtone3: require('./sounds/ringtone3.mp3'),
+  ringtone4: require('./sounds/ringtone4.mp3'),
+  ringtone5: require('./sounds/ringtone5.mp3'),
+  ringtone6: require('./sounds/ringtone6.mp3'),
 };

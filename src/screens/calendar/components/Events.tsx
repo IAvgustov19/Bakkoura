@@ -1,10 +1,9 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {color} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Images} from '../../../assets';
-import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ListEmptyComp from '../../../components/ListEmptyComp/ListEmtyComp';
 import ListFooter from '../../../components/ListFooter/ListFooter';
 import RN from '../../../components/RN';
@@ -26,32 +25,37 @@ const Events: React.FC<Props> = ({
   isShowDate = true,
   leftLine,
 }) => {
-  const {allEventsData, secondsToHMS, getOneEvent, handleDeleteEvent, calculateRemainingTime, fetchAllEvents} =
-    useRootStore().calendarStore;
+  const {
+    allEventsData,
+    secondsToHMS,
+    getOneEvent,
+    handleDeleteEvent,
+    calculateRemainingTime,
+    fetchAllEvents,
+  } = useRootStore().calendarStore;
+  // console.log('allEventsData', allEventsData);
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  
+
   const [isFinished, setIsFinished] = useState<boolean[]>([]);
 
   useEffect(() => {
     fetchAllEvents();
-  }, [isFocused])
+  }, [isFocused]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-        const updatedFinishedStatus = allEventsData.map(event => {
-            const remainingTime =
-                event.stayedDay * 24 * 60 + 
-                event.stayedHour * 60 + 
-                event.stayedMinut; 
+      const updatedFinishedStatus = allEventsData.map(event => {
+        const remainingTime =
+          event.stayedDay * 24 * 60 + event.stayedHour * 60 + event.stayedMinut;
 
-            return remainingTime <= 0; 
-        });
-        setIsFinished(updatedFinishedStatus);
-    }, 1000); 
+        return remainingTime <= 0;
+      });
+      setIsFinished(updatedFinishedStatus);
+    }, 1000);
     return () => clearInterval(interval);
-}, [allEventsData]); 
+  }, [allEventsData]);
 
   const onGetHandle = (item: NewEventStateType) => {
     navigation.navigate(APP_ROUTES.NEW_EVENT as never);
@@ -59,8 +63,8 @@ const Events: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    calculateRemainingTime(); 
-  }, [isFocused]); 
+    calculateRemainingTime();
+  }, [isFocused]);
 
   const renderLeftActions = (id: number) => {
     return (

@@ -62,3 +62,8 @@ export type CalendarDataType = {
   year: string;
   months: [];
 }[];
+
+export type RepeatDataType = {
+  id: number;
+  title: string;
+};
