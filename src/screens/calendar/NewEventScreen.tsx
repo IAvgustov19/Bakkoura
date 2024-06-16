@@ -23,12 +23,8 @@ import {HITSLOP, windowHeight} from '../../utils/styles';
 
 const NewEventScreen = () => {
   const navigation = useNavigation();
-  const [repeat, setRepeat] = useState(false);
   const [sound, setSound] = useState(false);
   const {
-    onRepeatItemPress,
-    repeatData,
-    selectedRepeat,
     setNewEventState,
     newEventData,
     addEvents,
@@ -149,8 +145,10 @@ const NewEventScreen = () => {
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
                     title="Repeat"
-                    value={selectedRepeat.title}
-                    onPress={() => setRepeat(true)}
+                    value={newEventData.repeat}
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.REPEAT as never)
+                    }
                   />
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
@@ -207,20 +205,6 @@ const NewEventScreen = () => {
               </RN.View>
             </RN.View>
           </RN.ScrollView>
-          <SoundsContent
-            headerTitle="Repeat"
-            data={repeatData}
-            onItemPress={onRepeatItemPress as never}
-            headerLeftItem={
-              <RN.TouchableOpacity
-                hitSlop={HITSLOP}
-                onPress={() => setRepeat(e => !e)}>
-                <Images.Svg.arrowLeft />
-              </RN.TouchableOpacity>
-            }
-            onClose={() => setRepeat(e => !e)}
-            modalVisible={repeat}
-          />
           <SoundsContent
             headerTitle="Sounds"
             data={soundsData}

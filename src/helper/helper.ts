@@ -652,3 +652,9 @@ export const createRecurringEvents = (
 
   return events;
 };
+
+export function getQueryParamValue(url, paramName) {
+  const regex = new RegExp('[?&]' + paramName + '=([^&#]*)', 'i');
+  const match = url.match(regex);
+  return match ? decodeURIComponent(match[1]) : null;
+}
