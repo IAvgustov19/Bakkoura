@@ -21,92 +21,40 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { db } from '../../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
-import ReactNativeBiometrics from 'react-native-biometrics';
+import ReactNativeBiometrics, { BiometryType, BiometryTypes } from 'react-native-biometrics'
 import { Alert, Modal, View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
-import PasswordPrompt from './secureEntry/SecureAuth';
+import PasswordPrompt from './secureEntry/passwordAuth';
+
+import FingerprintAuth from './secureEntry/fingerprintAuth';
 
 const rnBiometrics = new ReactNativeBiometrics();
 
 const HomeScreen = () => {
+
   const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
   const { getPersonalState } = useRootStore().personalAreaStore;
   const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
   const navigation = useNavigation();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isPromptVisible, setPromptVisible] = useState(false);
+
 
   useEffect(() => {
     getPersonalState();
     filterNearDay();
-    // checkAuthentication(); 
+
   }, []);
 
-  // const checkAuthentication = async () => {
-  //   const authType = await fetchUserAuthType();
-  //   if (authType === 'Password') {
-  //     console.log('haaaa')
-  //     promptForPassword();
-  //   } else if (authType === 'FingerPrint') {
-  //     promptForFingerprint();
-  //   }
-  // };
-
-  // const fetchUserAuthType = async () => {
-  //   const user = auth().currentUser;
-  //   if (user) {
-  //     const userDoc = await db.collection('users').doc(user.uid).get();
-  //     return userDoc.data()?.secureEntry;
-  //   }
-  //   return null;
-  // };
-
-  // const promptForPassword = async () => {
-  //   const storedCredentials = await Keychain.getGenericPassword();
-  //   console.log(storedCredentials)
-  //   if (!storedCredentials) {
-  //     setPromptVisible(true);
-  //   }
-  // };
-
-  // const handleSubmitPassword = (inputPassword) => {
-  //   // Handle password submission here
-  //   console.log('Submitted password:', inputPassword);
-  //   setPromptVisible(false);
-  //   setIsAuthenticated(true);
-  // };
-
-  // const handleCancelPrompt = () => {
-  //   // Handle cancel action
-  //   console.log('Prompt canceled');
-  //   setPromptVisible(false);
-  // };
-
-  // const promptForFingerprint = async () => {
-  //   const { available } = await rnBiometrics.isSensorAvailable();
-  //   if (available) {
-  //     const { success } = await rnBiometrics.simplePrompt({ promptMessage: 'Confirm fingerprint' });
-  //     if (success) {
-  //       setIsAuthenticated(true);
-  //     } else {
-  //       Alert.alert('Authentication Failed', 'Fingerprint authentication failed');
-  //     }
-  //   } else {
-  //     Alert.alert('Fingerprint not supported', 'Your device does not support fingerprint authentication');
-  //   }
-  // };
-
-  // const logOut = async () => {
-  //   await AsyncStorage.removeItem('token');
-  //   const user = auth().currentUser;
-  //   if (user) {
-  //     await auth().signOut();
-  //   }
-  //   const googleUser = await GoogleSignin.getCurrentUser();
-  //   if (googleUser) {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //   }
-  // };
+  const logOut = async () => {
+    await AsyncStorage.removeItem('token');
+    const user = auth().currentUser;
+    if (user) {
+      await auth().signOut();
+    }
+    const googleUser = await GoogleSignin.getCurrentUser();
+    if (googleUser) {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    }
+  };
 
   const renderWatchs = useCallback(() => {
     switch (whichWatch) {
@@ -121,80 +69,58 @@ const HomeScreen = () => {
     }
   }, [whichWatch]);
 
-  // if (!isAuthenticated) {
-  //   return (
-  //     <LinearContainer>
-  //       <RN.View style={styles.container}>
-  //         <TextView title="Please authenticate to continue" />
-  //       </RN.View>
-  //       <PasswordPrompt // Render PasswordPrompt when authentication is required
-  //         isVisible={isPromptVisible}
-  //         onSubmit={handleSubmitPassword}
-  //         onCancel={handleCancelPrompt}
-  //         hasBiometrics={true} // You can set this based on your logic
-  //       />
-  //     </LinearContainer>
-  //   );
-  // }
-
   return (
-    <LinearContainer
-      children={
-        <RN.View style={styles.container}>
-          <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
-            title="Home"
-            rightItem={
-              <RN.View style={styles.profile}>
-                <RN.TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(APP_ROUTES.MESSENGER as never)
-                  }>
-                  <Images.Svg.messageIcon />
-                </RN.TouchableOpacity>
-                <RN.TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)
-                  }
-                  // onPress={() => logOut()}
-                >
-                  <Images.Svg.userIcon />
-                </RN.TouchableOpacity>
-              </RN.View>
-            }
-          />
-          <RN.View style={styles.content}>
-            <RN.View style={styles.watchBox}>
-              <TextView text={'Jihad, Message to You!'} />
-              <TextView
-                title={'Today is your day! Do something good!'}
-                style={styles.title}
+        <LinearContainer
+          children={
+            <RN.View style={styles.container}>
+              <HeaderContent
+                leftItem={<Images.Svg.btsRightLinear />}
+                title="Home"
+                rightItem={
+                  <RN.View style={styles.profile}>
+                    <RN.TouchableOpacity
+                      onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never)}>
+                      <Images.Svg.messageIcon />
+                    </RN.TouchableOpacity>
+                    <RN.TouchableOpacity
+                      onPress={() => navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)}>
+                      <Images.Svg.userIcon />
+                    </RN.TouchableOpacity>
+                  </RN.View>
+                }
               />
-              <RN.View>{renderWatchs()}</RN.View>
-              <RN.View style={styles.dateBox}>
-                <TodayEvent
-                  day={nearDay?.day}
-                  title={nearDay?.name}
-                  date={nearDay?.date}
-                />
-                <AlarmNotification
-                  time24={homeCurrentTime.time24}
-                  time30={homeCurrentTime.time30}
-                  extraTime={homeCurrentTime.timeExtra as never}
-                  onPress={() =>
-                    navigation.navigate(APP_ROUTES.EVENTS_SCREEN as never)
-                  }
-                />
+              <RN.View style={styles.content}>
+                <RN.View style={styles.watchBox}>
+                  <Text>Jihad, Message to You!</Text>
+                  <Text style={styles.title}>
+                    Today is your day! Do something good!
+                  </Text>
+                  <RN.View>{renderWatchs()}</RN.View>
+                  <RN.View style={styles.dateBox}>
+                    <TodayEvent
+                      day={nearDay?.day}
+                      title={nearDay?.name}
+                      date={nearDay?.date}
+                    />
+                    <AlarmNotification
+                      time24={homeCurrentTime.time24}
+                      time30={homeCurrentTime.time30}
+                      extraTime={homeCurrentTime.timeExtra as never}
+                      onPress={() =>
+                        navigation.navigate(APP_ROUTES.EVENTS_SCREEN as never)
+                      }
+                    />
+                  </RN.View>
+                </RN.View>
+                <RN.View style={styles.watchSwitch}>
+                  <WatchSwitch />
+                </RN.View>
               </RN.View>
             </RN.View>
-            <RN.View style={styles.watchSwitch}>
-              <WatchSwitch />
-            </RN.View>
-          </RN.View>
-        </RN.View>
-      }
-    />
+          }
+        />
   );
+  
 };
 
 export default observer(HomeScreen);
