@@ -13,7 +13,6 @@ import {
 } from '../../types/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
-import {bottomTabBarOptions} from '../../navigation/BottomTabNavigation/BottomTabNavigation.constants';
 import {MenuItems} from '../../utils/menuItems';
 
 export class PersonalAreaStore {

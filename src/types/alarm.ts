@@ -10,6 +10,7 @@ export type AlarmListsItemType = {
   repeat: string;
   sound: string;
   leter: boolean;
+  vibration: boolean;
 };
 
 export const AlarmListsItemInitial: AlarmListsItemType = {
@@ -24,6 +25,7 @@ export const AlarmListsItemInitial: AlarmListsItemType = {
   repeat: 'never',
   sound: 'Tik-Tak',
   leter: false,
+  vibration: true,
 };
 
 export type ProjectTimerDataType = {
@@ -78,7 +80,6 @@ export type PomodoroDataType = {
   estimatedPomodoros: number;
   estimatedHours: number;
   totalCycle: number;
-
 };
 
 export const PomodoroDataInitial: PomodoroDataType = {
