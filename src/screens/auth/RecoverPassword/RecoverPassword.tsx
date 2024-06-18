@@ -22,21 +22,25 @@ const RecoverPasswordScreen = () => {
   const [email, setEmail] = useState<string>('');
   const [users, setUsers] = useState([]);
 
-
   useEffect(() => {
-    const unsubscribe = db
-      .collection('users')
-      .onSnapshot((snapshot) => {
-        const usersData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(usersData.map(user => user.email));
-      });
+    console.log(email)
+  })
 
-    return () => unsubscribe();
+
+  console.log(users)
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const snapshot = await db.collection('users').get();
+        const emails = snapshot.docs.map(doc => doc.data().email);
+        setUsers(emails);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    getUsers();
   }, []);
-
   console.log(JSON.stringify(users, null, 2))
 
   const resetPassword = async (email: string) => {
