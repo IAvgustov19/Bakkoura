@@ -63,6 +63,7 @@ export enum APP_ROUTES {
   //calendar screens
   NEW_EVENT = 'NewEventScreen',
   REPEAT = 'RepeatScreen',
+  REPEAT_ETAP = 'RepeatEtap',
   DATE_SCREEN = 'DateScreen',
   TIME_SCREEN = 'TimeScreen',
   ONE_MONTH_AND_EVENTS = 'OneMonthAndEvents',

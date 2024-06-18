@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Images } from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -39,6 +39,9 @@ const Pomodoro = () => {
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+
+  const [currentBreakIndex, setCurrentBreakIndex] = useState(0);
+  
 
   const onHandleTask = (data: any) => {
     clearState();
@@ -91,6 +94,7 @@ const Pomodoro = () => {
   }, [isStartCurrent]);
 
   const handleBreakTimeSelection = (id: number) => {
+    setCurrentBreakIndex(id);
     setCurrentBreakTime(id);
   };
 
@@ -152,11 +156,11 @@ const Pomodoro = () => {
                 </RN.View>
                 {isRunCurrent ? (
                   <RN.View style={styles.btnsBox}>
-                    <StartBtn text="Stop" onPress={stopCurrentPomodoro} />
+                    <StartBtn text="Stop" onPress={() => stopCurrentPomodoro(currentBreakIndex)} />
                     <StartBtn
                       text={isStartCurrent ? 'Pause' : 'Start'}
                       primary
-                      onPress={startCurrentPomodoro}
+                      onPress={() => startCurrentPomodoro(currentBreakIndex)}
                     />
                   </RN.View>
                 ) : (
@@ -164,7 +168,7 @@ const Pomodoro = () => {
                     <StartBtn
                       text="Start"
                       primary
-                      onPress={startCurrentPomodoro}
+                      onPress={() => startCurrentPomodoro(currentBreakIndex)}
                     />
                   </RN.View>
                 )}
@@ -216,6 +220,7 @@ const styles = RN.StyleSheet.create({
     paddingBottom: windowHeight / 4,
   },
   breakTimeBox: {
+    zIndex: 100,
     flexDirection: 'row',
     gap: 10,
   },
@@ -229,7 +234,8 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   pomodoroBox: {
-    bottom: 40,
+    zIndex: 0,
+    bottom: 50,
     alignItems: 'center',
     height: windowHeight / 2.2,
   },
@@ -248,7 +254,7 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroInfoBox: {
     position: 'absolute',
-    bottom: '15%',
+    bottom: '18%',
   },
   pomodoroInfoName: {
     textAlign: 'center',
@@ -259,12 +265,12 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 10,
-    bottom: 90,
+    bottom: 100,
   },
   btnBox: {
     alignItems: 'center',
     paddingHorizontal: 10,
-    bottom: 90,
+    bottom: 100,
   },
   taskListBox: {
     bottom: 60,

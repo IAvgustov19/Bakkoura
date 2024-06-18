@@ -108,6 +108,9 @@ export type TogetherDataType = {
   reminder: boolean;
   control: string;
   time: string;
+  synchronized: boolean;
+  synchronizedEmail: string;
+  repeat: string;
   days: string;
   timeStamp: number;
 };
@@ -121,6 +124,9 @@ export const TogetherDataInitial = {
   fromDateFormat: '0',
   reminder: false,
   control: 'Stopped',
+  repeat: 'never',
+  synchronized: false,
+  synchronizedEmail: '',
   time: '0',
   days: '0',
   timeStamp: 0,
