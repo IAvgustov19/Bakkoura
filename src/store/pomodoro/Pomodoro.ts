@@ -44,10 +44,10 @@ export class PomodoroStore {
     this.setNewTaskState('second', this.newTaskState.minut * 60 * 30);
     let finishTime = secondsToHMS(
       date.getHours() * 60 * 60 +
-        date.getMinutes() * 60 +
-        600 +
-        date.getSeconds() +
-        this.newTaskState.second,
+      date.getMinutes() * 60 +
+      600 +
+      date.getSeconds() +
+      this.newTaskState.second,
     );
 
     this.setNewTaskState('finishTime', finishTime);
@@ -121,7 +121,7 @@ export class PomodoroStore {
 
   setCurrentBreakTime = (id: number) => {
     runInAction(() => {
-      this.stopCurrentPomodoro();
+      this.stopCurrentPomodoro(id);
       const selectedBreak = BreakData.find(i => i.id === id);
       if (selectedBreak) {
         this.currentBreakTime = selectedBreak;
@@ -147,7 +147,7 @@ export class PomodoroStore {
     });
   };
 
-  startCurrentPomodoro = () => {
+  startCurrentPomodoro = (id: number) => {
     clearInterval(this.currentSecondInterval);
     if (this.isStartCurrent) {
       this.isStartCurrent = false;
@@ -159,7 +159,7 @@ export class PomodoroStore {
             this.currentSecond--;
             this.currentTime = secondsToMS(this.currentSecond);
             if (this.currentSecond === 0) {
-              this.stopCurrentPomodoro();
+              this.stopCurrentPomodoro(id);
               if (this.currentBreakTime.id === 1) {
                 if (this.completedCycles < this.newTaskState.minut - 1) {
                   // Switch between id1 and id2 until completedCycles === minut - 1
@@ -186,29 +186,51 @@ export class PomodoroStore {
         }, 1000);
         this.isStartCurrent = true;
       } else {
-        this.stopCurrentPomodoro();
+        this.stopCurrentPomodoro(id);
       }
     }
   };
 
-  stopCurrentPomodoro = () => {
+  stopCurrentPomodoro = (id: number) => {
     clearInterval(this.currentSecondInterval);
-    if (this.currentBreakTime.id === 1) {
-      if (this.completedCycles >= this.newTaskState.minut) {
-        this.estimatedPomodoros++;
-        this.completedCycles = 0;
-        if (!this.isLongBreakSet) {
-          this.isLongBreakSet = true;
-          this.currentTime = '15:00';
-          this.currentSecond = 900;
-          this.setCurrentBreakTime(3);
-        }
-      }
-    } else {
-      this.isLongBreakSet = false;
+
+    console.log(id)
+
+    if (id == 0) {
+      this.currentSecond = 1500; // 25 minutes
+      this.currentTime = '25:00';
     }
+    if (id == 1) {
+      this.currentSecond = 300; // 5 minutes
+      this.currentTime = '05:00';
+    }
+    if (id == 2) {
+      this.currentSecond = 900; // 15 minutes
+      this.currentTime = '15:00';
+    }
+
     this.isStartCurrent = false;
     this.isRunCurrent = false;
+    this.completedCycles = 0;
+    this.isLongBreakSet = false;
+
+    // clearInterval(this.currentSecondInterval);
+    // if (this.currentBreakTime.id === 1) {
+    //   if (this.completedCycles >= this.newTaskState.minut) {
+    //     this.estimatedPomodoros++;
+    //     this.completedCycles = 0;
+    //     if (!this.isLongBreakSet) {
+    //       this.isLongBreakSet = true;
+    //       this.currentTime = '15:00';
+    //       this.currentSecond = 900;
+    //       this.setCurrentBreakTime(3);
+    //     }
+    //   }
+    // } else {
+    //   this.isLongBreakSet = false;
+    // }
+    // this.isStartCurrent = false;
+    // this.isRunCurrent = false;
   };
 
   getAllPomodorosFromFirestore = async () => {

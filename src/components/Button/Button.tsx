@@ -16,6 +16,7 @@ type Props = {
   title: string;
   onPress?: () => void;
   icon?: any;
+  color?: string;
   outline?: boolean;
   width?: DimensionValue;
   paddingVertical?: number;
@@ -27,6 +28,7 @@ const ButtonComp: React.FC<Props> = ({
   icon,
   outline,
   width,
+  color,
   paddingVertical,
 }) => {
   return (
@@ -53,7 +55,7 @@ const ButtonComp: React.FC<Props> = ({
         <Text
           style={[
             styles.title,
-            {color: outline ? COLORS.white : COLORS.black},
+            {color: color? color : outline ? COLORS.white : COLORS.black},
           ]}>
           {title}
         </Text>

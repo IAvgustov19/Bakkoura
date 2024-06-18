@@ -1,4 +1,4 @@
-import {db} from '../config/firebase';
+import { db } from '../config/firebase';
 import {
   PomodoroDataType,
   ProjectTimerDataType,
@@ -6,9 +6,9 @@ import {
   TodoTimerDataType,
   TogetherDataType,
 } from '../types/alarm';
-import {NewEventStateType} from '../types/calendar';
-import {SelectedCountriesType} from '../types/worldTime';
-import {AlarmListsItemType} from '../types/alarm';
+import { NewEventStateType } from '../types/calendar';
+import { SelectedCountriesType } from '../types/worldTime';
+import { AlarmListsItemType } from '../types/alarm';
 
 import auth from '@react-native-firebase/auth';
 
@@ -151,7 +151,6 @@ export const fetchTasksFromFirestore = async (): Promise<
   try {
     const user = auth().currentUser;
     const userId = user.uid;
-    console.log('userIduserIduserIduserId', userId);
     const snapshot = await db
       .collection('tasks')
       .where('uid', '==', userId)
@@ -216,7 +215,6 @@ export const getAllCountriesFromFirestore = async () => {
   try {
     const user = auth().currentUser;
     const userId = user.uid;
-    console.log('userIduserIduserIduserId', userId);
     const snapshot = await db
       .collection('countries')
       .where('uid', '==', userId)
@@ -337,30 +335,340 @@ export const getEtapsFromFirestore = async () => {
   try {
     const user = auth().currentUser;
     const userId = user.uid;
-    const snapshot = await db
-      .collection('etaps')
+    const userEmail = user.email;
+    const etapsRef = db.collection('etaps');
+
+    // Fetch etaps with your uid
+    const yourEtapsSnapshot = await etapsRef
       .where('uid', '==', userId)
       .get();
-    const etaps: TogetherDataType[] = snapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        uid: data.uid,
-        id: doc.id,
-        name: data.name,
-        type: data.type,
-        fromDate: data.fromDate,
-        fromDateFormat: data.fromDateFormat,
-        reminder: data.reminder,
-        control: data.control,
-        time: data.time,
-        days: data.days,
-        timeStamp: data.timeStamp,
-      };
-    });
-    return etaps;
+
+    // Fetch synchronized etaps with matching synchronizedEmail
+    const synchronizedEtapsSnapshot = await etapsRef
+      .where('synchronized', '==', true)
+      .where('synchronizedEmail', '==', userEmail)
+      .get();
+
+    // Combine and process etaps from both snapshots
+    const yourEtaps = yourEtapsSnapshot.docs.map(doc => ({
+      uid: doc.data().uid,
+      id: doc.id,
+      repeat: doc.data().repeat,
+      name: doc.data().name,
+      type: doc.data().type,
+      fromDate: doc.data().fromDate,
+      fromDateFormat: doc.data().fromDateFormat,
+      reminder: doc.data().reminder,
+      control: doc.data().control,
+      time: doc.data().time,
+      days: doc.data().days,
+      synchronized: doc.data().synchronized,
+      synchronizedEmail: doc.data().synchronizedEmail,
+      timeStamp: doc.data().timeStamp,
+    }));
+
+    const synchronizedEtaps = synchronizedEtapsSnapshot.docs.map(doc => ({
+      uid: doc.data().uid,
+      id: doc.id,
+      repeat: doc.data().repeat,
+      name: doc.data().name,
+      type: doc.data().type,
+      fromDate: doc.data().fromDate,
+      fromDateFormat: doc.data().fromDateFormat,
+      reminder: doc.data().reminder,
+      control: doc.data().control,
+      time: doc.data().time,
+      days: doc.data().days,
+      synchronized: doc.data().synchronized,
+      synchronizedEmail: doc.data().synchronizedEmail,
+      timeStamp: doc.data().timeStamp,
+    }));
+
+    // Merge both etaps arrays into one
+    const allEtaps = [...yourEtaps, ...synchronizedEtaps];
+
+    return allEtaps;
   } catch (error) {
     console.error('Error fetching etaps: ', error);
     return [];
+  }
+};
+
+export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
+  try {
+    const user = auth().currentUser;
+    if (!user) {
+      throw new Error('No current user found');
+    }
+
+    const userId = user.uid;
+    const userEmail = user.email;
+
+    console.log('Current User:', { userId, userEmail });
+    console.log('Synchronized Email:', synchronizedEmail);
+
+    // Fetch etaps where the current user is the owner
+    const ownerSnapshot = await db.collection('etaps')
+      .where('uid', '==', userId)
+      .get();
+
+    let invitedSnapshot = { docs: [] };
+
+    if (synchronizedEmail === null) {
+      // Fetch etaps where synchronizedEmail is equal to userEmail
+      invitedSnapshot = await db.collection('etaps')
+        .where('synchronizedEmail', '==', userEmail)
+        .get();
+    } else if (synchronizedEmail) {
+      // Fetch user by synchronized email
+      const usersSnapshot = await db.collection('users').where('email', '==', synchronizedEmail).get();
+
+      if (!usersSnapshot.empty) {
+        const userIds = usersSnapshot.docs.map((userDoc) => userDoc.data().id);
+        const invitedId = userIds[0];
+
+        console.log('Invited User ID:', invitedId);
+
+        // Fetch etaps where the current user is invited
+        invitedSnapshot = await db.collection('etaps')
+          .where('uid', '==', invitedId)
+          .get();
+      } else {
+        console.log('No user found with synchronized email:', synchronizedEmail);
+      }
+    }
+
+    console.log('Invited Snapshot:', invitedSnapshot.docs.map(doc => doc.data()));
+
+    const docs = [
+      ...ownerSnapshot.docs,
+      ...invitedSnapshot.docs,
+    ];
+
+    console.log('synchronizedEmail:', synchronizedEmail);
+
+    if (docs.length > 0) {
+      // Update invitedSnapshot documents
+      for (const doc of invitedSnapshot.docs) {
+        const docRef = doc.ref;
+        await docRef.update({
+          synchronized: false,
+          synchronizedEmail: synchronizedEmail === null ? null : userEmail, 
+        });
+        console.log('Document updated successfully (invitedSnapshot):', doc.id);
+      }
+
+      // Update ownerSnapshot documents
+      for (const doc of ownerSnapshot.docs) {
+        const docRef = doc.ref;
+        await docRef.update({
+          synchronized: false,
+          synchronizedEmail: synchronizedEmail,
+        });
+        console.log('Document updated successfully (ownerSnapshot):', doc.id);
+      }
+
+      console.log('All relevant etaps updated successfully!');
+    } else {
+      console.log('No etap documents found for the current user.');
+    }
+  } catch (error) {
+    console.error('Error updating etaps: ', error);
+  }
+};
+
+
+
+
+// export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
+//   try {
+//     const user = auth().currentUser;
+//     if (!user) {
+//       throw new Error('No current user found');
+//     }
+
+//     const userId = user.uid;
+//     const userEmail = user.email;
+
+//     console.log('Current User:', { userId, userEmail });
+//     console.log('Synchronized Email:', synchronizedEmail);
+
+//     // Fetch etaps where the current user is the owner
+//     const ownerSnapshot = await db.collection('etaps')
+//       .where('uid', '==', userId)
+//       .get();
+
+//     let invitedSnapshot = { docs: [] };
+
+//     if (synchronizedEmail) {
+//       // Fetch user by synchronized email
+//       const usersSnapshot = await db.collection('users').where('email', '==', synchronizedEmail).get();
+
+//       if (!usersSnapshot.empty) {
+//         const userIds = usersSnapshot.docs.map((userDoc) => userDoc.data().id);
+//         const invitedId = userIds[0];
+
+//         console.log('Invited User ID:', invitedId);
+
+//         // Fetch etaps where the current user is invited
+//         invitedSnapshot = await db.collection('etaps')
+//           .where('uid', '==', invitedId)
+//           .get();
+//       } else {
+//         console.log('No user found with synchronized email:', synchronizedEmail);
+//       }
+//     }
+
+//     const docs = [
+//       ...ownerSnapshot.docs,
+//       ...invitedSnapshot.docs,
+//     ];
+
+
+//     console.log('synchronizedEmailsynchronizedEmail', synchronizedEmail);
+
+//     if (docs.length > 0) {
+//       // Update invitedSnapshot documents
+//       for (const doc of invitedSnapshot.docs) {
+//         const docRef = doc.ref;
+//         await docRef.update({
+//           synchronized: false,
+//           synchronizedEmail: null,
+//         });
+//       }
+
+//       // Update ownerSnapshot documents
+//       for (const doc of ownerSnapshot.docs) {
+//         const docRef = doc.ref;
+//         await docRef.update({
+//           synchronized: false,
+//           synchronizedEmail: synchronizedEmail,
+//         });
+//       }
+
+//       console.log('All relevant etaps updated successfully!');
+//     } else {
+//       console.log('No etap documents found for the current user.');
+//     }
+//   } catch (error) {
+//     console.error('Error updating etaps: ', error);
+//   }
+// };
+// export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
+//   try {
+//     const user = auth().currentUser;
+//     if (!user) {
+//       throw new Error('No current user found');
+//     }
+
+//     const userId = user.uid;
+//     let userEmail = user.email;
+
+
+//     console.log('Current User:', { userId, userEmail });
+//     console.log('Synchronized Email:', synchronizedEmail);
+
+//     // Fetch etaps where the current user is the owner
+//     const ownerSnapshot = await db.collection('etaps')
+//       .where('uid', '==', userId)
+//       .get();
+
+//     // Fetch user by synchronized email
+//     const users = await db.collection('users').where('email', '==', synchronizedEmail).get();
+
+//     const userIds = users.docs.map((userDoc) => userDoc.data().id);
+//     console.log('userIdsuserIds');
+//     const invitedId = userIds ? userIds[0] : null;
+
+//     if (!invitedId) {
+//       console.log('No invited user found with email:', synchronizedEmail);
+//     }
+
+//     console.log('Invited User ID:', invitedId);
+
+//     // Fetch etaps where the current user is invited
+//     let invitedSnapshot;
+
+//     if (invitedId) {
+//       invitedSnapshot = await db.collection('etaps')
+//         .where('uid', '==', invitedId)
+//         .get();
+//     }
+
+//     const docs = [
+//       ...ownerSnapshot.docs,
+//       ...(invitedSnapshot ? invitedSnapshot.docs : []),
+//     ];
+
+
+//     if (docs.length > 0) {
+//       // Update invitedSnapshot documents
+//       // if (synchronizedEmail == '') {
+//         for (const doc of invitedSnapshot.docs) {
+//           const docRef = doc.ref;
+//           await docRef.update({
+//             synchronized: false,
+//             synchronizedEmail: synchronizedEmail, // Update to current user's email
+//           });
+//         }
+//       // }
+    
+//     // Update ownerSnapshot documents
+//     for (const doc of ownerSnapshot.docs) {
+//       const docRef = doc.ref;
+//       await docRef.update({
+//         synchronized: false,
+//         synchronizedEmail: synchronizedEmail, // Update to synchronizedEmail parameter
+//       });
+//     }
+
+//     console.log('All relevant etaps updated successfully!');
+//   } else {
+//     console.log('No etap documents found for the current user.');
+//   }
+// } catch (error) {
+//   console.error('Error updating etaps: ', error);
+// }
+// };
+
+export const updateEtapsSynchronizedInFirestore = async (synchronized) => {
+  try {
+    const user = auth().currentUser;
+    const userId = user.uid;
+    const userEmail = user.email;
+
+    // Fetch etaps where the current user is the owner
+    const ownerSnapshot = await db.collection('etaps')
+      .where('uid', '==', userId)
+      .get();
+
+    // Fetch etaps where the current user is invited
+    const invitedSnapshot = await db.collection('etaps')
+      .where('synchronizedEmail', '==', userEmail)
+      .get();
+
+    // Combine the two sets of documents
+    const docs = [...ownerSnapshot.docs, ...invitedSnapshot.docs];
+
+    if (docs.length > 0) {
+      docs.forEach(async (doc) => {
+        const docRef = doc.ref;
+        const etapData = doc.data();
+
+        // Update if the current user is the owner or the invited user
+        if (etapData.uid === userId || etapData.synchronizedEmail === userEmail) {
+          await docRef.update({
+            synchronized: synchronized,
+          });
+        }
+      });
+
+      console.log('All relevant etaps updated successfully!');
+    } else {
+      console.log('No etap documents found for the current user.');
+    }
+  } catch (error) {
+    console.error('Error updating etaps: ', error);
   }
 };
 
@@ -446,6 +754,7 @@ export const getAlarmsFromFirestore = async () => {
       .collection('alarms')
       .where('uid', '==', userId)
       .get();
+    // @ts-ignore
     const alarms: AlarmListsItemType[] = snapshot.docs.map(doc => {
       const data = doc.data();
       return {

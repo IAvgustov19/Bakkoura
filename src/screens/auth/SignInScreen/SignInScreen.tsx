@@ -99,14 +99,8 @@ const SignInScreen = () => {
       console.log(user.emailVerified,55);
       
       console.log('userSnapshot', userSnapshot)
-      if (user.emailVerified) {
-        console.log(777);
-      console.log('isAuthorizedisAuthorizedisAuthorized', isAuthorized);
-
-        
+      if (user.emailVerified) { 
         setAuthorized() 
-      console.log('isAuthorizedisAuthorizedisAuthorized', isAuthorized);
-
       } else {
         Alert.alert('email doesnt exist')
       }
