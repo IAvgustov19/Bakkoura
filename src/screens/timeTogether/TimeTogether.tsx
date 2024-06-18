@@ -1,7 +1,7 @@
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Images} from '../../assets';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Images } from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import Line from '../../components/Line/Line';
@@ -9,26 +9,137 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import TextView from '../../components/Text/Text';
-import {formatDateTime} from '../../helper/helper';
+import { formatDateTime } from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
-import {APP_ROUTES} from '../../navigation/routes';
-import {COLORS} from '../../utils/colors';
-import {windowHeight, windowWidth} from '../../utils/styles';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
+import { windowHeight, windowWidth } from '../../utils/styles';
+import { db } from '../../config/firebase';
+import { Alert } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { updateEtapsMailInFirestore, updateEtapsSynchronizedInFirestore } from '../../services/firestoreService';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [back, setBack] = useState(true);
-  const {etapList, selcetedEtap, SelectOneEtap, getAllEtapsFromFirestore, calculateDaysDifference} =
+  const [synchronized, setSynchronized] = useState<boolean>(false);
+  const userEmail = auth().currentUser.email;
+
+  const {
+    etapList,
+    selcetedEtap,
+    getTimeFormat,
+    SelectOneEtap,
+    toggleTimeFormat,
+    calculateDaysDifference,
+    getAllEtapsFromFirestore,
+  } =
     useRootStore().togetherTimeStore;
 
   const onLongHandle = () => {
     navigation.navigate(APP_ROUTES.DELETE_ETAP as never);
   };
-  
+
+
+  useEffect(() => {
+    const synched = async () => {
+      const snapshot = await db.collection('etaps').where('synchronizedEmail', '==', userEmail).get();
+      // @ts-ignore
+      setSynchronized(snapshot?._docs?.some(doc => doc._data.synchronized));
+    }
+    synched();
+
+  }, [])
+
   useEffect(() => {
     getAllEtapsFromFirestore();
-  }, [isFocused])
+  }, [isFocused, synchronized])
+
+  useEffect(() => {
+    const getAllEtapsWithSyncedEmail = async () => {
+      try {
+        const snapshot = await db.collection('etaps').where('synchronizedEmail', '==', userEmail).where('synchronized', '==', false).get();
+        if (!snapshot.empty) {
+          let alertShown = false;
+          const promises = [];
+          snapshot.forEach(doc => {
+            const etapData = doc.data();
+            const etapUid = etapData.uid;
+            const promise = db.collection('users').doc(etapUid).get();
+            promises.push(promise);
+          });
+          const users = await Promise.all(promises);
+          users.forEach(user => {
+            const userEmail = user?._data?.email;
+            if (!alertShown) {
+              alertShown = true;
+              Alert.alert(
+                'Sync Confirmation',
+                `Do you want to accept synchronization from ${userEmail}?`,
+                [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                    onPress: async () => {
+                      await updateEtapsMailInFirestore("");
+                      await updateEtapsSynchronizedInFirestore(false);
+                      setSynchronized(false);
+                    },
+                  },
+                  {
+                    text: 'OK',
+                    onPress: async () => {
+                      setSynchronized(true);
+                      await updateEtapsSynchronizedInFirestore(true);
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
+            }
+          });
+        } else {
+          console.log('No etaps found with synchronized email for the current user.');
+        }
+      } catch (error) {
+        console.error('Error fetching etaps: ', error);
+      }
+    };
+
+    getAllEtapsWithSyncedEmail();
+  }, []);
+
+  const deleteSync = async () => {
+    Alert.alert(
+      'Delete Sync',
+      `Do you really want to delete the sync?`,
+      [
+        {
+          text: 'Yes',
+          style: 'cancel',
+          onPress: async () => {
+            try {
+              await updateEtapsMailInFirestore(null);
+              await updateEtapsSynchronizedInFirestore(false);
+              setSynchronized(false);
+              console.log('Sync deleted successfully');
+            } catch (error) {
+              console.error('Error deleting sync: ', error);
+            }
+          },
+        },
+        {
+          text: 'No',
+        },
+      ],
+      { cancelable: false }
+    )
+  }
+
+  const handleToggleFormat = () => {
+    toggleTimeFormat();
+  };
 
   const renderEtapList = useCallback(() => {
     return etapList.map((item, index) => {
@@ -49,6 +160,10 @@ const TimeTogether = () => {
     });
   }, [etapList]);
 
+  useEffect(() => {
+    console.log(getTimeFormat());
+  }, [getTimeFormat])
+
   return (
     <LinearContainer
       children={
@@ -58,10 +173,10 @@ const TimeTogether = () => {
             title="Couple Time"
             rightItem={
               <SwitchContain
-                title="24h"
-                _title="30h"
+                title={getTimeFormat()} // Display the current time format
+                _title={getTimeFormat() ? '30h' : '24h'} // Toggle label based on current format
                 back={back}
-                handlePress={() => setBack(e => !e)}
+                handlePress={() => { handleToggleFormat(); setBack(e => !e) }} // Call the toggle handler
               />
             }
           />
@@ -75,9 +190,8 @@ const TimeTogether = () => {
                   style={styles.coupleTimeText}
                   title={
                     selcetedEtap.timeStamp
-                      ? `${selcetedEtap.type} with ${
-                          selcetedEtap.name ? selcetedEtap.name : 'no Name'
-                        }`
+                      ? `${selcetedEtap.type} ${selcetedEtap.uid !== auth().currentUser.uid ? '' : `with ${selcetedEtap.name ? selcetedEtap.name : 'no Name'
+                        }`}`
                       : 'Time'
                   }
                 />
@@ -85,7 +199,7 @@ const TimeTogether = () => {
                   {selcetedEtap.time != '0' ? selcetedEtap.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                {calculateDaysDifference(selcetedEtap.fromDate)} days
+                  {calculateDaysDifference(selcetedEtap.fromDate)} days
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
                   {selcetedEtap.fromDate != '0'
@@ -104,11 +218,13 @@ const TimeTogether = () => {
                 }
               />
               <ButtonComp
+                outline={synchronized}
                 width={'45%'}
-                title={'Synchronize'}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.SYNCHRONYZE as never)
-                }
+                title={synchronized ? 'Synchronized' : 'Synchronize'}
+                onPress={() => {
+                  synchronized ? deleteSync() :
+                    navigation.navigate(APP_ROUTES.SYNCHRONYZE as never)
+                }}
               />
             </RN.View>
             <RN.View style={styles.etapScrollView}>

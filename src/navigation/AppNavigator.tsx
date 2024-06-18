@@ -6,6 +6,7 @@ import BottomTabNavigation from './BottomTabNavigation';
 import OnBoardingScreen from '../screens/onBoarding/OnBoarding';
 import NewEvent from '../screens/calendar/NewEventScreen';
 import RepeatScreen from '../screens/calendar/RepeatScreen';
+import RepeatEtap from '../screens/timeTogether/RepeatEtap';
 import DateScreen from '../screens/calendar/DateScreen';
 import TimeScreen from '../screens/calendar/TimeScreen';
 import SignInScreen from '../screens/auth/SignInScreen/SignInScreen';
@@ -175,6 +176,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.REPEAT}
           component={RepeatScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+          <Stack.Screen
+          name={APP_ROUTES.REPEAT_ETAP}
+          component={RepeatEtap}
           options={{
             headerTitleAlign: 'center',
           }}

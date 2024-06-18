@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useState} from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useEffect, useState } from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -11,11 +11,34 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import SoundsContent from '../../components/SoundsContent/SoundsContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import {APP_ROUTES} from '../../navigation/routes';
-import {windowHeight} from '../../utils/styles';
+import { APP_ROUTES } from '../../navigation/routes';
+import { windowHeight } from '../../utils/styles';
+import { db } from '../../config/firebase';
+import auth from '@react-native-firebase/auth';
 
 const AddEtap = () => {
   const navigation = useNavigation();
+  const userUid = auth().currentUser.uid;
+  const [synchronizedEmail, setSynchronizedEmail] = useState<string>('');
+  const [synchronized, setSynchronized] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    const getInvitedId = async () => {
+      const etapDoc = await db.collection('etaps').where('uid', '==', userUid).get();
+      // @ts-ignore
+      const emails = etapDoc.docs.map((etap) => etap._data.synchronizedEmail);
+      setSynchronizedEmail(emails[emails.length - 1]);
+      // @ts-ignore
+      const synched = etapDoc.docs.map((etap) => etap._data.synchronized)
+      setSynchronized(synched[synched.length - 1]);
+    }
+    getInvitedId();
+  })
+
+  console.log(synchronizedEmail)
+
+
   const {
     addEtapState,
     onStatusItemPress,
@@ -39,8 +62,8 @@ const AddEtap = () => {
     setReminder(e => !e);
   };
 
-  const AddNewEtap = () => {
-    createNewEtap(() => onHandleNavigation(APP_ROUTES.TIME_TOGETHER));
+  const AddNewEtap = (synchronizedEmail, synchronized) => {
+    createNewEtap(synchronizedEmail, synchronized, () => onHandleNavigation(APP_ROUTES.TIME_TOGETHER));
   };
 
   const ClearState = () => {
@@ -88,6 +111,13 @@ const AddEtap = () => {
                       handlePress={onSetReminder}
                     />
                   </RN.View>
+                  <ListItemCont
+                    title="Repeat"
+                    value={addEtapState.repeat}
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.REPEAT_ETAP as never)
+                    }
+                  />
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
@@ -104,7 +134,7 @@ const AddEtap = () => {
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn
-                  onPress={AddNewEtap}
+                  onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
                   primary={true}
                   text="Ok"
                   subWidth={70}

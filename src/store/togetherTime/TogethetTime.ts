@@ -1,12 +1,10 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { formatDateTime, formattedTime } from '../../helper/helper';
 import { TogetherDataInitial, TogetherDataType } from '../../types/alarm';
 import { ControlData, RepeatData, StatusData } from '../../utils/repeat';
 import { RootStore } from '../rootStore';
-import format from 'format-number-with-string';
 import { addEtapToFirestore, getEtapsFromFirestore } from '../../services/firestoreService';
-
 import auth from '@react-native-firebase/auth';
+import { RepeatDataType } from '../../types/calendar';
 
 export class TogetherTimeStore {
   private readonly root: RootStore;
@@ -17,30 +15,66 @@ export class TogetherTimeStore {
 
   addEtapState: TogetherDataType = TogetherDataInitial;
   etapList: TogetherDataType[] = [];
-
   selcetedEtap: TogetherDataType = TogetherDataInitial;
+  selectedInterval: NodeJS.Timeout | null = null;
+  is30hFormat: boolean = false;
+  selectedRepeat: RepeatDataType = RepeatData[2];
 
-  selectedInterval = null;
+
+  toggleTimeFormat = () => {
+    runInAction(() => {
+      this.is30hFormat = !this.is30hFormat;
+    });
+  };
+  // Method to get the current time format
+  getTimeFormat = (): string => {
+    return this.is30hFormat ? '30h' : '24h';
+  };
 
   setAddEtapState = (key: keyof TogetherDataType, value: any) => {
     this.addEtapState[key] = value as never;
   };
 
-  createNewEtap = async (calback: () => void) => {
-    const userId = auth().currentUser.uid;
-    if (this.addEtapState.fromDate != '0' && this.addEtapState.type) {
+
+  onRepeatItemPress = (index: number) => {
+    runInAction(() => {
+      this.selectedRepeat = RepeatData.find((e, i) => i === index);
+      this.setAddEtapState('repeat', this.selectedRepeat.title);
+    });
+  };
+
+  onSelectRepeat = () => {
+    runInAction(() => {
+      this.selectedRepeat = RepeatData.find((e) => e.title === this.addEtapState.repeat);
+    });
+  };
+
+  onCancelRepeat = () => {
+    runInAction(() => {
+      this.selectedRepeat = RepeatData.find(
+        e => e.title === this.addEtapState.repeat,
+      );
+    });
+  };
+
+  createNewEtap = async (synchronizedEmail:string, synchronized: boolean, callback: () => void) => {
+    const userId = auth().currentUser?.uid;
+    if (this.addEtapState.fromDate !== '0' && this.addEtapState.type) {
       this.setAddEtapState('id', this.etapList.length + 1);
       this.setAddEtapState('timeStamp', Date.now());
       this.setAddEtapState('uid', userId);
+      this.setAddEtapState('synchronized', synchronized);
+      this.setAddEtapState('synchronizedEmail', synchronizedEmail);
       await addEtapToFirestore(this.addEtapState);
       runInAction(() => {
         this.etapList = [...this.etapList, this.addEtapState];
       });
       this.SelectOneEtap(this.addEtapState.id);
       this.clearState();
-      calback();
+      callback();
     }
   };
+
   clearState = () => {
     runInAction(() => {
       this.addEtapState = TogetherDataInitial;
@@ -52,48 +86,63 @@ export class TogetherTimeStore {
   };
 
   onDeleteOneEtap = () => {
-    clearInterval(this.selectedInterval);
-    this.etapList = this.etapList.filter(
-      item => item.id !== this.selcetedEtap.id,
-    );
+    clearInterval(this.selectedInterval!);
+    this.etapList = this.etapList.filter(item => item.id !== this.selcetedEtap.id);
     this.selcetedEtap = TogetherDataInitial;
     this.clearState();
   };
 
-  SelectOneEtap = (id: number | string) => {
-    this.selcetedEtap = this.etapList.find(item => item.id === id);
-    if (this.selectedInterval) {
-      clearInterval(this.selectedInterval);
+SelectOneEtap = (id: number | string) => {
+  this.selcetedEtap = this.etapList.find(item => item.id === id) ?? TogetherDataInitial;
+  if (this.selcetedEtap.timeStamp > 0) {
+    if (this.selcetedEtap.control === 'Stopped') {
+      this.stopTimer();
+    } else {
+      this.startTimer();
     }
-    if (this.selcetedEtap.timeStamp > 0) {
-      this.selectedInterval = setInterval(() => {
-        runInAction(() => {
-          const today = new Date();
-          const givenDate = new Date(this.selcetedEtap.fromDateFormat);
-          const timeDiff = today.getTime() - givenDate.getTime();
+  }
+};
 
-          // Kunlarni hisoblash va 0 dan kichik bo'lsa 0 ga tenglash
-          const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)); // Farqni kunlarda olish uchun floor ishlatiladi
-          const days = daysDiff >= 0 ? daysDiff : 0;
+startTimer = () => {
+  if (this.selectedInterval) {
+    clearInterval(this.selectedInterval);
+  }
+  this.selectedInterval = setInterval(() => {
+    runInAction(() => {
+      const currentTime = Date.now();
+      const elapsed = currentTime - this.selcetedEtap.timeStamp;
 
-          if (days === 0) {
-            this.selcetedEtap.time = '00:00:00';
-            this.selcetedEtap.days = days as never;
-          } else {
-            console.log('blabla')
-            this.selcetedEtap.days = days as never;
-            this.selcetedEtap.time = `${format(
-              today.getHours(),
-              '00',
-            )}:${format(today.getMinutes(), '00')}:${format(
-              today.getSeconds(),
-              '00',
-            )}`;
-          }
-        });
-      }, 1000);
-    }
-  };
+      let days, hours, minutes, seconds;
+
+      if (this.is30hFormat) {
+        const totalMinutes = Math.floor(elapsed / (1000 * 60));
+        days = Math.floor(totalMinutes / (48 * 30));
+        const remainingMinutes = totalMinutes % (48 * 30);
+        hours = Math.floor(remainingMinutes / 48);
+        minutes = remainingMinutes % 48;
+        seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+      } else {
+        days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+        const remainingHours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        hours = remainingHours;
+        const remainingMinutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+        minutes = remainingMinutes;
+        seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+      }
+
+      this.selcetedEtap.days = days.toString() as never;
+      this.selcetedEtap.time = this.formattedTime(hours, minutes, seconds, this.is30hFormat);
+    });
+  }, 1000);
+};
+
+stopTimer = () => {
+  if (this.selectedInterval) {
+    clearInterval(this.selectedInterval);
+    this.selectedInterval = null;
+  }
+};
+
 
   calculateTimeDifferences = () => {
     const newData = this.etapList.map(item => {
@@ -101,32 +150,27 @@ export class TogetherTimeStore {
       const timeStampSeconds = Math.floor(item.timeStamp / 1000);
       const between = nowTime - timeStampSeconds;
 
-      let days = Math.floor(between / (24 * 60 * 60));
-      let remainingSeconds = between % (24 * 60 * 60);
-      let hours = Math.floor(remainingSeconds / (60 * 60));
-      remainingSeconds %= 60 * 60;
-      let minutes = Math.floor(remainingSeconds / 60);
-      let seconds = remainingSeconds % 60;
+      let days, hours, minutes, seconds, remainingSeconds;
 
-      if (days < 0) {
-        days = 0;
+      if (this.is30hFormat) {
+        days = Math.floor(between / (30 * 48 * 60));
+        remainingSeconds = between % (30 * 48 * 60);
+        hours = Math.floor(remainingSeconds / (48 * 60));
+        remainingSeconds %= (48 * 60);
+        minutes = Math.floor(remainingSeconds / 48);
+      } else {
+        days = Math.floor(between / (24 * 60 * 60));
+        remainingSeconds = between % (24 * 60 * 60);
+        hours = Math.floor(remainingSeconds / 3600);
+        remainingSeconds %= 3600;
+        minutes = Math.floor(remainingSeconds / 60);
       }
-      if (hours < 0) {
-        hours = 0;
-      }
-      if (minutes < 0) {
-        minutes = 0;
-      }
-      if (seconds < 0) {
-        seconds = 0;
-      }
-
-      const formattedDays = days;
+      seconds = remainingSeconds % 60;
 
       return {
         ...item,
-        days: formattedDays,
-        time: (this.selcetedEtap.time = formattedTime(hours, minutes, seconds)),
+        days: days.toString() as never,
+        time: this.formattedTime(hours, minutes, seconds, this.is30hFormat),
       };
     });
     this.etapList = newData as never;
@@ -137,12 +181,12 @@ export class TogetherTimeStore {
 
   onSelectStatus = (index: number) => {
     runInAction(() => {
-      this.selectedStatus = this.statusData.find((e, i) => i === index);
+      this.selectedStatus = this.statusData.find((e, i) => i === index) ?? { title: 'Dating' };
       this.setAddEtapState('type', this.selectedStatus.title as never);
     });
   };
 
-  onStatusItemPress = index => {
+  onStatusItemPress = (index: number) => {
     const newData = this.statusData.map((item, i) => {
       this.onSelectStatus(index);
       return {
@@ -158,14 +202,14 @@ export class TogetherTimeStore {
 
   onSelectControl = (index: number) => {
     runInAction(() => {
-      this.selectedControl = this.controlData.find((e, i) => i === index);
+      this.selectedControl = this.controlData.find((e, i) => i === index) ?? { title: 'Stopped' };
       this.setAddEtapState('control', this.selectedControl.title as never);
     });
   };
 
-  onControlItemPress = index => {
+  onControlItemPress = (index: number) => {
     const newData = this.controlData.map((item, i) => {
-      this.onSelectStatus(index);
+      this.onSelectControl(index);
       return {
         ...item,
         active: i === index ? !item.active : false,
@@ -184,9 +228,10 @@ export class TogetherTimeStore {
       console.error('Error', error);
     }
   };
-  calculateDaysDifference = (fromDate) => {
+
+  calculateDaysDifference = (fromDate: string) => {
     if (!fromDate || fromDate === '0') return '0';
-    const [month, day, year] = fromDate.split('/').map(Number);
+    const [day, month, year] = fromDate.split('/').map(Number);
     const parsedDate = new Date(year, month - 1, day);
 
     if (isNaN(parsedDate.getTime())) {
@@ -194,9 +239,33 @@ export class TogetherTimeStore {
       return 'Invalid Date';
     }
     const now = new Date();
-    const differenceInTime = parsedDate.getTime() - now.getTime();
+    const differenceInTime = now.getTime() - parsedDate.getTime();
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
 
     return differenceInDays.toString();
   };
+
+
+  private formattedTime(hours: number, minutes: number, seconds: number, is30hFormat: boolean): string {
+    let formattedHours = hours;
+    let formattedMinutes = minutes;
+
+    if (is30hFormat) {
+        // Convert hours and minutes to total minutes
+        const totalMinutes = hours * 48 + minutes;
+
+        // Calculate equivalent hours and minutes in 30-hour format
+        formattedHours = Math.floor(totalMinutes / 48);
+        formattedMinutes = totalMinutes % 48;
+
+        // Calculate seconds
+        seconds = Math.floor((seconds * 48) / 60); // Adjust seconds for 48-minute scale
+    }
+
+    return `${formattedHours.toString().padStart(2, '0')}:${formattedMinutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
+
+
+
+}
+
