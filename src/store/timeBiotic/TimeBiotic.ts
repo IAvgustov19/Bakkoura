@@ -72,12 +72,12 @@ export class TimeBioticStore {
               });
             })
             .catch(error => {
-              console.error('Xatolik yuz berdi:', error);
+              console.error('Error:', error);
             });
         });
       })
       .catch(error => {
-        console.error('Xatolik yuz berdi:', error);
+        console.error('Error:', error);
       });
   };
 
