@@ -40,8 +40,10 @@ const Pomodoro = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  const [currentBreakIndex, setCurrentBreakIndex] = useState(0);
-  
+  const [currentBreakIndex, setCurrentBreakIndex] = useState(1);
+  const [finishTime, setFinishTime] = useState(new Date(new Date().getTime()).toLocaleTimeString());
+
+
 
   const onHandleTask = (data: any) => {
     clearState();
@@ -50,11 +52,28 @@ const Pomodoro = () => {
   };
 
 
-  const calculateFinishTime = (hours) => {
+
+  useEffect(() => {
+    handleBreakTimeSelection(1);
+  }, [])
+
+
+  const calculateFinishTime = (breackType) => {
+
     const now = new Date();
-    now.setHours(now.getHours() + hours);
-    return now.toLocaleTimeString('en-US', { hour12: false });
+    let minutes;
+    if (breackType === 'Pomodoro') {
+      minutes = 25;
+    } else if (breackType === 'ShortBreak') {
+      minutes = 5;
+    } else if (breackType === 'LongBreak') {
+      minutes = 15;
+    }
+    const finishTime = new Date(now.getTime() + minutes * 60000);
+    
+    return finishTime.toLocaleTimeString('en-US', { hour12: false });
   };
+  
 
   useEffect(() => {
     getAllPomodorosFromFirestore();
@@ -65,16 +84,16 @@ const Pomodoro = () => {
     return taskList.map((item, index) => {
       return (
         <RN.Pressable
-          style={styles.taskListHeader}
+          style={styles.taskLists}
           key={index}
-          onPress={() => {setData(item)}}
+          onPress={() => {setData(item);setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro')); }}
         >
           <RN.View>
             <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
             <TextView text={item.description} />
           </RN.View>
           <RN.View style={styles.spaceBetween}>
-            <RN.Text style={styles.tasksText}>{`${0}`}/{`${item.estimatedHours}`}</RN.Text>
+            <RN.Text style={styles.tasksText}>{`${0}`}/{`${item.minut * 2}`}</RN.Text>
             <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.View>
         </RN.Pressable>
@@ -94,9 +113,18 @@ const Pomodoro = () => {
   }, [isStartCurrent]);
 
   const handleBreakTimeSelection = (id: number) => {
-    setCurrentBreakIndex(id);
     setCurrentBreakTime(id);
+     setCurrentBreakIndex(id);
   };
+
+
+  useEffect(() => {
+    setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro'));
+    
+  }, [newTaskState.breackType])
+
+
+
 
   return (
     <LinearContainer
@@ -145,7 +173,7 @@ const Pomodoro = () => {
                         Pomos: {`${estimatedPomodoros} / ${newTaskState.minut}`}
                       </RN.Text>
                       <RN.Text style={styles.pomodoroInfoName}>
-                        Finish At: {calculateFinishTime(newTaskState.estimatedHours)}
+                        Finish At: {finishTime}
                       </RN.Text>
                       <RN.Text
                         style={
@@ -235,7 +263,7 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroBox: {
     zIndex: 0,
-    bottom: 50,
+    bottom: 30,
     alignItems: 'center',
     height: windowHeight / 2.2,
   },
@@ -254,7 +282,7 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroInfoBox: {
     position: 'absolute',
-    bottom: '18%',
+    bottom: '19%',
   },
   pomodoroInfoName: {
     textAlign: 'center',
@@ -265,15 +293,15 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     paddingHorizontal: 10,
-    bottom: 100,
+    bottom: 80,
   },
   btnBox: {
     alignItems: 'center',
     paddingHorizontal: 10,
-    bottom: 100,
+    bottom: 80,
   },
   taskListBox: {
-    bottom: 60,
+    bottom: 50,
   },
   taskListHeader: {
     flexDirection: 'row',
@@ -282,6 +310,13 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginBottom: 5,
+  },
+  taskLists: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    height: 50,
   },
   tasksText: {
     fontSize: 16,
