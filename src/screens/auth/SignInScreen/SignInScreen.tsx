@@ -145,10 +145,10 @@ const SignInScreen = () => {
 
   return (
     <>
-      <LoadingScreen loading={loading} setLoading={setLoading} />
       <LinearContainer
         children={<RN.ScrollView>
           <View style={styles.container}>
+          <LoadingScreen loading={loading} setLoading={setLoading} />
             {/* <View style={styles.light}>
           <Image source={BG.light} />
         </View> */}

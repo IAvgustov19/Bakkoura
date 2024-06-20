@@ -33,6 +33,7 @@ export default LinearContainer;
 
 const styles = StyleSheet.create({
   container: {
+    // backgroundColor: 'red',
     height: windowHeight,
     paddingVertical: 20,
     paddingHorizontal: 10,

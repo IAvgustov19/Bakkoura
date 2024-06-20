@@ -6,11 +6,11 @@
  */
 
 import React, { useEffect } from 'react';
-import RN from './src/components/RN';
-import AppNavigator from './src/navigation/AppNavigator';
-import auth from '@react-native-firebase/auth';
-import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
 import { PermissionsAndroid } from 'react-native';
+import RN from './src/components/RN';
+import auth from '@react-native-firebase/auth';
+import AppNavigator from './src/navigation/AppNavigator';
+import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
 
 
 

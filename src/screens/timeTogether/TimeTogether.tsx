@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Images } from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -18,6 +18,8 @@ import { db } from '../../config/firebase';
 import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { updateEtapsMailInFirestore, updateEtapsSynchronizedInFirestore } from '../../services/firestoreService';
+import LottieContent from '../../components/LottieContent/LottieContent';
+import { Lotties } from '../../lotties/lottie';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
@@ -164,6 +166,18 @@ const TimeTogether = () => {
     console.log(getTimeFormat());
   }, [getTimeFormat])
 
+
+  const lottie = useMemo(() => {
+    return (
+      <LottieContent
+        source={Lotties.timeTogether}
+        width={windowWidth}
+        autoPlay={true}
+        speed={1}
+      />
+    );
+  }, []);
+
   return (
     <LinearContainer
       children={
@@ -183,7 +197,8 @@ const TimeTogether = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
-                <Images.Svg.heartIcon width={windowWidth - 40} />
+                {lottie}
+                {/* <Images.Svg.heartIcon width={windowWidth - 40} /> */}
               </RN.View>
               <RN.View style={styles.coupleInfo}>
                 <TextView

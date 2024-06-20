@@ -138,6 +138,7 @@ startTimer = () => {
 
 stopTimer = () => {
   if (this.selectedInterval) {
+    
     clearInterval(this.selectedInterval);
     this.selectedInterval = null;
   }
