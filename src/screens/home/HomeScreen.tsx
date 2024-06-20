@@ -17,7 +17,7 @@ import { APP_ROUTES } from '../../navigation/routes';
 import { useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PermissionsAndroid, Text } from 'react-native';
+import { Alert, Button, PermissionsAndroid, Text } from 'react-native';
 import Notifications from '../../notification/localPush';
 import { db } from '../../config/firebase';
 
@@ -49,63 +49,6 @@ const HomeScreen = () => {
     filterNearDay();
     const currentUser = auth().currentUser;
     fetchUserData(currentUser.uid);
-  }, []);
-
-  const handleScheduleNotification = () => {
-    userData.forEach(item => {
-      const currentDate:any = new Date();
-      const fromDate: any = new Date(item.fromDateFormat);
-      const targetTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 17, 25, 0); 
-      let notificationMessage = '';
-      const repeatLower = item.repeat.toLowerCase(); 
-      const daysDating = Math.floor((currentDate - fromDate) / (1000 * 60 * 60 * 24));
-  
-      switch (repeatLower) {
-        case 'daily':
-          notificationMessage = `${item.type} with ${item.name}. ${daysDating} days.`;
-          Notifications.scheduleNotification(targetTime, notificationMessage, 'day', 24 * 60 * 60 * 1000);
-          break;
-        case 'monthly':
-          notificationMessage = `${item.type} with ${item.name}.${daysDating} days.`;
-          Notifications.scheduleNotification(targetTime, notificationMessage, 'month', 30 * 24 * 60 * 60 * 1000);
-          break;
-        case 'yearly':
-          notificationMessage = `${item.type} with ${item.name}. ${daysDating} days.`;
-          Notifications.scheduleNotification(targetTime, notificationMessage, 'year', 365 * 24 * 60 * 60 * 1000);
-          break;
-        default:
-          console.log(`Invalid repeat type for ${item.name}`);
-      }
-    });
-  };
-  
-  const requestNotificationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-        {
-          title: 'Notification Permission',
-          message: 'Allow this app to send you notifications.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      handleScheduleNotification()
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
-        console.log('Notification permission granted');
-      } else {
-        console.log('Notification permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-
-  useEffect(() => {
-    requestNotificationPermission();
   }, []);
 
   useEffect(() => {
@@ -144,6 +87,7 @@ const HomeScreen = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
+          {/* <Button title='click' onPress={() => handleScheduleNotification()} /> */}
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             title="Home"
