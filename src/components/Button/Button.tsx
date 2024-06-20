@@ -51,7 +51,7 @@ const ButtonComp: React.FC<Props> = ({
           },
         ]}
         onPress={onPress}>
-        <RN.Image style={styles.btnTopLight} source={Images.Img.btnTopLight} />
+        {/* <RN.Image style={styles.btnTopLight} source={Images.Img.btnTopLight} /> */}
         <Text
           style={[
             styles.title,

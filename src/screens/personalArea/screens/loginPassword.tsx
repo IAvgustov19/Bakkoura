@@ -23,8 +23,9 @@ const LoginPassword = () => {
     const { setNotAuthorized } = useRootStore().authStore;
     const [updateLoading, isUpdateLoading] = useState(false);
 
+    const userEmail = auth().currentUser.email;
 
-    const [userData, setUserData] = useState({ login: '', newPassword: '' });
+    const [userData, setUserData] = useState({ login: userEmail, newPassword: '' });
     const [showHide, setShowHide] = useState({ showPassword: false, showRepeatPassword: true });
 
 
@@ -86,12 +87,6 @@ const LoginPassword = () => {
                             <Input
                                 placeholder="Login"
                                 value={userData.login}
-                                onChangeText={(text) =>
-                                    setUserData((prevData) => ({
-                                        ...prevData,
-                                        login: text,
-                                    }))
-                                }
                             />
                         </RN.View>
                         <RN.View style={styles.inputBox}>

@@ -84,5 +84,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     textAlign: 'center',
+    fontFamily: 'RedHatDisplay-Regular',
+    fontWeight: '400',
   },
 });

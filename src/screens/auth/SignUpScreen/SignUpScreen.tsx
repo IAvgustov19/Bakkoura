@@ -162,22 +162,21 @@ const SignUpScreen = () => {
 
   return (
     <>
-      <LoadingScreen loading={loading} setLoading={setLoading} />
       <LinearContainer
         children={
-        <KeyboardAvoidingView
+          <KeyboardAvoidingView
           style={styles.container}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-        >
+          >
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={
               <LanguageBtn
-                value={newUser?.language}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-                }
+              value={newUser?.language}
+              onPress={() =>
+                navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+              }
               />
             }
           />
@@ -186,6 +185,7 @@ const SignUpScreen = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
+            <LoadingScreen loading={loading} setLoading={setLoading} />
               <TextView title="Sign up" textAlign="center" />
               <SignUpForm bottomInputPress={Scroll} options={options} onSelect={() => onSelect} />
               <RN.View style={styles.signUpBtn}>
