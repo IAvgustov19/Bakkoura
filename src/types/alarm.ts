@@ -123,7 +123,7 @@ export const TogetherDataInitial = {
   fromDate: '0',
   fromDateFormat: '0',
   reminder: false,
-  control: 'Stopped',
+  control: 'Start',
   repeat: 'never',
   synchronized: false,
   synchronizedEmail: '',

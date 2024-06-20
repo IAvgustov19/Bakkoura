@@ -5,4 +5,6 @@ export const Lotties = {
   pomodoro: require('./AnimLinear-1.json'),
   timer: require('./AnimLinear-2.json'),
   stressTest: require('./AnimLinear-3.json'),
+  timeTogether: require('./AnimLinear-4.json'),
 };
+

@@ -127,18 +127,22 @@ export class PomodoroStore {
         this.currentBreakTime = selectedBreak;
         switch (id) {
           case 1:
+            this.setNewTaskState('breackType', 'Pomodoro');
             this.currentSecond = 1500;
             this.currentTime = '25:00';
             break;
           case 2:
+            this.setNewTaskState('breackType', 'ShortBreak');
             this.currentSecond = 300;
             this.currentTime = '05:00';
             break;
           case 3:
+            this.setNewTaskState('breackType', 'LongBreak');
             this.currentSecond = 900;
             this.currentTime = '15:00';
             break;
           default:
+            this.setNewTaskState('breackType', 'Pomodoro');
             this.currentSecond = 1500;
             this.currentTime = '25:00';
             break;
@@ -194,17 +198,19 @@ export class PomodoroStore {
   stopCurrentPomodoro = (id: number) => {
     clearInterval(this.currentSecondInterval);
 
-    console.log(id)
+    if(id === 0) {
+      id = 1;
+    }
 
-    if (id == 0) {
+    if (id == 1) {
       this.currentSecond = 1500; // 25 minutes
       this.currentTime = '25:00';
     }
-    if (id == 1) {
+    if (id == 2) {
       this.currentSecond = 300; // 5 minutes
       this.currentTime = '05:00';
     }
-    if (id == 2) {
+    if (id == 3) {
       this.currentSecond = 900; // 15 minutes
       this.currentTime = '15:00';
     }
