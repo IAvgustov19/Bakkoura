@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     // height: '100%',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
+    paddingBottom: 50,
   },
   bottomSheetScrollView: {
     backgroundColor: COLORS.black,

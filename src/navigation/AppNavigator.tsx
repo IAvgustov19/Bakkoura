@@ -66,6 +66,7 @@ import OrderThanks from '../screens/market/components/thanks/Thanks';
 import firestore from '@react-native-firebase/firestore';
 import WatchConstructor from '../screens/watchConstructor/WatchConstructor';
 import Wallpapers from '../screens/timeBiotic/Wallpapers';
+import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 
 const Stack = createStackNavigator();
 
@@ -180,7 +181,7 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-          <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.REPEAT_ETAP}
           component={RepeatEtap}
           options={{
@@ -523,11 +524,18 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
+        <Stack.Screen
+          name={APP_ROUTES.REPEAT_TYPE_SCREEN}
+          component={RepeatTypeScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
       </>
     );
   };
-  console.log(isAuthorized,"isAuthorized");
-  
+  console.log(isAuthorized, 'isAuthorized');
+
   return (
     <NavigationContainer theme={DarkTheme}>
       <Stack.Navigator

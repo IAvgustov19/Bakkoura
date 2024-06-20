@@ -8,7 +8,8 @@ import {observer} from 'mobx-react-lite';
 import DataListLinearBack from '../../../components/DataListLinearBack/DataListLinearBack';
 
 const FirstTimer = () => {
-  const {setFirstTimer, setAllTime, timerStatus} = useRootStore().timerStore;
+  const {setFirstTimer, setAllTime, timerStatus, firstTimerValue} =
+    useRootStore().timerStore;
 
   const startListData = _getTimeData(2, {
     is24Hour: false,

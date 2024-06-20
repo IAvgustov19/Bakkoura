@@ -1,16 +1,19 @@
+import {SoundsData} from '../utils/sounds';
+
 export type AlarmListsItemType = {
   uid: string;
-  id: number | string;
+  id: string;
   name: string;
   description: string;
   time: string;
   hours: string | number;
   minutes: string | number;
   isActive: boolean;
-  repeat: string;
-  sound: string;
+  repeat: string[];
+  sound: {id: number; title: string; url: string; active: boolean};
   leter: boolean;
   vibration: boolean;
+  dateTime: Date;
 };
 
 export const AlarmListsItemInitial: AlarmListsItemType = {
@@ -22,10 +25,11 @@ export const AlarmListsItemInitial: AlarmListsItemType = {
   minutes: '',
   description: 'No description',
   isActive: true,
-  repeat: 'never',
-  sound: 'Tik-Tak',
+  repeat: ['Never'],
+  sound: SoundsData[2],
   leter: false,
   vibration: true,
+  dateTime: new Date(),
 };
 
 export type ProjectTimerDataType = {
@@ -67,7 +71,7 @@ export const ProjectTimerDataInitial: ProjectTimerDataType = {
 };
 
 export type PomodoroDataType = {
-  uid: string,
+  uid: string;
   id: number | string;
   name: string;
   description: string;
@@ -177,7 +181,7 @@ export const MetronomDataInitial: MetronomDataType = {
 };
 
 export type TodoTimerDataType = {
-  uid: string,
+  uid: string;
   id: string;
   key: string;
   name: string;
@@ -217,4 +221,22 @@ export type ToDoTaskNameDataType = {
   id: number;
   title: string;
   key: string;
+};
+
+export type TimerValueType = {
+  hours: number;
+  minut: number;
+  second: number;
+  time: string;
+  totalSeconds: number;
+  sound: object;
+};
+
+export const TimerValueInitial: TimerValueType = {
+  hours: 0,
+  minut: 0,
+  second: 0,
+  time: '00:00:00',
+  totalSeconds: 0,
+  sound: {name: '', url: ''},
 };
