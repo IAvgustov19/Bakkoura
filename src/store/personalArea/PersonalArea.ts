@@ -126,7 +126,7 @@ export class PersonalAreaStore {
             // this.root.authStore.setNotAuthorized();
           });
       } else {
-        // this.root.authStore.setNotAuthorized();
+        this.root.authStore.setNotAuthorized();
       }
     } else {
       // this.root.authStore.setNotAuthorized();
