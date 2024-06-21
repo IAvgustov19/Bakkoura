@@ -11,7 +11,6 @@ import {RootStore} from '../rootStore';
 import storage from '@react-native-firebase/storage';
 import {getQueryParamValue} from '../../helper/helper';
 import RNFetchBlob from 'rn-fetch-blob';
-import {EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, EMAIL_PUBLIC_KEY} from '@env';
 
 export class TimeBioticStore {
   private readonly root: RootStore;
@@ -21,9 +20,9 @@ export class TimeBioticStore {
     this.getWallpapers();
   }
   emailJs = 'https://api.emailjs.com/api/v1.0/email/send';
-  serviceId = EMAIL_SERVICE_ID;
-  templateId = EMAIL_TEMPLATE_ID;
-  publicKey = EMAIL_PUBLIC_KEY;
+  serviceId = 'service_63wgkmk';
+  templateId = 'template_uc8db2m';
+  publicKey = 'GK1xXRxQ4cjSlxpzi';
   formState: OrderStateType = OrderStateInitial;
   sendEmailLoading = false;
   responseText = null;
@@ -96,7 +95,6 @@ export class TimeBioticStore {
     runInAction(() => {
       this.sendEmailLoading = true;
     });
-    console.log('this.templateId', this.templateId);
 
     const emailData: EmailDataType = {
       service_id: this.serviceId,
@@ -127,7 +125,6 @@ export class TimeBioticStore {
               'Successfully sended, we will contact with you soon';
             this.sendEmailLoading = false;
           });
-          console.log('response', response);
 
           callBack();
           this.clearState();
