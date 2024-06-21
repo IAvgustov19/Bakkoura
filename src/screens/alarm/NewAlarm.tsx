@@ -25,7 +25,6 @@ const NewAlarmScreen = () => {
   const [vibration, setVibation] = useState(true);
 
   const {
-    onRepeatItemPress,
     onSoundItemPress,
     weekRepeatData,
     soundData,
@@ -63,8 +62,14 @@ const NewAlarmScreen = () => {
               <RN.View style={styles.listsBox}>
                 <ListItemCont
                   title="Repeat"
-                  value={selectedRepeat.title}
-                  onPress={() => setRepeat(e => !e)}
+                  value={
+                    selectedRepeat.join().length > 20
+                      ? selectedRepeat.join().slice(0, 20) + '...'
+                      : selectedRepeat.join()
+                  }
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.REPEAT_TYPE_SCREEN as never)
+                  }
                 />
                 <Line />
                 <ListItemCont
@@ -98,19 +103,6 @@ const NewAlarmScreen = () => {
               onPress={CreateAlarm}
             />
           </RN.View>
-          <SoundsContent
-            headerTitle="Repeat"
-            data={weekRepeatData}
-            onItemPress={onRepeatItemPress as never}
-            headerLeftItem={
-              <ArrowLeftBack onPress={() => setRepeat(e => !e)} title="Back" />
-            }
-            onClose={() => setRepeat(e => !e)}
-            modalVisible={repeat}
-            okBtn
-            okBtnText="Ok"
-            onPressBtn={() => setRepeat(e => !e)}
-          />
           <SoundsContent
             headerTitle="Sound"
             data={soundData}

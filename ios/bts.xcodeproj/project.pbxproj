@@ -16,6 +16,12 @@
 		C403864697A0DDBCA053A527 /* Pods_bts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 609E66C466114321B7595ACC /* Pods_bts.framework */; };
 		DC7F68E02BF7279B0030D166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */; };
 		DC7F68E12BF7279B0030D166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */; };
+		DCE784DC2C22B85000FCBA65 /* ringtone2.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D62C22B85000FCBA65 /* ringtone2.wav */; };
+		DCE784DD2C22B85000FCBA65 /* ringtone5.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D72C22B85000FCBA65 /* ringtone5.wav */; };
+		DCE784DE2C22B85000FCBA65 /* ringtone4.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D82C22B85000FCBA65 /* ringtone4.wav */; };
+		DCE784DF2C22B85000FCBA65 /* ringtone6.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D92C22B85000FCBA65 /* ringtone6.wav */; };
+		DCE784E02C22B85000FCBA65 /* ringtone3.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784DA2C22B85000FCBA65 /* ringtone3.wav */; };
+		DCE784E12C22B85000FCBA65 /* ringtone1.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784DB2C22B85000FCBA65 /* ringtone1.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +51,12 @@
 		D1C4EA674FD0BDF008E3150B /* Pods_bts_btsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bts_btsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D45101A34A39638986C0ACB4 /* Pods-bts-btsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts-btsTests.debug.xcconfig"; path = "Target Support Files/Pods-bts-btsTests/Pods-bts-btsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DCE784D62C22B85000FCBA65 /* ringtone2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone2.wav; path = ../src/assets/sounds/ringtone2.wav; sourceTree = "<group>"; };
+		DCE784D72C22B85000FCBA65 /* ringtone5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone5.wav; path = ../src/assets/sounds/ringtone5.wav; sourceTree = "<group>"; };
+		DCE784D82C22B85000FCBA65 /* ringtone4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone4.wav; path = ../src/assets/sounds/ringtone4.wav; sourceTree = "<group>"; };
+		DCE784D92C22B85000FCBA65 /* ringtone6.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone6.wav; path = ../src/assets/sounds/ringtone6.wav; sourceTree = "<group>"; };
+		DCE784DA2C22B85000FCBA65 /* ringtone3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone3.wav; path = ../src/assets/sounds/ringtone3.wav; sourceTree = "<group>"; };
+		DCE784DB2C22B85000FCBA65 /* ringtone1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone1.wav; path = ../src/assets/sounds/ringtone1.wav; sourceTree = "<group>"; };
 		EA72995B903A275CFBECADC9 /* Pods-bts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts.release.xcconfig"; path = "Target Support Files/Pods-bts/Pods-bts.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -120,6 +132,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				DCE784DB2C22B85000FCBA65 /* ringtone1.wav */,
+				DCE784D62C22B85000FCBA65 /* ringtone2.wav */,
+				DCE784DA2C22B85000FCBA65 /* ringtone3.wav */,
+				DCE784D82C22B85000FCBA65 /* ringtone4.wav */,
+				DCE784D72C22B85000FCBA65 /* ringtone5.wav */,
+				DCE784D92C22B85000FCBA65 /* ringtone6.wav */,
 				13B07FAE1A68108700A75B9A /* bts */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* btsTests */,
@@ -248,6 +266,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCE784DC2C22B85000FCBA65 /* ringtone2.wav in Resources */,
+				DCE784DD2C22B85000FCBA65 /* ringtone5.wav in Resources */,
+				DCE784DE2C22B85000FCBA65 /* ringtone4.wav in Resources */,
+				DCE784DF2C22B85000FCBA65 /* ringtone6.wav in Resources */,
+				DCE784E02C22B85000FCBA65 /* ringtone3.wav in Resources */,
+				DCE784E12C22B85000FCBA65 /* ringtone1.wav in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DC7F68E02BF7279B0030D166 /* GoogleService-Info.plist in Resources */,

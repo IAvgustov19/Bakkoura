@@ -1,34 +1,22 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {getCurrentTime, secondsToHMS} from '../../helper/helper';
+import {secondsToHMS} from '../../helper/helper';
 import {SoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
 import Sound from 'react-native-sound';
-import {TimerNotification} from '../../notification/Notification';
-import {Sounds} from '../../assets';
 import BackgroundTimer from 'react-native-background-timer';
+import {TimerValueInitial, TimerValueType} from '../../types/alarm';
+import PushNotification, {Importance} from 'react-native-push-notification';
+import {Platform} from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 Sound.setCategory('Playback');
 
-type firstTimerValueType = {
-  hours: number;
-  minut: number;
-  second: number;
-  time: string;
-};
-
-type secondTimerValueType = {
-  hours: number;
-  minut: number;
-  second: number;
-  time: string;
-};
-
-const TimerValueInitial = {
-  hours: 0,
-  minut: 0,
-  second: 0,
-  time: '00:00:00',
-};
+PushNotification.configure({
+  onNotification: function (notification) {
+    console.log('Notification received:', notification);
+  },
+  requestPermissions: Platform.OS === 'ios',
+});
 
 export class TimerStore {
   private readonly root: RootStore;
@@ -71,14 +59,70 @@ export class TimerStore {
 
   totalDurationSeconds = 0;
 
-  firstTimerValue: secondTimerValueType = TimerValueInitial;
+  firstTimerValue: TimerValueType = TimerValueInitial;
 
-  firstTimerTime: secondTimerValueType = TimerValueInitial;
+  firstTimerTime: TimerValueType = TimerValueInitial;
 
-  secondTimerValue: secondTimerValueType = TimerValueInitial;
-  secondTimerTime: secondTimerValueType = TimerValueInitial;
+  secondTimerValue: TimerValueType = TimerValueInitial;
+  secondTimerTime: TimerValueType = TimerValueInitial;
 
-  getFinishedTime = (timerValue: firstTimerValueType) => {
+  soundState: Sound;
+
+  timerChannelId: string;
+
+  // setupNotifications = () => {
+  //   // Request permission to display notifications
+  //   PushNotificationIOS.requestPermissions();
+
+  //   // Define notification categories
+  //   PushNotificationIOS.setNotificationCategories([
+  //     {
+  //       id: 'userAction',
+  //       actions: [
+  //         {id: 'open', title: 'Open', options: {foreground: true}},
+  //         {
+  //           id: 'ignore',
+  //           title: 'Disruptive',
+  //           options: {foreground: true, destructive: true},
+  //         },
+  //         {
+  //           id: 'text',
+  //           title: 'Text Input',
+  //           options: {foreground: true},
+  //           textInput: {buttonTitle: 'Send'},
+  //         },
+  //       ],
+  //     },
+  //   ]);
+  // };
+
+  createTimerChannels = () => {
+    this.timerChannelId = String(Date.now());
+    PushNotification.createChannel(
+      {
+        channelId: this.timerChannelId,
+        channelName: 'Timer Channel',
+        playSound: true,
+        soundName: this.selectedSound.url,
+        importance: Importance.HIGH,
+      },
+      () => {},
+    );
+  };
+
+  TimerNotification = () => {
+    this.createTimerChannels();
+    PushNotification.localNotification({
+      channelId: this.timerChannelId,
+      title: 'BTS',
+      message: 'Timer',
+      soundName: this.selectedSound.url,
+      playSound: true,
+      autoCancel: false,
+    });
+  };
+
+  getFinishedTime = (timerValue: TimerValueType) => {
     const now: Date = new Date();
     let hours: number = now.getHours();
     let minutes: number = now.getMinutes();
@@ -114,16 +158,16 @@ export class TimerStore {
   };
 
   playSound = (soundName: string) => {
-    const sound = new Sound(soundName, error => {
+    this.soundState = new Sound(soundName, error => {
       if (error) {
         console.log('error', error);
         return;
       }
-      sound.play(success => {
+      this.soundState.play(success => {
         if (!success) {
           console.log('no work');
         }
-        sound.release();
+        this.soundState.release();
       });
     });
   };
@@ -134,58 +178,58 @@ export class TimerStore {
     });
   };
 
-  setFirstTimer = (key: keyof firstTimerValueType, value: any) => {
+  setFirstTimer = (key: keyof TimerValueType, value: any) => {
     this.firstTimerValue[key] = value as never;
   };
 
   setAllTime = () => {
-    this.firstTimerValue.time = secondsToHMS(
-      this.firstTimerValue.hours * 3600 +
+    runInAction(() => {
+      const firstimerValueSeconds =
+        this.firstTimerValue.hours * 3600 +
         this.firstTimerValue.minut * 60 +
-        this.firstTimerValue.second,
-    );
-    this.firstTimerTime.time = secondsToHMS(
-      this.firstTimerTime.hours * 3600 +
+        this.firstTimerValue.second;
+      //
+      this.firstTimerValue.time = secondsToHMS(firstimerValueSeconds);
+      this.firstTimerValue.totalSeconds = firstimerValueSeconds;
+      //
+      const firstimerTimeSeconds =
+        this.firstTimerTime.hours * 3600 +
         this.firstTimerTime.minut * 60 +
-        this.firstTimerTime.second,
-    );
-    this.secondTimerValue.time = secondsToHMS(
-      this.secondTimerValue.hours * 3600 +
+        this.firstTimerTime.second;
+      this.firstTimerTime.time = secondsToHMS(firstimerTimeSeconds);
+      this.firstTimerTime.totalSeconds = firstimerTimeSeconds;
+      //
+      const secondTimerValueSeconds =
+        this.secondTimerValue.hours * 3600 +
         this.secondTimerValue.minut * 60 +
-        this.secondTimerValue.second,
-    );
-    this.secondTimerTime.time = secondsToHMS(
-      this.secondTimerTime.hours * 3600 +
+        this.secondTimerValue.second;
+      this.secondTimerValue.time = secondsToHMS(secondTimerValueSeconds);
+      this.secondTimerValue.totalSeconds = secondTimerValueSeconds;
+      //
+      const secondTimerTimeSeconds =
+        this.secondTimerTime.hours * 3600 +
         this.secondTimerTime.minut * 60 +
-        this.secondTimerTime.second,
-    );
+        this.secondTimerTime.second;
+      this.secondTimerTime.time = secondsToHMS(secondTimerTimeSeconds);
+      this.secondTimerTime.totalSeconds = secondTimerTimeSeconds;
+    });
   };
 
   startFirstDecreaseTimer = () => {
     this.updateCurrentTime(this.getFinishedTime(this.firstTimerValue));
     this.firstDecreaseInterval = BackgroundTimer.setInterval(() => {
       runInAction(() => {
-        if (this.firstTimerValue.second > 0) {
-          this.firstTimerValue.second--;
+        if (this.firstTimerValue.totalSeconds > 0) {
+          this.firstTimerValue.totalSeconds--;
         } else {
-          if (this.firstTimerValue.minut > 0) {
-            this.firstTimerValue.minut--;
-            this.firstTimerValue.second = 59;
-          } else {
-            if (this.firstTimerValue.hours > 0) {
-              this.firstTimerValue.hours--;
-              this.firstTimerValue.minut = 59;
-              this.firstTimerValue.second = 59;
-            } else {
-              BackgroundTimer.clearInterval(this.firstDecreaseInterval);
-              this.active('finished');
-              this.inActive('start');
-              this.playSound(Sounds.ringtone1);
-              TimerNotification('BTS', 'Timer', Sounds.ringtone1);
-            }
-          }
+          BackgroundTimer.clearInterval(this.firstDecreaseInterval);
+          this.active('finished');
+          this.inActive('start');
+          this.TimerNotification();
         }
-        this.setAllTime();
+        this.firstTimerValue.time = secondsToHMS(
+          this.firstTimerValue.totalSeconds,
+        );
       });
     }, 1000);
   };
@@ -195,33 +239,18 @@ export class TimerStore {
     this.firstIncreaseInterval = BackgroundTimer.setInterval(() => {
       runInAction(() => {
         if (
-          this.firstTimerTime.hours < this.firstTimerValue.hours ||
-          (this.firstTimerTime.hours === this.firstTimerValue.hours &&
-            this.firstTimerTime.minut < this.firstTimerValue.minut) ||
-          (this.firstTimerTime.hours === this.firstTimerValue.hours &&
-            this.firstTimerTime.minut === this.firstTimerValue.minut &&
-            this.firstTimerTime.second < this.firstTimerValue.second)
+          this.firstTimerTime.totalSeconds < this.firstTimerValue.totalSeconds
         ) {
-          this.firstTimerTime.second++;
-          if (this.firstTimerTime.second >= 60) {
-            this.firstTimerTime.second = 0;
-            this.firstTimerTime.minut++;
-            if (this.firstTimerTime.minut >= 60) {
-              this.firstTimerTime.minut = 0;
-              this.firstTimerTime.hours++;
-              if (this.firstTimerTime.hours >= 24) {
-                BackgroundTimer.clearInterval(this.firstIncreaseInterval);
-                this.active('finished');
-                this.inActive('start');
-              }
-            }
-          }
+          this.firstTimerTime.totalSeconds++;
         } else {
           BackgroundTimer.clearInterval(this.firstIncreaseInterval);
           this.active('finished');
           this.inActive('start');
+          this.TimerNotification();
         }
-        this.setAllTime();
+        this.firstTimerTime.time = secondsToHMS(
+          this.firstTimerTime.totalSeconds,
+        );
       });
       BackgroundTimer.clearInterval(this.firstDecreaseInterval);
     }, 1000);
@@ -234,11 +263,7 @@ export class TimerStore {
       BackgroundTimer.clearInterval(this.firstIncreaseInterval);
       this.firstIsRunning = false;
       this.inActive('start');
-    } else if (
-      this.firstTimerValue.hours ||
-      this.firstTimerValue.minut ||
-      this.firstTimerValue.second > 0
-    ) {
+    } else if (this.firstTimerValue.totalSeconds > 0) {
       this.active('start');
       this.active('reset');
       this.inActive('stop');
@@ -251,7 +276,7 @@ export class TimerStore {
     } else return;
   };
 
-  setSecondTimer = (key: keyof secondTimerValueType, value: any) => {
+  setSecondTimer = (key: keyof TimerValueType, value: any) => {
     this.secondTimerValue[key] = value as never;
     this.setAllTime();
   };
@@ -261,27 +286,19 @@ export class TimerStore {
     this.secondDecreaseInterval = BackgroundTimer.setInterval(() => {
       this.calculatePercentage();
       runInAction(() => {
-        if (this.secondTimerValue.second > 0) {
-          this.secondTimerValue.second--;
+        if (this.secondTimerValue.totalSeconds > 0) {
+          this.secondTimerValue.totalSeconds--;
         } else {
-          if (this.secondTimerValue.minut > 0) {
-            this.secondTimerValue.minut--;
-            this.secondTimerValue.second = 59;
-          } else {
-            if (this.secondTimerValue.hours > 0) {
-              this.secondTimerValue.hours--;
-              this.secondTimerValue.minut = 59;
-              this.secondTimerValue.second = 59;
-            } else {
-              BackgroundTimer.clearInterval(this.secondDecreaseInterval);
-              this.active('finished');
-              this.inActive('start');
-              this.totalDurationSeconds = 0;
-              this.percentage = 100;
-            }
-          }
+          BackgroundTimer.clearInterval(this.secondDecreaseInterval);
+          this.active('finished');
+          this.inActive('start');
+          this.TimerNotification();
+          this.totalDurationSeconds = 0;
+          this.percentage = 100;
         }
-        this.setAllTime();
+        this.secondTimerValue.time = secondsToHMS(
+          this.secondTimerValue.totalSeconds,
+        );
       });
     }, 1000);
   };
@@ -292,33 +309,18 @@ export class TimerStore {
       this.calculateIncreasePercentage();
       runInAction(() => {
         if (
-          this.secondTimerTime.hours < this.secondTimerValue.hours ||
-          (this.secondTimerTime.hours === this.secondTimerValue.hours &&
-            this.secondTimerTime.minut < this.secondTimerValue.minut) ||
-          (this.secondTimerTime.hours === this.secondTimerValue.hours &&
-            this.secondTimerTime.minut === this.secondTimerValue.minut &&
-            this.secondTimerTime.second < this.secondTimerValue.second)
+          this.secondTimerTime.totalSeconds < this.secondTimerValue.totalSeconds
         ) {
-          this.secondTimerTime.second++;
-          if (this.secondTimerTime.second >= 60) {
-            this.secondTimerTime.second = 0;
-            this.secondTimerTime.minut++;
-            if (this.secondTimerTime.minut >= 60) {
-              this.secondTimerTime.minut = 0;
-              this.secondTimerTime.hours++;
-              if (this.secondTimerTime.hours >= 24) {
-                BackgroundTimer.clearInterval(this.secondIncreaseInterval);
-                this.active('finished');
-                this.inActive('start');
-              }
-            }
-          }
+          this.secondTimerTime.totalSeconds++;
         } else {
           BackgroundTimer.clearInterval(this.secondIncreaseInterval);
           this.active('finished');
           this.inActive('start');
+          this.TimerNotification();
         }
-        this.setAllTime();
+        this.secondTimerTime.time = secondsToHMS(
+          this.secondTimerTime.totalSeconds,
+        );
       });
       BackgroundTimer.clearInterval(this.secondDecreaseInterval);
     }, 1000);
@@ -334,11 +336,7 @@ export class TimerStore {
         BackgroundTimer.clearInterval(this.secondIncreaseInterval);
         this.secondIsRunning = false;
         this.inActive('start');
-      } else if (
-        this.secondTimerValue.hours ||
-        this.secondTimerValue.minut ||
-        this.secondTimerValue.second > 0
-      ) {
+      } else if (this.secondTimerValue.totalSeconds > 0) {
         // this.calculateRemainingTime();
         this.active('start');
         this.active('reset');
@@ -356,10 +354,7 @@ export class TimerStore {
   };
 
   calculatePercentage = () => {
-    const totalSeconds =
-      this.secondTimerValue.hours * 3600 +
-      this.secondTimerValue.minut * 60 +
-      this.secondTimerValue.second;
+    const totalSeconds = this.secondTimerValue.totalSeconds;
 
     if (this.totalDurationSeconds === 0) {
       this.totalDurationSeconds = totalSeconds;
@@ -372,14 +367,8 @@ export class TimerStore {
   };
 
   calculateIncreasePercentage() {
-    const totalSeconds =
-      this.secondTimerValue.hours * 3600 +
-      this.secondTimerValue.minut * 60 +
-      this.secondTimerValue.second;
-    const increaseSecond =
-      this.secondTimerTime.hours * 3600 +
-      this.secondTimerTime.minut * 60 +
-      this.secondTimerTime.second;
+    const totalSeconds = this.secondTimerValue.totalSeconds;
+    const increaseSecond = this.secondTimerTime.totalSeconds;
 
     const decreasePercentage = 100 / (totalSeconds / increaseSecond);
 
@@ -433,7 +422,7 @@ export class TimerStore {
     });
   };
 
-  selectedSound = {title: 'Ocean'};
+  selectedSound = SoundsData[2];
   soundsData = SoundsData;
 
   onSelectSound = (index: number) => {
