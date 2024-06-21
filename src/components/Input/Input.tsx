@@ -84,6 +84,7 @@ const Input: React.FC<Props> = ({
             placeholderTextColor={COLORS.grey}
             textAlignVertical={textAlignVertical}
             maxLength={maxLenght}
+            keyboardType={keyBoardType}
             style={[
               styles.input,
               {
@@ -107,6 +108,7 @@ const Input: React.FC<Props> = ({
           ) : null}
         </RN.View>
       </RN.TouchableWithoutFeedback>
+      {err ? <RN.Text style={styles.err}>{err}</RN.Text> : null}
     </RN.View>
   );
 };
