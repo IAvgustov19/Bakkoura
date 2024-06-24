@@ -316,7 +316,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
-    height: 50,
+    paddingVertical: 2,
   },
   tasksText: {
     fontSize: 16,

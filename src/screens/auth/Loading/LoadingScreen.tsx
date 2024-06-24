@@ -4,11 +4,12 @@ import * as Progress from 'react-native-progress';
 import { windowHeight } from '../../../utils/styles';
 import { COLORS } from '../../../utils/colors';
 import RN from '../../../components/RN';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 
 interface Props {
     loading: boolean;
+    color?:ViewStyle;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -17,7 +18,7 @@ const LoadingScreen: React.FC<Props> = ({
     setLoading,
 }) => {
     return (
-        <View>
+        <View> 
             {loading && (
                 <View style={styles.overlay}>
                     <Progress.Circle size={50} indeterminate={true} color={'#FFFFFF'} />
@@ -36,7 +37,7 @@ const styles = RN.StyleSheet.create({
         position: 'absolute',
         height: windowHeight,
         alignItems: 'center',
-        backgroundColor: 'transparent',
+        // backgroundColor: 'transparent',
         zIndex: 1000,
         justifyContent: 'center',
     },
