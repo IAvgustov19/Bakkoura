@@ -121,23 +121,6 @@ const BottomTabNavigation: FC = () => {
   };
 
 
-
-  // if (!isAuthenticated) {
-  //   return (
-  //     <RN.View>
-  //       {authType === 'Password' && (
-  //         <PasswordPrompt
-  //           isVisible={isPromptVisible}
-  //           onSubmit={handleSubmitPassword}
-  //         />
-  //       )}
-  //       {authType === 'FingerPrint' && (
-  //         <FingerprintAuth onAuthenticationSuccess={handleAuthenticationSuccess} />
-  //       )}
-  //     </RN.View>
-  //   );
-  // }
-
   return (
     <>
     {!isAuthenticated ? (
