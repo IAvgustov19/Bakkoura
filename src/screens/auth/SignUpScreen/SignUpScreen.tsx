@@ -1,65 +1,71 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-import { StyleSheet, View, TouchableOpacity, Alert, Platform, TextInput, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Alert,
+  Platform,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import reactNativeBcrypt from 'react-native-bcrypt';
-import { Images } from '../../../assets';
+import {Images} from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
-import { KeyboardAvoidingView } from '../../../components/KeyboardAvoidingView';
+import {KeyboardAvoidingView} from '../../../components/KeyboardAvoidingView';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
-import { APP_ROUTES } from '../../../navigation/routes';
+import {APP_ROUTES} from '../../../navigation/routes';
 import authh from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
 import CustomDropdown from '../../timeBiotic/components/CustomSelect';
 
-import { windowHeight } from '../../../utils/styles';
+import {windowHeight} from '../../../utils/styles';
 import GiveImage from '../../../components/GiveImage/GiveImage';
 import LoadingScreen from '../Loading/LoadingScreen';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import SignUpForm from './components/SignUpForm';
-import { COLORS } from '../../../utils/colors';
+import {COLORS} from '../../../utils/colors';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
-type ISelect = { label: string; value: string; };
+type ISelect = {label: string; value: string};
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-  const { setAuthorized } = useRootStore().authStore;
+  const {setAuthorized} = useRootStore().authStore;
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [country, setCountry] = useState<ISelect>({ label: '', value: '' });
-  const inputRefs = useRef<{ [key: string]: TextInput }>({
+  const [country, setCountry] = useState<ISelect>({label: '', value: ''});
+  const inputRefs = useRef<{[key: string]: TextInput}>({
     name: null,
     username: null,
     email: null,
     password: null,
   });
 
-  const { newUser, clearNewUserState, clearLoginUseState, setNewUser } =
+  const {newUser, clearNewUserState, clearLoginUseState, setNewUser} =
     useRootStore().authStore;
 
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState([]);
   const options = [
-    { label: 'OAE', value: 'OAE' },
-    { label: 'USA', value: 'USA' },
-    { label: 'UK', value: 'UK' },
+    {label: 'OAE', value: 'OAE'},
+    {label: 'USA', value: 'USA'},
+    {label: 'UK', value: 'UK'},
   ];
 
   const onSelect = (option: ISelect) => {
-    setCountry({ value: option.value, label: option.value })
-  }
-
-
+    setCountry({value: option.value, label: option.value});
+  };
 
   useEffect(() => {
     // const unsubscribe = firestore()
@@ -71,10 +77,8 @@ const SignUpScreen = () => {
     //     }));
     //     setUsers(usersData);
     //   });
-
     // return () => unsubscribe();
   }, []);
-
 
   const signUp = async () => {
     if (newUser.email && newUser.password) {
@@ -114,9 +118,17 @@ const SignUpScreen = () => {
         }
 
         if (!user.emailVerified) {
-          Alert.alert('Verify your email', 'Press OK to go to the sign-in page', [
-            { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
-          ]);
+          Alert.alert(
+            'Verify your email',
+            'Press OK to go to the sign-in page',
+            [
+              {
+                text: 'OK',
+                onPress: () =>
+                  navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never),
+              },
+            ],
+          );
         } else {
           navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never);
         }
@@ -125,16 +137,22 @@ const SignUpScreen = () => {
       } catch (error) {
         switch (error.code) {
           case 'auth/weak-password':
-            Alert.alert("Password is too weak. Please enter a stronger password.");
+            Alert.alert(
+              'Password is too weak. Please enter a stronger password.',
+            );
             break;
           case 'auth/invalid-email':
-            Alert.alert("Email address is badly formatted. Please enter a valid email.");
+            Alert.alert(
+              'Email address is badly formatted. Please enter a valid email.',
+            );
             break;
           case 'auth/email-already-in-use':
-            Alert.alert("The email address is already in use by another account.");
+            Alert.alert(
+              'The email address is already in use by another account.',
+            );
             break;
           default:
-            Alert.alert("Sign-up error:", error.message);
+            Alert.alert('Sign-up error:', error.message);
         }
         clearNewUserState();
         clearLoginUseState();
@@ -145,8 +163,6 @@ const SignUpScreen = () => {
       Alert.alert('Please fill out all fields');
     }
   };
-
-
 
   const scrollViewRef = useRef(null);
 
@@ -159,58 +175,65 @@ const SignUpScreen = () => {
     }
   };
 
-
   return (
     <>
       <LinearContainer
         children={
           <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-          >
-          <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
-            rightItem={
-              <LanguageBtn
-              value={newUser?.language}
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-              }
-              />
-            }
-          />
-          <RN.ScrollView
-            ref={scrollViewRef}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}>
-            <RN.View style={styles.content}>
-            <LoadingScreen loading={loading} setLoading={setLoading} />
-              <TextView title="Sign up" textAlign="center" />
-              <SignUpForm bottomInputPress={Scroll} options={options} onSelect={() => onSelect} />
-              <RN.View style={styles.signUpBtn}>
-                <ButtonComp
-                  onPress={signUp}
-                  title={'Sign Up'}
-                  icon={
-                    loading ? (
-                      <ActivityIndicator
-                        color={COLORS.black}
-                        style={{ marginTop: 3 }}
-                      />
-                    ) : null
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+            <HeaderContent
+              leftItem={<Images.Svg.btsRightLinear />}
+              rightItem={
+                <LanguageBtn
+                  value={newUser?.language}
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                   }
                 />
+              }
+            />
+            <RN.ScrollView
+              ref={scrollViewRef}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}>
+              <RN.View style={styles.content}>
+                <LoadingScreen loading={loading} setLoading={setLoading} />
+                <TextView title="Sign up" textAlign="center" />
+                <SignUpForm
+                  bottomInputPress={Scroll}
+                  options={options}
+                  onSelect={() => onSelect}
+                />
+                <RN.View style={styles.signUpBtn}>
+                  <ButtonComp
+                    onPress={signUp}
+                    title={'Sign Up'}
+                    icon={
+                      loading ? (
+                        <ActivityIndicator
+                          color={COLORS.black}
+                          style={{marginTop: 3}}
+                        />
+                      ) : null
+                    }
+                  />
+                </RN.View>
               </RN.View>
-            </RN.View>
-          </RN.ScrollView>
-          <View style={styles.needAcc}>
-            <TextView text="Already have an Account?" />
-            <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)}>
-              <TextView style={styles.signUpText} text="Sign In" />
-            </RN.TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>} />
+            </RN.ScrollView>
+            <View style={styles.needAcc}>
+              <TextView text="Already have an Account?" />
+              <RN.TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
+                }>
+                <TextView style={styles.signUpText} text="Sign In" />
+              </RN.TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        }
+      />
     </>
   );
 };

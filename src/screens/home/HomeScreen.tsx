@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Images } from '../../assets';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -9,30 +9,35 @@ import HomeWatch24 from './components/HomeWatch24';
 import HomeWatch30 from './components/HomeWatch30';
 import HomeWatch30h24h from './components/HomeWatch30and24';
 import useRootStore from '../../hooks/useRootStore';
-import { observer } from 'mobx-react-lite';
-import { windowHeight } from '../../utils/styles';
-import auth from '@react-native-firebase/auth';
+import {db} from '../../config/firebase';
+import {observer} from 'mobx-react-lite';
+import {windowHeight} from '../../utils/styles';
+import {useNavigation} from '@react-navigation/native';
+import {APP_ROUTES} from '../../navigation/routes';
 import TodayEvent from './components/TodayEvent';
-import { APP_ROUTES } from '../../navigation/routes';
-import { useNavigation } from '@react-navigation/native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert, Button, PermissionsAndroid, Text } from 'react-native';
-import Notifications from '../../notification/localPush';
-import { db } from '../../config/firebase';
+
+import {ActivityIndicator, Text} from 'react-native';
+import {COLORS} from '../../utils/colors';
+import TextView from '../../components/Text/Text';
 
 const HomeScreen = () => {
-
-  const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
-  const { getPersonalState } = useRootStore().personalAreaStore;
-  const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
+  const {whichWatch, homeCurrentTime} = useRootStore().homeClockStore;
+  const {getPersonalState} = useRootStore().personalAreaStore;
+  const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
   const navigation = useNavigation();
-
+  const {personalAreaData, updateLoading} = useRootStore().personalAreaStore;
   const [userData, setUserData] = useState(null);
 
-  const fetchUserData = async (uid) => {
+  const fetchUserData = async uid => {
     try {
-      const userDoc = await db.collection('etaps').where('uid', '==', uid).get();
+      const userDoc = await db
+        .collection('etaps')
+        .where('uid', '==', uid)
+        .get();
       if (userDoc) {
         const repeatArray = userDoc.docs.map(doc => doc.data());
         setUserData(repeatArray);
@@ -51,10 +56,11 @@ const HomeScreen = () => {
     fetchUserData(currentUser.uid);
   }, []);
 
+  const [avatarLoading, setAvatarLoading] = useState(true);
+
   useEffect(() => {
     getPersonalState();
     filterNearDay();
-
   }, []);
 
   const logOut = async () => {
@@ -87,29 +93,53 @@ const HomeScreen = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          {/* <Button title='click' onPress={() => handleScheduleNotification()} /> */}
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             title="Home"
             rightItem={
               <RN.View style={styles.profile}>
                 <RN.TouchableOpacity
-                  onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never)}>
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.MESSENGER as never)
+                  }>
                   <Images.Svg.messageIcon />
                 </RN.TouchableOpacity>
                 <RN.TouchableOpacity
-                  onPress={() => navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)}>
-                  <Images.Svg.userIcon />
+                  style={{alignItems: 'center'}}
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)
+                  }>
+                  {personalAreaData?.avatar ? (
+                    <RN.View style={styles.imageContainer}>
+                      <Images.Svg.profileBackground width={55} height={55} />
+                      <RN.Image
+                        source={{uri: personalAreaData.avatar}}
+                        style={styles.profileImg}
+                        onLoadEnd={() => setAvatarLoading(false)}
+                      />
+                      {avatarLoading || updateLoading ? (
+                        <RN.View style={styles.loadingBox}>
+                          <ActivityIndicator
+                            color={COLORS.black}
+                            style={{marginTop: 3}}
+                          />
+                        </RN.View>
+                      ) : null}
+                    </RN.View>
+                  ) : (
+                    <Images.Svg.userIcon width={50} height={50} />
+                  )}
                 </RN.TouchableOpacity>
               </RN.View>
             }
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.watchBox}>
-              <Text>Jihad, Message to You!</Text>
-              <Text style={styles.title}>
-                Today is your day! Do something good!
-              </Text>
+              <TextView text={'Jihad, Message to You!'} />
+              <TextView
+                style={styles.title}
+                title={'Today is your day! Do something good!'}
+              />
               <RN.View>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
                 <TodayEvent
@@ -135,7 +165,6 @@ const HomeScreen = () => {
       }
     />
   );
-
 };
 
 export default observer(HomeScreen);
@@ -169,5 +198,23 @@ const styles = RN.StyleSheet.create({
   watchSwitch: {
     alignItems: 'center',
     top: -windowHeight / 20,
+  },
+  imageContainer: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingBox: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 3,
+  },
+  profileImg: {
+    width: 45,
+    height: 45,
+    borderRadius: 22,
+    position: 'absolute',
+    zIndex: 2,
   },
 });
