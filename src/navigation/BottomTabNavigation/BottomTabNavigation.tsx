@@ -129,7 +129,8 @@ const BottomTabNavigation: FC = () => {
     setPromptVisible(false);
   };
 
- return (
+
+  return (
     <>
     {!isAuthenticated ? (
       <RN.View>
