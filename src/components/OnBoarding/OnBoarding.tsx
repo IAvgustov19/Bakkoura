@@ -36,7 +36,7 @@ const OnBoarding = () => {
   return (
     <>
       {
-        !auth().currentUser ?
+        auth().currentUser ?
           <LinearGradient colors={['#485661', '#090A0A']} style={{ width: '100%', height: '100%' }}>
             <LoadingScreen loading={loading} setLoading={setLoading} />
           </LinearGradient>
