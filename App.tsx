@@ -5,13 +5,11 @@
  * @format
  */
 
-import React from 'react';
+import {observer} from 'mobx-react-lite';
 import RN from './src/components/RN';
 import AppNavigator from './src/navigation/AppNavigator';
 
-
 const App = () => {
-
   return (
     <>
       <RN.StatusBar
@@ -25,4 +23,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);

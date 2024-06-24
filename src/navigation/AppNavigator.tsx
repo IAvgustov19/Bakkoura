@@ -69,6 +69,7 @@ import Wallpapers from '../screens/timeBiotic/Wallpapers';
 import auth from '@react-native-firebase/auth';
 import PasswordPrompt from '../screens/home/secureEntry/passwordAuth';
 import FingerprintAuth from '../screens/home/secureEntry/fingerprintAuth';
+import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 
 const Stack = createStackNavigator();
 
@@ -528,27 +529,31 @@ const AppNavigator = () => {
           }}
         />
 
-
-
+        <Stack.Screen
+          name={APP_ROUTES.REPEAT_TYPE_SCREEN}
+          component={RepeatTypeScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
       </>
     );
   };
-  console.log(isAuthorized, "isAuthorized");
 
-  return (
-    <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator
-        initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
-        detachInactiveScreens={true}
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-        }}>
-        {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
-        {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+return (
+  <NavigationContainer theme={DarkTheme}>
+    <Stack.Navigator
+      initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
+      detachInactiveScreens={true}
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+      }}>
+      {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
+      {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 };
 
 export default observer(AppNavigator);

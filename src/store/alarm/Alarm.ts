@@ -7,11 +7,9 @@ import {
 import auth from '@react-native-firebase/auth';
 import {makeAutoObservable, runInAction} from 'mobx';
 import {getCurrentTime30and24} from '../../helper/helper';
-import {cancelAllAlarms, scheduleAlarm} from '../../notification/Notification';
-// import {scheduleAlarm} from '../../notification/Notification';
 import {AlarmListsItemInitial, AlarmListsItemType} from '../../types/alarm';
 import {WeekRepeatData} from '../../utils/repeat';
-import {lesSoundsData, SoundsData} from '../../utils/sounds';
+import {lesSoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
 
 export class AlarmStore {
@@ -49,11 +47,13 @@ export class AlarmStore {
 
   createAlarm = async () => {
     const userId = auth().currentUser.uid;
-    console.log(this.alarmItemData);
     this.setNewAlarmState('uid', userId);
+    runInAction(() => {
+      this.setNewAlarmState('id', this.alarmItemData.name + Date.now());
+    });
     if (this.alarmItemData.time) {
       this.alarmsListData = [...this.alarmsListData, this.alarmItemData];
-      scheduleAlarm(this.alarmItemData);
+      await addAlarmToFirestore(this.alarmItemData);
       this.clearAlarmItemData();
     }
   };
@@ -61,7 +61,7 @@ export class AlarmStore {
   setTime = () => {
     const time = `${this.alarmItemData.hours}:${this.alarmItemData.minutes}`;
     this.setNewAlarmState('time', time);
-    this.setNewAlarmState('id', this.alarmsListData.length + 1);
+    this.setNewAlarmState('id', this.alarmItemData.name + Date.now());
   };
 
   handleDeleteAlarm = async (id: number | string) => {
@@ -114,46 +114,46 @@ export class AlarmStore {
     }
   };
 
-  // handleInactiveAlarm = (index: number) => {
-
-  //   runInAction(() => {
-  //     this.alarmsListData = this.alarmsListData.map((item, i) => {
-  //       return i === index
-  //         ? {
-  //           ...item,
-  //           isActive: !item.isActive,
-  //         }
-  //         : item;
-  //     });
-  //   });
-  // };
   clearAlarmItemData = () => {
     runInAction(() => {
       this.alarmItemData = AlarmListsItemInitial;
     });
   };
 
-  selectedSound = {title: AlarmListsItemInitial.sound};
+  selectedSound = lesSoundsData[2];
   soundData = lesSoundsData;
 
-  selectedRepeat = {title: AlarmListsItemInitial.repeat};
+  selectedRepeat = [...this.alarmItemData.repeat];
   weekRepeatData = WeekRepeatData;
 
-  onSelectRepeat = (index: number) => {
+  onSelectRepeat = (type: string) => {
     runInAction(() => {
-      this.selectedRepeat = this.weekRepeatData.find((e, i) => i === index);
-      this.setNewAlarmState('repeat', this.selectedRepeat.title as never);
+      if (this.selectedRepeat.includes(type)) {
+        this.selectedRepeat = this.selectedRepeat.filter(e => e !== type);
+      } else {
+        this.selectedRepeat = [...this.selectedRepeat, type];
+      }
+      if (this.selectedRepeat.length > 1) {
+        this.selectedRepeat = this.selectedRepeat.filter(e => e !== 'Never');
+      }
+      if (type === 'Never') {
+        this.selectedRepeat = ['Never'];
+      }
+      if (this.selectedRepeat.length === 0) {
+        this.selectedRepeat = ['Never'];
+      }
     });
   };
-  onRepeatItemPress = index => {
-    const newData = this.weekRepeatData.map((item, i) => {
-      this.onSelectRepeat(index);
-      return {
-        ...item,
-        active: i === index ? !item.active : false,
-      };
+  onRepeatOkPress = () => {
+    runInAction(() => {
+      this.setNewAlarmState('repeat', this.selectedRepeat);
     });
-    this.weekRepeatData = newData;
+  };
+
+  onRepeatCancelPress = () => {
+    runInAction(() => {
+      this.setNewAlarmState('repeat', this.alarmItemData.repeat);
+    });
   };
 
   onSelectSound = (index: number) => {
