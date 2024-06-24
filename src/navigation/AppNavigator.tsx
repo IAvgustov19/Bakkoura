@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {DarkTheme, NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {APP_ROUTES} from './routes';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { APP_ROUTES } from './routes';
 import BottomTabNavigation from './BottomTabNavigation';
 import OnBoardingScreen from '../screens/onBoarding/OnBoarding';
 import NewEvent from '../screens/calendar/NewEventScreen';
@@ -14,7 +14,7 @@ import SignUpScreen from '../screens/auth/SignUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/auth/RecoverPassword/RecoverPassword';
 import VerificationCodeScreen from '../screens/auth/VerificationCode/VerificationCode';
 import NewPasswordScreen from '../screens/auth/NewPassword/NewPasswordScreen';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import useRootStore from '../hooks/useRootStore';
 import LanguageScreen from '../screens/LanguageScreen/LanguageScreen';
 import StressTestDuring from '../screens/stressTest/StressTestDuring/StressTestDuring';
@@ -31,7 +31,7 @@ import FromDate from '../screens/timeTogether/FromDate';
 import LoverName from '../screens/timeTogether/LoverName';
 import Synchronyze from '../screens/timeTogether/Synchronyze';
 import Thanks from '../screens/timeTogether/Thanks';
-import {Keyboard} from 'react-native';
+import { Keyboard } from 'react-native';
 import CreateSector from '../screens/bakkouraWatch/CreateSector';
 import SectorName from '../screens/bakkouraWatch/SectorName';
 import SectorColor from '../screens/bakkouraWatch/SectorColor';
@@ -66,12 +66,15 @@ import OrderThanks from '../screens/market/components/thanks/Thanks';
 import firestore from '@react-native-firebase/firestore';
 import WatchConstructor from '../screens/watchConstructor/WatchConstructor';
 import Wallpapers from '../screens/timeBiotic/Wallpapers';
+import auth from '@react-native-firebase/auth';
+import PasswordPrompt from '../screens/home/secureEntry/passwordAuth';
+import FingerprintAuth from '../screens/home/secureEntry/fingerprintAuth';
 import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const {getPersonalState} = useRootStore().personalAreaStore;
+  const { getPersonalState } = useRootStore().personalAreaStore;
   const [keyboardStatus, setKeyboardStatus] = React.useState('');
 
   React.useEffect(() => {
@@ -92,7 +95,7 @@ const AppNavigator = () => {
     };
   }, []);
 
-  const {isAuthorized} = useRootStore().authStore;
+  const { isAuthorized } = useRootStore().authStore;
 
   const renderPublicNavigators = () => {
     return (
@@ -146,6 +149,7 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
+
       </>
     );
   };
@@ -524,6 +528,12 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
+
+
+
+      </>
+    );
+  };
         <Stack.Screen
           name={APP_ROUTES.REPEAT_TYPE_SCREEN}
           component={RepeatTypeScreen}
@@ -534,7 +544,6 @@ const AppNavigator = () => {
       </>
     );
   };
-  console.log(isAuthorized, 'isAuthorized');
 
   return (
     <NavigationContainer theme={DarkTheme}>
@@ -545,7 +554,8 @@ const AppNavigator = () => {
           headerShown: false,
           gestureEnabled: false,
         }}>
-        {isAuthorized ? renderPrivateNavigators() : renderPublicNavigators()}
+        {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
+        {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
       </Stack.Navigator>
     </NavigationContainer>
   );

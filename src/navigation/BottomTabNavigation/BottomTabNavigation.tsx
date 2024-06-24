@@ -129,30 +129,26 @@ const BottomTabNavigation: FC = () => {
     setPromptVisible(false);
   };
 
-  return (
+ return (
     <>
-      {!isAuthenticated ? (
-        <RN.View>
-          {authType == 'Password' && (
-            <PasswordPrompt
-              isVisible={isPromptVisible}
-              onSubmit={handleSubmitPassword}
-            />
-          )}
-          {authType == 'FingerPrint' && (
-            <FingerprintAuth
-              onAuthenticationSuccess={handleAuthenticationSuccess}
-            />
-          )}
-        </RN.View>
-      ) : (
-        <Tab.Navigator
-          initialRouteName={initialRouteName.routeName}
-          tabBar={props => <MyTabbar {...props} />}
-          screenOptions={bottomTabBarOptions.options}>
-          {renderTabScreens()}
-        </Tab.Navigator>
-      )}
+    {!isAuthenticated ? (
+      <RN.View>
+        {authType == 'Password' && (
+          <PasswordPrompt
+          isVisible={isPromptVisible}
+            onSubmit={handleSubmitPassword}
+          />
+        )}
+        {authType == 'FingerPrint' && <FingerprintAuth onAuthenticationSuccess={handleAuthenticationSuccess} />}
+      </RN.View>
+    ) : (
+    <Tab.Navigator
+      initialRouteName={initialRouteName.routeName}
+      tabBar={props => <MyTabbar {...props} />}
+      screenOptions={bottomTabBarOptions.options}>
+      {renderTabScreens()}
+    </Tab.Navigator>
+     )}  
     </>
   );
 };
