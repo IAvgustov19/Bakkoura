@@ -20,9 +20,9 @@ export class TimeBioticStore {
     this.getWallpapers();
   }
   emailJs = 'https://api.emailjs.com/api/v1.0/email/send';
-  serviceId = `${process.env.EMAIL_SERVICE_ID}`;
-  templateId = `${process.env.EMAIL_TEMPLATE_ID}`;
-  publicKey = `${process.env.EMAIL_PUBLIC_KEY}`;
+  serviceId = 'service_63wgkmk';
+  templateId = 'template_uc8db2m';
+  publicKey = 'GK1xXRxQ4cjSlxpzi';
   formState: OrderStateType = OrderStateInitial;
   sendEmailLoading = false;
   responseText = null;
@@ -95,6 +95,7 @@ export class TimeBioticStore {
     runInAction(() => {
       this.sendEmailLoading = true;
     });
+
     const emailData: EmailDataType = {
       service_id: this.serviceId,
       template_id: this.templateId,
@@ -124,6 +125,7 @@ export class TimeBioticStore {
               'Successfully sended, we will contact with you soon';
             this.sendEmailLoading = false;
           });
+
           callBack();
           this.clearState();
         }
@@ -132,7 +134,7 @@ export class TimeBioticStore {
           this.sendEmailLoading = false;
           this.responseText = 'Error, something went wrong';
         });
-        // Alert.alert(err);
+        Alert.alert(err);
         console.log('error', err);
       }
     } else {

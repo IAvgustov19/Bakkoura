@@ -11,7 +11,6 @@ import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
 
-
 type Props = {
   title?: string;
   placeholder: string;
@@ -34,7 +33,7 @@ type Props = {
   maxLenght?: number;
   keyBoardType?: KeyboardTypeOptions;
   err?: string;
-  inputRef?: React.Ref<TextInput>; 
+  inputRef?: React.Ref<TextInput>;
 };
 
 const Input: React.FC<Props> = ({
@@ -59,12 +58,14 @@ const Input: React.FC<Props> = ({
   maxLenght,
   keyBoardType,
   err,
-  inputRef
+  inputRef,
 }) => {
   return (
     <RN.View style={styles.container}>
       {title ? <TextView style={styles.title} text={title} /> : null}
-      <RN.TouchableWithoutFeedback onPress={onPressIn} onPressIn={() => inputRef?.current?.focus()}>
+      <RN.TouchableWithoutFeedback
+        onPress={onPressIn}
+        onPressIn={() => inputRef?.current?.focus()}>
         <RN.View
           style={[
             styles.inputBox,
@@ -83,6 +84,7 @@ const Input: React.FC<Props> = ({
             placeholderTextColor={COLORS.grey}
             textAlignVertical={textAlignVertical}
             maxLength={maxLenght}
+            keyboardType={keyBoardType}
             style={[
               styles.input,
               {
@@ -106,6 +108,7 @@ const Input: React.FC<Props> = ({
           ) : null}
         </RN.View>
       </RN.TouchableWithoutFeedback>
+      {err ? <RN.Text style={styles.err}>{err}</RN.Text> : null}
     </RN.View>
   );
 };
