@@ -71,8 +71,8 @@ const BottomTabNavigation: FC = () => {
 
         if (authType === 'Password') {
           setAuthType('Password');
-        } else if (authType === 'FingerPrint') {
-          setAuthType('FingerPrint');
+        } else if (authType === 'Biometry') {
+          setAuthType('Biometry');
         } else {
           setIsAuthenticated(true);
         }
@@ -140,7 +140,7 @@ const BottomTabNavigation: FC = () => {
             onSubmit={handleSubmitPassword}
           />
         )}
-        {authType == 'FingerPrint' && <FingerprintAuth onAuthenticationSuccess={handleAuthenticationSuccess} />}
+        {authType == 'Biometry' && <FingerprintAuth onAuthenticationSuccess={handleAuthenticationSuccess} />}
       </RN.View>
     ) : (
     <Tab.Navigator

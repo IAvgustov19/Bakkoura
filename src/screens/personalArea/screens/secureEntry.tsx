@@ -18,8 +18,13 @@ import {ActivityIndicator} from 'react-native';
 const SecureEntry = () => {
   const navigation = useNavigation();
 
-  const {secureEntries, onSecureEntryItemPress, updateProfile, updateLoading} =
-    useRootStore().personalAreaStore;
+  const {
+    secureEntries, 
+    onSecureEntryItemPress,
+    updateProfile,
+    updateLoading, 
+    personalAreaData
+  } = useRootStore().personalAreaStore;
 
   const updateSecure = () => {
     updateProfile(() => navigation.goBack());
@@ -31,12 +36,12 @@ const SecureEntry = () => {
         <ListItemCont
           rightItem={
             <RadioBtn
-              active={item.active}
+              active={item.title === personalAreaData?.secureEntry}
               onPress={() => onSecureEntryItemPress(index) as never}
             />
           }
           title={
-            <RN.Text color={item.active ? '#fff' : '#7D7D7D'}>
+            <RN.Text color={item.title === personalAreaData?.secureEntry ? '#fff' : '#7D7D7D'}>
               {item.title}
             </RN.Text>
           }

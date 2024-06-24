@@ -171,7 +171,7 @@ const TimeTogether = () => {
     return (
       <LottieContent
         source={Lotties.timeTogether}
-        width={windowWidth}
+        width={windowWidth - 40}
         autoPlay={true}
         speed={1}
       />
@@ -197,8 +197,9 @@ const TimeTogether = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
-                {lottie}
-                {/* <Images.Svg.heartIcon width={windowWidth - 40} /> */}
+                {!(etapList.length == 0) ? lottie :
+                  <Images.Svg.heartIcon width={windowWidth - 40} />
+                }
               </RN.View>
               <RN.View style={styles.coupleInfo}>
                 <TextView
