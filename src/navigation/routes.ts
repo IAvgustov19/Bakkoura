@@ -14,6 +14,11 @@ export enum APP_ROUTES {
   VERIFICATION_CODE = 'VerificationCode',
   NEW_PASSWORD_SCREEN = 'NewPasswordScreen',
 
+  // two step auth
+  FINGERPRINT = 'FingerprintAuth',
+  PASSWORD = 'PasswordPrompt',
+  TWO_STEP = 'TwoStepAuth',
+
   //private
   LANGUAGE_SCREEN = 'LanguageScreen',
   BOTTOM_NAVIGATION = 'AppBottomNavigation',

@@ -121,6 +121,23 @@ const BottomTabNavigation: FC = () => {
   };
 
 
+
+  // if (!isAuthenticated) {
+  //   return (
+  //     <RN.View>
+  //       {authType === 'Password' && (
+  //         <PasswordPrompt
+  //           isVisible={isPromptVisible}
+  //           onSubmit={handleSubmitPassword}
+  //         />
+  //       )}
+  //       {authType === 'FingerPrint' && (
+  //         <FingerprintAuth onAuthenticationSuccess={handleAuthenticationSuccess} />
+  //       )}
+  //     </RN.View>
+  //   );
+  // }
+
   return (
     <>
     {!isAuthenticated ? (
@@ -139,7 +156,8 @@ const BottomTabNavigation: FC = () => {
       tabBar={props => <MyTabbar {...props} />}
       screenOptions={bottomTabBarOptions.options}>
       {renderTabScreens()}
-    </Tab.Navigator>)}
+    </Tab.Navigator>
+     )}  
     </>
   );
 };
