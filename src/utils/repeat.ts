@@ -70,23 +70,13 @@ export const BreakData = [
 export const ControlData = [
   {
     id: 1,
-    title: 'Synchronized',
+    title: 'Start',
     active: false,
   },
   {
     id: 2,
-    title: 'Resynchronized',
-    active: false,
-  },
-  {
-    id: 3,
     title: 'Stopped',
     active: true,
-  },
-  {
-    id: 4,
-    title: 'Refreshed',
-    active: false,
   },
 ];
 

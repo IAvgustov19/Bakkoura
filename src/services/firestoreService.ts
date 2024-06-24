@@ -330,6 +330,14 @@ export const addEtapToFirestore = async etap => {
     console.error('Error adding sector: ', error);
   }
 };
+export const deleteEtapFromFirestore = async id => {
+  try {
+    await db.collection('etaps').doc(id).delete();
+  } catch (error) {
+    console.error('Error deleting etap: ', error);
+  }
+};
+
 
 export const getEtapsFromFirestore = async () => {
   try {
@@ -477,6 +485,14 @@ export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
   }
 };
 
+
+export const updateEtapsInFirestore = async (id, updatedEtap) => {
+  try {
+    await db.collection('etaps').doc(id).update(updatedEtap);
+  } catch (error) {
+    console.error('Error', error);
+  }
+};
 
 
 
