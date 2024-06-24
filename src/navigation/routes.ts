@@ -79,6 +79,7 @@ export enum APP_ROUTES {
   //Alarm screens
   NEW_ALARM_SCREEN = 'NewAlarmScreen',
   NAME_ALARM = 'NameAlarm',
+  REPEAT_TYPE_SCREEN = 'RepeatTypeScreen',
 
   //World Time screens
   CITIES_SCREEN = 'CitesScreen',

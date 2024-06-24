@@ -17,6 +17,7 @@ import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import useRootStore from '../../../hooks/useRootStore';
 import {PersonalMenuType} from '../../../types/personalArea';
 import {ActivityIndicator} from 'react-native';
+import {useMemo} from 'react';
 
 const Menu = () => {
   const navigation = useNavigation();
@@ -28,6 +29,7 @@ const Menu = () => {
     onSetMenus,
     updateLoading,
     currentInActiveMenus,
+    initialRouteName,
   } = useRootStore().personalAreaStore;
 
   const onPress = (item: PersonalMenuType, index: number) => {
@@ -66,6 +68,12 @@ const Menu = () => {
     });
   };
 
+  const renderMenu = useMemo(() => {
+    return MenuItems.slice(1).filter(
+      item => item.routeName !== personalAreaData.initialRouteName,
+    );
+  }, [inActiveMenus, personalAreaData, initialRouteName]);
+
   return (
     <LinearContainer
       children={
@@ -87,7 +95,7 @@ const Menu = () => {
           <RN.View style={styles.content}>
             <RN.FlatList
               showsVerticalScrollIndicator={false}
-              data={MenuItems.slice(1)}
+              data={renderMenu}
               renderItem={renderItem}
               keyExtractor={item => item.key}
             />

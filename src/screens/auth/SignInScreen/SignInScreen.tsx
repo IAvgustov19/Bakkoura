@@ -1,5 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image, Alert, ActivityIndicator, NativeModules, Linking } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  Alert,
+  ActivityIndicator,
+  NativeModules,
+  Linking,
+} from 'react-native';
 import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import TextView from '../../../components/Text/Text';
@@ -9,13 +18,26 @@ import {APP_ROUTES} from '../../../navigation/routes';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import RN from '../../../components/RN';
-import { windowHeight, windowWidth } from '../../../utils/styles';
+import {windowHeight, windowWidth} from '../../../utils/styles';
 import useRootStore from '../../../hooks/useRootStore';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { signInWithCredential, AuthCredential, getAdditionalUserInfo, signInWithRedirect } from '@firebase/auth';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {
+  signInWithCredential,
+  AuthCredential,
+  getAdditionalUserInfo,
+  signInWithRedirect,
+} from '@firebase/auth';
 import * as firebase from '@firebase/app';
-import { getAuth, signInWithPopup, FacebookAuthProvider, TwitterAuthProvider } from '@firebase/auth';
+import {
+  getAuth,
+  signInWithPopup,
+  FacebookAuthProvider,
+  TwitterAuthProvider,
+} from '@firebase/auth';
 
 import authh from '@react-native-firebase/auth';
 
@@ -35,18 +57,36 @@ const SignInScreen = () => {
     useRootStore().authStore;
   const {getPersonalState} = useRootStore().personalAreaStore;
 
+  // old pass nifS4TT9Jvb9tH9
+  // new pass nifS4TT9Jvb9tH1
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection('users')
+      .onSnapshot(snapshot => {
+        const usersData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(usersData);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  console.log('usersusersusers:', users);
+
   const navigation = useNavigation();
   const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState('bakkouratimesystem@gmail.com');
   const [password, setPassword] = useState('nifS4TT9Jvb9tH9');
-  // old pass nifS4TT9Jvb9tH9
-  // new pass nifS4TT9Jvb9tH1
 
   const RememberMe = () => {
     setRemember(e => !e);
   };
   // passs nifS4TT9Jvb9tH9
-
 
   useEffect(() => {
     // const checkUserLoggedIn = async () => {
@@ -61,55 +101,39 @@ const SignInScreen = () => {
     //   }
     //   setLoading(false);
     // };
-
     // checkUserLoggedIn();
   }, []);
-
 
   GoogleSignin.configure({
     webClientId:
       '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
   });
 
-
-  // useEffect(() => {
-  //   const auth = authh();
-  //   console.log(auth.signInWithEmailAndPassword(email, password))
-  // }, [])
-
-
-
-  const signIn = async (email: string, password: string) => {
-    setLoading(true);
+  const signIn = async (email, password) => {
     try {
       const userCredential = await authh().signInWithEmailAndPassword(
         email,
         password,
       );
-      console.log(userCredential,userCredential,222);
-      
       const user = userCredential.user;
       const token = await user.getIdToken();
-      console.log(token,"token");
-      
-      await AsyncStorage.setItem('token', token);
-      const userSnapshot = await firestore().collection('users').where('email', '==', email).get();
-
-      await new Promise(resolve => authh().onAuthStateChanged(resolve));
-      console.log(user.emailVerified,55);
-      
-      console.log('userSnapshot', userSnapshot)
-      if (user.emailVerified) { 
-        setAuthorized() 
+      console.log(
+        'user.emailVerifieduser.emailVerifieduser.emailVerified',
+        user.emailVerified,
+      );
+      if (user.emailVerified) {
+        setAuthorized();
       } else {
-        Alert.alert('email doesnt exist')
+        Alert.alert('email doesnt exist');
       }
+      console.log(token, 77);
+      // You can use the token or user object as needed
     } catch (error) {
-      Alert.alert('Wrong email or password')
+      console.error('Error signing in:', error.message);
+      // Handle the error here, such as displaying a message to the user
     }
-    setLoading(false);
+  };
 
-  }
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
@@ -129,7 +153,7 @@ const SignInScreen = () => {
       setAuthorized();
       return user;
     } catch (error) {
-      console.log(error, 11111111)
+      console.log(error, 11111111);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -146,76 +170,97 @@ const SignInScreen = () => {
   return (
     <>
       <LinearContainer
-        children={<RN.ScrollView>
-          <View style={styles.container}>
-          <LoadingScreen loading={loading} setLoading={setLoading} />
-            {/* <View style={styles.light}>
+        children={
+          <RN.ScrollView>
+            <View style={styles.container}>
+              <LoadingScreen loading={loading} setLoading={setLoading} />
+              {/* <View style={styles.light}>
           <Image source={BG.light} />
         </View> */}
-            <HeaderContent
-              leftItem={<View style={styles.logo}>
-                <Images.Svg.btsRightLinear width={80} />
-              </View>}
-              rightItem={<TouchableOpacity
-                style={styles.localize}
-                onPress={() => navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)}>
-                <Images.Svg.en width={50} />
-              </TouchableOpacity>} />
-            <View style={styles.titleBox}>
-              <TextView title="Hello Friend!" />
-              <TextView text="Start tracking and improving Your Live!" />
-            </View>
-            <View style={styles.formBox}>
-              <TextView style={styles.label} text="Login" />
-              <Input
-                placeholder="JB"
-                onChangeText={(text) => setEmail(text)}
-                value={email} />
-              <TextView style={styles.label} text="Password" />
-              <Input placeholder="77777"
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry />
-            </View>
-            <View style={styles.forgotBox}>
-              {/* <TouchableOpacity style={styles.rememberMe} onPress={RememberMe}>
+              <HeaderContent
+                leftItem={
+                  <View style={styles.logo}>
+                    <Images.Svg.btsRightLinear width={80} />
+                  </View>
+                }
+                rightItem={
+                  <TouchableOpacity
+                    style={styles.localize}
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+                    }>
+                    <Images.Svg.en width={50} />
+                  </TouchableOpacity>
+                }
+              />
+              <View style={styles.titleBox}>
+                <TextView title="Hello Friend!" />
+                <TextView text="Start tracking and improving Your Live!" />
+              </View>
+              <View style={styles.formBox}>
+                <TextView style={styles.label} text="Login" />
+                <Input
+                  placeholder="JB"
+                  onChangeText={text => setEmail(text)}
+                  value={email}
+                />
+                <TextView style={styles.label} text="Password" />
+                <Input
+                  placeholder="77777"
+                  onChangeText={text => setPassword(text)}
+                  value={password}
+                  secureTextEntry
+                />
+              </View>
+              <View style={styles.forgotBox}>
+                {/* <TouchableOpacity style={styles.rememberMe} onPress={RememberMe}>
           <RadioBtn active={remember} onPress={RememberMe} />
           <TextView text="Remember me" />
         </TouchableOpacity> */}
-              <TouchableOpacity
-                onPress={() => navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)}>
-                <TextView style={styles.forgot} text="Forgot Your Password?" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.signUp}>
-              <ButtonComp
-                title="Sign In"
-                icon={<GiveImage source={Images.Img.eye} />}
-                onPress={() => signIn(email, password)} />
-            </View>
-            <View style={styles.orWithSocial}>
-              <TextView text="Or Sign Up using" />
-              <View style={styles.socialBox}>
-                <TouchableOpacity onPress={() => {}}>
-                  <Images.Svg.f />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)
+                  }>
+                  <TextView
+                    style={styles.forgot}
+                    text="Forgot Your Password?"
+                  />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { }}>
-                  <Images.Svg.x />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => signInWithGoogle()}>
-                  <Images.Svg.g />
+              </View>
+              <View style={styles.signUp}>
+                <ButtonComp
+                  title="Sign In"
+                  icon={<GiveImage source={Images.Img.eye} />}
+                  onPress={() => signIn(email, password)}
+                />
+              </View>
+              <View style={styles.orWithSocial}>
+                <TextView text="Or Sign Up using" />
+                <View style={styles.socialBox}>
+                  <TouchableOpacity onPress={() => {}}>
+                    <Images.Svg.f />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => {}}>
+                    <Images.Svg.x />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => signInWithGoogle()}>
+                    <Images.Svg.g />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.needAcc}>
+                <TextView text="Need an Account?" />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)
+                  }>
+                  <TextView style={styles.signUpText} text="Sign Up" />
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.needAcc}>
-              <TextView text="Need an Account?" />
-              <TouchableOpacity
-                onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)}>
-                <TextView style={styles.signUpText} text="Sign Up" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </RN.ScrollView>} />
+          </RN.ScrollView>
+        }
+      />
     </>
   );
 };

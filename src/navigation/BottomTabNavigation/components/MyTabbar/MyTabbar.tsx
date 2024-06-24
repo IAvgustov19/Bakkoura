@@ -12,6 +12,7 @@ import BottomSheet, {
 } from '@gorhom/bottom-sheet';
 import useRootStore from '../../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
+import {splitCamelCaseAndRemoveScreen} from '../../../../helper/validation';
 
 type TabBarItem = {
   route: any;
@@ -23,7 +24,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
-  const {inActiveMenus} = useRootStore().personalAreaStore;
+  const {inActiveMenus, initialRouteName} = useRootStore().personalAreaStore;
   const renderTabBar = React.useCallback(
     ({route, index}: TabBarItem) => {
       const {options} = descriptors[route.key];
@@ -132,17 +133,11 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
           style={styles.buttonContainer}
           key={index}>
           <RN.View style={styles.iconBox}>{renderIcon()}</RN.View>
-          <TextView
-            text={
-              bottomTabBarOptions.list.filter(
-                item => !inActiveMenus.includes(item.key),
-              )[index].buttonLabel
-            }
-          />
+          <TextView text={splitCamelCaseAndRemoveScreen(route.name)} />
         </RN.TouchableOpacity>
       );
     },
-    [inActiveMenus],
+    [inActiveMenus, initialRouteName],
   );
   const renderTabBars = () =>
     state.routes.map((route, index) => renderTabBar({route, index}));
@@ -171,6 +166,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
       <BottomSheetScrollView
         ref={bottomScrollViewRef}
         style={styles.bottomSheetScrollView}
+        contentContainerStyle={{flexGrow: 1}}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
         <BottomSheetView style={styles.container}>

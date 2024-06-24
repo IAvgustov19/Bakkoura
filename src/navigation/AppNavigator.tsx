@@ -69,6 +69,7 @@ import Wallpapers from '../screens/timeBiotic/Wallpapers';
 import auth from '@react-native-firebase/auth';
 import PasswordPrompt from '../screens/home/secureEntry/passwordAuth';
 import FingerprintAuth from '../screens/home/secureEntry/fingerprintAuth';
+import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 
 const Stack = createStackNavigator();
 
@@ -533,7 +534,16 @@ const AppNavigator = () => {
       </>
     );
   };
-  console.log(isAuthorized, "isAuthorized");
+        <Stack.Screen
+          name={APP_ROUTES.REPEAT_TYPE_SCREEN}
+          component={RepeatTypeScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+      </>
+    );
+  };
 
   return (
     <NavigationContainer theme={DarkTheme}>

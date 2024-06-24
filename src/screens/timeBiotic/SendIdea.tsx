@@ -25,7 +25,6 @@ const SendIdea = () => {
   const [accept, setAccept] = useState(false);
   const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
-  console.log('orderState', orderState);
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
