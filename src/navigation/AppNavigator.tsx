@@ -529,11 +529,6 @@ const AppNavigator = () => {
           }}
         />
 
-
-
-      </>
-    );
-  };
         <Stack.Screen
           name={APP_ROUTES.REPEAT_TYPE_SCREEN}
           component={RepeatTypeScreen}
@@ -545,20 +540,20 @@ const AppNavigator = () => {
     );
   };
 
-  return (
-    <NavigationContainer theme={DarkTheme}>
-      <Stack.Navigator
-        initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
-        detachInactiveScreens={true}
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-        }}>
-        {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
-        {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+return (
+  <NavigationContainer theme={DarkTheme}>
+    <Stack.Navigator
+      initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
+      detachInactiveScreens={true}
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+      }}>
+      {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
+      {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
+    </Stack.Navigator>
+  </NavigationContainer>
+);
 };
 
 export default observer(AppNavigator);
