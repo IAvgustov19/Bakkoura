@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { TogetherDataInitial, TogetherDataType } from '../../types/alarm';
 import { ControlData, RepeatData, StatusData } from '../../utils/repeat';
 import { RootStore } from '../rootStore';
-import { addEtapToFirestore, getEtapsFromFirestore } from '../../services/firestoreService';
+import { addEtapToFirestore, deleteEtapFromFirestore, getEtapsFromFirestore, updateEtapsInFirestore } from '../../services/firestoreService';
 import auth from '@react-native-firebase/auth';
 import { RepeatDataType } from '../../types/calendar';
 
@@ -19,6 +19,7 @@ export class TogetherTimeStore {
   selectedInterval: NodeJS.Timeout | null = null;
   is30hFormat: boolean = false;
   selectedRepeat: RepeatDataType = RepeatData[2];
+  isUpdate = false;
 
 
   toggleTimeFormat = () => {
@@ -33,6 +34,19 @@ export class TogetherTimeStore {
 
   setAddEtapState = (key: keyof TogetherDataType, value: any) => {
     this.addEtapState[key] = value as never;
+  };
+
+  getOneTask = (data: TogetherDataType) => {
+    runInAction(() => {
+      this.addEtapState = data;
+      this.isUpdate = true;
+    });
+  };
+  setData = (data: TogetherDataType) => {
+    runInAction(() => {
+      this.addEtapState = data;
+      this.isUpdate = false;
+    });
   };
 
 
@@ -78,6 +92,7 @@ export class TogetherTimeStore {
   clearState = () => {
     runInAction(() => {
       this.addEtapState = TogetherDataInitial;
+      this.isUpdate = false;
     });
   };
 
@@ -85,11 +100,21 @@ export class TogetherTimeStore {
     this.setAddEtapState('name', ' ');
   };
 
-  onDeleteOneEtap = () => {
-    clearInterval(this.selectedInterval!);
-    this.etapList = this.etapList.filter(item => item.id !== this.selcetedEtap.id);
-    this.selcetedEtap = TogetherDataInitial;
-    this.clearState();
+  // onDeleteOneEtap = () => {
+  //   clearInterval(this.selectedInterval!);
+  //   this.etapList = this.etapList.filter(item => item.id !== this.selcetedEtap.id);
+  //   this.selcetedEtap = TogetherDataInitial;
+  //   this.clearState();
+  // };
+
+  updateEtap = async (id: string | number) => {
+    console.log('id', id);
+    console.log(this.addEtapState)
+    await updateEtapsInFirestore(id, this.addEtapState);
+    runInAction(() => {
+      this.etapList = this.etapList.map(item => item.id === id ? this.addEtapState : item);
+      this.isUpdate = false;
+    });
   };
 
 SelectOneEtap = (id: number | string) => {
@@ -101,6 +126,16 @@ SelectOneEtap = (id: number | string) => {
       this.startTimer();
     }
   }
+};
+
+handleDeleteEtap = (id: number | string) => {
+  setTimeout(() => {
+    runInAction(async () => {
+      this.etapList = this.etapList.filter(item => item.id !== id);
+      this.clearState();
+      await deleteEtapFromFirestore(id);
+    });
+  }, 200);
 };
 
 startTimer = () => {
