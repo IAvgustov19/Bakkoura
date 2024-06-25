@@ -12,11 +12,14 @@ import {windowHeight} from '../../utils/styles';
 
 const DeleteEtap = () => {
   const navigation = useNavigation();
-  const {onDeleteOneEtap} = useRootStore().togetherTimeStore;
+  const {handleDeleteEtap, addEtapState} = useRootStore().togetherTimeStore;
+
   const deleteHandle = () => {
-    onDeleteOneEtap();
     navigation.goBack();
+    handleDeleteEtap(addEtapState.id);
   };
+
+
   return (
     <LinearContainer
       children={
@@ -27,7 +30,7 @@ const DeleteEtap = () => {
           />
           <RN.View style={styles.content}>
             <TextView title="Are you sure?" />
-            <TextView text="When you remove the relationship timer from Sandy, it cannot be restored. " />
+            <TextView text={`When you remove the relationship timer from ${addEtapState.name}, it cannot be restored. `} />
             <StartBtn text="Delete" onPress={deleteHandle} />
           </RN.View>
         </RN.View>
