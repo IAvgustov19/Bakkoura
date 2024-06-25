@@ -6,6 +6,7 @@ export const scheduleNotifications = async (uid) => {
     const userDoc = await db.collection('etaps').where('uid', '==', uid).get();
     if (userDoc) {
       const userData = userDoc.docs.map(doc => doc.data());
+      console.log('userData', userData.length, userData[0].control)
       userData.forEach(item => {
         const currentDate:any = new Date();
         const fromDate:any = new Date(item.fromDateFormat);
@@ -18,9 +19,9 @@ export const scheduleNotifications = async (uid) => {
           currentDate.getFullYear(),
           currentDate.getMonth(),
           currentDate.getDate(),
-          7 + timeZoneOffsetInHours, 55, 0
+          9 + timeZoneOffsetInHours, 6, 0
         );
-
+        
         let notificationMessage = '';
         const repeatLower = item.repeat.toLowerCase();
         const daysDating = Math.floor((currentDate - fromDate) / (1000 * 60 * 60 * 24));
@@ -40,6 +41,7 @@ export const scheduleNotifications = async (uid) => {
             break;
           default:
             console.log(`Invalid repeat type for ${item.name}`);
+            break;
         }
       });
     } else {
