@@ -36,12 +36,24 @@ const TimeTogether = () => {
     toggleTimeFormat,
     calculateDaysDifference,
     getAllEtapsFromFirestore,
+    clearState,
+    setData,
+    getOneTask,
   } =
     useRootStore().togetherTimeStore;
 
-  const onLongHandle = () => {
-    navigation.navigate(APP_ROUTES.DELETE_ETAP as never);
+  // const onLongHandle = () => {
+  //   navigation.navigate(APP_ROUTES.DELETE_ETAP as never);
+  // };
+
+
+
+  const onHandleTask = (data: any) => {
+    clearState();
+    getOneTask(data);
+    navigation.navigate(APP_ROUTES.ADD_ETAP as never);
   };
+
 
 
   useEffect(() => {
@@ -149,12 +161,12 @@ const TimeTogether = () => {
         <RN.View key={index}>
           <Line />
           <RN.Pressable
-            onPress={() => SelectOneEtap(item.id)}
-            onLongPress={onLongHandle}
+            onPress={() => {SelectOneEtap(item.id); setData(item);}}
             style={styles.etapList}>
             <RN.Text style={styles.etapType}>{item.type}</RN.Text>
             <TextView text={item.fromDate} />
             <RN.Text style={styles.etapDays}>{`${calculateDaysDifference(item.fromDate)} days`}</RN.Text>
+            <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.Pressable>
           <Line />
         </RN.View>
@@ -171,7 +183,7 @@ const TimeTogether = () => {
     return (
       <LottieContent
         source={Lotties.timeTogether}
-        width={windowWidth}
+        width={windowWidth - 40}
         autoPlay={true}
         speed={1}
       />
@@ -197,8 +209,9 @@ const TimeTogether = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
-                {lottie}
-                {/* <Images.Svg.heartIcon width={windowWidth - 40} /> */}
+                {!(etapList.length == 0) ? lottie :
+                  <Images.Svg.heartIcon width={windowWidth - 40} />
+                }
               </RN.View>
               <RN.View style={styles.coupleInfo}>
                 <TextView
