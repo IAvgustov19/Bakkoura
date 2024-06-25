@@ -6,7 +6,7 @@ export const SecureEntries = [
   },
   {
     id: 2,
-    title: 'FingerPrint',
+    title: 'Biometry',
     active: false,
   },
   {

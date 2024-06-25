@@ -44,8 +44,11 @@ const AddEtap = () => {
     onStatusItemPress,
     onControlItemPress,
     statusData,
+    isUpdate,
+    updateEtap,
     controlData,
     setAddEtapState,
+    handleDeleteEtap,
     createNewEtap,
     clearState,
   } = useRootStore().togetherTimeStore;
@@ -69,6 +72,15 @@ const AddEtap = () => {
   const ClearState = () => {
     navigation.navigate(APP_ROUTES.TIME_TOGETHER as never);
     clearState();
+  };
+
+  useEffect(() => {
+    !isUpdate && clearState();
+  }, []);
+
+  const UpdateTask = () => {
+    navigation.goBack();
+    updateEtap(addEtapState.id);
   };
 
   return (
@@ -132,15 +144,27 @@ const AddEtap = () => {
                   />
                 </RN.View>
               </RN.View>
+              {isUpdate ? 
               <RN.View style={styles.addBtn}>
                 <StartBtn
-                  onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
+                  onPress={UpdateTask}
                   primary={true}
                   text="Ok"
                   subWidth={70}
                   elWidth={55}
                 />
               </RN.View>
+              : 
+              <RN.View style={styles.addBtn}>
+              <StartBtn
+                onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
+                primary={true}
+                text="Add"
+                subWidth={70}
+                elWidth={55}
+              />
+            </RN.View>
+      }
             </RN.View>
             <SoundsContent
               headerTitle="Status"

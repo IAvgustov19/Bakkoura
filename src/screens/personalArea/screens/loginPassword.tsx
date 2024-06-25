@@ -17,11 +17,13 @@ import auth from '@react-native-firebase/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useRootStore from '../../../hooks/useRootStore';
+import LoadingScreen from '../../auth/Loading/LoadingScreen';
 
 const LoginPassword = () => {
     const navigation = useNavigation();
     const { setNotAuthorized } = useRootStore().authStore;
     const [updateLoading, isUpdateLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const userEmail = auth().currentUser.email;
 
@@ -32,6 +34,7 @@ const LoginPassword = () => {
 
     const updateUser = async () => {
         try {
+            setLoading(true);
             const snapshot = await db
                 .collection('users')
                 .where('email', '==', userData.login)
@@ -49,16 +52,30 @@ const LoginPassword = () => {
                 await AsyncStorage.setItem('updatedAt', new Date().getTime().toString());
                 await AsyncStorage.removeItem('token');
             });
-
-            // Wait for all updates to complete
             await Promise.all(updatePromises);
 
-            Alert.alert('User password updated');
-            // setNotAuthorized();
-
+            Alert.alert(
+                'Success',
+                'User password updated',
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => navigation.goBack(),
+                  },
+                ],
+                { cancelable: false }
+              );
         } catch (error) {
-            Alert.alert('Error updating user: ' + error.message);
-            console.log(error.message)
+            if (error.code === 'auth/weak-password') {
+                Alert.alert('Password should be at least 6 characters');
+            } else if(error.code === 'auth/requires-recent-login') {
+                Alert.alert('To update your password, you need to have logged in recently.');
+            }
+            else {
+                Alert.alert(error.code);
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -68,6 +85,7 @@ const LoginPassword = () => {
         <LinearContainer
             children={
                 <RN.View style={styles.container}>
+                    <LoadingScreen loading={loading} setLoading={setLoading}/>
                     {/* <RN.View style={styles.bgContainer}>
                             <Images.Svg.bg style={styles.bg} />
                         </RN.View> */}
@@ -119,7 +137,7 @@ const LoginPassword = () => {
                                 elWidth={55}
                                 subWidth={70}
                                 primary={true}
-                                onPress={() => { navigation.goBack(); updateUser() }}
+                                onPress={() => { !loading && updateUser() }}
                             />
                         </RN.View>
                     </RN.View>
