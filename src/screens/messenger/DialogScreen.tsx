@@ -1,9 +1,9 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Keyboard, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Dimensions, Keyboard, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
 import RN from '../../components/RN';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
-import { Actions, GiftedChat } from 'react-native-gifted-chat';
+import { Actions, GiftedChat, MessageImage } from 'react-native-gifted-chat';
 import { RootStackParamList } from '../../types/navigation';
 import { APP_ROUTES } from '../../navigation/routes';
 import { observer } from 'mobx-react-lite';
@@ -17,6 +17,10 @@ import Sound from 'react-native-sound';
 import AudioPlayer from './components/AudioPlayer';
 import Cancel from '../../components/Cancel/Cancel';
 import LinearGradient from 'react-native-linear-gradient';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import CustomMessage from './components/CustomBubble';
+
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
 
@@ -66,38 +70,105 @@ const DialogScreen = () => {
         );
     };
 
+    // const renderMessageImage = (props) => {
+    // const { currentMessage } = props;
+    //     return (
+    // <View style={styles.messageImageContainer}>
+    //     <RN.Image source={{ uri: currentMessage.image }} style={styles.image} />
+    {/* <View style={styles.imageInfo}>
+                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+                    <Text style={styles.time}>{currentMessage.time}</Text>
+                </View> */}
+    // </View>
+    //     );
+    // };
+
+    const renderMessageImage = (props) => {
+        const { currentMessage } = props;
+        return (
+            // <View style={styles.messageImageContainer}>
+            <>
+                <MessageImage
+                    {...props}
+                    // containerStyle={styles.messageImageContainer}
+                    imageStyle={{
+                        width: 74,
+                        height: 74,
+                        resizeMode: 'cover'
+                    }}
+                />
+                <View style={styles.imageInfo}>
+                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+                    <Text style={styles.time}>{currentMessage.time}</Text>
+                </View>
+            </>
+            // </View>
+        )
+    }
     return (
         <>
             <LinearGradient
-                colors={['#323D45', '#1B2024', '#020202']}
+                style={{ height: '13%', top: 0, paddingHorizontal: 10, paddingVertical: 15 }}
+                colors={['#323D45', '#1B2024']}
             >
-                <Cancel/>
+                <HeaderContent
+                    rightItem={
+                        <RN.View style={styles.imageContainer}>
+                            <Images.Svg.profileBackground width={49} height={49} />
+                            {
+                                avatar ? <RN.Image
+                                    source={{ uri: avatar || null }}
+                                    style={styles.profileImg}
+                                /> :
+                                    <Images.Svg.userIcon style={styles.profileImg} />
+                            }
+
+                        </RN.View>
+                    }
+                    title={
+                        <RN.View>
+                            <RN.Text style={styles.name}>{name}</RN.Text>
+                            <RN.Text style={styles.lastSeen}>Last seen</RN.Text>
+                            <RN.Text style={styles.lastSeen}>Yesterday, 07:04</RN.Text>
+                        </RN.View>
+                    }
+                    leftItem={<ArrowLeftBack onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never)} title='Chats' titleColor='#656E77' />}
+                />
+                {/* <RN.View style={styles.userInfo}>
+
+               </RN.View> */}
             </LinearGradient>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView
                     style={styles.container}
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    behavior={Platform.OS === 'ios' ? 'padding' : null}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                 >
                     <RN.View style={styles.container}>
                         <GiftedChat
+                            renderMessageImage={renderMessageImage}
                             messages={messages}
+                            renderMessage={(props) => <CustomMessage {...props} />}
                             onSend={messages => onSend(messages)}
                             user={{
                                 _id: 1,
                             }}
-                            renderMessageAudio={renderMessageAudio}
-                            renderActions={(props) => (
+                            renderInputToolbar={(props) => (
                                 <CustomActions
                                     {...props}
                                     onSend={onSend}
                                     recording={recording}
                                     setRecording={setRecording}
                                     setAudioPath={setAudioPath} />
-                            )} />
+                            )}
+                            renderMessageAudio={renderMessageAudio}
+                        />
                     </RN.View>
                 </KeyboardAvoidingView>
-            </TouchableWithoutFeedback></>
+            </TouchableWithoutFeedback>
+        </>
 
     )
 }
@@ -111,7 +182,7 @@ const styles = RN.StyleSheet.create({
         flex: 1,
         paddingBottom: 30,
         width: '100%',
-        height: '80%',
+        height: '100%',
         // paddingHorizontal: 5,
         backgroundColor: 'black',
     },
@@ -124,4 +195,64 @@ const styles = RN.StyleSheet.create({
         borderRadius: 20,
         marginBottom: 10,
     },
+    userInfo: {
+
+    },
+
+    imageContainer: {
+        position: 'relative',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    profileImg: {
+        width: 37,
+        height: 37,
+        borderRadius: 35,
+        position: 'absolute',
+        zIndex: 2,
+    },
+    name: {
+        fontSize: 18,
+        paddingBottom: 4,
+        color: '#FFFFFF',
+        textAlign: 'center',
+        fontFamily: 'RedHatDisplay-Bold',
+    },
+    lastSeen: {
+        fontSize: 14,
+        color: '#979DA2',
+        textAlign: 'center',
+        fontFamily: 'RedHatDisplay-Bold',
+    },
+    messageImageContainer: {
+        // flexDirection: 'row',
+        alignItems: 'center',
+        // justifyContent: 'space-between',
+        padding: 10,
+        backgroundColor: 'red',
+        borderRadius: 10,
+        marginBottom: 10,
+    },
+    image: {
+        // width: 74,
+        // height: 74,
+        borderRadius: 5,
+    },
+    imageInfo: {
+        marginLeft: 10,
+        flex: 1,
+    },
+    fileName: {
+        color: '#fff',
+        fontSize: 14,
+    },
+    fileSize: {
+        color: '#bbb',
+        fontSize: 12,
+    },
+    time: {
+        color: '#bbb',
+        fontSize: 12,
+    },
+
 });
