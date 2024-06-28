@@ -82,8 +82,6 @@ const SignInScreen = () => {
   const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [email, setEmail] = useState('bakkouratimesystem@gmail.com');
-  // const [password, setPassword] = useState('nifS4TT9Jvb9tH9');
 
   const RememberMe = () => {
     setRemember(e => !e);
@@ -186,13 +184,12 @@ const SignInScreen = () => {
                   </View>
                 }
                 rightItem={
-                  <TouchableOpacity
-                    style={styles.localize}
+                  <LanguageBtn
+                    value={newUser.language}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-                    }>
-                    <Images.Svg.en width={50} />
-                  </TouchableOpacity>
+                    }
+                  />
                 }
               />
               <View style={styles.titleBox}>

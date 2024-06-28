@@ -1,25 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {useCallback, useEffect} from 'react';
 import RN from '../../components/RN';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import { Images } from '../../assets';
-import SwitchBtn from '../../components/SwitchBtn/SwitchBtn';
+import {Images} from '../../assets';
 import ToDoTimerItem from './components/ToDoTimerItem';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import { windowHeight } from '../../utils/styles';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { APP_ROUTES } from '../../navigation/routes';
-import { formatDateTime, secondsToHMS } from '../../helper/helper';
-import { FlatList, RectButton, Swipeable } from 'react-native-gesture-handler';
-import { COLORS } from '../../utils/colors';
-import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
+import {windowHeight} from '../../utils/styles';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {APP_ROUTES} from '../../navigation/routes';
+import {formatDateTime, secondsToHMS} from '../../helper/helper';
+import {COLORS} from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
 
 const ToDoTimer = () => {
-  const { visible, show } = useRootStore().visibleStore;
-  const { getOneTask, tasksList, playProject, handleDeleteTask, fetchTasks, tasksListClone } =
+  const {getOneTask, tasksList, playProject, fetchTasks, tasksListClone} =
     useRootStore().todoTimer;
   const navigation = useNavigation();
   const isFocused = useIsFocused();

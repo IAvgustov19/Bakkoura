@@ -12,11 +12,12 @@ type Props = {
 const CurrentDate: React.FC<Props> = ({day, month}) => {
   return (
     <RN.View style={styles.todayBox}>
-      <RN.Text style={styles.day}>{day}</RN.Text>
-      <RN.Text style={styles.monthYear}>{month}</RN.Text>
-      <RN.View style={styles.dateLine}>
-        <Images.Svg.dateBottomLine />
-      </RN.View>
+      <RN.Text style={styles.day} fontFamily="RedHatDisplay-SemiBold">
+        {day}
+      </RN.Text>
+      <RN.Text style={styles.monthYear} fontFamily="RedHatDisplay-SemiBold">
+        {month}
+      </RN.Text>
     </RN.View>
   );
 };
@@ -28,15 +29,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   day: {
-    fontSize: 26,
+    fontSize: 42,
     color: COLORS.yellow,
     textAlign: 'center',
   },
   monthYear: {
     fontSize: 12,
     color: COLORS.yellow,
-  },
-  dateLine: {
-    marginTop: 5,
+    marginTop: -5,
   },
 });

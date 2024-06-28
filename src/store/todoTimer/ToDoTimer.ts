@@ -17,7 +17,6 @@ export class TodoTimerStore {
   taskState: TodoTimerDataType = TodoTimerDataInitial;
   tasksList: TodoTimerDataType[] = [];
   tasksListClone: TodoTimerDataType[] = [];
-
   isHas = false;
 
   setNewTaskState = (key: keyof TodoTimerDataType, value: any) => {
@@ -27,7 +26,7 @@ export class TodoTimerStore {
   getOneTask = (data: TodoTimerDataType, callback?: () => void) => {
     runInAction(() => {
       this.taskState = data;
-      callback();
+      callback && callback();
       this.isHas = true;
     });
   };
@@ -45,13 +44,13 @@ export class TodoTimerStore {
     });
   };
 
-  createNewTask = async callback => {
+  createNewTask = async (callback: () => void) => {
     if (!this.isHas) {
       const date = Date.now();
-      const userId = auth().currentUser.uid;
+      const userId = auth().currentUser?.uid;
       this.setNewTaskState('uid', userId);
       this.setNewTaskState('date', date);
-      this.setNewTaskState('date', date);
+      this.setNewTaskState('dailyUsage', []); // Ensure dailyUsage is initialized
       if (this.taskState.name) {
         await addTaskToFirestore(this.taskState);
         runInAction(() => {
@@ -62,7 +61,7 @@ export class TodoTimerStore {
         this.clearState();
       }
     } else {
-      this.updateTodoTimer(this.taskState.id);
+      await this.updateTodoTimer(this.taskState.id);
       callback();
       this.clearState();
     }
@@ -70,27 +69,29 @@ export class TodoTimerStore {
 
   filterType: string;
 
+  clearFilterType = () => {
+    runInAction(() => {
+      this.filterType = null;
+    });
+  };
+
   filterItemsByTime = (timeFilter: string) => {
     let today = new Date();
-    let filterDate;
+    let filterDateStart;
+    let filterDateEnd = today;
 
-    // Filter vaqtini aniqlash
     if (timeFilter) {
       switch (timeFilter) {
         case 'lastMonth':
-          filterDate = new Date(
-            today.getFullYear(),
-            today.getMonth() - 1,
-            today.getDate(),
-          );
+          filterDateStart = new Date(today.getFullYear(), today.getMonth(), 1);
           this.filterType = 'lastMonth';
           break;
         case 'lastWeek':
-          filterDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+          filterDateStart = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
           this.filterType = 'lastWeek';
           break;
         case 'lastDay':
-          filterDate = new Date(
+          filterDateStart = new Date(
             today.getFullYear(),
             today.getMonth(),
             today.getDate(),
@@ -98,17 +99,19 @@ export class TodoTimerStore {
           this.filterType = 'lastDay';
           break;
         default:
-          filterDate = new Date(0);
+          filterDateStart = new Date(0);
           break;
       }
-
-      function filterFunction(item) {
-        let itemDate = new Date(item.timeStamp);
-        return itemDate >= filterDate && itemDate <= today;
-      }
-
-      this.tasksListClone = this.tasksList.filter(filterFunction);
     }
+
+    runInAction(() => {
+      this.tasksList = this.tasksListClone.filter(item =>
+        item.dailyUsage?.some(usage => {
+          let usageDate = new Date(usage.date);
+          return usageDate >= filterDateStart && usageDate <= filterDateEnd;
+        }),
+      );
+    });
   };
 
   increaseSeconds() {
@@ -119,10 +122,12 @@ export class TodoTimerStore {
           item.secondInterval = setInterval(() => {
             runInAction(() => {
               item.timestamp += 1;
+              this.updateTaskUsage(item);
               updateTaskInFirestore(item.id, {
                 timestamp: item.timestamp,
                 startTime: item.startTime,
                 endTime: item.endTime,
+                dailyUsage: item.dailyUsage,
               });
             });
           }, 1000);
@@ -140,11 +145,41 @@ export class TodoTimerStore {
     });
   }
 
+  updateTaskUsage(task: TodoTimerDataType) {
+    const now = new Date();
+    const currentDateString = now.toISOString().split('T')[0];
+
+    if (!task.dailyUsage) {
+      task.dailyUsage = []; // Ensure dailyUsage is initialized
+    }
+
+    let timeSpent = {
+      date: currentDateString,
+      hours: Math.floor(task.timestamp / 3600),
+      minutes: Math.floor((task.timestamp % 3600) / 60),
+      seconds: task.timestamp % 60,
+      timestamp: task.timestamp,
+    };
+
+    // Check if there is already an entry for the current day
+    const existingEntryIndex = task.dailyUsage.findIndex(
+      entry => entry.date === currentDateString,
+    );
+
+    if (existingEntryIndex !== -1) {
+      // Update the existing entry with the new total time
+      task.dailyUsage[existingEntryIndex] = timeSpent;
+    } else {
+      // Add a new entry for the current day
+      task.dailyUsage.push(timeSpent);
+    }
+  }
+
   updateTodoTimer = async (id: string) => {
     const updatedTask = this.taskState;
     try {
       await updateTaskInFirestore(id, updatedTask);
-      const list = this.tasksList.map((item, i) =>
+      const list = this.tasksList.map(item =>
         item.id === id ? updatedTask : item,
       );
       runInAction(() => {
@@ -167,18 +202,25 @@ export class TodoTimerStore {
   playProject = (index: number) => {
     const date = Date.now();
     const list = this.tasksList.map((item, i) => {
-      return i === index
-        ? {
-            ...item,
-            play: !item.play,
-            startTime: item.startTime > 0 ? item.startTime : date,
-            endTime:
-              item.startTime > 0
-                ? item.startTime + item.timestamp * 1000
-                : date,
-          }
-        : item;
+      if (i === index) {
+        return {
+          ...item,
+          play: !item.play,
+          startTime: item.startTime > 0 ? item.startTime : date,
+          endTime:
+            item.startTime > 0 ? item.startTime + item.timestamp * 1000 : date,
+        };
+      } else {
+        return {
+          ...item,
+          play: false,
+          secondInterval: item.secondInterval
+            ? clearInterval(item.secondInterval)
+            : null,
+        };
+      }
     });
+
     runInAction(() => {
       this.tasksList = list;
       this.tasksListClone = list;
@@ -200,4 +242,10 @@ export class TodoTimerStore {
       this.isHas = false;
     }, 1000);
   };
+}
+
+function getWeekNumber(date: Date) {
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const pastDaysOfYear = (date.getTime() - firstDayOfYear.getTime()) / 86400000;
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 }
