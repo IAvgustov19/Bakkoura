@@ -165,7 +165,7 @@ const TimeTogether = () => {
             style={styles.etapList}>
             <RN.Text style={styles.etapType}>{item.type}</RN.Text>
             <TextView text={item.fromDate} />
-            <RN.Text style={styles.etapDays}>{`${calculateDaysDifference(item.fromDate)} days`}</RN.Text>
+            <RN.Text style={styles.etapDays}>{`${+calculateDaysDifference(item.fromDate) > 0 ? calculateDaysDifference(item.fromDate) : 0} days`}</RN.Text>
             <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.Pressable>
           <Line />
@@ -227,7 +227,7 @@ const TimeTogether = () => {
                   {selcetedEtap.time != '0' ? selcetedEtap.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                  {calculateDaysDifference(selcetedEtap.fromDate)} days
+                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} days
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
                   {selcetedEtap.fromDate != '0'
