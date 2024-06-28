@@ -2,17 +2,14 @@ import {observer} from 'mobx-react-lite';
 import * as React from 'react';
 import {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
-import {Images} from '../../../assets';
+import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
 import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
+import {formattedTimeHourMinut} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
+import {Lotties} from '../../../lotties/lottie';
 import {COLORS} from '../../../utils/colors';
-import {windowHeight} from '../../../utils/styles';
+import {windowHeight, windowWidth} from '../../../utils/styles';
 import AlarmClockFront24 from './AlarmClockFront24';
 import AlarmClockFront30 from './AlarmClockFront30';
 
@@ -22,23 +19,9 @@ type Props = {
 
 const AlarmClock: React.FC<Props> = ({is24h}) => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {isRing, handleLaterAction, handleStopAction, activeAlarm} =
+    useRootStore().alarmStore;
 
-  // const translateX = useSharedValue(0);
-
-  // const EtapHandle = useMemo(() => {
-  //   switch (homeCurrentTime.second % 2 == 0) {
-  //     case false:
-  //       translateX.value = -15;
-  //       break;
-  //     case true:
-  //       translateX.value = 15;
-  //       break;
-  //   }
-  // }, [homeCurrentTime.second]);
-
-  // const animatedStyles = useAnimatedStyle(() => ({
-  //   transform: [{rotate: withTiming(`${translateX.value}deg`)}],
-  // }));
   const renderClock = useMemo(() => {
     if (is24h) {
       return <AlarmClockFront24 />;
@@ -47,24 +30,49 @@ const AlarmClock: React.FC<Props> = ({is24h}) => {
     }
   }, [is24h]);
 
+  const renderLottieClock = React.useCallback(() => {
+    return (
+      <LottieContent
+        width={windowWidth + 20}
+        source={Lotties.clock}
+        speed={isRing ? 1 : 0}
+        loop={isRing ? true : false}
+        autoPlay={isRing ? true : false}
+      />
+    );
+  }, [isRing]);
+
+  const renderTime = React.useCallback(() => {
+    return (
+      <RN.Text style={styles.time}>
+        {is24h
+          ? formattedTimeHourMinut(
+              Number(activeAlarm?.laterHours),
+              Number(activeAlarm?.laterMinutes),
+            )
+          : homeCurrentTime.time30.slice(0, 5)}
+        {/* <RN.Text style={styles.pmAm}>pm</RN.Text> */}
+      </RN.Text>
+    );
+  }, [is24h, activeAlarm]);
+
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.clockBox}>
-        <Animated.View style={[styles.clockBang]}>
-          <Images.Svg.alarmClockBang />
-        </Animated.View>
-        <Images.Svg.alarmClock />
+        {renderLottieClock()}
         {renderClock}
       </RN.View>
       <RN.View style={styles.btnBox}>
-        <StartBtn text="Later" />
-        <RN.Text style={styles.time}>
-          {is24h
-            ? homeCurrentTime.time24.slice(0, 5)
-            : homeCurrentTime.time30.slice(0, 5)}
-          {/* <RN.Text style={styles.pmAm}>pm</RN.Text> */}
-        </RN.Text>
-        <StartBtn text="Stop" primary />
+        <StartBtn
+          text="Later"
+          onPress={() => handleLaterAction(activeAlarm as never)}
+        />
+        {renderTime()}
+        <StartBtn
+          text="Stop"
+          primary
+          onPress={() => handleStopAction(activeAlarm as never)}
+        />
       </RN.View>
     </RN.View>
   );
@@ -84,50 +92,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 130,
   },
-  clockBang: {
-    position: 'absolute',
-    top: 50,
-    transformOrigin: 'bottom',
-  },
   time: {
     color: COLORS.blue,
     fontSize: 36,
   },
-  pmAm: {
-    fontSize: 16,
-  },
   clockBox: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  alarmFront: {
-    position: 'absolute',
-    bottom: 33,
-    paddingRight: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  lineMinut: {
-    width: 1,
-    height: '35%',
-    position: 'absolute',
-    top: '18%',
-    transformOrigin: 'bottom',
-  },
-  lineHour: {
-    width: 2,
-    height: '35%',
-    position: 'absolute',
-    top: '18%',
-    transformOrigin: 'bottom',
-    backgroundColor: COLORS.yellow,
-  },
-  second60Line: {
-    position: 'absolute',
-    backgroundColor: COLORS.blue,
-    height: 25,
-    width: 1.5,
-    bottom: '67.5%',
-    transformOrigin: 'bottom',
+    // backgroundColor: 'red',
   },
 });

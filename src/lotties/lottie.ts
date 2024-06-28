@@ -6,5 +6,5 @@ export const Lotties = {
   timer: require('./AnimLinear-2.json'),
   stressTest: require('./AnimLinear-3.json'),
   timeTogether: require('./AnimLinear-4.json'),
+  clock: require('./CLOCK.json'),
 };
-

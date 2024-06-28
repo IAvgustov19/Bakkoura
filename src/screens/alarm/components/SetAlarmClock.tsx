@@ -52,12 +52,14 @@ const SetAlarmClock: React.FC<Props> = ({okOnPress}) => {
     const value = firstSelectedValue.current;
     const newValue = value < 10 ? `0${value}` : value;
     setNewAlarmState('hours', newValue as never);
+    setNewAlarmState('laterHours', newValue as never);
     setTime();
   };
   const secondHandleChange = () => {
     const value = secondSelectedValue.current;
     const newValue = value < 10 ? `0${value}` : value;
     setNewAlarmState('minutes', newValue as never);
+    setNewAlarmState('laterMinutes', newValue as never);
     setTime();
   };
 

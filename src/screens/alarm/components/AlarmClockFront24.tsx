@@ -3,9 +3,12 @@ import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../../../assets';
+import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
+import {Lotties} from '../../../lotties/lottie';
 import {COLORS} from '../../../utils/colors';
+import {windowWidth} from '../../../utils/styles';
 
 type Props = {};
 
@@ -14,7 +17,7 @@ const AlarmClockFront24: React.FC<Props> = ({}) => {
 
   return (
     <RN.View style={[styles.alarmFront]}>
-      <Images.Svg.alarmClockFront24 />
+      <Images.Svg.alarmClockFront24 width={windowWidth - 140} />
       <LinearGradient
         style={[
           styles.lineMinut,
@@ -43,8 +46,8 @@ export default observer(AlarmClockFront24);
 const styles = StyleSheet.create({
   alarmFront: {
     position: 'absolute',
-    bottom: 33,
-    paddingRight: 2,
+    bottom: RN.Platform.OS === 'ios' ? 58 : 43,
+    paddingRight: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

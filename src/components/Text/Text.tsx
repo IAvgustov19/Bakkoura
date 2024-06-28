@@ -8,6 +8,7 @@ type Props = {
   textAlign?: string;
   style?: any;
   fontFamily?: string;
+  fonWeight?: string;
 };
 
 const TextView: React.FC<Props> = ({
@@ -16,12 +17,14 @@ const TextView: React.FC<Props> = ({
   style,
   textAlign,
   fontFamily,
+  fonWeight,
 }) => {
   return (
     <Text
       style={[
         title ? styles.title : styles.text,
         style,
+        {fontWeight: fonWeight},
         {textAlign: textAlign ? textAlign : 'center'},
         {fontFamily: fontFamily ? fontFamily : 'RedHatDisplay-Regular'},
       ]}>

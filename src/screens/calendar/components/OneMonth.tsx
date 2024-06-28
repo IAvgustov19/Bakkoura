@@ -15,7 +15,8 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
   const [activeDate, setActiveDate] = React.useState<String>(
     new Date().toISOString().slice(0, 10),
   );
-  const {filterEvents, oneMonth} = useRootStore().calendarStore;
+  const {filterEvents, oneMonth, cloneAllEventsData} =
+    useRootStore().calendarStore;
 
   const _onPress = (item: string) => {
     if (item) {
@@ -25,8 +26,6 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
   };
 
   const matrix = generateMatrix(oneMonth as never);
-
-  let rows = [];
 
   const renderDateDot = React.useCallback(
     date => {
@@ -39,8 +38,9 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
         ) : null,
       );
     },
-    [selectedDays],
+    [selectedDays, cloneAllEventsData],
   );
+  let rows = [];
 
   rows = matrix.map((row, rowIndex: number) => {
     let rowItems = row.map((item, colIndex: number) => {
