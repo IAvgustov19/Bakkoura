@@ -70,6 +70,9 @@ import auth from '@react-native-firebase/auth';
 import PasswordPrompt from '../screens/home/secureEntry/passwordAuth';
 import FingerprintAuth from '../screens/home/secureEntry/fingerprintAuth';
 import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
+import MessengerScreen from '../screens/messenger/MessengerScreen';
+import SearchContact from '../screens/messenger/SearchContact';
+import DialogScreen from '../screens/messenger/DialogScreen';
 
 const Stack = createStackNavigator();
 
@@ -202,6 +205,27 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.TIME_SCREEN}
           component={TimeScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.MESSENGER}
+          component={MessengerScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.SEARCH_CONTACT}
+          component={SearchContact}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.DIALOG_SCREEN}
+          component={DialogScreen}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -540,20 +564,20 @@ const AppNavigator = () => {
     );
   };
 
-return (
-  <NavigationContainer theme={DarkTheme}>
-    <Stack.Navigator
-      initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
-      detachInactiveScreens={true}
-      screenOptions={{
-        headerShown: false,
-        gestureEnabled: false,
-      }}>
-      {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
-      {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
-    </Stack.Navigator>
-  </NavigationContainer>
-);
+  return (
+    <NavigationContainer theme={DarkTheme}>
+      <Stack.Navigator
+        initialRouteName={APP_ROUTES.BOTTOM_NAVIGATION}
+        detachInactiveScreens={true}
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}>
+        {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
+        {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default observer(AppNavigator);

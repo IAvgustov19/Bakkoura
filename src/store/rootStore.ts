@@ -20,6 +20,7 @@ import {WorldTimeStore} from './worldTime/WorldTime';
 import {PersonalAreaStore} from './personalArea/PersonalArea';
 import {TimeBioticStore} from './timeBiotic/TimeBiotic';
 import {WatchConstructor} from './watchConstructor/WatchConstructor';
+import { MessengerStore } from './messanger/Messenger';
 
 export class RootStore {
   timerStore: TimerStore;
@@ -42,6 +43,7 @@ export class RootStore {
   timeClinicStore: TimeClinicStore;
   timeBiotic: TimeBioticStore;
   watchConstructor: WatchConstructor;
+  messangerStore: MessengerStore;
 
   constructor() {
     makeAutoObservable(this);
@@ -65,6 +67,8 @@ export class RootStore {
     this.personalAreaStore = new PersonalAreaStore(this);
     this.timeBiotic = new TimeBioticStore(this);
     this.watchConstructor = new WatchConstructor();
+    this.messangerStore = new MessengerStore(this);
+    
   }
 }
 const rootStore = new RootStore();

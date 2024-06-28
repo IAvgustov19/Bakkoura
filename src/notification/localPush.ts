@@ -3,7 +3,7 @@ import PushNotification from 'react-native-push-notification';
 class Notifications {
   constructor() {
     PushNotification.configure({
-      // (optional) Called when Token is generated (iOS and Android)
+      // Called when Token is generated (iOS and Android)
       onRegister: function (token) {
         // console.log('TOKEN:', token);
       },
@@ -22,9 +22,13 @@ class Notifications {
       },
       () => {},
     );
+  }
 
-    PushNotification.getScheduledLocalNotifications(rn => {
-      //   console.log('SN --- ', rn);
+  async getScheduledNotifications() {
+    return new Promise((resolve) => {
+      PushNotification.getScheduledLocalNotifications((notifications) => {
+        resolve(notifications);
+      });
     });
   }
 
@@ -37,6 +41,10 @@ class Notifications {
       repeatType,
       repeatTime,
     });
+  }
+
+  cancelAllNotifications() {
+    PushNotification.cancelAllLocalNotifications();
   }
 }
 

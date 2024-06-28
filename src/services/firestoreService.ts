@@ -1,4 +1,4 @@
-import {db} from '../config/firebase';
+import { db, firebase } from '../config/firebase';
 import {
   PomodoroDataType,
   ProjectTimerDataType,
@@ -11,6 +11,8 @@ import {SelectedCountriesType} from '../types/worldTime';
 import {AlarmListsItemType} from '../types/alarm';
 
 import auth from '@react-native-firebase/auth';
+import { UserType } from '../types/user';
+
 
 // calendar events
 export const addEventToFirestore = async event => {
@@ -883,3 +885,36 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
     console.error('Error deleting project timer:', error);
   }
 };
+
+// users
+export const getAllUsersFromFirestore = async (): Promise<UserType[]> => {
+  try {
+    const usersSnapshot = await db.collection('users').get();
+    const usersData: UserType[] = [];
+
+    usersSnapshot.forEach(doc => {
+      const userData = doc.data() as UserType;
+      usersData.push(userData);
+    });
+
+    return usersData;
+  } catch (error) {
+    console.error('Error', error);
+    return [];
+  }
+};
+
+// export const syncUsersToRealtimeDB = async () => {
+//   try {
+//     const usersData = await getAlarmsFromFirestore();
+//     const realtimeDBRef = firebase.database().ref('users');
+
+//     usersData.forEach(user => {
+//       realtimeDBRef.child(user.id).set(user);
+//     });
+
+//     console.log('Users synchronized to Realtime Database successfully!');
+//   } catch (error) {
+//     console.error('Error synchronizing users to Realtime Database:', error);
+//   }
+// };
