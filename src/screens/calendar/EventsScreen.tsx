@@ -22,7 +22,7 @@ const EventScreen = () => {
     allEventsData,
   } = useRootStore().calendarStore;
   const navigation = useNavigation();
-  // console.log('e', allEventsData);
+  // console.log('allEventsData', allEventsData);
 
   const toggleSwitch = () => {
     setTimeout(() => {

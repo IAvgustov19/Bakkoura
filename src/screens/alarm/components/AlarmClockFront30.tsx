@@ -48,8 +48,8 @@ export default observer(AlarmClockFront30);
 const styles = StyleSheet.create({
   alarmFront: {
     position: 'absolute',
-    bottom: 13,
-    paddingRight: 2,
+    bottom: 38,
+    paddingRight: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

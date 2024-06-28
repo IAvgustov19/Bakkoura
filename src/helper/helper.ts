@@ -339,7 +339,7 @@ export const getCurrentTime30and24 = (index: number) => {
   }
 };
 
-export function formatDayVaMonth(day: number, month: number, year: number) {
+export function formatDayAndMonth(day: number, month: number, year: number) {
   const monthData = [
     'january',
     'february',
@@ -355,7 +355,7 @@ export function formatDayVaMonth(day: number, month: number, year: number) {
     'december',
   ];
 
-  const today = new Date().getDay();
+  const today = new Date().getDate();
   const Month = new Date().getMonth();
 
   if (day === today && Month + 1 === month) {
@@ -366,6 +366,12 @@ export function formatDayVaMonth(day: number, month: number, year: number) {
     return `${today}-${month}`;
   }
 }
+
+export const formatDateType = (dateString: string) => {
+  const [year, month, day] = dateString.split('-');
+
+  return `${day}.${month}.${year}`;
+};
 
 export const formatDate = (timestamp: number) => {
   var currentDate = new Date();
@@ -602,10 +608,10 @@ export const generateYearsData = () => {
 
 export function getDayOfYear(dateString) {
   // Berilgan sanani Date ob'ektiga aylantirish
-  const date = new Date(dateString);
+  const date: any = new Date(dateString);
 
   // Yilning birinchi kuni (1-yanvar)
-  const startOfYear = new Date(date.getFullYear(), 0, 1);
+  const startOfYear: any = new Date(date.getFullYear(), 0, 1);
 
   // Yil boshidan berilgan sanagacha o'tgan millisekundlarni hisoblash
   const diffInMillis = date - startOfYear;
@@ -658,3 +664,16 @@ export function getQueryParamValue(url, paramName) {
   const match = url.match(regex);
   return match ? decodeURIComponent(match[1]) : null;
 }
+
+export const getCurrentDateFormatted = () => {
+  // Hozirgi sanani oling
+  const today = new Date();
+
+  // Yil, oy va kun qiymatlarini oling
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Oylarda 0-indeksdan boshlanadi, shuning uchun 1 qo'shamiz
+  const day = String(today.getDate()).padStart(2, '0');
+
+  // Formatni qaytaring
+  return `${year}-${month}-${day}`;
+};

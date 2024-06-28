@@ -9,7 +9,6 @@ type Props = {
   eventName?: string;
   date?: string;
   time?: string;
-  finished?: boolean;
   onPress?: () => void;
   isShowDate?: boolean;
   leftLine?: boolean;

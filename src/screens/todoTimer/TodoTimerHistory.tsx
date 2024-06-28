@@ -1,13 +1,13 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback} from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import RN from '../../components/RN';
-import {secondsToHM, secondsToHMS} from '../../helper/helper';
+import {secondsToHMS} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
@@ -16,19 +16,20 @@ import HistoryListItem from './components/HistoryListItem';
 
 const ToDoTimerHistory = () => {
   const {hide} = useRootStore().visibleStore;
-  const {tasksList, getOneTask, filterItemsByTime, filterType, fetchTasks, tasksListClone} =
-    useRootStore().todoTimer;
+  const {
+    tasksList,
+    getOneTask,
+    filterItemsByTime,
+    filterType,
+    clearFilterType,
+  } = useRootStore().todoTimer;
   const navifation = useNavigation();
   const isFocused = useIsFocused();
 
-  const onFilterTasks = (time: string) => {
-    filterItemsByTime(time);
-  };
-
   const renderList = useCallback(() => {
     {
-      return tasksListClone.length > 0 ? (
-        tasksListClone.map((item, index) => {
+      return tasksList.length > 0 ? (
+        tasksList.map((item, index) => {
           return (
             <HistoryListItem
               key={index}
@@ -46,14 +47,19 @@ const ToDoTimerHistory = () => {
         <ListEmptyComp title="No to do timer" />
       );
     }
-  }, [tasksListClone]);
+  }, [tasksList]);
+
+  const onHandleBack = () => {
+    navifation.goBack();
+    clearFilterType();
+  };
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<ArrowLeftBack onPress={() => navifation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={onHandleBack} />}
             title="History"
           />
           <RN.View style={styles.content}>
@@ -65,7 +71,7 @@ const ToDoTimerHistory = () => {
                     text={item.title}
                     textColor={filterType === item.key && COLORS.yellow}
                     borderColor={filterType === item.key && COLORS.yellow}
-                    onPress={() => onFilterTasks(item.key)}
+                    onPress={() => filterItemsByTime(item.key)}
                     Width={'30%'}
                   />
                 );

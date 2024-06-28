@@ -14,6 +14,9 @@ export type AlarmListsItemType = {
   leter: boolean;
   vibration: boolean;
   dateTime: Date;
+  isRing: boolean;
+  laterHours: string | number;
+  laterMinutes: string | number;
 };
 
 export const AlarmListsItemInitial: AlarmListsItemType = {
@@ -30,6 +33,9 @@ export const AlarmListsItemInitial: AlarmListsItemType = {
   leter: false,
   vibration: true,
   dateTime: new Date(),
+  isRing: false,
+  laterHours: '',
+  laterMinutes: '',
 };
 
 export type ProjectTimerDataType = {
@@ -179,6 +185,13 @@ export const MetronomDataInitial: MetronomDataType = {
   etapCount: 4,
   etapLine: 1,
 };
+type DailyUsageType = {
+  date: string; // ISO formatidagi sana
+  hours: number; // Soatlar
+  minutes: number; // Daqiqalar
+  seconds: number; // Soniyalar
+  timestamp: number; // Umumiy ishlatilgan vaqt (soniyalarda)
+};
 
 export type TodoTimerDataType = {
   uid: string;
@@ -197,6 +210,7 @@ export type TodoTimerDataType = {
   timestamp: number;
   play: boolean;
   date: number;
+  dailyUsage: DailyUsageType[];
 };
 export const TodoTimerDataInitial: TodoTimerDataType = {
   uid: '',
@@ -215,6 +229,7 @@ export const TodoTimerDataInitial: TodoTimerDataType = {
   timestamp: 0,
   play: false,
   date: 0,
+  dailyUsage: [],
 };
 
 export type ToDoTaskNameDataType = {

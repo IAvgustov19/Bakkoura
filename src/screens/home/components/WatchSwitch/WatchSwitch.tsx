@@ -42,7 +42,7 @@ const WatchSwitch: React.FC<Props> = ({title, handlePress}) => {
       <RN.View style={[styles.box]}>
         <Animated.View style={[styles.animatedBox, animatedStyles]}>
           <LinearGradient colors={['#ECC271', '#7F642E']} style={styles.linear}>
-            <RN.Text style={styles.title}>
+            <RN.Text style={styles.title} fontFamily="RedHatDisplay-SemiBold">
               {whichWatch === 1 ? '24/30h' : whichWatch === 2 ? '24h' : '30h'}
             </RN.Text>
           </LinearGradient>

@@ -1,7 +1,7 @@
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {color} from '@rneui/base';
 import {observer} from 'mobx-react-lite';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
 import {Images} from '../../../assets';
 import ListEmptyComp from '../../../components/ListEmptyComp/ListEmtyComp';
@@ -27,35 +27,18 @@ const Events: React.FC<Props> = ({
 }) => {
   const {
     allEventsData,
-    secondsToHMS,
     getOneEvent,
     handleDeleteEvent,
     calculateRemainingTime,
     fetchAllEvents,
   } = useRootStore().calendarStore;
-  // console.log('allEventsData', allEventsData);
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  const [isFinished, setIsFinished] = useState<boolean[]>([]);
-
   useEffect(() => {
     fetchAllEvents();
   }, [isFocused]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const updatedFinishedStatus = allEventsData.map(event => {
-        const remainingTime =
-          event.stayedDay * 24 * 60 + event.stayedHour * 60 + event.stayedMinut;
-
-        return remainingTime <= 0;
-      });
-      setIsFinished(updatedFinishedStatus);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [allEventsData]);
 
   const onGetHandle = (item: NewEventStateType) => {
     navigation.navigate(APP_ROUTES.NEW_EVENT as never);
@@ -66,7 +49,7 @@ const Events: React.FC<Props> = ({
     calculateRemainingTime();
   }, [isFocused]);
 
-  const renderLeftActions = (id: number) => {
+  const renderLeftActions = (id: string) => {
     return (
       <RectButton
         style={styles.rightAction}
@@ -78,7 +61,13 @@ const Events: React.FC<Props> = ({
     );
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: NewEventStateType;
+    index: number;
+  }) => {
     return (
       <Swipeable
         key={index}
@@ -92,8 +81,8 @@ const Events: React.FC<Props> = ({
             borderRadius={borderRaduis}
             leftLine={leftLine}
             already={item.already}
-            date={formattedDate(item.day, item.month, item.year, 2)}
-            finished={isFinished[index]}
+            date={item.date[0]}
+            // finished={isFinished[index]}
             time={`${item.stayedDay} days ${
               item.stayedHour < 10 ? `0${item.stayedHour}` : item.stayedHour
             }:${
