@@ -27,6 +27,7 @@ const AlarmScreen = () => {
     handleInactiveAlarm,
     handleDeleteAlarm,
     fetchAlarmsData,
+    activeAlarm,
   } = useRootStore().alarmStore;
   const [isClock, setClock] = useState(true);
   const [is24h, setIs24h] = useState(true);
@@ -72,7 +73,15 @@ const AlarmScreen = () => {
               ]}>
               {item.time}
             </RN.Text>
-            <TextView style={styles.desc} text={item.description} />
+            <TextView
+              textAlign="left"
+              style={styles.desc}
+              text={
+                item.name.lenght > 25
+                  ? item.name.slice(0, 22) + '...'
+                  : item.name
+              }
+            />
           </RN.View>
           <SimpleSwitch
             active={item.isActive}
@@ -84,7 +93,7 @@ const AlarmScreen = () => {
   };
 
   const renderClock = useCallback(() => {
-    if (isClock) {
+    if (activeAlarm) {
       return <AlarmClock is24h={is24h} />;
     } else {
       return (
@@ -112,7 +121,7 @@ const AlarmScreen = () => {
         </RN.View>
       );
     }
-  }, [isClock, is24h, alarmsListData]);
+  }, [isClock, is24h, alarmsListData, activeAlarm]);
 
   return (
     <LinearContainer
@@ -134,9 +143,9 @@ const AlarmScreen = () => {
               )
             }
           />
-          <RN.TouchableOpacity onPress={() => setClock(e => !e)}>
+          {/* <RN.TouchableOpacity onPress={() => setClock(e => !e)}>
             <Images.Svg.dotOpenBar />
-          </RN.TouchableOpacity>
+          </RN.TouchableOpacity> */}
           {renderClock()}
         </RN.View>
       }

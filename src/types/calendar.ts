@@ -1,14 +1,16 @@
+import {SoundsData} from '../utils/sounds';
+
 export type NewEventStateType = {
   uid?: string;
   id: string;
   name: string;
-  date: string[] | string;
+  date: string[];
   time: string;
   timeStamp: number;
   allDay: boolean;
   repeat: string;
   reminder: boolean;
-  sound: string;
+  sound: {id: number; title: string; url: string; active: boolean};
   comment: string;
   year: number;
   month: number;
@@ -28,13 +30,13 @@ export const NewEventStateInitial: NewEventStateType = {
   id: '',
   uid: '',
   name: '',
-  date: '',
+  date: [],
   time: '',
   timeStamp: 0,
   allDay: false,
   repeat: 'Yearly',
   reminder: false,
-  sound: 'Ocean',
+  sound: SoundsData[2],
   comment: '',
   year: 0,
   month: 0,

@@ -95,7 +95,7 @@ const HomeScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="Home"
+            // title="Home"
             rightItem={
               <RN.View style={styles.profile}>
                 <RN.TouchableOpacity
@@ -135,12 +135,16 @@ const HomeScreen = () => {
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.watchBox}>
-              <TextView text={'Jihad, Message to You!'} />
               <TextView
-                style={styles.title}
+                style={[styles.title, {marginTop: -15}]}
+                text={'Jihad, Message to You!'}
+              />
+              <TextView
+                fonWeight="300"
+                style={[styles.title, {marginTop: 5}]}
                 title={'Today is your day! Do something good!'}
               />
-              <RN.View>{renderWatchs()}</RN.View>
+              <RN.View style={styles.renderWatchs}>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
                 <TodayEvent
                   day={nearDay?.day}
@@ -178,8 +182,8 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 16,
-    marginTop: 5,
+    fontSize: 14,
+    // marginTop: 5,
   },
   profile: {
     flexDirection: 'row',
@@ -216,5 +220,8 @@ const styles = RN.StyleSheet.create({
     borderRadius: 22,
     position: 'absolute',
     zIndex: 2,
+  },
+  renderWatchs: {
+    marginTop: 10,
   },
 });

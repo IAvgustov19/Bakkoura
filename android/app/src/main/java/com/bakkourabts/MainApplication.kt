@@ -1,4 +1,4 @@
-package com.bakkourabts
+package com.bts
 
 import android.app.Application
 import com.facebook.react.PackageList

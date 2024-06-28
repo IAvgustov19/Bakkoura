@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useState, useCallback} from 'react';
 import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -16,12 +16,22 @@ import Events from './components/Events';
 import OneMonth from './components/OneMonth';
 
 const OneMonthAndEvents = () => {
-  const {oneMonth, cloneAllEventsData} = useRootStore().calendarStore;
+  const {oneMonth, cloneAllEventsData, allEventsData} =
+    useRootStore().calendarStore;
   const navigation = useNavigation();
 
   const currentDay = new Date();
   const currentYear = new Date(oneMonth).getFullYear();
   const currentMonth = months[new Date(oneMonth).getMonth()];
+
+  const renderEvents = useCallback(() => {
+    return (
+      <OneMonth
+        date={currentDay}
+        selectedDays={cloneAllEventsData.map(item => item.date)}
+      />
+    );
+  }, [cloneAllEventsData, allEventsData]);
 
   return (
     <LinearContainer
@@ -41,13 +51,7 @@ const OneMonthAndEvents = () => {
           <RN.View style={styles.yearBottom}>
             <Images.Svg.calendarMonthBottom />
           </RN.View>
-
-          <RN.View style={styles.calendar}>
-            <OneMonth
-              date={currentDay}
-              selectedDays={cloneAllEventsData.map(item => item.date)}
-            />
-          </RN.View>
+          <RN.View style={styles.calendar}>{renderEvents()}</RN.View>
           <RN.View style={styles.events}>
             <Events borderRaduis={0} isShowDate={false} leftLine={true} />
           </RN.View>

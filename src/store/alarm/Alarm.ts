@@ -11,6 +11,12 @@ import {AlarmListsItemInitial, AlarmListsItemType} from '../../types/alarm';
 import {WeekRepeatData} from '../../utils/repeat';
 import {lesSoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
+import PushNotification, {Importance} from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import RN from '../../components/RN';
+import {Platform} from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export class AlarmStore {
   private readonly root: RootStore;
@@ -19,6 +25,35 @@ export class AlarmStore {
     this.root = root;
     this.updateAlarmCurrentTime();
     this.fetchAlarmsData();
+    this.fetchActiveAlarm();
+
+    PushNotification.configure({
+      onAction: notification => {
+        const alarmId = notification.userInfo.id;
+        const alarm = this.alarmState.find(a => a.id === alarmId);
+
+        if (notification.action === 'Stop') {
+          this.handleStopAction(alarm);
+          console.log('stop');
+        } else if (notification.action === 'Later') {
+          this.handleLaterAction(alarm);
+          console.log('later');
+        }
+      },
+      requestPermissions: Platform.OS === 'ios',
+    });
+
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.setNotificationCategories([
+        {
+          id: 'userAction',
+          actions: [
+            {id: 'Stop', title: 'Stop', options: {foreground: true}},
+            {id: 'Later', title: 'Later', options: {foreground: true}},
+          ],
+        },
+      ]);
+    }
   }
 
   alarmsListData: AlarmListsItemType[] = [];
@@ -90,10 +125,7 @@ export class AlarmStore {
 
   handleInactiveAlarm = async (id: number | string) => {
     try {
-      console.log();
       const alarmToUpdate = this.alarmsListData.find(item => item.id === id);
-      console.log(id);
-      console.log(this.alarmsListData);
       if (!alarmToUpdate) {
         throw new Error('Alarm not found.');
       }
@@ -117,6 +149,7 @@ export class AlarmStore {
   clearAlarmItemData = () => {
     runInAction(() => {
       this.alarmItemData = AlarmListsItemInitial;
+      this.selectedRepeat = [...this.alarmItemData.repeat];
     });
   };
 
@@ -172,5 +205,176 @@ export class AlarmStore {
       };
     });
     this.soundData = newData;
+  };
+
+  ALARM_RING_DURATION = 15 * 60 * 1000;
+  LATER_DURATION = 5 * 60 * 1000;
+
+  timeout;
+  laterTimeout;
+  activeAlarm: AlarmListsItemType | null = null;
+  alarmState;
+  isRing = false;
+
+  fetchActiveAlarm = async () => {
+    try {
+      const alarmJson = await AsyncStorage.getItem('activeAlarm');
+      if (alarmJson !== null) {
+        const alarm = JSON.parse(alarmJson);
+        runInAction(() => {
+          this.activeAlarm = alarm;
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching activeAlarm from AsyncStorage:', error);
+    }
+  };
+
+  checkAlarms = (alarmsListData: AlarmListsItemType[]) => {
+    this.alarmState = alarmsListData;
+    const now = new Date();
+    const currentDay = now.toLocaleString('en-US', {weekday: 'long'});
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+
+    alarmsListData.forEach(alarm => {
+      if (
+        alarm.isActive &&
+        alarm.laterHours == currentHours &&
+        alarm.laterMinutes == currentMinutes &&
+        (alarm.repeat.includes(currentDay) || alarm.repeat.includes('Never')) &&
+        (!this.activeAlarm || this.activeAlarm.id !== alarm.id)
+      ) {
+        this.triggerNotification(alarm);
+      }
+    });
+  };
+
+  triggerNotification = async (alarm: AlarmListsItemType) => {
+    if (alarm.isActive) {
+      runInAction(() => {
+        this.activeAlarm = alarm;
+      });
+
+      // Save activeAlarm to AsyncStorage
+      try {
+        await AsyncStorage.setItem('activeAlarm', JSON.stringify(alarm));
+      } catch (error) {
+        console.error('Error saving activeAlarm to AsyncStorage:', error);
+      }
+
+      PushNotification.createChannel(
+        {
+          channelId: alarm.id as never,
+          channelName: 'Alarm Channel',
+          playSound: true,
+          soundName: alarm.sound.url,
+          importance: Importance.HIGH,
+        },
+        () => {},
+      );
+
+      if (RN.Platform.OS === 'ios') {
+        PushNotificationIOS.addNotificationRequest({
+          id: alarm.id,
+          title: 'BTS',
+          body: alarm.name,
+          sound: alarm.sound.url,
+          category: 'userAction',
+        });
+      } else {
+        PushNotification.localNotification({
+          channelId: alarm.id,
+          title: 'BTS',
+          message: alarm.name,
+          playSound: true,
+          soundName: alarm.sound.url,
+          actions: ['Stop', 'Later'],
+          userInfo: {id: alarm.id},
+          autoCancel: false,
+        });
+      }
+
+      if (alarm.repeat.includes('Never')) {
+        this.handleInactiveAlarm(alarm.id);
+      }
+      runInAction(() => {
+        this.isRing = true;
+      });
+
+      this.timeout = BackgroundTimer.setTimeout(() => {
+        this.handleLaterAction(alarm);
+      }, this.ALARM_RING_DURATION);
+    }
+  };
+
+  handleStopAction = async (alarm: AlarmListsItemType) => {
+    BackgroundTimer.clearTimeout(this.timeout);
+    BackgroundTimer.clearTimeout(this.laterTimeout);
+    runInAction(() => {
+      this.isRing = false;
+    });
+    PushNotification.removeAllDeliveredNotifications();
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.removeAllDeliveredNotifications();
+    }
+    if (alarm.repeat.includes('Never')) {
+      this.handleInactiveAlarm(alarm.id);
+    }
+    const updatedAlarm = {
+      ...alarm,
+      laterHours: this.activeAlarm?.hours,
+      laterMinutes: this.activeAlarm?.minutes,
+    };
+
+    await updateAlarmInFirestore(this.activeAlarm.id, updatedAlarm);
+    runInAction(() => {
+      this.activeAlarm = updatedAlarm;
+    });
+    runInAction(() => {
+      this.activeAlarm = null;
+    });
+    try {
+      await AsyncStorage.removeItem('activeAlarm');
+    } catch (error) {
+      console.error('Error removing activeAlarm from AsyncStorage:', error);
+    }
+  };
+
+  handleLaterAction = async (alarm: AlarmListsItemType) => {
+    BackgroundTimer.clearTimeout(this.timeout);
+    runInAction(() => {
+      this.isRing = false;
+    });
+    PushNotification.removeAllDeliveredNotifications();
+    if (Platform.OS === 'ios') {
+      PushNotificationIOS.removeAllDeliveredNotifications();
+    }
+
+    // Update alarm time in Firestore
+    const newMinutes = Number(alarm.laterMinutes) + 5;
+    const newHours = newMinutes >= 60 ? Number(alarm.hours) + 1 : alarm.hours;
+    const updatedMinutes = newMinutes % 60;
+
+    const updatedAlarm = {
+      ...alarm,
+      laterHours: newHours,
+      laterMinutes: updatedMinutes,
+    };
+
+    await updateAlarmInFirestore(this.activeAlarm.id, updatedAlarm);
+    runInAction(() => {
+      this.activeAlarm = updatedAlarm;
+    });
+    // Update activeAlarm in AsyncStorage
+    try {
+      await AsyncStorage.setItem('activeAlarm', JSON.stringify(updatedAlarm));
+    } catch (error) {
+      console.error('Error updating activeAlarm in AsyncStorage:', error);
+    }
+
+    this.laterTimeout = BackgroundTimer.setTimeout(() => {
+      this.triggerNotification(updatedAlarm);
+    }, this.LATER_DURATION);
   };
 }

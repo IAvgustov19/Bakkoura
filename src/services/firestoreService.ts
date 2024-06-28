@@ -1,4 +1,4 @@
-import { db } from '../config/firebase';
+import {db} from '../config/firebase';
 import {
   PomodoroDataType,
   ProjectTimerDataType,
@@ -6,9 +6,9 @@ import {
   TodoTimerDataType,
   TogetherDataType,
 } from '../types/alarm';
-import { NewEventStateType } from '../types/calendar';
-import { SelectedCountriesType } from '../types/worldTime';
-import { AlarmListsItemType } from '../types/alarm';
+import {NewEventStateType} from '../types/calendar';
+import {SelectedCountriesType} from '../types/worldTime';
+import {AlarmListsItemType} from '../types/alarm';
 
 import auth from '@react-native-firebase/auth';
 
@@ -89,14 +89,7 @@ export const getEventFromFirestore = async id => {
         stayedDay: data.stayedDay || 0,
         stayedHour: data.stayedHour || 0,
         stayedMinut: data.stayedMinut || 0,
-        date: new Date(
-          data.year,
-          data.month - 1,
-          data.day,
-          data.hour,
-          data.minut,
-          data.second,
-        ).toISOString(),
+        date: data.date,
         timeStamp: data.timeStamp || Date.now(),
         repeat: data.repeat || '',
         already: data.already || false,
@@ -174,6 +167,7 @@ export const fetchTasksFromFirestore = async (): Promise<
         timestamp: data.timestamp || 0,
         play: data.play || false,
         date: data.date || 0,
+        dailyUsage: data.dailyUsage || [],
       };
     });
     return tasks;
@@ -338,7 +332,6 @@ export const deleteEtapFromFirestore = async id => {
   }
 };
 
-
 export const getEtapsFromFirestore = async () => {
   try {
     const user = auth().currentUser;
@@ -347,9 +340,7 @@ export const getEtapsFromFirestore = async () => {
     const etapsRef = db.collection('etaps');
 
     // Fetch etaps with your uid
-    const yourEtapsSnapshot = await etapsRef
-      .where('uid', '==', userId)
-      .get();
+    const yourEtapsSnapshot = await etapsRef.where('uid', '==', userId).get();
 
     // Fetch synchronized etaps with matching synchronizedEmail
     const synchronizedEtapsSnapshot = await etapsRef
@@ -402,7 +393,7 @@ export const getEtapsFromFirestore = async () => {
   }
 };
 
-export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
+export const updateEtapsMailInFirestore = async synchronizedEmail => {
   try {
     const user = auth().currentUser;
     if (!user) {
@@ -412,46 +403,55 @@ export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
     const userId = user.uid;
     const userEmail = user.email;
 
-    console.log('Current User:', { userId, userEmail });
+    console.log('Current User:', {userId, userEmail});
     console.log('Synchronized Email:', synchronizedEmail);
 
     // Fetch etaps where the current user is the owner
-    const ownerSnapshot = await db.collection('etaps')
+    const ownerSnapshot = await db
+      .collection('etaps')
       .where('uid', '==', userId)
       .get();
 
-    let invitedSnapshot = { docs: [] };
+    let invitedSnapshot = {docs: []};
 
     if (synchronizedEmail === null) {
       // Fetch etaps where synchronizedEmail is equal to userEmail
-      invitedSnapshot = await db.collection('etaps')
+      invitedSnapshot = await db
+        .collection('etaps')
         .where('synchronizedEmail', '==', userEmail)
         .get();
     } else if (synchronizedEmail) {
       // Fetch user by synchronized email
-      const usersSnapshot = await db.collection('users').where('email', '==', synchronizedEmail).get();
+      const usersSnapshot = await db
+        .collection('users')
+        .where('email', '==', synchronizedEmail)
+        .get();
 
       if (!usersSnapshot.empty) {
-        const userIds = usersSnapshot.docs.map((userDoc) => userDoc.data().id);
+        const userIds = usersSnapshot.docs.map(userDoc => userDoc.data().id);
         const invitedId = userIds[0];
 
         console.log('Invited User ID:', invitedId);
 
         // Fetch etaps where the current user is invited
-        invitedSnapshot = await db.collection('etaps')
+        invitedSnapshot = await db
+          .collection('etaps')
           .where('uid', '==', invitedId)
           .get();
       } else {
-        console.log('No user found with synchronized email:', synchronizedEmail);
+        console.log(
+          'No user found with synchronized email:',
+          synchronizedEmail,
+        );
       }
     }
 
-    console.log('Invited Snapshot:', invitedSnapshot.docs.map(doc => doc.data()));
+    console.log(
+      'Invited Snapshot:',
+      invitedSnapshot.docs.map(doc => doc.data()),
+    );
 
-    const docs = [
-      ...ownerSnapshot.docs,
-      ...invitedSnapshot.docs,
-    ];
+    const docs = [...ownerSnapshot.docs, ...invitedSnapshot.docs];
 
     console.log('synchronizedEmail:', synchronizedEmail);
 
@@ -461,7 +461,7 @@ export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
         const docRef = doc.ref;
         await docRef.update({
           synchronized: false,
-          synchronizedEmail: synchronizedEmail === null ? null : userEmail, 
+          synchronizedEmail: synchronizedEmail === null ? null : userEmail,
         });
         console.log('Document updated successfully (invitedSnapshot):', doc.id);
       }
@@ -485,7 +485,6 @@ export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
   }
 };
 
-
 export const updateEtapsInFirestore = async (id, updatedEtap) => {
   try {
     await db.collection('etaps').doc(id).update(updatedEtap);
@@ -493,8 +492,6 @@ export const updateEtapsInFirestore = async (id, updatedEtap) => {
     console.error('Error', error);
   }
 };
-
-
 
 // export const updateEtapsMailInFirestore = async (synchronizedEmail) => {
 //   try {
@@ -540,7 +537,6 @@ export const updateEtapsInFirestore = async (id, updatedEtap) => {
 //       ...invitedSnapshot.docs,
 //     ];
 
-
 //     console.log('synchronizedEmailsynchronizedEmail', synchronizedEmail);
 
 //     if (docs.length > 0) {
@@ -580,7 +576,6 @@ export const updateEtapsInFirestore = async (id, updatedEtap) => {
 //     const userId = user.uid;
 //     let userEmail = user.email;
 
-
 //     console.log('Current User:', { userId, userEmail });
 //     console.log('Synchronized Email:', synchronizedEmail);
 
@@ -616,7 +611,6 @@ export const updateEtapsInFirestore = async (id, updatedEtap) => {
 //       ...(invitedSnapshot ? invitedSnapshot.docs : []),
 //     ];
 
-
 //     if (docs.length > 0) {
 //       // Update invitedSnapshot documents
 //       // if (synchronizedEmail == '') {
@@ -628,7 +622,7 @@ export const updateEtapsInFirestore = async (id, updatedEtap) => {
 //           });
 //         }
 //       // }
-    
+
 //     // Update ownerSnapshot documents
 //     for (const doc of ownerSnapshot.docs) {
 //       const docRef = doc.ref;
@@ -647,19 +641,21 @@ export const updateEtapsInFirestore = async (id, updatedEtap) => {
 // }
 // };
 
-export const updateEtapsSynchronizedInFirestore = async (synchronized) => {
+export const updateEtapsSynchronizedInFirestore = async synchronized => {
   try {
     const user = auth().currentUser;
     const userId = user.uid;
     const userEmail = user.email;
 
     // Fetch etaps where the current user is the owner
-    const ownerSnapshot = await db.collection('etaps')
+    const ownerSnapshot = await db
+      .collection('etaps')
       .where('uid', '==', userId)
       .get();
 
     // Fetch etaps where the current user is invited
-    const invitedSnapshot = await db.collection('etaps')
+    const invitedSnapshot = await db
+      .collection('etaps')
       .where('synchronizedEmail', '==', userEmail)
       .get();
 
@@ -667,12 +663,15 @@ export const updateEtapsSynchronizedInFirestore = async (synchronized) => {
     const docs = [...ownerSnapshot.docs, ...invitedSnapshot.docs];
 
     if (docs.length > 0) {
-      docs.forEach(async (doc) => {
+      docs.forEach(async doc => {
         const docRef = doc.ref;
         const etapData = doc.data();
 
         // Update if the current user is the owner or the invited user
-        if (etapData.uid === userId || etapData.synchronizedEmail === userEmail) {
+        if (
+          etapData.uid === userId ||
+          etapData.synchronizedEmail === userEmail
+        ) {
           await docRef.update({
             synchronized: synchronized,
           });
@@ -785,6 +784,8 @@ export const getAlarmsFromFirestore = async () => {
         repeat: data.repeat,
         sound: data.sound,
         leter: data.leter,
+        laterHours: data.laterHours,
+        laterMinutes: data.laterMinutes,
       };
     });
     return alarms;

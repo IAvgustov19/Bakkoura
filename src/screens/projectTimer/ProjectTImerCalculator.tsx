@@ -33,8 +33,6 @@ const ProjectTimerCalculator = () => {
     clearSelectedProject,
   } = useRootStore().projectTimer;
 
-  console.log('selectedProject', selectedProject);
-
   const onBackHandle = () => {
     navigation.goBack();
     clearSelectedProject();
