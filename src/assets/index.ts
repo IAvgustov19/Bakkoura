@@ -133,6 +133,9 @@ import dots from './svg/dots.svg';
 import btsInitial from './svg/btsInitial.svg';
 import watchConstructorLogo from './svg/watchConstructorLogo.svg';
 import marketWCardLight from './svg/marketCardLight.svg';
+import searchButton from './svg/searchButton.svg';
+import voiceMessage from './svg/voiceMessage.svg';
+import imageMessage from './svg/imageMessage.svg';
 
 export const Images = {
   Svg: {
@@ -178,9 +181,12 @@ export const Images = {
     showPassword,
     checkIcon,
     checkbox,
+    searchButton,
     bts,
     btsRightLinear,
     profileBackground,
+    imageMessage,
+    voiceMessage,
     f,
     x,
     g,

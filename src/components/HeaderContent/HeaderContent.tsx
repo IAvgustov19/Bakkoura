@@ -8,7 +8,7 @@ import TextView from '../Text/Text';
 type Props = {
   leftItem?: React.ReactNode;
   rightItem?: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
 };
 
 const HeaderContent: React.FC<Props> = ({leftItem, rightItem, title}) => {
@@ -18,6 +18,7 @@ const HeaderContent: React.FC<Props> = ({leftItem, rightItem, title}) => {
       <TextView
         fontFamily="RedHatDisplay-SemiBold"
         style={styles.title}
+        // @ts-ignore
         title={title}
       />
       <RN.View style={styles.rightItem}>{rightItem}</RN.View>
