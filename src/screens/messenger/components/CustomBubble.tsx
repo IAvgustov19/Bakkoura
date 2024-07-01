@@ -25,7 +25,7 @@ const CustomMessage = (props) => {
     const { image, user } = currentMessage;
     const { selectedImage, imageName, imageSize } = currentMessage;
 
-    console.log('currentMessagecurrentMessage', currentMessage)
+    // console.log('currentMessagecurrentMessage', currentMessage)
 
     return (
         <View style={styles.container}>

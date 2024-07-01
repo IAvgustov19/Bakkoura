@@ -63,7 +63,7 @@ const SearchContact = () => {
                     return (
                     <RN.TouchableOpacity style={styles.item} key={index}
                         onPress={() => navigation.navigate(APP_ROUTES.DIALOG_SCREEN, { 
-                            uid: item.uid, 
+                            id: item.id, 
                             name: item.name, 
                             avatar: item.avatar 
                         })}

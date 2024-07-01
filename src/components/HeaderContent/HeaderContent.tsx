@@ -14,14 +14,14 @@ type Props = {
 const HeaderContent: React.FC<Props> = ({leftItem, rightItem, title}) => {
   return (
     <RN.View style={styles.header}>
-      <RN.View style={styles.leftItem}>{leftItem}</RN.View>
-      <TextView
+      {leftItem && <RN.View style={styles.leftItem}>{leftItem}</RN.View>}
+      {title &&<TextView
         fontFamily="RedHatDisplay-SemiBold"
         style={styles.title}
         // @ts-ignore
         title={title}
-      />
-      <RN.View style={styles.rightItem}>{rightItem}</RN.View>
+      />}
+      {rightItem &&<RN.View style={styles.rightItem}>{rightItem}</RN.View>}
     </RN.View>
   );
 };
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     position: 'absolute',
+    // left: 150,
     width: '100%',
     textAlign: 'center',
     justifyContent: 'center',

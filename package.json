@@ -36,6 +36,7 @@
     "@types/react-native-push-notification": "^8.1.4",
     "@types/uuid": "^9.0.8",
     "emailjs-com": "^3.2.0",
+    "flipper": "^0.240.0",
     "format-number-with-string": "^0.0.2",
     "lottie-react-native": "5.1.6",
     "mobx": "^6.12.0",
