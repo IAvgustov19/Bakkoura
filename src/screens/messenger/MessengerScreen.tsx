@@ -12,7 +12,7 @@ import MessageItem from './components/MessageItem';
 import { formatDateTime, secondsToHMS } from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/navigation';
+import { RootStackParamList } from '../../types/navigation'; 
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 const MessengerScreen = () => {
@@ -30,13 +30,17 @@ const MessengerScreen = () => {
   }, [isFocused]);
 
 
+
+  // console.log('userDatauserData', JSON.stringify(userData, null, 2))
+
+
   const renderItems = useCallback(() => {
     return userData.map((item, index) => {
       return (
         <MessageItem
           onNavigate={() =>
             navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
-              uid: item.uid,
+              id: item.id,
               name: item.name,
               avatar: item.avatar
             })
