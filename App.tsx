@@ -19,9 +19,10 @@ import AppNavigator from './src/navigation/AppNavigator';
 // import auth from '@react-native-firebase/auth'
 // import { syncUsersToFirestore } from './src/services/firestoreService';
 
-
 import BackgroundTimer from 'react-native-background-timer';
 import useRootStore from './src/hooks/useRootStore';
+import 'react-native-reanimated';
+
 const App = () => {
   const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
   const {cloneAllEventsData, checkEvent} = useRootStore().calendarStore;
@@ -101,51 +102,22 @@ const App = () => {
   useEffect(() => {
     requestNotificationPermission();
   }, []);
-    // const onAuthStateChanged = (user) => {
-    //   if (user) {
-    //     scheduleNotifications(user.uid);
-    //   }
-    // };
-
-    // const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    // return subscriber; // unsubscribe on unmount
-
-
-  // const requestNotificationPermission = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-  //       {
-  //         title: 'Notification Permission',
-  //         message: 'Allow this app to send you notifications.',
-  //         buttonNeutral: 'Ask Me Later',
-  //         buttonNegative: 'Cancel',
-  //         buttonPositive: 'OK',
-  //       }
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
-  //       console.log('Notification permission granted');
-  //     } else {
-  //       console.log('Notification permission denied');
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
+  // const onAuthStateChanged = (user) => {
+  //   if (user) {
+  //     scheduleNotifications(user.uid);
   //   }
   // };
-
 
   useEffect(() => {
     requestNotificationPermission();
   }, []);
-
 
   // useEffect(() => {
   //   syncUsersToFirestore();
   // }, [])
 
   useEffect(() => {
-    const permission = async() => {
+    const permission = async () => {
       if (Platform.OS === 'android') {
         try {
           const grants = await PermissionsAndroid.requestMultiple([
@@ -153,9 +125,9 @@ const App = () => {
             PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
             PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
           ]);
-      
+
           console.log('write external storage', grants);
-      
+
           if (
             grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
               PermissionsAndroid.RESULTS.GRANTED &&
@@ -174,9 +146,9 @@ const App = () => {
           return;
         }
       }
-    }
+    };
     permission();
-  }, [])
+  }, []);
 
   return (
     <>
