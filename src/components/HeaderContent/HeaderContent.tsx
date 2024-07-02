@@ -8,19 +8,27 @@ import TextView from '../Text/Text';
 type Props = {
   leftItem?: React.ReactNode;
   rightItem?: React.ReactNode;
-  title?: string | React.ReactNode;
+  title?: string;
+  centerItem?: React.ReactNode;
 };
 
-const HeaderContent: React.FC<Props> = ({leftItem, rightItem, title}) => {
+const HeaderContent: React.FC<Props> = ({
+  leftItem,
+  rightItem,
+  title,
+  centerItem,
+}) => {
   return (
     <RN.View style={styles.header}>
       <RN.View style={styles.leftItem}>{leftItem}</RN.View>
-      <TextView
-        fontFamily="RedHatDisplay-SemiBold"
-        style={styles.title}
-        // @ts-ignore
-        title={title}
-      />
+      {title ? (
+        <TextView
+          fontFamily="RedHatDisplay-SemiBold"
+          style={styles.title}
+          title={title}
+        />
+      ) : null}
+      {centerItem ? centerItem : null}
       <RN.View style={styles.rightItem}>{rightItem}</RN.View>
     </RN.View>
   );
