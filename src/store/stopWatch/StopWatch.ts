@@ -87,4 +87,18 @@ export class StopWatchStore {
       )} : ${format(tenMilliseconds % 100, '00')}`);
     });
   };
+
+  startRecordVideo = () => {
+    this.startTime = moment();
+    this.intervalId = setInterval(() => {
+      runInAction(() => {
+        this.milliseconds = moment().diff(this.startTime);
+        this.second = Math.round(this.milliseconds / 1000);
+        this.mainDisplay(this.milliseconds);
+      });
+    }, 10);
+  };
+  stopRecordVideo = () => {
+    clearInterval(this.intervalId);
+  };
 }
