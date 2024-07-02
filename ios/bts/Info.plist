@@ -50,6 +50,10 @@
   	<string>This app requires access to the camera.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need your permission to save photos to your photo library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs access to your Camera.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs access to your Microphone.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>RedHatDisplay-Black.ttf</string>

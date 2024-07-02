@@ -11,11 +11,11 @@ export const MenuItems: PersonalMenuType[] = [
     key: 'market',
     routeName: 'MarketScreen',
   },
-  // {
-  //   title: 'Messenger',
-  //   key: 'messenger',
-  // routeName: 'MessengerScreen'
-  // },
+  {
+    title: 'Messenger',
+    key: 'messenger',
+    routeName: 'MessengerScreen',
+  },
   {
     title: 'Project Timer',
     key: 'project_timer',
