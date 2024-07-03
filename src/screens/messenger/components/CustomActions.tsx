@@ -1,11 +1,10 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Composer, InputToolbar } from 'react-native-gifted-chat';
-import { launchImageLibrary } from 'react-native-image-picker';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Composer } from 'react-native-gifted-chat';
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -16,6 +15,7 @@ const CustomComposer = (props) => {
         launchImageLibrary({
             mediaType: 'photo',
         }, (response) => {
+            // @ts-ignore
             if (response.didCancel || response.error) {
                 console.log('User cancelled image picker or there was an error');
             } else {
@@ -31,29 +31,11 @@ const CustomComposer = (props) => {
                 };
 
                 console.log('newMessagenewMessage', newMessage)
-                props.onSend([newMessage]); // Send the new message to the GiftedChat component
+                // props.onSend([newMessage]); // Send the new message to the GiftedChat component
             }
         });
     };
-    // const handlePickImage = () => {
-    //     launchImageLibrary({
-    //         mediaType: 'photo',
-    //     }, (response) => {
-    //         if (response.didCancel || response.error) {
-    //             console.log('User cancelled image picker or there was an error');
-    //         } else {
-    //             const newMessage = {
-    //                 _id: Math.random().toString(36).substring(7),
-    //                 createdAt: new Date(),
-    //                 user: {
-    //                     _id: 1,
-    //                 },
-    //                 image: response.assets[0].uri, // Include image URI in the message
-    //             };
-    //             props.onSend([newMessage]); // Send the new message to the GiftedChat component
-    //         }
-    //     });
-    // };
+   
 
 
     const handleRecordVoice = async () => {

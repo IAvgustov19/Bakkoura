@@ -4508,7 +4508,7 @@ event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-eventemitter3@^4.0.0, eventemitter3@^4.0.7:
+eventemitter3@^4.0.7:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
@@ -4769,74 +4769,59 @@ flatted@^3.2.9:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.1.tgz#21db470729a6734d4997002f439cb308987f567a"
   integrity sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==
 
-flipper-common@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/flipper-common/-/flipper-common-0.0.0.tgz#b1f409034ab0cce46a69d71c941b9efd9c0c557b"
-  integrity sha512-UANJ44ZjpjteqK26EY/CLYBrXyRkKl4JbLbfLtYi4IQ/Vp8975TtRK8+J0eNviMJktObYby8wGXKtTXahNsJSw==
-
-flipper-common@0.210.1:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-common/-/flipper-common-0.210.1.tgz#25a8343ea61fdce1eb9c24d2b8ee258241ab5a0c"
-  integrity sha512-w/kqzLA9gtjUwcr9VKRhv5qpT2KIA0XZsOVeeGaXaSrxilDmtAKif9upClsH44x9PKzlQBvqe9MoJ4T105+QkA==
+flipper-common@0.212.0, flipper-common@0.240.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-common/-/flipper-common-0.212.0.tgz#e340dc118c6589bd070d09e486569bf6784d625b"
+  integrity sha512-5ZuVn/pCrIa10UuASra8dNwdvNkYuV23m2F4J8k4E+EIfp/s2+woOTkMC1C+JhRDmLYZmLQUtmmD87qMUB8hFw==
   dependencies:
     uuid "^8.3.2"
 
-flipper-common@0.240.0:
-  version "0.125.0"
-  resolved "https://registry.yarnpkg.com/flipper-common/-/flipper-common-0.125.0.tgz#8530aff9b51183ba9a57d146c39518d4d29107b0"
-  integrity sha512-BOMOu/WQPuJADs7hhCUCosOsOTDVYdefbK8GT2VMx+0egv83n909utySun8iXStvxxsBgBEQSrre8+c+dtH2lw==
-
-flipper-doctor@0.210.1:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-doctor/-/flipper-doctor-0.210.1.tgz#d4610ccf12b9e797e49948149ec34e18899e14df"
-  integrity sha512-Kkmi38aY9M5OnVgdPHs9LIgJvH00HlEyfQCpelMNsvTarS4b71jcU63TffLIuFw+qZp4s5C32uub3Hqjif6ROA==
+flipper-doctor@0.212.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-doctor/-/flipper-doctor-0.212.0.tgz#c14045352d58c4574e2572dccea25e127e6ed4bb"
+  integrity sha512-WoaL+DdaRa6L0xX9SNbDJhpTcy36d2toRoT2x1wHOv3qJSzIgx5fn4GwsO/5FUVffLFSRNwFF8Rw9jWXfTbTbw==
   dependencies:
     envinfo "^7.8.1"
     fb-watchman "^2.0.1"
-    flipper-common "0.210.1"
+    flipper-common "0.212.0"
     fs-extra "^11.1.0"
 
-flipper-frontend-core@0.210.1:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-frontend-core/-/flipper-frontend-core-0.210.1.tgz#4aa130071a4e0694f8010ce28ac7324f0a50b760"
-  integrity sha512-8EEGYjR0Rse8YKB6WdPwlOONheX5ScT3fSRraminnzlk0B+0K7fam05Cmd6HdY92rx+9g293PnZ6BBiFpvIh2w==
+flipper-frontend-core@0.212.0, flipper-frontend-core@0.240.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-frontend-core/-/flipper-frontend-core-0.212.0.tgz#0d4d091236baad5bdee0d78142b0c25b797660ae"
+  integrity sha512-NKZiDvJHn7XHy47iGEbMGjhoDaAGj92PIVoeI1PXK6X+lZrPA9W5lrl07JWumoyPJhJPWlvLkNGVRPvac1kodQ==
   dependencies:
     eventemitter3 "^4.0.7"
-    flipper-common "0.210.1"
-    flipper-plugin-core "0.210.1"
+    flipper-common "0.212.0"
+    flipper-plugin-core "0.212.0"
     immer "^9.0.18"
     js-base64 "^3.7.5"
     p-map "^4.0.0"
     reconnecting-websocket "^4.4.0"
     semver "^7.3.7"
 
-flipper-frontend-core@0.240.0:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/flipper-frontend-core/-/flipper-frontend-core-0.0.1-security.tgz#db1b9570a7fdad04cd4b87f7df52eb666cfe0139"
-  integrity sha512-XDeFaaBswTLnmCv5BmEq9SPx47g3RRottW/1nNwHhWWauTYLYt0KjwIs5E/Rq+0b8z58WDMiNCW3xlMxdT7eXg==
-
-flipper-plugin-core@0.210.1:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-plugin-core/-/flipper-plugin-core-0.210.1.tgz#66ae6df64eaae7b42cfca09b44ec9f779fc260b0"
-  integrity sha512-bKk3y+ck3FSNF3oFb/CCKS9liRkozfCMoVWBa7OWAKultrXDS/de+KjDuKkrh3T4/T289MBy2FdbtsK9g5WI/w==
+flipper-plugin-core@0.212.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-plugin-core/-/flipper-plugin-core-0.212.0.tgz#d97116179a8c3f37a601d1c4976cfda29159383d"
+  integrity sha512-+ONOdLQ4xKFgq338z5XbJrLSMh7t7SzglVFIhxmn4jfhXHAwjcPNWs+D9h6kcH9F5XuiJNnVw3DC/ZLa/FWkaA==
   dependencies:
     eventemitter3 "^4.0.7"
-    flipper-common "0.210.1"
+    flipper-common "0.212.0"
     immer "^9.0.18"
     js-base64 "^3.7.5"
     lodash "^4.17.21"
     string-natural-compare "^3.0.0"
 
-flipper-plugin-lib@0.210.1:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-plugin-lib/-/flipper-plugin-lib-0.210.1.tgz#47c14539441f477ea4db76c84d1b36d0125fca80"
-  integrity sha512-l4MMMgobtkmheqEftpFIhKtZ2Bf2b7T8i2Yy1xL4mKlki0wthOa541MBgyNmqoyKNoRCuMLn5zLMmJgJsp+OYw==
+flipper-plugin-lib@0.212.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-plugin-lib/-/flipper-plugin-lib-0.212.0.tgz#b92ca58636ec611fed7327a3ef95d4cb6bb499db"
+  integrity sha512-HOwpwodPRK1dJh+JUzZ+gWGnq1sV5rO8YucXvXvBhgTnYToBO8o14kz0wiG29AzHMyt9kOTiCMt59hrG2xuPxA==
   dependencies:
     algoliasearch "^4.14.3"
     decompress "^4.2.1"
     decompress-targz "^4.1.1"
     decompress-unzip "^4.0.1"
-    flipper-common "0.210.1"
+    flipper-common "0.212.0"
     fs-extra "^11.1.0"
     live-plugin-manager "^0.17.1"
     npm-api "^1.0.1"
@@ -4845,34 +4830,29 @@ flipper-plugin-lib@0.210.1:
     semver "^7.3.7"
     tmp "^0.2.1"
 
-flipper-server-client@0.240.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/flipper-server-client/-/flipper-server-client-0.0.0.tgz#3260ac8e88ebdf68b627905b89776a4da6447825"
-  integrity sha512-yXtNh0rUqexAVs7tGGRD80fQuadfd7qqndX/xLF1S6chBMJYjT5D/FndRupanYSHGy87s17xU1wMEyZBFj+jsA==
+flipper-server-client@0.212.0, flipper-server-client@0.240.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-server-client/-/flipper-server-client-0.212.0.tgz#9cab3cf187544b85a8376b02cbde0e8822dbf3cc"
+  integrity sha512-qNJQ7a3qpdGdJSX5XkQR1rHpBWvi8idbEUsfrPg39msavSPWpet9Gc+gIfFWJ47m+JIP0/z9B8mrmZ4PFRsYeg==
   dependencies:
     eventemitter3 "^4.0.7"
-    flipper-common "0.0.0"
+    flipper-common "0.212.0"
     reconnecting-websocket "^4.4.0"
 
-flipper-server-companion@0.210.1:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-server-companion/-/flipper-server-companion-0.210.1.tgz#fc1fea3b4541e8878fe556774ee8f94bfcec339f"
-  integrity sha512-MBrP2TutU4sbWvc0scQ3iHyqN9NCq8DddXjedSg/p5L2qFvtqywpSrncFu9edQWY0fhaBJ6Wu+D+ym+RmXEksA==
+flipper-server-companion@0.212.0, flipper-server-companion@0.240.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-server-companion/-/flipper-server-companion-0.212.0.tgz#1c14a52f7178a25d2c8c6cd98cf7ee585a0f455c"
+  integrity sha512-98ezsJ5dYUUR8R9WZ4z8zrKBzH945K+0qUGgdnOGQFA1kvoVzabnsRqh4WXIpQoXDxciDBZsM2t5NTPH99pW/w==
   dependencies:
-    flipper-common "0.210.1"
-    flipper-frontend-core "0.210.1"
-    flipper-plugin-core "0.210.1"
+    flipper-common "0.212.0"
+    flipper-frontend-core "0.212.0"
+    flipper-plugin-core "0.212.0"
     immer "^9.0.18"
 
-flipper-server-companion@0.240.0:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/flipper-server-companion/-/flipper-server-companion-0.0.1-security.tgz#3af6a58438d371730b69869236308d227b57f4e7"
-  integrity sha512-Uh8B+01K6gDppg+m9SSpLUwtOim3JppRu/NckOhm1EaJU12HFZLr+NDytuBGdf/oen3r+O0Np87JpBG3rUO4eQ==
-
-flipper-server-core@0.240.0:
-  version "0.210.1"
-  resolved "https://registry.yarnpkg.com/flipper-server-core/-/flipper-server-core-0.210.1.tgz#02b4cb6074c42000f6319f35bf086eceb68f6bae"
-  integrity sha512-dAXX2qWHVrUCTY7FYTwkxeehfUw+jm/O5x7DDCC0/G1GJBnaBzJZkvmu/sCAL/X2CjBPirLupN/77Oh+w8LKZw==
+flipper-server-core@0.212.0, flipper-server-core@0.240.0:
+  version "0.212.0"
+  resolved "https://registry.yarnpkg.com/flipper-server-core/-/flipper-server-core-0.212.0.tgz#ad4147be204f68dc00aacc5a64a7ee31114fdb2e"
+  integrity sha512-aCIaD8QD0m8rFQiWYqbKX08UfqxIXKpLDVto2eMo5MUQVOstgyZ6Sxx3Gy7FyH73kJTXfvF+7aJWPQqNzuz1Bw==
   dependencies:
     "@iarna/toml" "^2.2.5"
     JSONStream "^1.3.1"
@@ -4883,14 +4863,13 @@ flipper-server-core@0.240.0:
     axios "^0.26.0"
     exit-hook "^2.1.1"
     express "^4.17.3"
-    flipper-common "0.210.1"
-    flipper-doctor "0.210.1"
-    flipper-plugin-core "0.210.1"
-    flipper-plugin-lib "0.210.1"
-    flipper-server-companion "0.210.1"
+    flipper-common "0.212.0"
+    flipper-doctor "0.212.0"
+    flipper-plugin-core "0.212.0"
+    flipper-plugin-lib "0.212.0"
+    flipper-server-companion "0.212.0"
     form-data "^4.0.0"
     fs-extra "^11.1.0"
-    http-proxy "^1.18.1"
     invariant "^2.2.4"
     js-base64 "^3.7.5"
     jsonwebtoken "^9.0.0"
@@ -4914,7 +4893,7 @@ flipper-server-core@0.240.0:
     ws "^8.6.0"
     xdg-basedir "^4.0.0"
 
-flipper-ui-core@0.240.0:
+flipper-ui-core@0.0.0, flipper-ui-core@0.240.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/flipper-ui-core/-/flipper-ui-core-0.0.0.tgz#c4c6180fa040a86f12ebb1936238cef7f1c2044a"
   integrity sha512-Ho3cgqedeLIBCxogH/mWg21DiyFepU/hUzj8U4prGTQ169dcgoHJxFD/cLLf7sQUsFhSmk2XB/mIlh+td6YqPA==
@@ -4952,7 +4931,7 @@ flow-parser@^0.206.0:
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.206.0.tgz#f4f794f8026535278393308e01ea72f31000bfef"
   integrity sha512-HVzoK3r6Vsg+lKvlIZzaWNBVai+FXTX1wdYhz/wVlH13tb/gOdLXmlTqy6odmTBhT5UoWUbq0k8263Qhr9d88w==
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.14.8:
+follow-redirects@^1.14.0, follow-redirects@^1.14.8:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
@@ -5336,15 +5315,6 @@ http-errors@2.0.0:
     setprototypeof "1.2.0"
     statuses "2.0.1"
     toidentifier "1.0.1"
-
-http-proxy@^1.18.1:
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.1.tgz#401541f0534884bbf95260334e72f88ee3976549"
-  integrity sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==
-  dependencies:
-    eventemitter3 "^4.0.0"
-    follow-redirects "^1.0.0"
-    requires-port "^1.0.0"
 
 human-signals@^2.1.0:
   version "2.1.0"
@@ -8137,11 +8107,6 @@ require-main-filename@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
   integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
-
-requires-port@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
-  integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
 
 resolve-cwd@^3.0.0:
   version "3.0.0"

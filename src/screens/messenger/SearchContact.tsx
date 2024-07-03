@@ -26,6 +26,7 @@ const SearchContact = () => {
         getAllUsers,
         allUsers,
         userData,
+        getAllUsersWithLastMessages,
         filterUsers,
     } = useRootStore().messangerStore;
 
@@ -33,13 +34,13 @@ const SearchContact = () => {
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        getAllUsers();
+        // getAllUsers();
+        getAllUsersWithLastMessages();
     }, [isFocused]);
 
     useEffect(() => {
         filterUsers(search);
-        console.log('justtt', userData)
-    }, [search]);
+    }, [search])
 
 
     const renderTypes = () => {
@@ -61,12 +62,12 @@ const SearchContact = () => {
             return userData.length > 0 ? (
                 userData.map((item, index) => {
                     return (
-                    <RN.TouchableOpacity style={styles.item} key={index}
-                        onPress={() => navigation.navigate(APP_ROUTES.DIALOG_SCREEN, { 
-                            id: item.id, 
-                            name: item.name, 
-                            avatar: item.avatar 
-                        })}
+                        <RN.TouchableOpacity style={styles.item} key={index}
+                            onPress={() => navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
+                                id: item.id,
+                                name: item.name,
+                                avatar: item.avatar
+                            })}
                         >
                             <RN.View style={styles.imageContainer}>
                                 <Images.Svg.profileBackground width={54} height={54} />

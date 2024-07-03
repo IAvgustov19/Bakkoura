@@ -95,6 +95,14 @@
     "react-test-renderer": "18.2.0",
     "typescript": "5.0.4"
   },
+  "resolutions": {
+    "flipper-common": "0.212.0",
+    "flipper-frontend-core": "0.212.0",
+    "flipper-server-client": "0.212.0",
+    "flipper-server-companion": "0.212.0",
+    "flipper-server-core": "0.212.0",
+    "flipper-ui-core": "0.0.0"
+  },
   "engines": {
     "node": ">=18"
   }
