@@ -1,4 +1,4 @@
-import { db, firebase } from '../config/firebase';
+import {db, firebase} from '../config/firebase';
 import {
   PomodoroDataType,
   ProjectTimerDataType,
@@ -11,8 +11,7 @@ import {SelectedCountriesType} from '../types/worldTime';
 import {AlarmListsItemType} from '../types/alarm';
 
 import auth from '@react-native-firebase/auth';
-import { UserType } from '../types/user';
-
+import {UserType} from '../types/user';
 
 // calendar events
 export const addEventToFirestore = async event => {
@@ -360,7 +359,7 @@ export const getEtapsFromFirestore = async () => {
       fromDate: doc.data().fromDate,
       fromDateFormat: doc.data().fromDateFormat,
       reminder: doc.data().reminder,
-      control: doc.data().control,
+      control: doc.data().constrol as never,
       time: doc.data().time,
       days: doc.data().days,
       synchronized: doc.data().synchronized,
