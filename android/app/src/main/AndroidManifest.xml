@@ -16,7 +16,6 @@ xmlns:tools="http://schemas.android.com/tools"
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />    
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -89,7 +88,6 @@ xmlns:tools="http://schemas.android.com/tools"
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
                 <action android:name="android.intent.action.VIEW" />
-                <data android:mimeType="application/pdf" />
             </intent-filter>
         </activity>
     </application>
