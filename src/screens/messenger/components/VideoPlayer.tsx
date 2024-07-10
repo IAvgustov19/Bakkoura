@@ -8,7 +8,8 @@ import {Images} from '../../../assets';
 const VideoPlayer = (props: any) => {
   const {currentMessage} = props;
   const videoRef = useRef<Video>(null);
-  const [paused, setPaused] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const [initialPausa, setInitialPausa] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [opacity, setOpacity] = useState(0);
 
@@ -54,6 +55,7 @@ const VideoPlayer = (props: any) => {
     setModalVisible(true);
     setPaused(false);
     setOpacity(1);
+    setInitialPausa(true);
     setTimeout(() => {
       setOpacity(0);
     }, 1500);
@@ -75,7 +77,7 @@ const VideoPlayer = (props: any) => {
                 style={styles.circleVideo}
                 resizeMode="cover"
                 controls={false}
-                paused={true}
+                paused={initialPausa}
                 onEnd={onVideoEnd}
               />
               <View style={styles.videoInfo}>
@@ -129,7 +131,7 @@ const VideoPlayer = (props: any) => {
                 style={styles.video}
                 resizeMode="cover"
                 controls={false}
-                paused={true}
+                paused={initialPausa}
                 onEnd={onVideoEnd}
               />
               <View style={styles.videoInfo}>
@@ -199,6 +201,7 @@ const styles = StyleSheet.create({
   },
   videoMessage: {
     flexDirection: 'row',
+
     overflow: 'hidden',
     gap: 5,
     maxWidth: '100%',
@@ -209,7 +212,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
   },
-  videoInfo: {},
+  videoInfo: {
+    marginTop: 10,
+  },
   circleVideoBox: {
     justifyContent: 'center',
     alignItems: 'center',

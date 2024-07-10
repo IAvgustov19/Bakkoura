@@ -100,5 +100,8 @@ export class StopWatchStore {
   };
   stopRecordVideo = () => {
     clearInterval(this.intervalId);
+    runInAction(() => {
+      this.maindis = '00 : 00 : 00';
+    });
   };
 }

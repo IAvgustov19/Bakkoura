@@ -7,8 +7,6 @@ import RN from '../../../components/RN';
 
 const CustomTime = props => {
   const {currentMessage, position} = props;
-
-  console.log('positionposition', position);
   return (
     <View>
       <Text
