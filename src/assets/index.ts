@@ -138,6 +138,7 @@ import voiceMessage from './svg/voiceMessage.svg';
 import imageMessage from './svg/imageMessage.svg';
 import videoMessage from './svg/videoIcon.svg';
 import videoRecord from './svg/videoRecord.svg';
+import fileIcon from './svg/file-1453.svg';
 
 export const Images = {
   Svg: {
@@ -284,6 +285,7 @@ export const Images = {
     marketWCardLight,
     videoMessage,
     videoRecord,
+    fileIcon,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
