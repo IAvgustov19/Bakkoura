@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
 import {Composer} from 'react-native-gifted-chat';
 import {launchImageLibrary} from 'react-native-image-picker';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
@@ -14,7 +14,6 @@ import {
   getCameraFormat,
 } from 'react-native-vision-camera';
 import TextView from '../../../components/Text/Text';
-import {COLORS} from '../../../utils/colors';
 import {Swipeable} from 'react-native-gesture-handler';
 import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
@@ -147,22 +146,35 @@ const CustomComposer = props => {
   }, []);
 
   const [recording, setRecording] = useState(false);
-  const [isStop, setIsStop] = useState(false);
-  const camera = useRef(null);
+  const isStopRef = useRef(false);
+  const camera = useRef<Camera>(null);
+  const swipeableRef = useRef(null);
+
+  const handleSwipeableOpen = () => {
+    isStopRef.current = true;
+    console.log('handleSwipeableOpen', isStopRef.current);
+
+    if (swipeableRef.current) {
+      swipeableRef.current.close();
+    }
+  };
 
   const handleRecordVideo = async () => {
     try {
       if (recording) {
-        await camera.current.stopRecording();
+        await camera.current?.stopRecording();
         setRecording(false);
         stopRecordVideo();
-        setIsStop(false);
       } else {
         startRecordVideo();
-        await camera.current.startRecording({
-          // flash: 'on',
-          onRecordingFinished: video => {
-            if (!isStop) {
+        setRecording(true);
+        camera.current.startRecording({
+          onRecordingFinished: async video => {
+            if (isStopRef.current) {
+              isStopRef.current = false;
+              console.log('isStop:else', isStopRef.current);
+              return;
+            } else {
               const filePath = video.path;
               const fileName = filePath.substring(
                 filePath.lastIndexOf('/') + 1,
@@ -178,60 +190,75 @@ const CustomComposer = props => {
                 circle: true,
               };
               onSend([newMessage]);
+              setRecording(false);
             }
+            console.log('isStop:', isStopRef.current);
           },
           onRecordingError: error => {
-            console.error(error);
+            console.error('Recording error:', error);
+            setRecording(false);
           },
         });
-        setRecording(true);
       }
     } catch (error) {
       console.error('Recording error:', error);
+      setRecording(false);
     }
-  };
-
-  const onCloseRecording = () => {
-    setRecording(false);
-    stopRecordVideo();
-    setIsStop(true);
-    camera.current.stopRecording();
   };
 
   const renderRecordingVideo = useCallback(() => {
-    {
-      return recording ? (
-        <RN.View style={styles.recordingbottom}>
-          <RN.View style={[styles.recordingItem, styles.recordingItemTime]}>
-            <RN.View style={styles.redDot}></RN.View>
-            <TextView text={maindis} />
-          </RN.View>
-          <RN.Pressable style={styles.recordingItem} onPress={onCloseRecording}>
-            <Images.Svg.deleteIcon />
-            <TextView text={'pull left to delete'} />
-          </RN.Pressable>
-          <Swipeable
-            renderRightActions={() => {
-              return (
-                <RN.View>
-                  <RN.Text>X</RN.Text>
-                </RN.View>
-              );
-            }}
-            onSwipeableWillOpen={onCloseRecording}>
-            <RN.Pressable
-              style={styles.videoRecord}
-              onPress={handleRecordVideo}>
-              <Images.Svg.videoRecord width={100} height={100} />
-            </RN.Pressable>
-          </Swipeable>
-        </RN.View>
-      ) : (
-        <TouchableOpacity onPress={handleRecordVideo} style={{paddingTop: 8}}>
-          <Images.Svg.videoMessage width={30} height={30} />
-        </TouchableOpacity>
-      );
-    }
+    return (
+      <>
+        <View
+          style={[
+            styles.recordingbottom,
+            {
+              bottom: recording ? 0 : -200,
+              width: recording ? windowWidth : 'auto',
+            },
+          ]}>
+          {recording ? (
+            <>
+              <View style={[styles.recordingItem, styles.recordingItemTime]}>
+                <View style={styles.redDot}></View>
+                <TextView text={maindis} />
+              </View>
+              <Pressable style={styles.recordingItem}>
+                <Images.Svg.deleteIcon />
+                <TextView text={'pull left to delete'} />
+              </Pressable>
+            </>
+          ) : null}
+        </View>
+        <Swipeable
+          ref={swipeableRef}
+          renderRightActions={() => {
+            return (
+              <Pressable style={{opacity: 0}}>
+                <Images.Svg.deleteIcon />
+              </Pressable>
+            );
+          }}
+          onSwipeableWillOpen={handleSwipeableOpen}>
+          <Pressable
+            style={[
+              styles.videoRecord,
+              {
+                width: recording ? 100 : 50,
+                bottom: recording ? 10 : 0,
+              },
+            ]}
+            onPressIn={handleRecordVideo}
+            onPressOut={handleRecordVideo}>
+            {recording ? (
+              <Images.Svg.videoRecord width={80} height={80} />
+            ) : (
+              <Images.Svg.videoMessage width={30} height={30} />
+            )}
+          </Pressable>
+        </Swipeable>
+      </>
+    );
   }, [recording, maindis]);
 
   const renderCamera = useCallback(() => {
@@ -248,13 +275,16 @@ const CustomComposer = props => {
           ref={camera}
           style={[
             styles.cameraContainer,
-            // {left: recording ? windowWidth / 25 : -500, top: windowHeight / 30},
+            {
+              aspectRatio: 3 / 4,
+            },
           ]}
           device={device}
           isActive={true}
           video={true}
           audio={true}
-          format={format}
+          format={RN.Platform.OS === 'android' ? undefined : format}
+          resizeMode="cover"
         />
       </RN.View>
     );
@@ -396,23 +426,20 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 150,
     overflow: 'hidden',
-    backgroundColor: 'blue',
   },
   cameraContainer: {
-    width: 300,
-    height: 300,
+    width: '100%',
+    height: '100%',
     position: 'absolute',
   },
   recordingbottom: {
     position: 'absolute',
-    bottom: 0,
-    width: windowWidth,
     height: '110%',
     backgroundColor: '#1C1C1D',
     paddingHorizontal: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    paddingTop: 20,
   },
   recordingItem: {
     flexDirection: 'row',
@@ -423,8 +450,10 @@ const styles = StyleSheet.create({
     width: 100,
   },
   videoRecord: {
-    bottom: 10,
     right: 0,
+    paddingTop: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   redDot: {
     width: 10,

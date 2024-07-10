@@ -108,10 +108,6 @@ const App = () => {
   //   }
   // };
 
-  useEffect(() => {
-    requestNotificationPermission();
-  }, []);
-
   // useEffect(() => {
   //   syncUsersToFirestore();
   // }, [])
