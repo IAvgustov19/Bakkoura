@@ -21,10 +21,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import CustomMessage from './components/CustomBubble';
-import Video from 'react-native-video';
 import VideoPlayer from './components/VideoPlayer';
 import FileViewer from 'react-native-file-viewer';
 import {windowWidth} from '../../utils/styles';
+import {COLORS} from '../../utils/colors';
 
 type DialogScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -94,10 +94,9 @@ const DialogScreen = () => {
       <RN.Pressable
         onPress={() => FileViewer.open(currentMessage.image)}
         style={styles.fileBox}>
-        <RN.Image
-          source={{uri: currentMessage.image}}
-          style={styles.fileImage}
-        />
+        <RN.View style={styles.fileBoxFile}>
+          <Images.Svg.fileIcon />
+        </RN.View>
         <View style={styles.imageInfo}>
           <Text style={styles.fileName}>{currentMessage.fileName}</Text>
           <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
@@ -283,5 +282,13 @@ const styles = RN.StyleSheet.create({
   fileBox: {
     flexDirection: 'row',
     width: windowWidth - 200,
+  },
+  fileBoxFile: {
+    width: 80,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.darkGrey,
+    borderRadius: 5,
   },
 });
