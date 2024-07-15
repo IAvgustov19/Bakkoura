@@ -20,12 +20,13 @@ const CustomTime = props => {
   );
 };
 
-const CustomMessage = props => {
-  const {currentMessage} = props;
-  const {image, user} = currentMessage;
-  const {selectedImage, imageName, imageSize} = currentMessage;
 
-  // console.log('currentMessagecurrentMessage', currentMessage)
+const CustomMessage = (props) => {
+    const { currentMessage } = props;
+    const { image, user } = currentMessage;
+    const { selectedImage, imageName, imageSize } = currentMessage;
+
+    // console.log('currentMessagecurrentMessage', currentMessage)
 
   return (
     <View style={styles.container}>

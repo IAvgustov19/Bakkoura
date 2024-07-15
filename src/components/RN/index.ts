@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import View from './View';
 import Text from './Text';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default {
   TouchableOpacity,
@@ -39,5 +40,6 @@ export default {
   View,
   Text,
   Share,
+  SafeAreaView,
   TouchableWithoutFeedback,
 };
