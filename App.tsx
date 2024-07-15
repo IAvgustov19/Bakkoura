@@ -5,12 +5,12 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import auth from '@react-native-firebase/auth';
-import {scheduleNotifications} from './src/helper/scheduleNotifiaction';
+import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {observer} from 'mobx-react-lite';
-import {AppState, PermissionsAndroid, Platform} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import { AppState, PermissionsAndroid, Platform } from 'react-native';
 import RN from './src/components/RN';
 import AppNavigator from './src/navigation/AppNavigator';
 // import { PermissionsAndroid, Platform } from 'react-native';
@@ -23,9 +23,18 @@ import BackgroundTimer from 'react-native-background-timer';
 import useRootStore from './src/hooks/useRootStore';
 import 'react-native-reanimated';
 
+
+export const updateLastSeen = (userId) => {
+  db.collection('users').doc(userId).update({
+    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(error => {
+    console.error('Error updating lastSeen field:', error);
+  });
+};
+import { db, firebase } from './src/config/firebase';
 const App = () => {
-  const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
-  const {cloneAllEventsData, checkEvent} = useRootStore().calendarStore;
+  const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
+  const { cloneAllEventsData, checkEvent } = useRootStore().calendarStore;
 
   useEffect(() => {
     const currentUser = auth().currentUser;
@@ -91,8 +100,8 @@ const App = () => {
         {
           id: 'userAction',
           actions: [
-            {id: 'Stop', title: 'Stop', options: {foreground: true}},
-            {id: 'Later', title: 'Later', options: {foreground: true}},
+            { id: 'Stop', title: 'Stop', options: { foreground: true } },
+            { id: 'Later', title: 'Later', options: { foreground: true } },
           ],
         },
       ]);
@@ -105,6 +114,33 @@ const App = () => {
   // const onAuthStateChanged = (user) => {
   //   if (user) {
   //     scheduleNotifications(user.uid);
+  //   }
+  // };
+
+  // const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  // return subscriber; // unsubscribe on unmount
+
+
+  // const requestNotificationPermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  //       {
+  //         title: 'Notification Permission',
+  //         message: 'Allow this app to send you notifications.',
+  //         buttonNeutral: 'Ask Me Later',
+  //         buttonNegative: 'Cancel',
+  //         buttonPositive: 'OK',
+  //       }
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+  //       console.log('Notification permission granted');
+  //     } else {
+  //       console.log('Notification permission denied');
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
   //   }
   // };
 
@@ -126,11 +162,11 @@ const App = () => {
 
           if (
             grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-              PermissionsAndroid.RESULTS.GRANTED &&
+            PermissionsAndroid.RESULTS.GRANTED &&
             grants['android.permission.READ_EXTERNAL_STORAGE'] ===
-              PermissionsAndroid.RESULTS.GRANTED &&
+            PermissionsAndroid.RESULTS.GRANTED &&
             grants['android.permission.RECORD_AUDIO'] ===
-              PermissionsAndroid.RESULTS.GRANTED
+            PermissionsAndroid.RESULTS.GRANTED
           ) {
             console.log('Permissions granted');
           } else {
@@ -145,6 +181,52 @@ const App = () => {
     };
     permission();
   }, []);
+
+
+  // useEffect(() => {
+  //   let interval;
+
+  //   const handleAppStateChange = (nextAppState) => {
+  //     const currentUser = auth().currentUser;
+  //     if (currentUser) {
+  //       if (nextAppState === 'active') {
+  //         // Start updating lastSeen every second
+  //         interval = setInterval(() => {
+  //           updateLastSeen(currentUser.uid);
+  //         }, 1000);
+  //       } else {
+  //         // Stop updating lastSeen when the app goes to the background
+  //         if (interval) {
+  //           clearInterval(interval);
+  //         }
+  //         updateLastSeen(currentUser.uid);
+  //       }
+  //     }
+  //   };
+
+  //   AppState.addEventListener('change', handleAppStateChange);
+
+  //   return () => {
+  //     if (interval) {
+  //       clearInterval(interval);
+  //     }
+  //    ((AppState as any)?.removeEventListener('change', handleAppStateChange))
+  //   };
+  // }, []);
+
+  useLayoutEffect(() => {
+    const currentUser = auth().currentUser;
+
+    const interval = setInterval(() => {
+      if (currentUser) {
+        updateLastSeen(currentUser.uid);
+      }
+    }, 1000); 
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [auth().currentUser]);
 
   return (
     <>

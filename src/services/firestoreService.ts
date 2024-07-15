@@ -886,9 +886,9 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
 };
 
 // users
-export const getAllUsersFromFirestore = async (): Promise<UserType[]> => {
+export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]> => {
   try {
-    const usersSnapshot = await db.collection('users').get();
+    const usersSnapshot = await db.collection('users').where('id', '!=', uid).get();
     const usersData: UserType[] = [];
 
     usersSnapshot.forEach(doc => {
