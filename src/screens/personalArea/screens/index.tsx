@@ -11,10 +11,12 @@ import {COLORS} from '../../../utils/colors';
 import RN from '../../../components/RN';
 import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../hooks/useRootStore';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 import StorageApi, {
   pickImageFromDevice,
 } from '../../../store/personalArea/avatar';
+import ButtonComp from '../../../components/Button/Button';
+import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
 
 const PersonalArea = () => {
   const {
@@ -23,6 +25,7 @@ const PersonalArea = () => {
     updateProfile,
     updateLoading,
     initialRouteNameChanged,
+    deleteAccount,
   } = useRootStore().personalAreaStore;
   const [avatarLoading, setAvatarLoading] = useState(true);
 
@@ -46,6 +49,29 @@ const PersonalArea = () => {
     } catch (err) {
       console.log(['[Error-onUploadImage]:', err]);
     }
+  };
+
+  const onHandleDeleteUser = () => {
+    Alert.alert(
+      'Delete account',
+      'Are you sure you want to delete your account?',
+      [
+        {
+          text: 'No',
+          onPress: () => console.log('cancel'),
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () =>
+            deleteAccount(() =>
+              navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never),
+            ),
+        },
+      ],
+      {cancelable: false},
+    );
+    // deleteAccount(() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never));
   };
 
   const navigation = useNavigation();
@@ -139,7 +165,7 @@ const PersonalArea = () => {
                     }
                   />
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                {/* <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
                     title="Language"
                     value={
@@ -149,11 +175,17 @@ const PersonalArea = () => {
                       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                     }
                   />
-                </RN.View>
+                </RN.View> */}
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont title="Important Dates" onPress={() => {}} />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont title="Couple Time" onPress={() => {}} />
+                </RN.View>
+                <RN.View style={[styles.eventsTypeList, {marginTop: 10}]}>
+                  <ButtonComp
+                    title="Delete account"
+                    onPress={onHandleDeleteUser}
+                  />
                 </RN.View>
               </RN.View>
             </RN.View>

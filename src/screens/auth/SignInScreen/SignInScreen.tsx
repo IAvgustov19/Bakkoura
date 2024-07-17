@@ -183,57 +183,58 @@ const SignInScreen = () => {
                     <Images.Svg.btsRightLinear width={80} />
                   </View>
                 }
-                rightItem={
-                  <LanguageBtn
-                    value={newUser.language}
-                    onPress={() =>
-                      navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-                    }
-                  />
-                }
+                // rightItem={
+                //   <LanguageBtn
+                //     value={newUser.language}
+                //     onPress={() =>
+                //       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+                //     }
+                //   />
+                // }
               />
-              <View style={styles.titleBox}>
-                <TextView title="Hello Friend!" />
-                <TextView text="Start tracking and improving Your Live!" />
-              </View>
-              <View style={styles.formBox}>
-                <TextView style={styles.label} text="Login" />
-                <Input
-                  placeholder="JB"
-                  onChangeText={text => setEmail(text)}
-                  value={email}
-                />
-                <TextView style={styles.label} text="Password" />
-                <Input
-                  placeholder="77777"
-                  onChangeText={text => setPassword(text)}
-                  value={password}
-                  secureTextEntry
-                />
-              </View>
-              <View style={styles.forgotBox}>
-                {/* <TouchableOpacity style={styles.rememberMe} onPress={RememberMe}>
+              <RN.View style={styles.content}>
+                <View style={styles.titleBox}>
+                  {/* <TextView title="Hello Friend!" />
+                <TextView text="Start tracking and improving Your Live!" /> */}
+                </View>
+                <View style={styles.formBox}>
+                  <TextView style={styles.label} text="Login" />
+                  <Input
+                    placeholder="JB"
+                    onChangeText={text => setEmail(text)}
+                    value={email}
+                  />
+                  <TextView style={styles.label} text="Password" />
+                  <Input
+                    placeholder="77777"
+                    onChangeText={text => setPassword(text)}
+                    value={password}
+                    secureTextEntry
+                  />
+                </View>
+                <View style={styles.forgotBox}>
+                  {/* <TouchableOpacity style={styles.rememberMe} onPress={RememberMe}>
           <RadioBtn active={remember} onPress={RememberMe} />
           <TextView text="Remember me" />
         </TouchableOpacity> */}
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)
-                  }>
-                  <TextView
-                    style={styles.forgot}
-                    text="Forgot Your Password?"
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)
+                    }>
+                    <TextView
+                      style={styles.forgot}
+                      text="Forgot Your Password?"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.signUp}>
+                  <ButtonComp
+                    title="Sign In"
+                    icon={<GiveImage source={Images.Img.eye} />}
+                    onPress={() => signIn(email, password)}
                   />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.signUp}>
-                <ButtonComp
-                  title="Sign In"
-                  icon={<GiveImage source={Images.Img.eye} />}
-                  onPress={() => signIn(email, password)}
-                />
-              </View>
-              <View style={styles.orWithSocial}>
+                </View>
+                {/* <View style={styles.orWithSocial}>
                 <TextView text="Or Sign Up using" />
                 <View style={styles.socialBox}>
                   <TouchableOpacity onPress={() => {}}>
@@ -246,7 +247,8 @@ const SignInScreen = () => {
                     <Images.Svg.g />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </View> */}
+              </RN.View>
               <View style={styles.needAcc}>
                 <TextView text="Need an Account?" />
                 <TouchableOpacity
@@ -266,6 +268,10 @@ const SignInScreen = () => {
 export default observer(SignInScreen);
 
 const styles = StyleSheet.create({
+  content: {
+    justifyContent: 'center',
+    height: '80%',
+  },
   Russs: {
     flex: 1,
     width: '100%',

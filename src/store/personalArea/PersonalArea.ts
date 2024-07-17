@@ -14,6 +14,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import {MenuItems} from '../../utils/menuItems';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 export class PersonalAreaStore {
   private readonly root: RootStore;
@@ -163,6 +164,27 @@ export class PersonalAreaStore {
     } else {
       callback ? callback() : null;
       return;
+    }
+  };
+
+  deleteAccount = async (callBack: () => void) => {
+    await AsyncStorage.removeItem('token');
+    const user = auth().currentUser;
+    if (user) {
+      console.log('user', user);
+      const res = await user.delete();
+      console.log('res delete', res);
+
+      await firestore().collection('users').doc(user.uid).delete();
+      this.root.authStore.setNotAuthorized();
+      callBack();
+    }
+    const googleUser = await GoogleSignin.getCurrentUser();
+    if (googleUser) {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      this.root.authStore.setNotAuthorized();
+      callBack();
     }
   };
 

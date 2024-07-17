@@ -13,6 +13,8 @@ export enum APP_ROUTES {
   RECOVER_PASSWORD = 'RecoverPassword',
   VERIFICATION_CODE = 'VerificationCode',
   NEW_PASSWORD_SCREEN = 'NewPasswordScreen',
+  TERMS_OF_USE = 'TermsOfUse',
+  PRIVACY_POLICY = 'PrivacyPolicy',
 
   // two step auth
   FINGERPRINT = 'FingerprintAuth',
@@ -26,12 +28,15 @@ export enum APP_ROUTES {
   PERSONAL_STACK = 'PersonalStack',
   // nested stack screens
   PERSONAL_AREA = 'PersonalArea',
+  MENU = 'Menu',
+  PERSON_START_SCREEN = 'PersonStartScreen',
   PERSONAL_DETAILS = 'PersonalDetails',
   SECURE_ENTRY = 'SecureEntry',
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
-  MENU = 'Menu',
-  PERSON_START_SCREEN = 'PersonStartScreen',
+  //from menu
+  CONTACT_STACK = 'ConstactStack',
+  // nested stack screens
   CONTACT_US = 'ContactUs',
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',

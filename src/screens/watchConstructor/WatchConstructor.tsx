@@ -44,7 +44,8 @@ const WatchConstructor = () => {
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
             title: 'Storage Permission Required',
-            message: 'App needs access to your storage to save screenshots',
+            message:
+              'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
