@@ -100,15 +100,19 @@ const styles = RN.StyleSheet.create({
   container: {
     height: '100%',
     paddingHorizontal: 15,
+    position: 'relative',
+  },
+  bg: {
+    position: 'absolute',
   },
   bgContainer: {
     width: '100%',
     position: 'relative',
     alignItems: 'center',
   },
-  bg: {
-    position: 'absolute',
-  },
+  // bg: {
+  //   position: 'absolute',
+  // },
   back: {
     flexDirection: 'row',
     alignItems: 'center',

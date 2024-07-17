@@ -19,11 +19,11 @@ const SecureEntry = () => {
   const navigation = useNavigation();
 
   const {
-    secureEntries, 
+    secureEntries,
     onSecureEntryItemPress,
     updateProfile,
-    updateLoading, 
-    personalAreaData
+    updateLoading,
+    personalAreaData,
   } = useRootStore().personalAreaStore;
 
   const updateSecure = () => {
@@ -41,7 +41,12 @@ const SecureEntry = () => {
             />
           }
           title={
-            <RN.Text color={item.title === personalAreaData?.secureEntry ? '#fff' : '#7D7D7D'}>
+            <RN.Text
+              color={
+                item.title === personalAreaData?.secureEntry
+                  ? '#fff'
+                  : '#7D7D7D'
+              }>
               {item.title}
             </RN.Text>
           }

@@ -28,12 +28,15 @@ export enum APP_ROUTES {
   PERSONAL_STACK = 'PersonalStack',
   // nested stack screens
   PERSONAL_AREA = 'PersonalArea',
+  MENU = 'Menu',
+  PERSON_START_SCREEN = 'PersonStartScreen',
   PERSONAL_DETAILS = 'PersonalDetails',
   SECURE_ENTRY = 'SecureEntry',
   THEME = 'Theme',
   LOGIN_PASSWORD = 'LoginPassword',
-  MENU = 'Menu',
-  PERSON_START_SCREEN = 'PersonStartScreen',
+  //from menu
+  CONTACT_STACK = 'ConstactStack',
+  // nested stack screens
   CONTACT_US = 'ContactUs',
   SEND_IDEA = 'SendIdea',
   WATCH_VALUATION = 'WatchValuation',

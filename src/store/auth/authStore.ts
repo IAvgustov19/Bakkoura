@@ -25,7 +25,7 @@ export class AuthStore {
   // initAuthListener() {
   //   auth().onAuthStateChanged(user => {
   //     console.log(user,8888);
-      
+
   //     if (user) {
   //       this.setCurrentUser(user);
   //       this.setAuthorized();
@@ -95,5 +95,3 @@ export class AuthStore {
     });
   };
 }
-
-

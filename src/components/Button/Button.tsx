@@ -20,6 +20,8 @@ type Props = {
   outline?: boolean;
   width?: DimensionValue;
   paddingVertical?: number;
+  containerColor?: string;
+  textColor?: string;
 };
 
 const ButtonComp: React.FC<Props> = ({
@@ -30,12 +32,15 @@ const ButtonComp: React.FC<Props> = ({
   width,
   color,
   paddingVertical,
+  textColor,
+  containerColor,
 }) => {
   return (
     <LinearGradient
       style={[
         styles.gradient,
         {
+          // backgroundColor: containerColor,
           borderColor: outline ? COLORS.darkGreyText : '#ECC271',
           width: width ? width : '100%',
         },
@@ -55,7 +60,7 @@ const ButtonComp: React.FC<Props> = ({
         <Text
           style={[
             styles.title,
-            {color: color? color : outline ? COLORS.white : COLORS.black},
+            {color: color ? color : outline ? COLORS.white : COLORS.black},
           ]}>
           {title}
         </Text>
