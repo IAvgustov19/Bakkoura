@@ -185,19 +185,20 @@ const SignUpScreen = () => {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
             <HeaderContent
               leftItem={<Images.Svg.btsRightLinear />}
-              rightItem={
-                <LanguageBtn
-                  value={newUser?.language}
-                  onPress={() =>
-                    navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-                  }
-                />
-              }
+              // rightItem={
+              //   <LanguageBtn
+              //     value={newUser?.language}
+              //     onPress={() =>
+              //       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+              //     }
+              //   />
+              // }
             />
             <RN.ScrollView
               ref={scrollViewRef}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}>
+              // showsHorizontalScrollIndicator={false}
+              // showsVerticalScrollIndicator={false}
+            >
               <RN.View style={styles.content}>
                 <LoadingScreen loading={loading} setLoading={setLoading} />
                 <TextView title="Sign up" textAlign="center" />
@@ -221,16 +222,30 @@ const SignUpScreen = () => {
                   />
                 </RN.View>
               </RN.View>
+              <View style={styles.needAcc}>
+                <TextView text="Already have an Account?" />
+                <RN.TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
+                  }>
+                  <TextView style={styles.signUpText} text="Sign In" />
+                </RN.TouchableOpacity>
+              </View>
+              <View style={styles.terms}>
+                <RN.TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.PRIVACY_POLICY as never)
+                  }>
+                  <TextView style={styles.signUpText} text="Privacy policy" />
+                </RN.TouchableOpacity>
+                <RN.TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.TERMS_OF_USE as never)
+                  }>
+                  <TextView style={styles.signUpText} text="Terms of use" />
+                </RN.TouchableOpacity>
+              </View>
             </RN.ScrollView>
-            <View style={styles.needAcc}>
-              <TextView text="Already have an Account?" />
-              <RN.TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
-                }>
-                <TextView style={styles.signUpText} text="Sign In" />
-              </RN.TouchableOpacity>
-            </View>
           </KeyboardAvoidingView>
         }
       />
@@ -261,22 +276,28 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   content: {
-    height: windowHeight,
-    paddingBottom: 110,
+    height: windowHeight - 100,
+    paddingBottom: 20,
+    // backgroundColor: 'red',
   },
   signUpBtn: {
     marginTop: 30,
     paddingHorizontal: 15,
   },
-  needAcc: {
-    position: 'absolute',
+  terms: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 0,
+    gap: 20,
+    paddingVertical: 10,
+  },
+  needAcc: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     gap: 10,
-    left: 15,
   },
   signUpText: {
     color: '#ECC271',

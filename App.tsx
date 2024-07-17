@@ -5,12 +5,12 @@
  * @format
  */
 
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, {useEffect, useLayoutEffect} from 'react';
 import auth from '@react-native-firebase/auth';
-import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
+import {scheduleNotifications} from './src/helper/scheduleNotifiaction';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import { observer } from 'mobx-react-lite';
-import { AppState, PermissionsAndroid, Platform } from 'react-native';
+import {observer} from 'mobx-react-lite';
+import {AppState, PermissionsAndroid, Platform} from 'react-native';
 import RN from './src/components/RN';
 import AppNavigator from './src/navigation/AppNavigator';
 // import { PermissionsAndroid, Platform } from 'react-native';
@@ -23,18 +23,20 @@ import BackgroundTimer from 'react-native-background-timer';
 import useRootStore from './src/hooks/useRootStore';
 import 'react-native-reanimated';
 
-
-export const updateLastSeen = (userId) => {
-  db.collection('users').doc(userId).update({
-    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-  }).catch(error => {
-    console.error('Error updating lastSeen field:', error);
-  });
+export const updateLastSeen = userId => {
+  db.collection('users')
+    .doc(userId)
+    .update({
+      lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .catch(error => {
+      console.error('Error updating lastSeen field:', error);
+    });
 };
-import { db, firebase } from './src/config/firebase';
+import {db, firebase} from './src/config/firebase';
 const App = () => {
-  const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
-  const { cloneAllEventsData, checkEvent } = useRootStore().calendarStore;
+  const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
+  const {cloneAllEventsData, checkEvent} = useRootStore().calendarStore;
 
   useEffect(() => {
     const currentUser = auth().currentUser;
@@ -59,7 +61,8 @@ const App = () => {
           PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
           {
             title: 'Notification Permission',
-            message: 'Allow this app to send you notifications.',
+            message:
+              'To send notifications that the time on the clock is up, a certain event has occurred, or just to remind you of an anniversary',
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
@@ -100,8 +103,8 @@ const App = () => {
         {
           id: 'userAction',
           actions: [
-            { id: 'Stop', title: 'Stop', options: { foreground: true } },
-            { id: 'Later', title: 'Later', options: { foreground: true } },
+            {id: 'Stop', title: 'Stop', options: {foreground: true}},
+            {id: 'Later', title: 'Later', options: {foreground: true}},
           ],
         },
       ]);
@@ -119,7 +122,6 @@ const App = () => {
 
   // const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
   // return subscriber; // unsubscribe on unmount
-
 
   // const requestNotificationPermission = async () => {
   //   try {
@@ -149,28 +151,41 @@ const App = () => {
   // }, [])
 
   useEffect(() => {
-    const permission = async () => {
-      if (Platform.OS === 'android') {
+    const requestStoragePermissions = async () => {
+      if (RN.Platform.OS === 'android') {
         try {
-          const grants = await PermissionsAndroid.requestMultiple([
+          const writeGranted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-          ]);
+            {
+              title: 'Storage Permission',
+              message:
+                'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
 
-          console.log('write external storage', grants);
+          const readGranted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            {
+              title: 'Read Storage Permission',
+              message:
+                'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
 
           if (
-            grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-            PermissionsAndroid.RESULTS.GRANTED &&
-            grants['android.permission.READ_EXTERNAL_STORAGE'] ===
-            PermissionsAndroid.RESULTS.GRANTED &&
-            grants['android.permission.RECORD_AUDIO'] ===
-            PermissionsAndroid.RESULTS.GRANTED
+            writeGranted === PermissionsAndroid.RESULTS.GRANTED &&
+            readGranted === PermissionsAndroid.RESULTS.GRANTED
           ) {
             console.log('Permissions granted');
           } else {
             console.log('All required permissions not granted');
+
             return;
           }
         } catch (err) {
@@ -179,9 +194,8 @@ const App = () => {
         }
       }
     };
-    permission();
+    requestStoragePermissions();
   }, []);
-
 
   // useEffect(() => {
   //   let interval;
@@ -221,7 +235,7 @@ const App = () => {
       if (currentUser) {
         updateLastSeen(currentUser.uid);
       }
-    }, 1000); 
+    }, 1000);
 
     return () => {
       clearInterval(interval);

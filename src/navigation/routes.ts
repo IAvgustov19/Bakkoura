@@ -13,6 +13,8 @@ export enum APP_ROUTES {
   RECOVER_PASSWORD = 'RecoverPassword',
   VERIFICATION_CODE = 'VerificationCode',
   NEW_PASSWORD_SCREEN = 'NewPasswordScreen',
+  TERMS_OF_USE = 'TermsOfUse',
+  PRIVACY_POLICY = 'PrivacyPolicy',
 
   // two step auth
   FINGERPRINT = 'FingerprintAuth',

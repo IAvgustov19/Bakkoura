@@ -160,7 +160,8 @@ export class TimeBioticStore {
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
             title: 'Storage Permission Required',
-            message: 'This app needs access to your storage to save photos',
+            message:
+              'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
             buttonPositive: '',
           },
         );
@@ -202,3 +203,7 @@ export class TimeBioticStore {
     }
   };
 }
+
+const obj = {name: 'hello', id: 1};
+
+console.log('obj', new Map(Object.entries(obj)));

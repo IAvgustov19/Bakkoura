@@ -20,6 +20,7 @@ import TimeBiotic from '../../screens/timeBiotic/TimeBiotic';
 import WatchValuation from '../../screens/timeBiotic/WatchValuation';
 import AboutTime from '../../screens/timeClinic/AboutTime';
 import FrancVila from '../../screens/timeClinic/FrancVila';
+import JihadBakkouraTimeClinic from '../../screens/timeClinic/JihadBakkouraTimeClinic';
 import TimeClinic from '../../screens/timeClinic/TimeClinic';
 import TimeWealth from '../../screens/timeClinic/TimeWealth';
 import TimerScreen from '../../screens/timers/TimerScreen';
@@ -50,13 +51,13 @@ export const bottomTabBarOptions = {
       buttonLabel: 'Market',
       key: 'market',
     },
-    {
-      index: 2,
-      tabName: APP_ROUTES.MESSENGER,
-      component: MessengerScreen,
-      buttonLabel: 'Messenger',
-      key: "messenger"
-    },
+    // {
+    //   index: 2,
+    //   tabName: APP_ROUTES.MESSENGER,
+    //   component: MessengerScreen,
+    //   buttonLabel: 'Messenger',
+    //   key: "messenger"
+    // },
     {
       index: 3,
       tabName: APP_ROUTES.TODOTIMER,
@@ -137,7 +138,7 @@ export const bottomTabBarOptions = {
     {
       index: 14,
       tabName: APP_ROUTES.JIHAD_BAKKOURA,
-      component: JihadBakkoura,
+      component: JihadBakkouraTimeClinic,
       buttonLabel: 'Jihad Bakkoura',
       key: 'jihad_bakkoura',
     },

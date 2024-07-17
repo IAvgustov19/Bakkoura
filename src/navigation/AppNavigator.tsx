@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { DarkTheme, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { APP_ROUTES } from './routes';
+import {DarkTheme, NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {APP_ROUTES} from './routes';
 import BottomTabNavigation from './BottomTabNavigation';
 import OnBoardingScreen from '../screens/onBoarding/OnBoarding';
 import NewEvent from '../screens/calendar/NewEventScreen';
@@ -14,7 +14,7 @@ import SignUpScreen from '../screens/auth/SignUpScreen/SignUpScreen';
 import RecoverPasswordScreen from '../screens/auth/RecoverPassword/RecoverPassword';
 import VerificationCodeScreen from '../screens/auth/VerificationCode/VerificationCode';
 import NewPasswordScreen from '../screens/auth/NewPassword/NewPasswordScreen';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import useRootStore from '../hooks/useRootStore';
 import LanguageScreen from '../screens/LanguageScreen/LanguageScreen';
 import StressTestDuring from '../screens/stressTest/StressTestDuring/StressTestDuring';
@@ -31,7 +31,7 @@ import FromDate from '../screens/timeTogether/FromDate';
 import LoverName from '../screens/timeTogether/LoverName';
 import Synchronyze from '../screens/timeTogether/Synchronyze';
 import Thanks from '../screens/timeTogether/Thanks';
-import { Keyboard } from 'react-native';
+import {Keyboard} from 'react-native';
 import CreateSector from '../screens/bakkouraWatch/CreateSector';
 import SectorName from '../screens/bakkouraWatch/SectorName';
 import SectorColor from '../screens/bakkouraWatch/SectorColor';
@@ -73,11 +73,13 @@ import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 import MessengerScreen from '../screens/messenger/MessengerScreen';
 import SearchContact from '../screens/messenger/SearchContact';
 import DialogScreen from '../screens/messenger/DialogScreen';
+import TermsOfUse from '../screens/auth/SignUpScreen/TermsOfUse';
+import PrivacyPolicy from '../screens/auth/SignUpScreen/PrivacyPolicy';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-  const { getPersonalState } = useRootStore().personalAreaStore;
+  const {getPersonalState} = useRootStore().personalAreaStore;
   const [keyboardStatus, setKeyboardStatus] = React.useState('');
 
   React.useEffect(() => {
@@ -98,7 +100,7 @@ const AppNavigator = () => {
     };
   }, []);
 
-  const { isAuthorized } = useRootStore().authStore;
+  const {isAuthorized} = useRootStore().authStore;
 
   const renderPublicNavigators = () => {
     return (
@@ -152,7 +154,20 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-
+        <Stack.Screen
+          name={APP_ROUTES.TERMS_OF_USE}
+          component={TermsOfUse}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.PRIVACY_POLICY}
+          component={PrivacyPolicy}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
       </>
     );
   };
@@ -574,7 +589,8 @@ const AppNavigator = () => {
           gestureEnabled: false,
         }}>
         {/* {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()} */}
-        {!isAuthorized && renderPublicNavigators() || renderPrivateNavigators()}
+        {(!isAuthorized && renderPublicNavigators()) ||
+          renderPrivateNavigators()}
       </Stack.Navigator>
     </NavigationContainer>
   );

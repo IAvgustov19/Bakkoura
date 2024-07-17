@@ -70,7 +70,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 8,
+    paddingBottom: windowHeight / 4,
   },
   avatarBox: {
     width: '100%',
