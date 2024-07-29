@@ -10,15 +10,9 @@ import auth from '@react-native-firebase/auth';
 import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { observer } from 'mobx-react-lite';
-import { AppState, PermissionsAndroid, Platform } from 'react-native';
+import { AppState, NativeModules, PermissionsAndroid, Platform } from 'react-native';
 import RN from './src/components/RN';
 import AppNavigator from './src/navigation/AppNavigator';
-// import { PermissionsAndroid, Platform } from 'react-native';
-// import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
-// import { useEffect } from 'react';
-// import auth from '@react-native-firebase/auth'
-// import { syncUsersToFirestore } from './src/services/firestoreService';
-
 import BackgroundTimer from 'react-native-background-timer';
 import useRootStore from './src/hooks/useRootStore';
 import 'react-native-reanimated';
@@ -147,6 +141,7 @@ const App = () => {
   // useEffect(() => {
   //   syncUsersToFirestore();
   // }, [])
+  
 
   useEffect(() => {
     const permission = async () => {
