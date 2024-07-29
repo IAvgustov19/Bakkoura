@@ -18,6 +18,8 @@ xmlns:tools="http://schemas.android.com/tools"
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />    
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
@@ -46,7 +48,15 @@ xmlns:tools="http://schemas.android.com/tools"
         <meta-data 
             android:name="com.dieam.reactnativepushnotification.notification_color"
             android:resource="@android:color/white"/>
+          <receiver android:name=".YourWidgetProvider" android:exported="true">
+        <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        </intent-filter>
 
+        <meta-data
+            android:name="android.appwidget.provider"
+            android:resource="@xml/widget_info" />
+    </receiver>
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -67,6 +77,7 @@ xmlns:tools="http://schemas.android.com/tools"
         </receiver>
 
         <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
+
 
         <service
             android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"

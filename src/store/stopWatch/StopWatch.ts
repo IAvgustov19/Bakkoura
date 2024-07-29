@@ -104,4 +104,22 @@ export class StopWatchStore {
       this.maindis = '00 : 00 : 00';
     });
   };
+
+  startRecordAudio = () => {
+    this.startTime = moment();
+    this.intervalId = setInterval(() => {
+      runInAction(() => {
+        this.milliseconds = moment().diff(this.startTime);
+        this.second = Math.round(this.milliseconds / 1000);
+        this.mainDisplay(this.milliseconds);
+      });
+    }, 10);
+  };
+
+  stopRecordAudio = () => {
+    clearInterval(this.intervalId);
+    runInAction(() => {
+      this.maindis = '00 : 00 : 00';
+    });
+  };
 }

@@ -4,7 +4,7 @@ import {Images} from '../../assets/index';
 import RN from '../RN';
 
 type componentNameProps = {
-  text?: string;
+  text?: any;
   primary?: boolean;
   onPress?: () => void;
   subWidth?: number | string;

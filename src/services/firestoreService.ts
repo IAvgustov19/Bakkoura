@@ -486,11 +486,15 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
   }
 };
 
-export const updateEtapsInFirestore = async (id, updatedEtap) => {
+export const updateEtapsInFirestore = async (id: any, updatedEtap: Partial<TogetherDataType>) => {
   try {
-    await db.collection('etaps').doc(id).update(updatedEtap);
+    const filteredEtap = Object.fromEntries(
+      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined)
+    );
+
+    await db.collection('etaps').doc(id).update(filteredEtap);
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error updating document:', error);
   }
 };
 

@@ -21,6 +21,10 @@ import { firebase } from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
 import { db } from '../../config/firebase';
 import moment from 'moment';
+import FileViewer from 'react-native-file-viewer';
+import { windowWidth } from '../../utils/styles';
+import { COLORS } from '../../utils/colors';
+import VideoPlayer from './components/VideoPlayer';
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -43,30 +47,6 @@ const DialogScreen = () => {
         }
         
         const userRef = firestore().collection('users').doc(id);
-        
-        // Subscribe to changes in user's lastSeen field
-        // const unsubscribe = userRef.onSnapshot((snapshot) => {
-        //     const userData = snapshot.data();
-        //     if (userData?.lastSeen) {
-        //         // Calculate time difference and update state
-        //         const lastSeenTimestamp = userData.lastSeen.toDate();
-        //         const now = new Date();
-        //         const diffInMs = now.getTime() - lastSeenTimestamp.getTime();
-        //         const diffInMinutes = Math.round(diffInMs / (1000 * 60));
-                
-        //         if (diffInMinutes < 2) {
-        //             setLastSeen('Online');
-        //         } else if (diffInMinutes < 60) {
-        //             setLastSeen(`${diffInMinutes} minutes ago`);
-        //         } else {
-        //             const hours = Math.floor(diffInMinutes / 60);
-        //             const minutes = diffInMinutes % 60;
-        //             setLastSeen(`Today, ${hours}:${minutes}`);
-        //         }
-        //     } else {
-        //         setLastSeen(null);
-        //     }
-        // });
 
         const unsubscribe = userRef.onSnapshot((snapshot) => {
             const userData = snapshot.data();
@@ -144,7 +124,7 @@ const DialogScreen = () => {
                 // Listen for real-time updates using onSnapshot for reverseId
                 reverseDocRef.onSnapshot((reverseDocSnapshot) => {
                     if (reverseDocSnapshot.exists) {
-                        console.log('Document with reverseId exists:', reverseDocSnapshot.data());
+                        // console.log('Document with reverseId exists:', reverseDocSnapshot.data());
                         // Process reverseId document here
                         const messagesArray = reverseDocSnapshot.data().messages || [];
                         const filteredMessages = messagesArray
@@ -225,7 +205,7 @@ const DialogScreen = () => {
                         .then((reverseDocSnapshot) => {
                             if (reverseDocSnapshot.exists) {
                                 // If reverseId document exists, update it
-                                console.log('Document with reverseId exists:', reverseDocSnapshot.data());
+                                // console.log('Document with reverseId exists:', reverseDocSnapshot.data());
 
                                 reverseDocRef.update({
                                     messages: firebase.firestore.FieldValue.arrayUnion({
@@ -285,29 +265,60 @@ const DialogScreen = () => {
     };
 
 
-    const renderMessageImage = (props) => {
-        const { currentMessage } = props;
-        return (
-            // <View style={styles.messageImageContainer}>
-            <>
-                <MessageImage
-                    {...props}
-                    // containerStyle={styles.messageImageContainer}
-                    imageStyle={{
-                        width: 74,
-                        height: 74,
-                        resizeMode: 'cover'
-                    }}
-                />
-                <View style={styles.imageInfo}>
-                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-                    <Text style={styles.time}>{currentMessage.time}</Text>
-                </View>
-            </>
-            // </View>
-        )
-    }
+    const renderMessageImage = props => {
+        const {currentMessage} = props;
+        return !currentMessage.file ? (
+          <>
+            <MessageImage
+              {...props}
+              imageStyle={{width: 74, height: 74, resizeMode: 'cover'}}
+            />
+            <View style={styles.imageInfo}>
+              <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+              <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+              <Text style={styles.time}>{currentMessage.time}</Text>
+            </View>
+          </>
+        ) : (
+          <RN.Pressable
+            onPress={() => FileViewer.open(currentMessage.image)}
+            style={styles.fileBox}>
+            <RN.View style={styles.fileBoxFile}>
+              <Images.Svg.fileIcon />
+            </RN.View>
+            <View style={styles.imageInfo}>
+              <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+              <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+              <Text style={styles.time}>{currentMessage.time}</Text>
+            </View>
+          </RN.Pressable>
+        );
+      };
+
+    // const renderMessageImage = (props) => {
+    //     const { currentMessage } = props;
+    //     return (
+    //         // <View style={styles.messageImageContainer}>
+    //         <>
+    //             <MessageImage
+    //                 {...props}
+    //                 // containerStyle={styles.messageImageContainer}
+    //                 imageStyle={{
+    //                     width: 74,
+    //                     height: 74,
+    //                     resizeMode: 'cover'
+    //                 }}
+    //             />
+    //             <View style={styles.imageInfo}>
+    //                 <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+    //                 <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+    //                 <Text style={styles.time}>{currentMessage.time}</Text>
+    //             </View>
+    //         </>
+    //         // </View>
+    //     )
+    // }
+
     return (
         <PlatfromView>
             <LinearGradient
@@ -337,9 +348,6 @@ const DialogScreen = () => {
                     }
                     leftItem={<ArrowLeftBack onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never)} title='Chats' titleColor='#656E77' />}
                 />
-                {/* <RN.View style={styles.userInfo}>
-
-               </RN.View> */}
             </LinearGradient>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView
@@ -359,20 +367,15 @@ const DialogScreen = () => {
                                 avatar: auth().currentUser.photoURL
                             }}
                             renderInputToolbar={(props) => (
-                                <CustomActions
-                                    {...props}
-                                    // onSend={onSend} 
-                                    recording={recording}
-                                    setRecording={setRecording}
-                                    setAudioPath={setAudioPath} />
+                                <CustomActions {...props} />
                             )}
-                            renderMessageAudio={renderMessageAudio}
+                            renderMessageAudio={props => <AudioPlayer {...props}/>}
+                            renderMessageVideo={props => <VideoPlayer {...props} />}
                         />
                     </RN.View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         </PlatfromView>
-
     )
 }
 
@@ -457,5 +460,17 @@ const styles = RN.StyleSheet.create({
         color: '#bbb',
         fontSize: 12,
     },
+    fileBox: {
+        flexDirection: 'row',
+        width: windowWidth - 200,
+      },
+      fileBoxFile: {
+        width: 80,
+        height: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.darkGrey,
+        borderRadius: 5,
+      },
 
 });

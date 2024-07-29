@@ -56,6 +56,10 @@
     {
       "path": "src/assets/fonts/RedHatDisplay-SemiBoldItalic.ttf",
       "sha1": "68cc50805e4311fe42409319c37359cb5f606a3c"
+    },
+    {
+      "path": "src/assets/fonts/Rationale-Regular.ttf",
+      "sha1": "469725f05dcb5b7fdcc7d10552ea7e4c63229695"
     }
   ]
 }
