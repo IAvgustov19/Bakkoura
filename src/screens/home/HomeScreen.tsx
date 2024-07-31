@@ -222,6 +222,6 @@ const styles = RN.StyleSheet.create({
     zIndex: 2,
   },
   renderWatchs: {
-    marginTop: 10,
+    marginTop: 9,
   },
 });
