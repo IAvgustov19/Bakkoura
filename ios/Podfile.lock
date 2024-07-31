@@ -2346,6 +2346,8 @@ PODS:
     - TOCropViewController (~> 2.7.4)
   - RNKeychain (8.2.0):
     - React-Core
+  - RNReactNativeSharedGroupPreferences (1.1.24):
+    - React
   - RNReanimated (3.13.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -2461,6 +2463,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
+  - RNReactNativeSharedGroupPreferences (from `../node_modules/react-native-shared-group-preferences`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSound (from `../node_modules/react-native-sound`)
@@ -2656,6 +2659,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
+  RNReactNativeSharedGroupPreferences:
+    :path: "../node_modules/react-native-shared-group-preferences"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -2779,6 +2784,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
   RNImageCropPicker: 771e2ca319d2cf92e04ebf334ece892ee9a6728f
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
+  RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
   RNReanimated: fdee63ce166e670399f94fcf488f5bad83b06e3e
   RNScreens: 136d868cc4a78b41042a1a5f1cb42b99a47033f5
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852

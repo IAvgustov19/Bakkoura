@@ -90,12 +90,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: '700',
     lineHeight: 24,
     color: COLORS.black,
     fontFamily: 'RedHatDisplay-SemiBold',
-    textShadowColor: 'rgba(255, 255, 255, 0.40)',
-    textShadowOffset: {width: -1, height: 0.1},
+    textShadowColor: 'rgba(255, 255, 255, 0.52)',
+    textShadowOffset: {width: -1, height: 0.001},
     textShadowRadius: 10,
   },
   icon: {

@@ -8,7 +8,7 @@ import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {Lotties} from '../../../lotties/lottie';
 import {COLORS} from '../../../utils/colors';
-import {windowWidth} from '../../../utils/styles';
+import {windowHeight, windowWidth} from '../../../utils/styles';
 
 type Props = {};
 
@@ -16,7 +16,11 @@ const AlarmClockFront24: React.FC<Props> = ({}) => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
 
   return (
-    <RN.View style={[styles.alarmFront]}>
+    <RN.View
+      style={[
+        styles.alarmFront,
+        {top: RN.Platform.OS == 'ios' && windowHeight / 7.5},
+      ]}>
       <Images.Svg.alarmClockFront24 width={windowWidth - 140} />
       <LinearGradient
         style={[

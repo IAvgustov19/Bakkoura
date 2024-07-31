@@ -43,23 +43,19 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to the camera.</string>
+	<string>$(PRODUCT_NAME) Access is required to create a photo or video and then send it to the chat or support service</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Access is necessary to receive notifications and the correct operation of the application</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSPhotoLibraryUsageDescription</key>
-  	<string>Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service</string>
-	<key>NSCameraUsageDescription</key>
-  	<string>Access is required to create a photo or video and then send it to the chat or support service</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Access is necessary for a more secure and convenient login to the application</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) Access is required to create a photo or video and then send it to the chat or support service</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) Access is required to record audio and then send it to the chat</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access is necessary for a more secure and convenient login to the application</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service</string>
 	<key>RNPermissions.requestNotifications</key>
 	<string>To send notifications that the time on the clock is up, a certain event has occurred, or just to remind you of an anniversary</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Access is necessary to receive notifications and the correct operation of the application</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>RedHatDisplay-Black.ttf</string>

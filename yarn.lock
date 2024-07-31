@@ -7922,7 +7922,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@^15.5.10, prop-types@^15.7.2, prop-types@^15.7.x, prop-types@^15.8.1:
+prop-types@*, prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.7.x, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8150,10 +8150,18 @@ react-native-image-picker@^7.1.2:
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.1.2.tgz#383849d1953caf4578874a1f5e5dd11c737bd5cd"
   integrity sha512-b5y5nP60RIPxlAXlptn2QwlIuZWCUDWa/YPUVjgHc0Ih60mRiOg1PSzf0IjHSLeOZShCpirpvSPGnDExIpTRUg==
 
-react-native-iphone-x-helper@1.3.1:
+react-native-iphone-x-helper@1.3.1, react-native-iphone-x-helper@^1.0.3:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
+
+react-native-keyboard-aware-scroll-view@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.5.tgz#e2e9665d320c188e6b1f22f151b94eb358bf9b71"
+  integrity sha512-XwfRn+T/qBH9WjTWIBiJD2hPWg0yJvtaEw6RtPCa5/PYHabzBaWxYBOl0usXN/368BL1XktnZPh8C2lmTpOREA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-keyboard-aware-scrollview@^2.1.0:
   version "2.1.0"
@@ -8201,6 +8209,11 @@ react-native-ratings@^8.1.0:
   dependencies:
     lodash "^4.17.15"
 
+react-native-really-awesome-button@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-really-awesome-button/-/react-native-really-awesome-button-2.0.4.tgz#10ffcc6debf43fbf4d3b6aa89c909e17ba7026ed"
+  integrity sha512-dC8K6/sj3MixM/7MGIkDiuy8oGrbVSoYxbhR2e2LMw8Zvp7s5uxY5R8Ka4AZfEFhreXNL2bFV3Jrxd8QlNNGAg==
+
 react-native-reanimated@^3.8.1:
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.13.0.tgz#723687cd6ff4ce674800299c6917e4a3b088d89e"
@@ -8234,6 +8247,11 @@ react-native-screens@^3.29.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-shared-group-preferences@^1.1.24:
+  version "1.1.24"
+  resolved "https://registry.yarnpkg.com/react-native-shared-group-preferences/-/react-native-shared-group-preferences-1.1.24.tgz#a3454a7bdb1a26ed0e9fdf92f0fcadde8c9b0296"
+  integrity sha512-lncFBltdqXLp8H87wNZUg/P7KvaCqscQ/8GXvrRl0RIUBVVSzrKdAQyBTcsHb7mkMULmph73u41/6nQ5BvUchw==
 
 react-native-size-matters@^0.4.0:
   version "0.4.2"

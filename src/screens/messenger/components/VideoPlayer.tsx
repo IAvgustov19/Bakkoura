@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import RN from '../../../components/RN';
 import Video from 'react-native-video';
@@ -65,6 +65,24 @@ const VideoPlayer = (props: any) => {
     setPaused(true);
   };
 
+  const renderPreviewVideo = useCallback(
+    (isCircle: boolean) => {
+      return (
+        <Video
+          ref={videoRef}
+          source={{uri: currentMessage.video}}
+          style={isCircle ? styles.modalCircleVideo : styles.modalVideo}
+          controls={false}
+          resizeMode={isCircle ? 'cover' : 'contain'}
+          paused={paused}
+          onEnd={onVideoEnd}
+          muted={false}
+        />
+      );
+    },
+    [videoRef, currentMessage, modalVisible, paused, initialPausa],
+  );
+
   return (
     <>
       {currentMessage.video ? (
@@ -79,12 +97,13 @@ const VideoPlayer = (props: any) => {
                 controls={false}
                 paused={initialPausa}
                 onEnd={onVideoEnd}
+                muted={true}
               />
-              <View style={styles.videoInfo}>
+              {/* <View style={styles.videoInfo}>
                 <Text style={styles.fileName}>{currentMessage.fileName}</Text>
                 <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
                 <Text style={styles.time}>{currentMessage.time}</Text>
-              </View>
+              </View> */}
             </RN.TouchableOpacity>
             <RN.Modal
               visible={modalVisible}
@@ -96,15 +115,7 @@ const VideoPlayer = (props: any) => {
                   onPress={() => setModalVisible(false)}>
                   <Images.Svg.whiteDelete />
                 </RN.TouchableOpacity>
-                <Video
-                  ref={videoRef}
-                  source={{uri: currentMessage.video}}
-                  style={styles.modalCircleVideo}
-                  controls={false}
-                  resizeMode="cover"
-                  paused={paused}
-                  onEnd={onVideoEnd}
-                />
+                {renderPreviewVideo(true)}
                 <RN.Pressable
                   style={[styles.buttons, {opacity: opacity}]}
                   onPress={onPlayPuasa}>
@@ -133,6 +144,7 @@ const VideoPlayer = (props: any) => {
                 controls={false}
                 paused={initialPausa}
                 onEnd={onVideoEnd}
+                muted={true}
               />
               <View style={styles.videoInfo}>
                 <Text style={styles.fileName}>{currentMessage.fileName}</Text>
@@ -150,15 +162,7 @@ const VideoPlayer = (props: any) => {
                   onPress={() => setModalVisible(false)}>
                   <Images.Svg.whiteDelete />
                 </RN.TouchableOpacity>
-                <Video
-                  ref={videoRef}
-                  source={{uri: currentMessage.video}}
-                  style={styles.modalVideo}
-                  controls={false}
-                  resizeMode="contain"
-                  paused={paused}
-                  onEnd={onVideoEnd}
-                />
+                {renderPreviewVideo(false)}
                 <RN.Pressable
                   style={[styles.buttons, {opacity: opacity}]}
                   onPress={onPlayPuasa}>
@@ -187,7 +191,7 @@ const styles = StyleSheet.create({
   container: {},
   fileName: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
     flexWrap: 'wrap',
     maxWidth: 200,
   },
@@ -201,15 +205,14 @@ const styles = StyleSheet.create({
   },
   videoMessage: {
     flexDirection: 'row',
-
     overflow: 'hidden',
-    gap: 5,
+    gap: 10,
     maxWidth: '100%',
   },
   video: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
+    width: 80,
+    height: 80,
+    borderRadius: 5,
     overflow: 'hidden',
   },
   videoInfo: {

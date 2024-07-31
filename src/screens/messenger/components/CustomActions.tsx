@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
-import { Composer } from 'react-native-gifted-chat';
-import { launchImageLibrary } from 'react-native-image-picker';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {View, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
+import {Composer} from 'react-native-gifted-chat';
+import {launchImageLibrary} from 'react-native-image-picker';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import { Images } from '../../../assets';
+import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import DocumentPicker from 'react-native-document-picker';
-import { windowHeight, windowWidth } from '../../../utils/styles';
+import {windowHeight, windowWidth} from '../../../utils/styles';
 import Line from '../../../components/Line/Line';
 import {
   Camera,
@@ -14,89 +14,80 @@ import {
   getCameraFormat,
 } from 'react-native-vision-camera';
 import TextView from '../../../components/Text/Text';
-import { Swipeable } from 'react-native-gesture-handler';
+import {Swipeable} from 'react-native-gesture-handler';
 import useRootStore from '../../../hooks/useRootStore';
-import { observer } from 'mobx-react-lite';
-
+import {observer} from 'mobx-react-lite';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const CustomComposer = props => {
-  const { text, onTextChanged, composerHeight, onSend } = props;
+  const {text, onTextChanged, composerHeight, onSend} = props;
   const [isModalVisible, setModalVisible] = useState(false);
-  const { startRecordVideo, stopRecordVideo, maindis } =
+  const {startRecordVideo, stopRecordVideo, maindis} =
     useRootStore().stopWatchStore;
 
-  // const handlePickImage = () => {
-  //   launchImageLibrary(
-  //     {
-  //       mediaType: 'mixed',
-  //       selectionLimit: 0,
-  //       includeExtra: true,
-  //     },
-  //     response => {
-  //       if (response.didCancel || response.errorMessage) {
-  //         console.log('User cancelled image picker or there was an error');
-          const handlePickImage = () => {
-            launchImageLibrary({
-              mediaType: 'photo',
-            }, (response) => {
-              // @ts-ignore
-              if (response.didCancel || response.error) {
-                console.log('User cancelled image picker or there was an error');
-              } else {
-                const newMessage = {
-                  _id: Math.random().toString(36).substring(7),
-                  createdAt: new Date(),
-                  user: {
-                    _id: 1,
-                  },
-                  image: response.assets[0].uri, // Include image URI in the message
-                  fileName: response.assets[0].fileName, // Add fileName to the message
-                  fileSize: (response.assets[0].fileSize / (1024 * 1024)).toFixed(1) + ' MB', // Add fileSize to the message
-                };
+  const handlePickImage = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'mixed',
+        selectionLimit: 0,
+        includeExtra: true,
+      },
+      response => {
+        if (response.didCancel || response.errorMessage) {
+          console.log('User cancelled image picker or there was an error');
+        } else {
+          const newMessages = response.assets.map(asset => ({
+            _id: Math.random().toString(36).substring(7),
+            createdAt: new Date(),
+            user: {
+              _id: 1,
+            },
+            image: asset.type.startsWith('image/') ? asset.uri : null,
+            video: asset.type.startsWith('video/') ? asset.uri : null,
+            fileName: asset.fileName,
+            fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
+          }));
 
-                console.log('newMessagenewMessage', newMessage)
-                // props.onSend([newMessage]); // Send the new message to the GiftedChat component
-              }
-            });
-          };
+          console.log('newMessages', newMessages);
+          onSend(newMessages);
+        }
+      },
+    );
+  };
 
+  const handleRecordVoice = async () => {
+    if (props.recording) {
+      const result = await audioRecorderPlayer.stopRecorder();
+      props.setRecording(false);
+      props.setAudioPath(result);
+      const newMessage = {
+        _id: Math.random().toString(36).substring(7),
+        createdAt: new Date(),
+        user: {
+          _id: 1,
+        },
+        audio: result,
+      };
+      props.onSend([newMessage]);
+    } else {
+      const newMessages = response.assets.map(asset => ({
+        _id: Math.random().toString(36).substring(7),
+        createdAt: new Date(),
+        user: {
+          _id: 1,
+        },
+        image: asset.type.startsWith('image/') ? asset.uri : null,
+        video: asset.type.startsWith('video/') ? asset.uri : null,
+        fileName: asset.fileName,
+        fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
+      }));
 
+      console.log('newMessages', newMessages);
+      onSend(newMessages);
+    }
+  };
 
-          const handleRecordVoice = async () => {
-            if (props.recording) {
-              const result = await audioRecorderPlayer.stopRecorder();
-              props.setRecording(false);
-              props.setAudioPath(result);
-              const newMessage = {
-                _id: Math.random().toString(36).substring(7),
-                createdAt: new Date(),
-                user: {
-                  _id: 1,
-                },
-                audio: result,
-              };
-              props.onSend([newMessage]);
-            } else {
-              const newMessages = response.assets.map(asset => ({
-                _id: Math.random().toString(36).substring(7),
-                createdAt: new Date(),
-                user: {
-                  _id: 1,
-                },
-                image: asset.type.startsWith('image/') ? asset.uri : null,
-                video: asset.type.startsWith('video/') ? asset.uri : null,
-                fileName: asset.fileName,
-                fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
-              }));
-
-              console.log('newMessages', newMessages);
-              onSend(newMessages);
-            }
-          }
-    // );
-  // };
   const handlePickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
@@ -172,8 +163,8 @@ const CustomComposer = props => {
   const devices = Camera.getAvailableCameraDevices();
   const device = getCameraDevice(devices, 'front');
   const format = getCameraFormat(device, [
-    { videoResolution: { width: 300, height: 300 } },
-    { fps: 60 },
+    {videoResolution: {width: 300, height: 300}},
+    {fps: 60},
   ]);
 
   useEffect(() => {
@@ -182,7 +173,7 @@ const CustomComposer = props => {
       const status1 = await Camera.requestMicrophonePermission();
       setHasPermission(
         status === ('authorized' as never) &&
-        status1 === ('authorized' as never),
+          status1 === ('authorized' as never),
       );
     })();
   }, []);
@@ -276,7 +267,7 @@ const CustomComposer = props => {
           ref={swipeableRef}
           renderRightActions={() => {
             return (
-              <Pressable style={{ opacity: 0 }}>
+              <Pressable style={{opacity: 0}}>
                 <Images.Svg.deleteIcon />
               </Pressable>
             );
@@ -295,7 +286,7 @@ const CustomComposer = props => {
             {recording ? (
               <Images.Svg.videoRecord width={80} height={80} />
             ) : (
-              <Images.Svg.videoMessage width={30} height={30} />
+              <Images.Svg.instagramIcon width={30} height={30} />
             )}
           </Pressable>
         </Swipeable>
@@ -338,13 +329,13 @@ const CustomComposer = props => {
       <View style={styles.composerContainer}>
         <TouchableOpacity
           onPress={handlePickMediaOrDocument}
-          style={{ paddingTop: 8 }}>
+          style={{paddingTop: 8}}>
           <Images.Svg.imageMessage />
         </TouchableOpacity>
         <RN.View
           style={[
             styles.bottomModal,
-            { bottom: isModalVisible ? 0 : -windowHeight },
+            {bottom: isModalVisible ? 0 : -windowHeight},
           ]}>
           <View style={styles.modalContent}>
             <RN.View style={styles.category}>
@@ -382,10 +373,10 @@ const CustomComposer = props => {
             composerHeight={composerHeight}
           />
           <TouchableOpacity onPress={handleSendText}>
-            <RN.Text style={{ color: 'white' }}>Send</RN.Text>
+            <RN.Text style={{color: 'white'}}>Send</RN.Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleRecordVoice} style={{ paddingTop: 8 }}>
+        <TouchableOpacity onPress={handleRecordVoice} style={{paddingTop: 8}}>
           <Images.Svg.voiceMessage />
         </TouchableOpacity>
         {renderRecordingVideo()}
@@ -457,7 +448,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 50,
     left: '50%',
-    transform: [{ translateX: -50 }],
+    transform: [{translateX: -50}],
     backgroundColor: 'red',
     borderRadius: 25,
     padding: 15,

@@ -9,7 +9,7 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import {getCurrentTime30and24} from '../../helper/helper';
 import {AlarmListsItemInitial, AlarmListsItemType} from '../../types/alarm';
 import {WeekRepeatData} from '../../utils/repeat';
-import {lesSoundsData} from '../../utils/sounds';
+import {SoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
@@ -153,8 +153,8 @@ export class AlarmStore {
     });
   };
 
-  selectedSound = lesSoundsData[2];
-  soundData = lesSoundsData;
+  selectedSound = SoundsData[2];
+  soundData = SoundsData;
 
   selectedRepeat = [...this.alarmItemData.repeat];
   weekRepeatData = WeekRepeatData;
@@ -192,13 +192,13 @@ export class AlarmStore {
   onSelectSound = (index: number) => {
     runInAction(() => {
       this.selectedSound = this.soundData.find((e, i) => i === index);
-      this.setNewAlarmState('sound', this.selectedSound.title as never);
+      this.setNewAlarmState('sound', this.selectedSound);
     });
   };
 
   onSoundItemPress = index => {
     const newData = this.soundData.map((item, i) => {
-      this.onSelectRepeat(index);
+      this.onSelectSound(index);
       return {
         ...item,
         active: i === index ? !item.active : false,
@@ -262,21 +262,22 @@ export class AlarmStore {
       } catch (error) {
         console.error('Error saving activeAlarm to AsyncStorage:', error);
       }
-
+      const alarmChannelid = String(Date.now());
       PushNotification.createChannel(
         {
-          channelId: alarm.id as never,
+          channelId: alarmChannelid,
           channelName: 'Alarm Channel',
           playSound: true,
           soundName: alarm.sound.url,
           importance: Importance.HIGH,
+          vibrate: alarm.vibration,
         },
         () => {},
       );
 
       if (RN.Platform.OS === 'ios') {
         PushNotificationIOS.addNotificationRequest({
-          id: alarm.id,
+          id: alarmChannelid,
           title: 'BTS',
           body: alarm.name,
           sound: alarm.sound.url,
@@ -284,7 +285,7 @@ export class AlarmStore {
         });
       } else {
         PushNotification.localNotification({
-          channelId: alarm.id,
+          channelId: alarmChannelid,
           title: 'BTS',
           message: alarm.name,
           playSound: true,
@@ -292,6 +293,7 @@ export class AlarmStore {
           actions: ['Stop', 'Later'],
           userInfo: {id: alarm.id},
           autoCancel: false,
+          vibrate: alarm.vibration,
         });
       }
 

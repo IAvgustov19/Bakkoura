@@ -1,12 +1,9 @@
 import React, {useRef, useState} from 'react';
-
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import FormContainer from '../market/components/FormContainer/FormContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import GiveImage from '../../components/GiveImage/GiveImage';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import {useNavigation} from '@react-navigation/native';
-import ButtonComp from '../../components/Button/Button';
 import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
 import {APP_ROUTES} from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
@@ -19,12 +16,14 @@ import {Images} from '../../assets';
 import {ActivityIndicator} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
+import CustomSelect from './components/CustomSelect';
+import {Countries} from '../../utils/languages';
 
 const WatchValuation = () => {
   const navigation = useNavigation();
 
   const [accept, setAccept] = useState(false);
-  const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
+  const {setOrderState, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
 
   const AcceptPrivacy = () => {
@@ -57,7 +56,7 @@ const WatchValuation = () => {
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
-            title="Watch Valuation"
+            title="Assestment Watch"
           />
           <RN.ScrollView
             ref={scrollViewRef}
@@ -75,7 +74,19 @@ const WatchValuation = () => {
                   text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} uploadAtTop black />
+              <FormContainer
+                bottomInputPress={Scroll}
+                uploadAtTop
+                black
+                withSelect
+                options={Countries}
+                onSelect={(e: any) => setOrderState('country', e.value)}
+              />
+              {/* <CustomSelect
+                options={Countries}
+                onSelect={(e: any) => setOrderState('country', e.value)}
+                black={true}
+              /> */}
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>

@@ -139,6 +139,7 @@ import imageMessage from './svg/imageMessage.svg';
 import videoMessage from './svg/videoIcon.svg';
 import videoRecord from './svg/videoRecord.svg';
 import fileIcon from './svg/file-1453.svg';
+import instagramIcon from './svg/instagram-logo-thin-svgrepo-com.svg';
 
 export const Images = {
   Svg: {
@@ -286,6 +287,7 @@ export const Images = {
     videoMessage,
     videoRecord,
     fileIcon,
+    instagramIcon,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -299,9 +301,9 @@ export const Images = {
     bakkouraWatchLines: require('./images/bakkouraWatchLines.png'),
     bakkouraWatchMain: require('./images/bakkouraWatchMain.png'),
     watchBack: require('./images/watchBack.png'),
-    homeWatch24and30: require('./images/homeWatch24and30.webp'),
-    homeWatch24: require('./images/homewatch24.webp'),
-    homeWatch30: require('./images/homeWatch30.webp'),
+    homeWatch24and30: require('./images/homeWatch24and30.png'),
+    homeWatch24: require('./images/homewatch24.png'),
+    homeWatch30: require('./images/homeWatch30.png'),
     stopwatch24: require('./images/stopwatch24.png'),
     stopwatch30: require('./images/stopwatch30.png'),
     eye: require('./images/eye.webp'),

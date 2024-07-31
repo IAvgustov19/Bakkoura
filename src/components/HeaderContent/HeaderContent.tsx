@@ -21,13 +21,16 @@ const HeaderContent: React.FC<Props> = ({
   return (
     <RN.View style={styles.header}>
       {leftItem && <RN.View style={styles.leftItem}>{leftItem}</RN.View>}
-      {title &&<TextView
-        fontFamily="RedHatDisplay-SemiBold"
-        style={styles.title}
-        // @ts-ignore
-        title={title}
-      />}
-      {rightItem &&<RN.View style={styles.rightItem}>{rightItem}</RN.View>}
+      {title && (
+        <TextView
+          fontFamily="RedHatDisplay-SemiBold"
+          style={styles.title}
+          // @ts-ignore
+          title={title}
+        />
+      )}
+      {centerItem && centerItem}
+      {rightItem && <RN.View style={styles.rightItem}>{rightItem}</RN.View>}
     </RN.View>
   );
 };

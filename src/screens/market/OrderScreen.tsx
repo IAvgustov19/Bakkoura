@@ -16,6 +16,8 @@ import FormContainer from './components/FormContainer/FormContainer';
 import {APP_ROUTES} from '../../navigation/routes';
 import Thanks from './components/thanks/Thanks';
 import {ActivityIndicator} from 'react-native';
+import ButtonComp from '../../components/Button/Button';
+import GiveImage from '../../components/GiveImage/GiveImage';
 
 const OrderScreen = () => {
   const navigation = useNavigation();
@@ -50,7 +52,7 @@ const OrderScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsGreyLogo />}
+            leftItem={<Images.Svg.btsRightLinear />}
             title="Order"
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
@@ -72,7 +74,7 @@ const OrderScreen = () => {
                   }
                 />
               </RN.View>
-              <FormContainer bottomInputPress={Scroll} />
+              <FormContainer bottomInputPress={Scroll} black />
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
@@ -85,17 +87,20 @@ const OrderScreen = () => {
                   </RN.Text>
                 </RN.View>
               </RN.View>
-              <SimpleBtn
+              <ButtonComp
+                // width={150}
                 title="Send"
-                onPress={onSendEmail}
                 icon={
                   sendEmailLoading ? (
                     <ActivityIndicator
                       color={COLORS.black}
                       style={{marginTop: 6}}
                     />
-                  ) : null
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
                 }
+                onPress={onSendEmail}
               />
             </RN.View>
           </RN.ScrollView>

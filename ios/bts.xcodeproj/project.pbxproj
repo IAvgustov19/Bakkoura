@@ -16,6 +16,14 @@
 		B53713AFE8BC9DF00FF557FC /* Pods_bts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79613DBE6480F53ECD19AF8 /* Pods_bts.framework */; };
 		DC7F68E02BF7279B0030D166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */; };
 		DC7F68E12BF7279B0030D166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */; };
+		DC9534ED2C5162780011F158 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC9534EC2C5162780011F158 /* WidgetKit.framework */; };
+		DC9534EF2C5162780011F158 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC9534EE2C5162780011F158 /* SwiftUI.framework */; };
+		DC9534F22C5162780011F158 /* bakkouraBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9534F12C5162780011F158 /* bakkouraBundle.swift */; };
+		DC9534F42C5162780011F158 /* bakkouraLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9534F32C5162780011F158 /* bakkouraLiveActivity.swift */; };
+		DC9534F62C5162780011F158 /* bakkoura.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9534F52C5162780011F158 /* bakkoura.swift */; };
+		DC9534F82C5162780011F158 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9534F72C5162780011F158 /* AppIntent.swift */; };
+		DC9534FA2C51627A0011F158 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC9534F92C51627A0011F158 /* Assets.xcassets */; };
+		DC9534FE2C51627A0011F158 /* bakkouraExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DC9534EB2C5162770011F158 /* bakkouraExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DCE784DC2C22B85000FCBA65 /* ringtone2.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D62C22B85000FCBA65 /* ringtone2.wav */; };
 		DCE784DD2C22B85000FCBA65 /* ringtone5.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D72C22B85000FCBA65 /* ringtone5.wav */; };
 		DCE784DE2C22B85000FCBA65 /* ringtone4.wav in Resources */ = {isa = PBXBuildFile; fileRef = DCE784D82C22B85000FCBA65 /* ringtone4.wav */; };
@@ -32,7 +40,28 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = bts;
 		};
+		DC9534FC2C51627A0011F158 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DC9534EA2C5162770011F158;
+			remoteInfo = bakkouraExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DC9534FF2C51627A0011F158 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DC9534FE2C51627A0011F158 /* bakkouraExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* btsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = btsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +81,17 @@
 		88EE844CCE282D5ED536DBF4 /* Pods_bts_btsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bts_btsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79613DBE6480F53ECD19AF8 /* Pods_bts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DC9534EB2C5162770011F158 /* bakkouraExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = bakkouraExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC9534EC2C5162780011F158 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		DC9534EE2C5162780011F158 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		DC9534F12C5162780011F158 /* bakkouraBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bakkouraBundle.swift; sourceTree = "<group>"; };
+		DC9534F32C5162780011F158 /* bakkouraLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bakkouraLiveActivity.swift; sourceTree = "<group>"; };
+		DC9534F52C5162780011F158 /* bakkoura.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bakkoura.swift; sourceTree = "<group>"; };
+		DC9534F72C5162780011F158 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		DC9534F92C51627A0011F158 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DC9534FB2C51627A0011F158 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC9535032C51D96A0011F158 /* bts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = bts.entitlements; path = bts/bts.entitlements; sourceTree = "<group>"; };
+		DC9535042C5215520011F158 /* bakkouraExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = bakkouraExtension.entitlements; sourceTree = "<group>"; };
 		DCE784D62C22B85000FCBA65 /* ringtone2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone2.wav; path = ../src/assets/sounds/ringtone2.wav; sourceTree = "<group>"; };
 		DCE784D72C22B85000FCBA65 /* ringtone5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone5.wav; path = ../src/assets/sounds/ringtone5.wav; sourceTree = "<group>"; };
 		DCE784D82C22B85000FCBA65 /* ringtone4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone4.wav; path = ../src/assets/sounds/ringtone4.wav; sourceTree = "<group>"; };
@@ -78,6 +118,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DC9534E82C5162770011F158 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC9534EF2C5162780011F158 /* SwiftUI.framework in Frameworks */,
+				DC9534ED2C5162780011F158 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -101,6 +150,7 @@
 		13B07FAE1A68108700A75B9A /* bts */ = {
 			isa = PBXGroup;
 			children = (
+				DC9535032C51D96A0011F158 /* bts.entitlements */,
 				DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -118,6 +168,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				C79613DBE6480F53ECD19AF8 /* Pods_bts.framework */,
 				88EE844CCE282D5ED536DBF4 /* Pods_bts_btsTests.framework */,
+				DC9534EC2C5162780011F158 /* WidgetKit.framework */,
+				DC9534EE2C5162780011F158 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,6 +184,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				DC9535042C5215520011F158 /* bakkouraExtension.entitlements */,
 				DCE784DB2C22B85000FCBA65 /* ringtone1.wav */,
 				DCE784D62C22B85000FCBA65 /* ringtone2.wav */,
 				DCE784DA2C22B85000FCBA65 /* ringtone3.wav */,
@@ -141,6 +194,7 @@
 				13B07FAE1A68108700A75B9A /* bts */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* btsTests */,
+				DC9534F02C5162780011F158 /* bakkoura */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -155,6 +209,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* bakkourabts.app */,
 				00E356EE1AD99517003FC87E /* btsTests.xctest */,
+				DC9534EB2C5162770011F158 /* bakkouraExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,6 +223,19 @@
 				864AB54CA7FB302D528955A0 /* Pods-bts-btsTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DC9534F02C5162780011F158 /* bakkoura */ = {
+			isa = PBXGroup;
+			children = (
+				DC9534F12C5162780011F158 /* bakkouraBundle.swift */,
+				DC9534F32C5162780011F158 /* bakkouraLiveActivity.swift */,
+				DC9534F52C5162780011F158 /* bakkoura.swift */,
+				DC9534F72C5162780011F158 /* AppIntent.swift */,
+				DC9534F92C51627A0011F158 /* Assets.xcassets */,
+				DC9534FB2C51627A0011F158 /* Info.plist */,
+			);
+			path = bakkoura;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,15 +274,34 @@
 				9A3FE6BBB2ACDD2FF73041B1 /* [CP] Embed Pods Frameworks */,
 				C1DE94A7D570D0DD28263498 /* [CP] Copy Pods Resources */,
 				26AED782D212557804DC4B1C /* [CP-User] [RNFB] Core Configuration */,
+				DC9534FF2C51627A0011F158 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DC9534FD2C51627A0011F158 /* PBXTargetDependency */,
 			);
 			name = bts;
 			productName = bts;
 			productReference = 13B07F961A680F5B00A75B9A /* bakkourabts.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DC9534EA2C5162770011F158 /* bakkouraExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC9535022C51627A0011F158 /* Build configuration list for PBXNativeTarget "bakkouraExtension" */;
+			buildPhases = (
+				DC9534E72C5162770011F158 /* Sources */,
+				DC9534E82C5162770011F158 /* Frameworks */,
+				DC9534E92C5162770011F158 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = bakkouraExtension;
+			productName = bakkouraExtension;
+			productReference = DC9534EB2C5162770011F158 /* bakkouraExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -223,6 +310,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -231,6 +319,9 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					DC9534EA2C5162770011F158 = {
+						CreatedOnToolsVersion = 15.1;
 					};
 				};
 			};
@@ -249,6 +340,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* bts */,
 				00E356ED1AD99517003FC87E /* btsTests */,
+				DC9534EA2C5162770011F158 /* bakkouraExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -275,6 +367,14 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DC7F68E02BF7279B0030D166 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC9534E92C5162770011F158 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC9534FA2C51627A0011F158 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +542,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DC9534E72C5162770011F158 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC9534F62C5162780011F158 /* bakkoura.swift in Sources */,
+				DC9534F82C5162780011F158 /* AppIntent.swift in Sources */,
+				DC9534F42C5162780011F158 /* bakkouraLiveActivity.swift in Sources */,
+				DC9534F22C5162780011F158 /* bakkouraBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -449,6 +560,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* bts */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		DC9534FD2C51627A0011F158 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC9534EA2C5162770011F158 /* bakkouraExtension */;
+			targetProxy = DC9534FC2C51627A0011F158 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -510,10 +626,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E49BB129FAAF4B26E0E77DF /* Pods-bts.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = bts/bts.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ASG3S439C7;
+				DEVELOPMENT_TEAM = HPB6QQ52WT;
 				ENABLE_BITCODE = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = bts/Info.plist;
@@ -528,6 +646,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.bts;
 				PRODUCT_NAME = bakkourabts;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -539,10 +658,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0A0777B4632E678EAAFEF7CD /* Pods-bts.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = bts/bts.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ASG3S439C7;
+				DEVELOPMENT_TEAM = HPB6QQ52WT;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = bts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -556,7 +679,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.bts;
 				PRODUCT_NAME = bakkourabts;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -643,7 +768,10 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -723,11 +851,99 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DC9535002C51627A0011F158 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = bakkouraExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HPB6QQ52WT;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = bakkoura/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = bakkoura;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.bakkourabts.bakkoura;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DC9535012C51627A0011F158 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = bakkouraExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = HPB6QQ52WT;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = bakkoura/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = bakkoura;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.bakkourabts.bakkoura;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -757,6 +973,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DC9535022C51627A0011F158 /* Build configuration list for PBXNativeTarget "bakkouraExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC9535002C51627A0011F158 /* Debug */,
+				DC9535012C51627A0011F158 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

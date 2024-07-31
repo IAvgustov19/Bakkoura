@@ -34,6 +34,7 @@ const NewAlarmScreen = () => {
     selectedRepeat,
     createAlarm,
   } = useRootStore().alarmStore;
+  console.log('alarmItemData', alarmItemData);
 
   const onSetLeter = () => {
     setNewAlarmState('leter', leter);

@@ -12,6 +12,7 @@ import useRootStore from '../../hooks/useRootStore';
 const NameAlarm = () => {
   const navigation = useNavigation();
   const {setNewAlarmState, alarmItemData} = useRootStore().alarmStore;
+
   return (
     <LinearContainer
       children={

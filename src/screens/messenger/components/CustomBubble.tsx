@@ -20,13 +20,12 @@ const CustomTime = props => {
   );
 };
 
+const CustomMessage = props => {
+  const {currentMessage} = props;
+  const {image, user} = currentMessage;
+  const {selectedImage, imageName, imageSize} = currentMessage;
 
-const CustomMessage = (props) => {
-    const { currentMessage } = props;
-    const { image, user } = currentMessage;
-    const { selectedImage, imageName, imageSize } = currentMessage;
-
-    // console.log('currentMessagecurrentMessage', currentMessage)
+  // console.log('currentMessagecurrentMessage', currentMessage)
 
   return (
     <View style={styles.container}>
@@ -52,7 +51,7 @@ const CustomMessage = (props) => {
           }}
           renderTime={timeProps => <CustomTime {...timeProps} />}
         />
-        {selectedImage && (
+        {/* {selectedImage && (
           <View style={styles.imageContainer}>
             <RN.Image source={{uri: selectedImage}} style={styles.image} />
             <View style={styles.imageInfo}>
@@ -60,7 +59,7 @@ const CustomMessage = (props) => {
               <Text style={styles.imageSize}>{imageSize} MB</Text>
             </View>
           </View>
-        )}
+        )} */}
       </View>
     </View>
   );
@@ -107,7 +106,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 13.13,
     color: '#fff',
-    // backgroundColor: 'red'
   },
   imageContainer: {
     flexDirection: 'row',

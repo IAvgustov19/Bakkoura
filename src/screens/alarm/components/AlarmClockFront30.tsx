@@ -6,6 +6,7 @@ import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
+import {windowWidth} from '../../../utils/styles';
 
 type Props = {};
 
@@ -13,8 +14,8 @@ const AlarmClockFront30: React.FC<Props> = ({}) => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
 
   return (
-    <RN.View style={[styles.alarmFront]}>
-      <Images.Svg.alarmClockFront30 />
+    <RN.View style={[styles.alarmFront, {top: windowWidth / 4.2}]}>
+      <Images.Svg.alarmClockFront30 width={windowWidth - 100} />
       <LinearGradient
         style={[
           styles.lineMinut,

@@ -51,13 +51,13 @@ export const bottomTabBarOptions = {
       buttonLabel: 'Market',
       key: 'market',
     },
-    // {
-    //   index: 2,
-    //   tabName: APP_ROUTES.MESSENGER,
-    //   component: MessengerScreen,
-    //   buttonLabel: 'Messenger',
-    //   key: "messenger"
-    // },
+    {
+      index: 2,
+      tabName: APP_ROUTES.MESSENGER,
+      component: MessengerScreen,
+      buttonLabel: 'Messenger',
+      key: 'messenger',
+    },
     {
       index: 3,
       tabName: APP_ROUTES.TODOTIMER,

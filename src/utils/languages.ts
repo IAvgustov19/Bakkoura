@@ -18,3 +18,9 @@ export const Languages = [
 // 'Italiano',
 // 'Deutsch',
 // '中國人',
+
+export const Countries = [
+  {label: 'OAE', value: 'OAE'},
+  {label: 'USA', value: 'USA'},
+  {label: 'UK', value: 'UK'},
+];

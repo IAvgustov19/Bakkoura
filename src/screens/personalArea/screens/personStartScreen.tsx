@@ -17,6 +17,7 @@ import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import useRootStore from '../../../hooks/useRootStore';
 import {PersonalMenuType} from '../../../types/personalArea';
 import {ActivityIndicator} from 'react-native';
+import ListFooter from '../../../components/ListFooter/ListFooter';
 
 const PersonStartScreen = () => {
   const navigation = useNavigation();
@@ -85,6 +86,7 @@ const PersonStartScreen = () => {
               data={MenuItems}
               renderItem={renderItem}
               keyExtractor={item => item.key}
+              ListFooterComponent={<ListFooter />}
             />
             <RN.View style={styles.addBtn}>
               <StartBtn
