@@ -17,30 +17,42 @@ export class MessengerStore {
 
     allUsers: UserType[] = [];
     loading: boolean = true;
+    lastDocId: string | null = null;
 
-    getAllUsers = () => {
-        try {
-            const uid = auth()?.currentUser?.uid;
-            runInAction(async () => {
-                const users = await getAllUsersFromFirestore(uid);
-                this.allUsers = users;
-                this.userData = users;
-            });
-        } catch (error) {
-            console.error("Failed to fetch users", error);
-        } finally {
-            runInAction(() => {
-                this.loading = false;
-            });
+
+    getAllUsers = async () => {
+    this.loading = true;
+    try {
+      const uid = auth()?.currentUser?.uid;
+      console.log("Fetching users with lastDocId:", this.lastDocId);
+      const users = await getAllUsersFromFirestore(uid, this.lastDocId);
+      runInAction(() => {
+        if (users.length > 0) {
+          this.allUsers = [...this.allUsers, ...users];
+          this.lastDocId = users[users.length - 1].id;
+          console.log("Updated lastDocId to:", this.lastDocId);
+        } else {
+          this.lastDocId = null; // No more users to fetch
+          console.log("No more users to fetch");
         }
-    };
+      });
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  };
 
-    filterUsers = (query: string) => {
-        runInAction(() => {
+
+    filterUsers =  (query: string) => {
+        runInAction(async () => {
             if (!query) {
-                this.userData = this.allUsers;
+                const uid = auth()?.currentUser?.uid;
+                this.allUsers = await getAllUsersFromFirestore(uid);
             } else {
-                this.userData = this.allUsers.filter(user =>
+                this.allUsers = this.allUsers.filter(user =>
                     user.name.toLowerCase().includes(query.toLowerCase())
                 );
             }

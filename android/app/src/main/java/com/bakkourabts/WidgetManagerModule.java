@@ -8,10 +8,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
-
+import androidx.work.WorkManager;
+import androidx.work.OneTimeWorkRequest;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import java.util.concurrent.TimeUnit;
+import androidx.work.PeriodicWorkRequest;
 
 public class WidgetManagerModule extends ReactContextBaseJavaModule {
 
@@ -46,18 +49,20 @@ public class WidgetManagerModule extends ReactContextBaseJavaModule {
         scheduleWidgetUpdate(context);
     }
 
-    private void scheduleWidgetUpdate(Context context) {
-        Intent intent = new Intent(context, WidgetUpdateService.class);
-        pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+ public void scheduleWidgetUpdate(Context context) {
+    //     PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(
+    //             WidgetUpdateWorker.class,
+    //             15, TimeUnit.MINUTES
+    //     ).build();
 
-        if (alarmManager == null) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        }
+    //     WorkManager.getInstance(context).enqueue(periodicWorkRequest);
+    // }
+    Intent intent = new Intent(context, WidgetUpdateService.class);
+    PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        // Cancel any existing alarms to avoid duplicate pending intents
-        alarmManager.cancel(pendingIntent);
-
-        // Schedule the service to run periodically
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pendingIntent);
+    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    if (alarmManager != null) {
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 15 * 60 * 1000, pendingIntent); // Every 15 minutes
     }
-}
+
+}}
