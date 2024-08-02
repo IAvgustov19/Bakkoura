@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { Keyboard, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ActivityIndicator, Keyboard, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
 import RN from '../../components/RN';
 import { GiftedChat, MessageImage } from 'react-native-gifted-chat';
 import { RootStackParamList } from '../../types/navigation';
@@ -25,6 +25,7 @@ import FileViewer from 'react-native-file-viewer';
 import { windowWidth } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
 import VideoPlayer from './components/VideoPlayer';
+import { uploadFiles } from '../../services/firestoreService';
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -39,13 +40,14 @@ const DialogScreen = () => {
     const [recording, setRecording] = useState(false);
     const [audioPath, setAudioPath] = useState('');
     const [lastSeen, setLastSeen] = useState(null);
-    
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         if (!id) {
             navigation.goBack();
             return;
         }
-        
+
         const userRef = firestore().collection('users').doc(id);
 
         const unsubscribe = userRef.onSnapshot((snapshot) => {
@@ -54,11 +56,11 @@ const DialogScreen = () => {
                 // Convert lastSeen to a moment object for easier manipulation
                 const lastSeenTimestamp = moment(userData.lastSeen.toDate());
                 const now = moment();
-        
+
                 // Check if lastSeenTimestamp is today, yesterday, or earlier
                 const isToday = lastSeenTimestamp.isSame(now, 'day');
                 const isYesterday = lastSeenTimestamp.clone().add(1, 'day').isSame(now, 'day');
-        
+
                 // Format lastSeenTimestamp
                 let lastSeenFormatted;
                 if (isToday) {
@@ -68,10 +70,10 @@ const DialogScreen = () => {
                 } else {
                     lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm'); // Month DD, HH:mm format
                 }
-        
+
                 // Calculate time difference in minutes
                 const diffInMinutes = now.diff(lastSeenTimestamp, 'minutes');
-        
+
                 // Update state based on time difference
                 if (diffInMinutes < 2) {
                     setLastSeen('Online');
@@ -90,13 +92,14 @@ const DialogScreen = () => {
         });
         return () => unsubscribe();
     }, [id]);
-    
-    
-        useEffect(() => {
-            console.log('lastSeenlastSeen', lastSeen)
-        }, [])
-    
+
+
+    useEffect(() => {
+        console.log('lastSeenlastSeen', lastSeen)
+    }, [])
+
     useLayoutEffect(() => {
+        setLoading(true);
         const reverseId = `${currentUser?.uid}-${id}`;
         const chatDocRef = db.collection('chats').doc(groupId || reverseId);
 
@@ -118,6 +121,8 @@ const DialogScreen = () => {
 
                 setMessages(filteredMessages);
             } else {
+                setLoading(true);
+
                 console.log('Document does not exist with groupId. Trying reverseId...');
                 const reverseDocRef = db.collection('chats').doc(reverseId);
 
@@ -140,23 +145,28 @@ const DialogScreen = () => {
                             .sort((a, b) => b.createdAt - a.createdAt);
 
                         setMessages(filteredMessages);
+                        setLoading(false);
                     } else {
                         console.log('Neither document exists.');
                         setMessages([]);
+                        setLoading(false);
                     }
                 }, (error) => {
                     console.error('Error fetching document with reverseId in real-time:', error);
+                    setLoading(false);
                 });
             }
         };
 
         chatDocRef.onSnapshot(handleDocument, (error) => {
             console.error('Error fetching document with groupId or reverseId in real-time:', error);
+            setLoading(false);
         });
         return () => setMessages(null)
     }, [id, currentUser?.uid, groupId]);
 
-    const onSend = useCallback((messages = []) => {
+    const onSend = useCallback(async (messages = []) => {
+        console.log('messagesmessagesmessagesmessagesmessagesmessages', messages)
         const groupId = `${id}-${currentUser?.uid}`;
         const reverseId = `${currentUser?.uid}-${id}`;
         const userId = currentUser?.uid;
@@ -169,8 +179,29 @@ const DialogScreen = () => {
             _id,
             user,
             text,
+            audio,
+            image,
             createdAt,
         } = messages[0];
+
+
+        let imgs = [];
+        let audios = [];
+
+        if (image || audio) {
+            console.log('blablaanala', image, audio)
+            // try {
+                const uploadResults = await uploadFiles(); 
+
+                imgs = uploadResults.filter(result => result.mimetype.startsWith('image')).map(result => result.publicUrl);
+                audios = uploadResults.filter(result => result.mimetype.startsWith('audio')).map(result => result.publicUrl);
+
+                console.log('urlllllllllll', imgs, audios)
+                
+            // } catch (error) {
+            //     console.error('Error uploading files:', error);
+            // }
+        }
 
         const chatDocRef = db.collection('chats').doc(groupId);
 
@@ -183,8 +214,10 @@ const DialogScreen = () => {
                     chatDocRef.update({
                         messages: firebase.firestore.FieldValue.arrayUnion({
                             _id,
-                            text,
+                            ...(text && { text }),
                             user,
+                            // ...(audio && {audio}),
+                            // ...(image && {image}),
                             createdAt,
                             groupId,
                             senderId,
@@ -206,13 +239,26 @@ const DialogScreen = () => {
                             if (reverseDocSnapshot.exists) {
                                 // If reverseId document exists, update it
                                 // console.log('Document with reverseId exists:', reverseDocSnapshot.data());
+                                console.log({
+                                    _id,
+                                    ...(text && {text}),
+                                    user,
+                                    createdAt,
+                                    // ...(image && {image}),
+                                    // ...(audio && { audio }),
+                                    groupId,
+                                    senderId,
+                                    receiverId,
+                                }, 7777);
 
                                 reverseDocRef.update({
                                     messages: firebase.firestore.FieldValue.arrayUnion({
                                         _id,
-                                        text,
+                                        ...(text && { text }),
+
                                         user,
                                         createdAt,
+                                        // ...(audio && { audio }),
                                         groupId,
                                         senderId,
                                         receiverId,
@@ -226,13 +272,30 @@ const DialogScreen = () => {
                             } else {
                                 // If neither document exists, create reverseId document
                                 console.log('Neither document exists. Creating document with reverseId:', reverseId);
+                                console.log({
+                                    messages: [{
+                                        _id,
+                                        ...(text && { text }),
+                                    // ...(image && {image}),
+
+                                        user,
+                                        createdAt,
+                                        // ...(audio && { audio }),
+
+                                        groupId,
+                                        senderId,
+                                        receiverId,
+                                    }]
+                                }, 9000);
 
                                 reverseDocRef.set({
                                     messages: [{
                                         _id,
-                                        text,
+                                        ...(text && { text }),
                                         user,
                                         createdAt,
+                                        // ...(audio && { audio }),
+                                    // ...(image && {image}),
                                         groupId,
                                         senderId,
                                         receiverId,
@@ -266,34 +329,34 @@ const DialogScreen = () => {
 
 
     const renderMessageImage = props => {
-        const {currentMessage} = props;
+        const { currentMessage } = props;
         return !currentMessage.file ? (
-          <>
-            <MessageImage
-              {...props}
-              imageStyle={{width: 74, height: 74, resizeMode: 'cover'}}
-            />
-            <View style={styles.imageInfo}>
-              <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-              <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-              <Text style={styles.time}>{currentMessage.time}</Text>
-            </View>
-          </>
+            <>
+                <MessageImage
+                    {...props}
+                    imageStyle={{ width: 74, height: 74, resizeMode: 'cover' }}
+                />
+                <View style={styles.imageInfo}>
+                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+                    <Text style={styles.time}>{currentMessage.time}</Text>
+                </View>
+            </>
         ) : (
-          <RN.Pressable
-            onPress={() => FileViewer.open(currentMessage.image)}
-            style={styles.fileBox}>
-            <RN.View style={styles.fileBoxFile}>
-              <Images.Svg.fileIcon />
-            </RN.View>
-            <View style={styles.imageInfo}>
-              <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-              <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-              <Text style={styles.time}>{currentMessage.time}</Text>
-            </View>
-          </RN.Pressable>
+            <RN.Pressable
+                onPress={() => FileViewer.open(currentMessage.image)}
+                style={styles.fileBox}>
+                <RN.View style={styles.fileBoxFile}>
+                    <Images.Svg.fileIcon />
+                </RN.View>
+                <View style={styles.imageInfo}>
+                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+                    <Text style={styles.time}>{currentMessage.time}</Text>
+                </View>
+            </RN.Pressable>
         );
-      };
+    };
 
     // const renderMessageImage = (props) => {
     //     const { currentMessage } = props;
@@ -352,26 +415,32 @@ const DialogScreen = () => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <KeyboardAvoidingView
                     style={styles.container}
-                    behavior={Platform.OS === 'ios' ? 'padding' : null}
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                 >
+
                     <RN.View style={styles.container}>
-                        <GiftedChat
-                            renderMessageImage={renderMessageImage}
-                            messages={messages}
-                            renderMessage={(props) => <CustomMessage {...props} />}
-                            onSend={messages => onSend(messages)}
-                            user={{
-                                _id: auth().currentUser.email,
-                                name: auth().currentUser.displayName,
-                                avatar: auth().currentUser.photoURL
-                            }}
-                            renderInputToolbar={(props) => (
-                                <CustomActions {...props} />
-                            )}
-                            renderMessageAudio={props => <AudioPlayer {...props}/>}
-                            renderMessageVideo={props => <VideoPlayer {...props} />}
-                        />
+                        {loading ? ( // Display loading indicator when loading is true
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <ActivityIndicator size="large" color={COLORS.white} />
+                            </View>) :
+                            (<GiftedChat
+                                renderMessageImage={renderMessageImage}
+                                messages={messages}
+                                renderMessage={(props) => <CustomMessage {...props} />}
+                                onSend={messages => onSend(messages)}
+                                user={{
+                                    _id: auth().currentUser.email,
+                                    name: auth().currentUser.displayName,
+                                    avatar: auth().currentUser.photoURL
+                                }}
+                                renderInputToolbar={(props) => (
+                                    <CustomActions {...props} />
+                                )}
+                                renderMessageAudio={props => <AudioPlayer {...props} />}
+                                renderMessageVideo={props => <VideoPlayer {...props} />}
+                            />)
+                        }
                     </RN.View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
@@ -386,10 +455,9 @@ export default observer(DialogScreen);
 const styles = RN.StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 30,
+        paddingBottom: Platform.OS === 'ios' ? 30 : 10,
         width: '100%',
         height: '100%',
-        // paddingHorizontal: 5,
         backgroundColor: 'black',
     },
     audioContainer: {
@@ -463,14 +531,14 @@ const styles = RN.StyleSheet.create({
     fileBox: {
         flexDirection: 'row',
         width: windowWidth - 200,
-      },
-      fileBoxFile: {
+    },
+    fileBoxFile: {
         width: 80,
         height: 80,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.darkGrey,
         borderRadius: 5,
-      },
+    },
 
 });

@@ -76,7 +76,7 @@ const SignInScreen = () => {
     return () => unsubscribe();
   }, []);
 
-  console.log('usersusersusers:', users);
+  // console.log('usersusersusers:', users);
 
   const navigation = useNavigation();
   const [remember, setRemember] = useState(false);

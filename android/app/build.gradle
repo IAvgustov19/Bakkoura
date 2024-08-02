@@ -125,8 +125,8 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     // implementation("com.google.android.gms:play-services-auth:20.0.0")
-     implementation platform('com.google.firebase:firebase-bom:32.1.1') 
-     implementation 'com.google.firebase:firebase-messaging'
+    implementation platform('com.google.firebase:firebase-bom:32.1.1') 
+    implementation 'com.google.firebase:firebase-messaging'
 
     // implementation platform('com.google.firebase:firebase-bom:30.10.1')
     implementation ('com.google.firebase:firebase-auth')
@@ -135,6 +135,7 @@ dependencies {
     implementation ('com.google.firebase:firebase-analytics:17.3.0')
     implementation project(':react-native-push-notification')
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
+    implementation "androidx.work:work-runtime:2.8.1" // Check for the latest version
 
 
 

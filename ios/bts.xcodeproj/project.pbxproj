@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		21BD01747518C12786E20B0A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 93ED3B351DF772826024F34B /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A1DD17D9211BDE376C33E9AC /* Pods_bts_btsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88EE844CCE282D5ED536DBF4 /* Pods_bts_btsTests.framework */; };
 		B53713AFE8BC9DF00FF557FC /* Pods_bts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79613DBE6480F53ECD19AF8 /* Pods_bts.framework */; };
@@ -50,6 +51,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bts/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		864AB54CA7FB302D528955A0 /* Pods-bts-btsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts-btsTests.release.xcconfig"; path = "Target Support Files/Pods-bts-btsTests/Pods-bts-btsTests.release.xcconfig"; sourceTree = "<group>"; };
 		88EE844CCE282D5ED536DBF4 /* Pods_bts_btsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bts_btsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93ED3B351DF772826024F34B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = bts/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C79613DBE6480F53ECD19AF8 /* Pods_bts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCE784D62C22B85000FCBA65 /* ringtone2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ringtone2.wav; path = ../src/assets/sounds/ringtone2.wav; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				93ED3B351DF772826024F34B /* PrivacyInfo.xcprivacy */,
 			);
 			name = bts;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				DC7F68E02BF7279B0030D166 /* GoogleService-Info.plist in Resources */,
+				21BD01747518C12786E20B0A /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,10 +647,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -726,10 +727,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

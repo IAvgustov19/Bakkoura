@@ -9,9 +9,16 @@ import {
 import {NewEventStateType} from '../types/calendar';
 import {SelectedCountriesType} from '../types/worldTime';
 import {AlarmListsItemType} from '../types/alarm';
+import { query, orderBy, limit } from "firebase/firestore"; 
+import { v4 as uuidv4 } from 'uuid';
+import RNFS from 'react-native-fs';
 
 import auth from '@react-native-firebase/auth';
 import {UserType} from '../types/user';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Platform } from 'react-native';
+import storage from '@react-native-firebase/storage';
+import RNFetchBlob from 'rn-fetch-blob';
 
 // calendar events
 export const addEventToFirestore = async event => {
@@ -890,9 +897,42 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
 };
 
 // users
-export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]> => {
+// export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]> => {
+//   try {
+//     const usersSnapshot = await db.collection('users').where('id', '!=', uid).get();
+//     const usersData: UserType[] = [];
+
+//     usersSnapshot.forEach(doc => {
+//       const userData = doc.data() as UserType;
+//       usersData.push(userData);
+//     });
+
+//     return usersData;
+//   } catch (error) {
+//     console.error('Error', error);
+//     return [];
+//   }
+// };
+
+export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string): Promise<UserType[]> => {
   try {
-    const usersSnapshot = await db.collection('users').where('id', '!=', uid).get();
+    let query = db.collection('users')
+      .where('id', '!=', uid)
+      .orderBy('id')
+      .limit(6);
+
+    if (lastDocId) {
+      const lastDoc = await db.collection('users').doc(lastDocId).get();
+      if (lastDoc.exists) {
+        query = query.startAfter(lastDoc);
+      } else {
+        console.warn(`Document with id ${lastDocId} does not exist.`);
+        return []; // Optionally return an empty array if the lastDocId does not exist
+      }
+    }
+
+    const usersSnapshot = await query.get();
+
     const usersData: UserType[] = [];
 
     usersSnapshot.forEach(doc => {
@@ -902,22 +942,176 @@ export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]
 
     return usersData;
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error fetching users from Firestore', error);
     return [];
   }
 };
 
-// export const syncUsersToRealtimeDB = async () => {
+
+// export const uploadFiles = async (): Promise<{ publicUrl: string; mimetype: string }[]> => {
 //   try {
-//     const usersData = await getAlarmsFromFirestore();
-//     const realtimeDBRef = firebase.database().ref('users');
+//       const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 });
+      
+//       if (result.didCancel || !result.assets) {
+//           throw new Error('User cancelled image picker');
+//       }
+//       const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-//     usersData.forEach(user => {
-//       realtimeDBRef.child(user.id).set(user);
-//     });
+//       const uploadPromises: Promise<{ publicUrl: string; mimetype: string }>[] = [];
 
-//     console.log('Users synchronized to Realtime Database successfully!');
+//       for (const asset of result.assets) {
+//           const filePath = `uploads/${asset.fileName}`;
+//           const uploadUri = Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri;
+
+//           const uploadPromise = storage()
+//               .ref(filePath)
+//               .putFile(uploadUri, {
+//                   contentType: asset.type,
+//                   customMetadata: {
+//                       firebaseStorageDownloadTokens: uuid,
+//                   }
+//               })
+//               .then(async () => {
+//                   const url = await storage().ref(filePath).getDownloadURL();
+//                   return { publicUrl: url, mimetype: asset.type };
+//               });
+
+//           uploadPromises.push(uploadPromise);
+//       }
+
+//       // Wait for all files to be uploaded
+//       const publicUrls = await Promise.all(uploadPromises);
+
+//       return publicUrls;
 //   } catch (error) {
-//     console.error('Error synchronizing users to Realtime Database:', error);
+//       console.error('Error uploading files:', error);
+//       throw error;
+//   }
+// };
+
+export const uploadFiles = async (): Promise<{ publicUrl: string; mimetype: string }[]> => {
+  try {
+      // Ensure 'uploads' folder exists by uploading a placeholder file
+
+
+      
+      const localImagePath = 'file:///data/user/0/com.bts/cache/rn_image_picker_lib_temp_af3e233f-efd5-4fab-bee5-08b86c94ba7f.png';
+      const storagePath = 'uploads/image.png';
+      await storage().ref(storagePath).putFile(localImagePath);
+      const placeholderPath = 'uploads/.justik';
+      const placeholderContent = 'This is a placeholder file to ensure the uploads folder exists.';
+      await storage().ref(placeholderPath).putString(placeholderContent, 'raw', {
+          contentType: 'text/plain',
+      });
+
+      const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 });
+      
+      if (result.didCancel || !result.assets) {
+          throw new Error('User cancelled image picker');
+      }
+      const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+      const uploadPromises: Promise<{ publicUrl: string; mimetype: string }>[] = [];
+
+      for (const asset of result.assets) {
+          const filePath = `uploads/${asset.fileName}`;
+          const uploadUri = Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri;
+
+          const uploadPromise = storage()
+              .ref(filePath)
+              .putFile(uploadUri, {
+                  contentType: asset.type,
+                  customMetadata: {
+                      firebaseStorageDownloadTokens: uuid,
+                  }
+              })
+              .then(async () => {
+                  const url = await storage().ref(filePath).getDownloadURL();
+                  return { publicUrl: url, mimetype: asset.type };
+              });
+
+          uploadPromises.push(uploadPromise);
+      }
+
+      // Wait for all files to be uploaded
+      const publicUrls = await Promise.all(uploadPromises);
+
+
+      console.log('publicUrlspublicUrls', uploadPromises);
+
+      return publicUrls;
+  } catch (error) {
+      console.error('Error uploading files:', error);
+      throw error;
+  }
+};
+
+
+// export const uploadFiles = async (): Promise<{ publicUrl: string; mimetype: string }[]> => {
+//   try {
+//       // Check if 'uploads' folder exists
+//       try {
+//           await storage().ref('uploads').listAll();
+//       } catch (error) {
+//           // If error occurs, assume folder doesn't exist and create a placeholder file
+//           const placeholderPath = 'uploads/.justik';
+//           const placeholderContent = 'This is a placeholder file to ensure the uploads folder exists.';
+//           await storage().ref(placeholderPath).putString(placeholderContent, 'raw', {
+//               contentType: 'text/plain',
+//           });
+//       }
+
+//       // Launch image library to pick files (images and audios)
+//       const result = await launchImageLibrary({ mediaType: 'mixed', selectionLimit: 0 });
+
+//       if (result.didCancel || !result.assets) {
+//           throw new Error('User cancelled image picker');
+//       }
+//       const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+//       const uploadPromises: Promise<{ publicUrl: string; mimetype: string }>[] = [];
+
+//       for (const asset of result.assets) {
+//         console.log('assetassetassetasset', asset);
+//             console.log('MIME Type:', asset.type); // L
+//           const filePath = `uploads/${uuid}_${asset.fileName || `file_${Date.now()}`}`;
+//           const uploadUri = Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri;
+
+//           console.log('uploadUriuploadUriuploadUriuploadUriuploadUri', uploadUri);
+
+
+//           const fileExists = await RNFS.stat(uploadUri);
+//           if (!fileExists) {
+//             throw new Error(`File does not exist at ${uploadUri}`);
+//           }else {
+//             console.log('goooooood');
+            
+//           }
+
+//           console.log('filePathfilePathfilePathfilePath', filePath)
+
+//           const uploadPromise = storage()
+//               .ref(filePath)
+//               .putFile(uploadUri, {
+//                   contentType: asset.type,
+//                   customMetadata: {
+//                       firebaseStorageDownloadTokens: uuid,
+//                   }
+//               })
+//               .then(async () => {
+//                   const url = await storage().ref(filePath).getDownloadURL();
+//                   return { publicUrl: url, mimetype: asset.type || 'unknown' };
+//               });
+
+//           uploadPromises.push(uploadPromise);
+//       }
+
+//       // Wait for all files to be uploaded
+//       const publicUrls = await Promise.all(uploadPromises);
+
+//       return publicUrls;
+//   } catch (error) {
+//       console.error('Error uploading files:', error);
+//       throw error;
 //   }
 // };

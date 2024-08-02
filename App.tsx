@@ -141,7 +141,22 @@ const App = () => {
   // useEffect(() => {
   //   syncUsersToFirestore();
   // }, [])
+
+
+
+
+const { ForegroundService } = NativeModules;
   
+
+const startService = () => {
+  ForegroundService.startService();
+};
+
+
+useEffect(() => {
+  console.log('ForegroundService', ForegroundService)
+}, [])
+
 
   useEffect(() => {
     const permission = async () => {
