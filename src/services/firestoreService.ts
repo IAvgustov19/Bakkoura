@@ -895,25 +895,6 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
     console.error('Error deleting project timer:', error);
   }
 };
-
-// users
-// export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]> => {
-//   try {
-//     const usersSnapshot = await db.collection('users').where('id', '!=', uid).get();
-//     const usersData: UserType[] = [];
-
-//     usersSnapshot.forEach(doc => {
-//       const userData = doc.data() as UserType;
-//       usersData.push(userData);
-//     });
-
-//     return usersData;
-//   } catch (error) {
-//     console.error('Error', error);
-//     return [];
-//   }
-// };
-
 export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string): Promise<UserType[]> => {
   try {
     let query = db.collection('users')
@@ -947,171 +928,14 @@ export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string):
   }
 };
 
-
-// export const uploadFiles = async (): Promise<{ publicUrl: string; mimetype: string }[]> => {
-//   try {
-//       const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 });
-      
-//       if (result.didCancel || !result.assets) {
-//           throw new Error('User cancelled image picker');
-//       }
-//       const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-//       const uploadPromises: Promise<{ publicUrl: string; mimetype: string }>[] = [];
-
-//       for (const asset of result.assets) {
-//           const filePath = `uploads/${asset.fileName}`;
-//           const uploadUri = Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri;
-
-//           const uploadPromise = storage()
-//               .ref(filePath)
-//               .putFile(uploadUri, {
-//                   contentType: asset.type,
-//                   customMetadata: {
-//                       firebaseStorageDownloadTokens: uuid,
-//                   }
-//               })
-//               .then(async () => {
-//                   const url = await storage().ref(filePath).getDownloadURL();
-//                   return { publicUrl: url, mimetype: asset.type };
-//               });
-
-//           uploadPromises.push(uploadPromise);
-//       }
-
-//       // Wait for all files to be uploaded
-//       const publicUrls = await Promise.all(uploadPromises);
-
-//       return publicUrls;
-//   } catch (error) {
-//       console.error('Error uploading files:', error);
-//       throw error;
-//   }
-// };
-
-export const uploadFiles = async (): Promise<{ publicUrl: string; mimetype: string }[]> => {
+export const uploadAudioToStorage = async (uri, path) => {
   try {
-      // Ensure 'uploads' folder exists by uploading a placeholder file
-
-
-      
-      const localImagePath = 'file:///data/user/0/com.bts/cache/rn_image_picker_lib_temp_af3e233f-efd5-4fab-bee5-08b86c94ba7f.png';
-      const storagePath = 'uploads/image.png';
-      await storage().ref(storagePath).putFile(localImagePath);
-      const placeholderPath = 'uploads/.justik';
-      const placeholderContent = 'This is a placeholder file to ensure the uploads folder exists.';
-      await storage().ref(placeholderPath).putString(placeholderContent, 'raw', {
-          contentType: 'text/plain',
-      });
-
-      const result = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 });
-      
-      if (result.didCancel || !result.assets) {
-          throw new Error('User cancelled image picker');
-      }
-      const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-      const uploadPromises: Promise<{ publicUrl: string; mimetype: string }>[] = [];
-
-      for (const asset of result.assets) {
-          const filePath = `uploads/${asset.fileName}`;
-          const uploadUri = Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri;
-
-          const uploadPromise = storage()
-              .ref(filePath)
-              .putFile(uploadUri, {
-                  contentType: asset.type,
-                  customMetadata: {
-                      firebaseStorageDownloadTokens: uuid,
-                  }
-              })
-              .then(async () => {
-                  const url = await storage().ref(filePath).getDownloadURL();
-                  return { publicUrl: url, mimetype: asset.type };
-              });
-
-          uploadPromises.push(uploadPromise);
-      }
-
-      // Wait for all files to be uploaded
-      const publicUrls = await Promise.all(uploadPromises);
-
-
-      console.log('publicUrlspublicUrls', uploadPromises);
-
-      return publicUrls;
+      const reference = storage().ref(path);
+      await reference.putFile(uri);
+      const url = await reference.getDownloadURL();
+      return url;
   } catch (error) {
-      console.error('Error uploading files:', error);
+      console.error('Error uploading file:', error);
       throw error;
   }
 };
-
-
-// export const uploadFiles = async (): Promise<{ publicUrl: string; mimetype: string }[]> => {
-//   try {
-//       // Check if 'uploads' folder exists
-//       try {
-//           await storage().ref('uploads').listAll();
-//       } catch (error) {
-//           // If error occurs, assume folder doesn't exist and create a placeholder file
-//           const placeholderPath = 'uploads/.justik';
-//           const placeholderContent = 'This is a placeholder file to ensure the uploads folder exists.';
-//           await storage().ref(placeholderPath).putString(placeholderContent, 'raw', {
-//               contentType: 'text/plain',
-//           });
-//       }
-
-//       // Launch image library to pick files (images and audios)
-//       const result = await launchImageLibrary({ mediaType: 'mixed', selectionLimit: 0 });
-
-//       if (result.didCancel || !result.assets) {
-//           throw new Error('User cancelled image picker');
-//       }
-//       const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-//       const uploadPromises: Promise<{ publicUrl: string; mimetype: string }>[] = [];
-
-//       for (const asset of result.assets) {
-//         console.log('assetassetassetasset', asset);
-//             console.log('MIME Type:', asset.type); // L
-//           const filePath = `uploads/${uuid}_${asset.fileName || `file_${Date.now()}`}`;
-//           const uploadUri = Platform.OS === 'ios' ? asset.uri.replace('file://', '') : asset.uri;
-
-//           console.log('uploadUriuploadUriuploadUriuploadUriuploadUri', uploadUri);
-
-
-//           const fileExists = await RNFS.stat(uploadUri);
-//           if (!fileExists) {
-//             throw new Error(`File does not exist at ${uploadUri}`);
-//           }else {
-//             console.log('goooooood');
-            
-//           }
-
-//           console.log('filePathfilePathfilePathfilePath', filePath)
-
-//           const uploadPromise = storage()
-//               .ref(filePath)
-//               .putFile(uploadUri, {
-//                   contentType: asset.type,
-//                   customMetadata: {
-//                       firebaseStorageDownloadTokens: uuid,
-//                   }
-//               })
-//               .then(async () => {
-//                   const url = await storage().ref(filePath).getDownloadURL();
-//                   return { publicUrl: url, mimetype: asset.type || 'unknown' };
-//               });
-
-//           uploadPromises.push(uploadPromise);
-//       }
-
-//       // Wait for all files to be uploaded
-//       const publicUrls = await Promise.all(uploadPromises);
-
-//       return publicUrls;
-//   } catch (error) {
-//       console.error('Error uploading files:', error);
-//       throw error;
-//   }
-// };

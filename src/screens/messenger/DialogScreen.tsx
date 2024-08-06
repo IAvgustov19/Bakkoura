@@ -7,7 +7,6 @@ import { RootStackParamList } from '../../types/navigation';
 import { APP_ROUTES } from '../../navigation/routes';
 import { observer } from 'mobx-react-lite';
 import { KeyboardAvoidingView } from '../../components/KeyboardAvoidingView';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import { Images } from '../../assets';
 import CustomActions from './components/CustomActions';
 import AudioPlayer from './components/AudioPlayer';
@@ -25,10 +24,9 @@ import FileViewer from 'react-native-file-viewer';
 import { windowWidth } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
 import VideoPlayer from './components/VideoPlayer';
-import { uploadFiles } from '../../services/firestoreService';
+import { uploadAudioToStorage } from '../../services/firestoreService';
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
-const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const DialogScreen = () => {
     const route = useRoute<DialogScreenRouteProp>();
@@ -37,14 +35,12 @@ const DialogScreen = () => {
     const currentUser = auth().currentUser;
     const groupId = `${id}-${currentUser?.uid}`;
     const [messages, setMessages] = useState([]);
-    const [recording, setRecording] = useState(false);
-    const [audioPath, setAudioPath] = useState('');
     const [lastSeen, setLastSeen] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!id) {
-            navigation.goBack();
+            navigation.navigate(APP_ROUTES.MESSENGER as never);
             return;
         }
 
@@ -94,10 +90,6 @@ const DialogScreen = () => {
     }, [id]);
 
 
-    useEffect(() => {
-        console.log('lastSeenlastSeen', lastSeen)
-    }, [])
-
     useLayoutEffect(() => {
         setLoading(true);
         const reverseId = `${currentUser?.uid}-${id}`;
@@ -113,7 +105,9 @@ const DialogScreen = () => {
                         user: message.user,
                         text: message.text,
                         id: message.id,
+                        maindis: message.maindis,
                         groupId: message.groupId,
+                        audio: message.audio ? message.audio : null,
                         createdAt: message.createdAt.toDate(),
                     }))
                     .filter(item => item.groupId.includes(currentUser?.uid) && item.groupId.includes(id))
@@ -122,14 +116,11 @@ const DialogScreen = () => {
                 setMessages(filteredMessages);
             } else {
                 setLoading(true);
-
-                console.log('Document does not exist with groupId. Trying reverseId...');
                 const reverseDocRef = db.collection('chats').doc(reverseId);
 
                 // Listen for real-time updates using onSnapshot for reverseId
                 reverseDocRef.onSnapshot((reverseDocSnapshot) => {
                     if (reverseDocSnapshot.exists) {
-                        // console.log('Document with reverseId exists:', reverseDocSnapshot.data());
                         // Process reverseId document here
                         const messagesArray = reverseDocSnapshot.data().messages || [];
                         const filteredMessages = messagesArray
@@ -137,7 +128,9 @@ const DialogScreen = () => {
                                 _id: index,
                                 user: message.user,
                                 text: message.text,
+                                maindis: message.maindis,
                                 id: message.id,
+                                audio: message.audio ? message.audio : null,
                                 groupId: message.groupId,
                                 createdAt: message.createdAt.toDate(),
                             }))
@@ -166,10 +159,8 @@ const DialogScreen = () => {
     }, [id, currentUser?.uid, groupId]);
 
     const onSend = useCallback(async (messages = []) => {
-        console.log('messagesmessagesmessagesmessagesmessagesmessages', messages)
         const groupId = `${id}-${currentUser?.uid}`;
         const reverseId = `${currentUser?.uid}-${id}`;
-        const userId = currentUser?.uid;
         const senderId = currentUser?.uid;
         const receiverId = id;
 
@@ -180,27 +171,21 @@ const DialogScreen = () => {
             user,
             text,
             audio,
-            image,
+            maindis,
+            // image,
             createdAt,
         } = messages[0];
 
 
-        let imgs = [];
-        let audios = [];
-
-        if (image || audio) {
-            console.log('blablaanala', image, audio)
-            // try {
-                const uploadResults = await uploadFiles(); 
-
-                imgs = uploadResults.filter(result => result.mimetype.startsWith('image')).map(result => result.publicUrl);
-                audios = uploadResults.filter(result => result.mimetype.startsWith('audio')).map(result => result.publicUrl);
-
-                console.log('urlllllllllll', imgs, audios)
-                
-            // } catch (error) {
-            //     console.error('Error uploading files:', error);
-            // }
+        let audioUrl = null;
+        if (audio) {
+            const audioFilePath = `audios/${Date.now()}.mp4`;
+            try {
+                audioUrl = await uploadAudioToStorage(audio, audioFilePath);
+            } catch (error) {
+                console.error('Error uploading audio file:', error);
+                return;
+            }
         }
 
         const chatDocRef = db.collection('chats').doc(groupId);
@@ -208,17 +193,14 @@ const DialogScreen = () => {
         chatDocRef.get()
             .then((docSnapshot) => {
                 if (docSnapshot.exists) {
-                    // If groupId document exists, update it
-                    console.log('Document exists with groupId:', docSnapshot.data());
-
                     chatDocRef.update({
                         messages: firebase.firestore.FieldValue.arrayUnion({
                             _id,
                             ...(text && { text }),
                             user,
-                            // ...(audio && {audio}),
-                            // ...(image && {image}),
+                            ...(audioUrl && { audio: audioUrl }),
                             createdAt,
+                            maindis,
                             groupId,
                             senderId,
                             receiverId,
@@ -241,13 +223,13 @@ const DialogScreen = () => {
                                 // console.log('Document with reverseId exists:', reverseDocSnapshot.data());
                                 console.log({
                                     _id,
-                                    ...(text && {text}),
+                                    ...(text && { text }),
                                     user,
                                     createdAt,
-                                    // ...(image && {image}),
-                                    // ...(audio && { audio }),
+                                    ...(audioUrl && { audio: audioUrl }),
                                     groupId,
                                     senderId,
+                                    maindis,
                                     receiverId,
                                 }, 7777);
 
@@ -255,11 +237,11 @@ const DialogScreen = () => {
                                     messages: firebase.firestore.FieldValue.arrayUnion({
                                         _id,
                                         ...(text && { text }),
-
                                         user,
                                         createdAt,
-                                        // ...(audio && { audio }),
+                                        ...(audioUrl && { audio: audioUrl }),
                                         groupId,
+                                        maindis,
                                         senderId,
                                         receiverId,
                                     })
@@ -276,12 +258,10 @@ const DialogScreen = () => {
                                     messages: [{
                                         _id,
                                         ...(text && { text }),
-                                    // ...(image && {image}),
-
                                         user,
+                                        maindis,
                                         createdAt,
-                                        // ...(audio && { audio }),
-
+                                        ...(audioUrl && { audio: audioUrl }),
                                         groupId,
                                         senderId,
                                         receiverId,
@@ -293,9 +273,9 @@ const DialogScreen = () => {
                                         _id,
                                         ...(text && { text }),
                                         user,
+                                        maindis,
                                         createdAt,
-                                        // ...(audio && { audio }),
-                                    // ...(image && {image}),
+                                        ...(audioUrl && { audio: audioUrl }),
                                         groupId,
                                         senderId,
                                         receiverId,
@@ -317,15 +297,6 @@ const DialogScreen = () => {
             });
 
     }, [id, currentUser]);
-
-
-    const renderMessageAudio = ({ currentMessage }) => {
-        return (
-            <View style={styles.audioContainer}>
-                <AudioPlayer audioPath={currentMessage.audio} />
-            </View>
-        );
-    };
 
 
     const renderMessageImage = props => {
@@ -358,34 +329,10 @@ const DialogScreen = () => {
         );
     };
 
-    // const renderMessageImage = (props) => {
-    //     const { currentMessage } = props;
-    //     return (
-    //         // <View style={styles.messageImageContainer}>
-    //         <>
-    //             <MessageImage
-    //                 {...props}
-    //                 // containerStyle={styles.messageImageContainer}
-    //                 imageStyle={{
-    //                     width: 74,
-    //                     height: 74,
-    //                     resizeMode: 'cover'
-    //                 }}
-    //             />
-    //             <View style={styles.imageInfo}>
-    //                 <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-    //                 <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-    //                 <Text style={styles.time}>{currentMessage.time}</Text>
-    //             </View>
-    //         </>
-    //         // </View>
-    //     )
-    // }
-
     return (
         <PlatfromView>
             <LinearGradient
-                style={{ height: '13%', top: 0, paddingHorizontal: 10, paddingVertical: 15 }}
+                style={{ height: '15%', top: 0, paddingHorizontal: 10, paddingVertical: 30 }}
                 colors={['#323D45', '#1B2024']}
             >
                 <HeaderContent
@@ -431,7 +378,7 @@ const DialogScreen = () => {
                                 onSend={messages => onSend(messages)}
                                 user={{
                                     _id: auth().currentUser.email,
-                                    name: auth().currentUser.displayName,
+                                    name: '',
                                     avatar: auth().currentUser.photoURL
                                 }}
                                 renderInputToolbar={(props) => (
@@ -469,10 +416,6 @@ const styles = RN.StyleSheet.create({
         borderRadius: 20,
         marginBottom: 10,
     },
-    userInfo: {
-
-    },
-
     imageContainer: {
         position: 'relative',
         alignItems: 'center',
@@ -497,20 +440,6 @@ const styles = RN.StyleSheet.create({
         color: '#979DA2',
         textAlign: 'center',
         fontFamily: 'RedHatDisplay-Bold',
-    },
-    messageImageContainer: {
-        // flexDirection: 'row',
-        alignItems: 'center',
-        // justifyContent: 'space-between',
-        padding: 10,
-        backgroundColor: 'red',
-        borderRadius: 10,
-        marginBottom: 10,
-    },
-    image: {
-        // width: 74,
-        // height: 74,
-        borderRadius: 5,
     },
     imageInfo: {
         marginLeft: 10,
@@ -540,5 +469,4 @@ const styles = RN.StyleSheet.create({
         backgroundColor: COLORS.darkGrey,
         borderRadius: 5,
     },
-
 });
