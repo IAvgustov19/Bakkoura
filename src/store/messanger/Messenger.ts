@@ -17,6 +17,7 @@ export class MessengerStore {
 
     allUsers: UserType[] = [];
     loading: boolean = true;
+    searchedUsers: UserType[] = [];
     lastDocId: string | null = null;
 
 
@@ -46,19 +47,18 @@ export class MessengerStore {
   };
 
 
-    filterUsers =  (query: string) => {
-        runInAction(async () => {
-            if (!query) {
-                const uid = auth()?.currentUser?.uid;
-                this.allUsers = await getAllUsersFromFirestore(uid);
-            } else {
-                this.allUsers = this.allUsers.filter(user =>
-                    user.name.toLowerCase().includes(query.toLowerCase())
-                );
-            }
-        })
-    };
-
+    
+  filterUsers = (query: string) => {
+    runInAction(() => {
+        if (!query) {
+            this.searchedUsers = [];
+        } else {
+            this.searchedUsers = this.allUsers.filter(user =>
+                user.name.toLowerCase().includes(query.toLowerCase())
+            );
+        }
+    });
+};
 
     getAllUsersWithLastMessages = async () => {
         try {

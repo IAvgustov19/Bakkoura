@@ -48,6 +48,6 @@ export const scheduleNotifications = async (uid) => {
       console.log('User document does not exist');
     }
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    console.log('Error fetching user data:', error);
   }
 };

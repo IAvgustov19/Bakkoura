@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Pressable, Platform } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Pressable, Platform, Alert } from 'react-native';
 import { Composer } from 'react-native-gifted-chat';
 import { launchImageLibrary } from 'react-native-image-picker';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
@@ -18,7 +18,6 @@ import { Swipeable } from 'react-native-gesture-handler';
 import useRootStore from '../../../hooks/useRootStore';
 import { observer } from 'mobx-react-lite';
 import RNFS from 'react-native-fs';
-import { db } from '../../../config/firebase';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -27,6 +26,23 @@ const CustomComposer = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const { startRecordVideo, stopRecordVideo, maindis, startRecordAudio, stopRecordAudio } =
     useRootStore().stopWatchStore;
+
+    const [recording, setRecording] = useState(false);
+    const [audioRec, setAudioRec] = useState(false);
+    const isStopRefVideo = useRef(false);
+    const isStopRefAudio = useRef(false);
+    const camera = useRef<Camera>(null);
+    const swipeableRefVideo = useRef(null);
+    const [audioRecording, setAudioRecording] = useState(false);
+    const [audioPath, setAudioPath] = useState(null); 
+    const audioRecorder = useRef(null); 
+    const swipeableRefAudio = useRef(null); 
+    const sendingMessageRef = useRef(false);
+    const [isAudio, setIsAudio] = useState<boolean>(true);
+  
+    const [onPressCheck, setOnPresCheck] = useState<boolean>(false);
+    const [onPressCheck2, setOnPresCheck2] = useState<boolean>(false);
+  
 
   const handlePickImage = () => {
     launchImageLibrary(
@@ -129,38 +145,32 @@ const CustomComposer = props => {
     })();
   }, []);
 
-  const [recording, setRecording] = useState(false);
-  const [audioRec, setAudioRec] = useState(false);
-  const isStopRefVideo = useRef(false);
-  const isStopRefAudio = useRef(false);
-  const camera = useRef<Camera>(null);
-  const swipeableRefVideo = useRef(null);
-  const [audioRecording, setAudioRecording] = useState(false);
-  const [audioPath, setAudioPath] = useState(null); // State to store the recorded audio path
-  const audioRecorder = useRef(null); // Ref for AudioRecorderPlayer instance
-  const swipeableRefAudio = useRef(null); // Ref for Swipeable component
+  const toggleAudio = () => {
+    setIsAudio(prev => !prev);
+  }
 
 
   const handleSwipeableVideoOpen = () => {
+    if (recording) {
+      handleRecordVideo();
+    }
     isStopRefVideo.current = true;
-    console.log('handleSwipeableVideoOpen', isStopRefVideo.current);
 
     if (swipeableRefVideo.current && swipeableRefVideo.current.close) {
       swipeableRefVideo.current.close();
     }
   };
 
-  const handleSwipeableAudioOpen = () => {
-    if (audioRec) {
-      handleRecordAudio(); // Stop recording if it's currently recording
-    }
+  const handleSwipeableAudioOpen = useCallback(() => {
     isStopRefAudio.current = true;
-    console.log('handleSwipeableAudioOpen', isStopRefAudio.current);
+    if (audioRec && !recording) {
+      handleRecordAudio();
+    }
 
     if (swipeableRefAudio.current && swipeableRefAudio.current.close) {
       swipeableRefAudio.current.close();
     }
-  };
+  }, [audioRec, recording]);
 
 
   const handleRecordAudio = async () => {
@@ -173,7 +183,7 @@ const CustomComposer = props => {
 
         const path = Platform.select({
           ios: 'audio.m4a',
-          android: `${RNFS.DocumentDirectoryPath}/audio.mp4`,
+          android: `${RNFS.DocumentDirectoryPath}/audio.mp3`,
         });
 
         setAudioPath(path);
@@ -184,7 +194,6 @@ const CustomComposer = props => {
           setAudioRecording(true);
         });
       } else {
-        console.log('yessss')
         const result = await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setAudioRec(false);
@@ -203,6 +212,8 @@ const CustomComposer = props => {
         };
 
         onSend([newMessage]);
+        setAudioRecording(false);
+
       }
     } catch (error) {
       console.error('Recording error:', error);
@@ -290,31 +301,54 @@ const CustomComposer = props => {
               </Pressable>
             );
           }}
-          onSwipeableWillOpen={handleSwipeableVideoOpen}>
+          onSwipeableWillOpen={handleSwipeableVideoOpen}
+        >
           <Pressable
             style={[
               styles.videoRecord,
               {
-                width: recording ? 100 : 50,
+                width: recording ? 100 : 30,
                 bottom: recording ? 20 : 0,
               },
             ]}
-            onPressIn={handleRecordVideo}
-            onPressOut={handleRecordVideo}>
-            {!audioRec &&
-              <>
-                {recording ? (
-                  <Images.Svg.videoRecord width={80} height={80} />
-                ) : (
-                  <Images.Svg.videoMessage width={30} height={30} />
-                )}
-              </>
+
+            onPress={() => {
+              setOnPresCheck2(true);
+              toggleAudio()
+              console.log('1video')
             }
+            }
+            onLongPress={() => {
+              setOnPresCheck2(false)
+              if (!onPressCheck2) {
+                handleRecordVideo()
+                console.log('3video')
+              }
+
+            }
+            }
+            onPressOut={() => {
+              console.log(onPressCheck2, "ssvideo");
+
+              if (onPressCheck2) {
+                console.log('bavideo');
+
+              } else {
+                recording && !audioRec && handleRecordVideo();
+                console.log('4vidoe')
+              }
+            }}
+          >
+            {!audioRec && recording ? (
+              <Images.Svg.videoRecord width={80} height={80} />
+            ) : (
+              <Images.Svg.videoMessage width={30} height={30} />
+            )}
           </Pressable>
         </Swipeable>
       </>
     );
-  }, [recording, maindis]);
+  }, [recording, maindis, onPressCheck, onPressCheck2]);
 
   const renderCamera = useCallback(() => {
     return (
@@ -386,14 +420,38 @@ const CustomComposer = props => {
         >
           <Pressable
             style={[
-              styles.videoRecord,  // Changed from videoRecord to audioRecord
+              styles.videoRecord,
               {
-                width: audioRec ? 100 : 50,
+                width: audioRec ? 100 : 30,
                 bottom: audioRec ? 20 : 0,
               },
             ]}
-            onPressIn={handleRecordAudio}
-            onPressOut={handleRecordAudio}
+            onPress={() => {
+              setOnPresCheck(true);
+              toggleAudio()
+              console.log('1')
+            }
+            }
+            // onPressIn={() => console.log('2')}
+            onLongPress={() => {
+              setOnPresCheck(false)
+              if (!onPressCheck) {
+                handleRecordAudio()
+                console.log('3')
+              }
+            }
+            }
+            onPressOut={() => {
+              console.log(onPressCheck, "ss");
+
+              if (onPressCheck) {
+                console.log('ba');
+
+              } else {
+                !recording && audioRec && handleRecordAudio();
+                console.log('4')
+              }
+            }}
           >
             {
               audioRec ? (
@@ -408,13 +466,8 @@ const CustomComposer = props => {
         </Swipeable>
       </>
     );
-  }, [audioRec, maindis]);
+  }, [audioRec, maindis, onPressCheck, onPressCheck2]);
 
-
-  useEffect(() => {
-    console.log('audioRecaudioRec', audioRec);
-    console.log('recordingrecording', recording);
-  }, [audioRec, recording]);
 
   return (
     <>
@@ -467,10 +520,11 @@ const CustomComposer = props => {
           />
         </View>
         {text.trim() ?
-          <TouchableOpacity onPress={handleSendText} style={{ paddingTop: 15 }}>
-            <Images.Svg.sendMessage width={25} height={25} />
-          </TouchableOpacity> : renderRecordingAudio()}
-        {renderRecordingVideo()}
+          <TouchableOpacity onPress={handleSendText} style={{ paddingTop: 12 }}>
+            <Images.Svg.sendMessage width={30} height={30} />
+          </TouchableOpacity> :
+          isAudio ? renderRecordingAudio() : renderRecordingVideo()
+        }
       </View>
     </>
   );
@@ -496,7 +550,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    color: '#636366',
+    color: 'white',
     borderColor: '#3A3A3C',
     backgroundColor: '#060606',
     borderWidth: 1,
