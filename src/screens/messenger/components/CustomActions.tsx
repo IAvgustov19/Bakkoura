@@ -27,22 +27,22 @@ const CustomComposer = props => {
   const { startRecordVideo, stopRecordVideo, maindis, startRecordAudio, stopRecordAudio } =
     useRootStore().stopWatchStore;
 
-    const [recording, setRecording] = useState(false);
-    const [audioRec, setAudioRec] = useState(false);
-    const isStopRefVideo = useRef(false);
-    const isStopRefAudio = useRef(false);
-    const camera = useRef<Camera>(null);
-    const swipeableRefVideo = useRef(null);
-    const [audioRecording, setAudioRecording] = useState(false);
-    const [audioPath, setAudioPath] = useState(null); 
-    const audioRecorder = useRef(null); 
-    const swipeableRefAudio = useRef(null); 
-    const sendingMessageRef = useRef(false);
-    const [isAudio, setIsAudio] = useState<boolean>(true);
-  
-    const [onPressCheck, setOnPresCheck] = useState<boolean>(false);
-    const [onPressCheck2, setOnPresCheck2] = useState<boolean>(false);
-  
+  const [recording, setRecording] = useState(false);
+  const [audioRec, setAudioRec] = useState(false);
+  const isStopRefVideo = useRef(false);
+  const isStopRefAudio = useRef(false);
+  const camera = useRef<Camera>(null);
+  const swipeableRefVideo = useRef(null);
+  const [audioRecording, setAudioRecording] = useState(false);
+  const [audioPath, setAudioPath] = useState(null);
+  const audioRecorder = useRef(null);
+  const swipeableRefAudio = useRef(null);
+  const sendingMessageRef = useRef(false);
+  const [isAudio, setIsAudio] = useState<boolean>(true);
+
+  const [onPressCheck, setOnPresCheck] = useState<boolean>(false);
+  const [onPressCheck2, setOnPresCheck2] = useState<boolean>(false);
+
 
   const handlePickImage = () => {
     launchImageLibrary(
@@ -161,22 +161,33 @@ const CustomComposer = props => {
     }
   };
 
-  const handleSwipeableAudioOpen = useCallback(() => {
-    isStopRefAudio.current = true;
-    if (audioRec && !recording) {
+
+  // const [isRecordingCancelled, setIsRecordingCancelled] = useState(false);
+  const isRecordingCancelledRef = useRef(false);
+
+
+  const handleSwipeableAudioOpen = () => {
+    console.log('blablabla');
+
+    // setIsRecordingCancelled(true); 
+    isRecordingCancelledRef.current = true;
+
+    if (audioRec) {
       handleRecordAudio();
     }
+    isStopRefAudio.current = true;
 
     if (swipeableRefAudio.current && swipeableRefAudio.current.close) {
       swipeableRefAudio.current.close();
     }
-  }, [audioRec, recording]);
+  };
 
 
   const handleRecordAudio = async () => {
     try {
       if (!audioRec) {
-        console.log('noooooo')
+        // Start recording if not already recording
+        console.log('Starting recording');
         startRecordAudio();
         setAudioRec(true);
         setAudioRecording(true);
@@ -187,34 +198,50 @@ const CustomComposer = props => {
         });
 
         setAudioPath(path);
-
-        const uri = await audioRecorderPlayer.startRecorder(path);
+        await audioRecorderPlayer.startRecorder(path);
 
         audioRecorderPlayer.addRecordBackListener((e) => {
           setAudioRecording(true);
         });
       } else {
+        // Stop recording if already recording
         const result = await audioRecorderPlayer.stopRecorder();
         audioRecorderPlayer.removeRecordBackListener();
         setAudioRec(false);
         stopRecordAudio();
         setAudioRecording(false);
 
-        const newMessage = {
-          _id: Math.random().toString(36).substring(7),
-          createdAt: new Date(),
-          user: {
-            _id: 1,
-          },
-          audio: result,
-          fileName: result.substring(result.lastIndexOf('/') + 1),
-          maindis: maindis,
-        };
+        // Check if the file exists
+        const fileExists = await RNFS.exists(audioPath);
+        console.log('fileExistsfileExistsfileExistsfileExists', fileExists);
+        console.log('cancelledcancelledcancelled', isRecordingCancelledRef.current);
 
-        onSend([newMessage]);
-        setAudioRecording(false);
+
+        if (fileExists) {
+          if (!isRecordingCancelledRef.current) {
+            const newMessage = {
+              _id: Math.random().toString(36).substring(7),
+              createdAt: new Date(),
+              user: {
+                _id: 1, // Update with the actual user ID
+              },
+              audio: result,
+              fileName: result.substring(result.lastIndexOf('/') + 1),
+              maindis: maindis, // Ensure `maindis` is correctly set
+            };
+
+            onSend([newMessage]);
+          } else {
+            console.log('Recording was cancelled');
+            return;
+          }
+        } else {
+          console.error('File does not exist:', audioPath);
+          Alert.alert('Error', 'The audio file does not exist.');
+        }
 
       }
+      isRecordingCancelledRef.current = false;
     } catch (error) {
       console.error('Recording error:', error);
       setAudioRecording(false);
@@ -454,7 +481,7 @@ const CustomComposer = props => {
             }}
           >
             {
-              audioRec ? (
+              audioRec && !recording ? (
                 <RN.View style={styles.imageContainer}>
                   <Images.Svg.audioBackground width={90} height={90} />
                   <Images.Svg.audio style={styles.audioImg} />
@@ -467,6 +494,7 @@ const CustomComposer = props => {
       </>
     );
   }, [audioRec, maindis, onPressCheck, onPressCheck2]);
+
 
 
   return (
@@ -519,12 +547,17 @@ const CustomComposer = props => {
             composerHeight={composerHeight}
           />
         </View>
-        {text.trim() ?
+        {text.trim() ? (
           <TouchableOpacity onPress={handleSendText} style={{ paddingTop: 12 }}>
             <Images.Svg.sendMessage width={30} height={30} />
-          </TouchableOpacity> :
-          isAudio ? renderRecordingAudio() : renderRecordingVideo()
-        }
+          </TouchableOpacity>
+        ) : (
+          <>
+            {renderRecordingAudio()}
+            {!audioRec && renderRecordingVideo()}
+          </>
+        )}
+
       </View>
     </>
   );
@@ -640,7 +673,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   imageContainer: {
-    right: 10,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',

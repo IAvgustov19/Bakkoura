@@ -7,15 +7,11 @@ import Input from '../../components/Input/Input';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import useRootStore from '../../hooks/useRootStore';
-import { COLORS } from '../../utils/colors';
 import Cancel from '../../components/Cancel/Cancel';
-import { MessageTypes } from '../../utils/messenger';
 import { APP_ROUTES } from '../../navigation/routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation';
-import { ActivityIndicator, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
-import { windowHeight, windowWidth } from '../../utils/styles';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
@@ -53,22 +49,22 @@ const SearchContact = () => {
         }
     }, [search, navigation]);
 
-    const renderTypes = () => {
-        return MessageTypes.map((item, index) => (
-            <RN.Text
-                key={item.id}
-                style={[styles.typeText, active === index && { color: '#007AFF' }]}
-                onPress={() => setActive(index)}
-            >
-                {item.title}
-            </RN.Text>
-        ));
-    };
+    // const renderTypes = () => {
+    //     return MessageTypes.map((item, index) => (
+    //         <RN.Text
+    //             key={item.id}
+    //             style={[styles.typeText, active === index && { color: '#007AFF' }]}
+    //             onPress={() => setActive(index)}
+    //         >
+    //             {item.title}
+    //         </RN.Text>
+    //     ));
+    // };
 
     const renderUsers = useCallback(() => {
-        if (loading) {
-            return <ActivityIndicator size="large" color={COLORS.white} />;
-        }
+        // if (loading) {
+        //     return <ActivityIndicator size="large" color={COLORS.white} />;
+        // }
 
         if (searchedUsers.length === 0 && searchPerformed) { 
             return <ListEmptyComp title="No user found" />;
@@ -96,24 +92,6 @@ const SearchContact = () => {
         ));
     }, [searchedUsers, loading, navigation, search]);
 
-    const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-        console.log('eventeventeventeventeventeventevent', event)
-        const isEndReached = contentOffset.x + layoutMeasurement.width >= contentSize.width - 20;
-
-        console.log("Scroll event:", {
-            contentOffset: contentOffset.x,
-            contentSize: contentSize.width,
-            layoutMeasurement: layoutMeasurement.width,
-            isEndReached,
-        });
-
-        if (isEndReached && !loading) {
-            console.log("End of scroll reached. Fetching more users...");
-            getAllUsers(); // Fetch more users when end is reached
-        }
-    };
-
     return (
         <LinearContainer>
             <RN.View style={styles.container}>
@@ -129,9 +107,9 @@ const SearchContact = () => {
                         icon={<Images.Svg.searchIcon />}
                     />
                 </RN.View>
-                <RN.View style={styles.types}>
+                {/* <RN.View style={styles.types}>
                     {renderTypes()}
-                </RN.View>
+                </RN.View> */}
                 <RN.View style={{height: '80%'}}>
                     <RN.ScrollView
                         showsVerticalScrollIndicator={false}

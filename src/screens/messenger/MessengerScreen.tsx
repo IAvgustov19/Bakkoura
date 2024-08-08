@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -13,7 +13,7 @@ import { RootStackParamList } from '../../types/navigation';
 import LoadingScreen from '../auth/Loading/LoadingScreen';
 import { windowWidth } from '../../utils/styles';
 import { observer } from 'mobx-react-lite';
-import RN from '../../components/RN';
+
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
 const MessengerScreen = () => {
@@ -25,44 +25,66 @@ const MessengerScreen = () => {
     getAllUsersWithLastMessages,
   } = useRootStore().messangerStore;
 
-  const [loading, setLoading] = useState(storeLoading);
-  const formatTimestampToTime = (seconds: number) => {
-    const date = new Date(seconds * 1000);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  // Ref to track previous userData for comparison
+  const previousUserDataRef = useRef(userData);
+
+  const formatTimestampToTime = (timestamp) => {
+    if (!timestamp) return ''; 
+
+    const date = new Date(timestamp); 
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+    return `${hours}:${minutes}`; 
   };
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && !loading) {
       setLoading(true);
-      getAllUsersWithLastMessages().finally(() => setLoading(false));
+      getAllUsersWithLastMessages()
+        .then(() => {
+          // console.log("User data fetched:", userData);
+          setDataLoaded(true);
+          previousUserDataRef.current = userData;
+        })
+        .finally(() => setLoading(false));
     }
-  }, [getAllUsersWithLastMessages]);
+    // Removing userData from dependencies to avoid re-triggering the effect
+  }, [isFocused, getAllUsersWithLastMessages]);
+  
 
   const renderItems = useCallback(() => {
     const sortedUserData = [...userData].sort((a, b) => {
       if (!a.lastMessage || !b.lastMessage) return 0;
-      return b.lastMessage.createdAt.seconds - a.lastMessage.createdAt.seconds;
+      const aDate:any = new Date(a.lastMessage.createdAt); 
+      const bDate:any = new Date(b.lastMessage.createdAt);
+      return bDate - aDate; 
     });
 
-    return sortedUserData.map((item, index) => (
-      <MessageItem
-        onNavigate={() =>
-          navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
-            id: item.id,
-            name: item.name,
-            avatar: item.avatar
-          })
-        }
-        key={index}
-        avatar={item.avatar}
-        name={item.name}
-        description={item.lastMessage?.text ?? 'Hi! Please call me at 16...'}
-        time={item.lastMessage ? formatTimestampToTime(item.lastMessage.createdAt.seconds) : ''}
-      />
-    ));
-  }, [userData]);
+    return sortedUserData.map((item, index) => {
+      const createdAt = item.lastMessage?.createdAt;
+      const formattedTime = createdAt ? formatTimestampToTime(createdAt) : '';
+
+      return (
+        <MessageItem
+          onNavigate={() =>
+            navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
+              id: item.id,
+              name: item.name,
+              avatar: item.avatar
+            })
+          }
+          key={index}
+          avatar={item.avatar}
+          name={item.name}
+          description={item.lastMessage?.audio ? 'Voice message' : item.lastMessage?.text ?? 'Hi! Please call me at 16...'}
+          time={formattedTime}
+        />
+      );
+    });
+  }, [userData, navigation]);
 
   return (
     <LinearContainer>
@@ -76,7 +98,7 @@ const MessengerScreen = () => {
         />
         <View style={styles.content}>
           {loading ? (
-              <LoadingScreen loading={loading} setLoading={() => { }}/>
+            <LoadingScreen loading={loading} setLoading={() => { }} />
           ) : userData.length === 0 ? (
             <View style={styles.center}>
               <Text style={styles.text}>There are no dialogues</Text>

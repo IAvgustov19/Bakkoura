@@ -899,8 +899,7 @@ export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string):
   try {
     let query = db.collection('users')
       .where('id', '!=', uid)
-      .orderBy('id')
-      .limit(6);
+      .orderBy('id');
 
     if (lastDocId) {
       const lastDoc = await db.collection('users').doc(lastDocId).get();

@@ -31,7 +31,7 @@ const CustomMessage = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.messageContainer}>
-        <Text style={styles.name}>{currentMessage.user.name}</Text>
+        {/* <Text style={styles.name}>{currentMessage.user.name}</Text> */}
         <Bubble
           {...props}
           wrapperStyle={{

@@ -25,6 +25,10 @@ import { windowWidth } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
 import VideoPlayer from './components/VideoPlayer';
 import { uploadAudioToStorage } from '../../services/firestoreService';
+import messaging from '@react-native-firebase/messaging';
+import { PermissionsAndroid } from 'react-native';
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
 
@@ -37,6 +41,19 @@ const DialogScreen = () => {
     const [messages, setMessages] = useState([]);
     const [lastSeen, setLastSeen] = useState(null);
     const [loading, setLoading] = useState(true);
+
+
+    useEffect(() => {
+        const deviceToken = async () => {
+            await messaging().registerDeviceForRemoteMessages();
+            const token = await messaging().getToken();
+            console.log('tokentokentoken', token)
+            await firestore().collection('users').doc(currentUser.uid).update({
+                deviceToken: token,
+            });
+        }
+        deviceToken();
+    }, []);
 
     useEffect(() => {
         if (!id) {
@@ -92,75 +109,80 @@ const DialogScreen = () => {
 
     useLayoutEffect(() => {
         setLoading(true);
-        const reverseId = `${currentUser?.uid}-${id}`;
-        const chatDocRef = db.collection('chats').doc(groupId || reverseId);
 
-        const handleDocument = (docSnapshot) => {
-            if (docSnapshot.exists) {
-                console.log('Document exists:', docSnapshot.data());
-                const messagesArray = docSnapshot.data().messages || [];
-                const filteredMessages = messagesArray
-                    .map((message, index) => ({
-                        _id: index,
-                        user: message.user,
-                        text: message.text,
-                        id: message.id,
-                        maindis: message.maindis,
-                        groupId: message.groupId,
-                        audio: message.audio ? message.audio : null,
-                        createdAt: message.createdAt.toDate(),
-                    }))
-                    .filter(item => item.groupId.includes(currentUser?.uid) && item.groupId.includes(id))
-                    .sort((a, b) => b.createdAt - a.createdAt);
+        const senderId = currentUser?.uid;
+        const receiverId = id;
 
-                setMessages(filteredMessages);
-            } else {
-                setLoading(true);
-                const reverseDocRef = db.collection('chats').doc(reverseId);
+        // Find the existing room based on senderId and receiverId
+        const roomQuery = db.collection('Rooms')
+            .where('senderId', 'in', [senderId, receiverId])
+            .where('receiverId', 'in', [senderId, receiverId])
+            .limit(1);
 
-                // Listen for real-time updates using onSnapshot for reverseId
-                reverseDocRef.onSnapshot((reverseDocSnapshot) => {
-                    if (reverseDocSnapshot.exists) {
-                        // Process reverseId document here
-                        const messagesArray = reverseDocSnapshot.data().messages || [];
-                        const filteredMessages = messagesArray
-                            .map((message, index) => ({
-                                _id: index,
-                                user: message.user,
-                                text: message.text,
-                                maindis: message.maindis,
-                                id: message.id,
-                                audio: message.audio ? message.audio : null,
-                                groupId: message.groupId,
-                                createdAt: message.createdAt.toDate(),
-                            }))
-                            .filter(item => item.groupId.includes(currentUser?.uid) && item.groupId.includes(id))
-                            .sort((a, b) => b.createdAt - a.createdAt);
+        const unsubscribe = roomQuery.onSnapshot(async (roomQuerySnapshot) => {
+            if (!roomQuerySnapshot.empty) {
+                // Room exists, fetch the roomId
+                const roomDoc = roomQuerySnapshot.docs[0];
+                const roomId = roomDoc.id;
 
-                        setMessages(filteredMessages);
-                        setLoading(false);
-                    } else {
-                        console.log('Neither document exists.');
-                        setMessages([]);
-                        setLoading(false);
-                    }
+                // Fetch the messages for the found roomId
+                const messagesQuery = db.collection('Messages')
+                    .where('roomId', '==', roomId)
+                    .orderBy('createdAt', 'desc');
+
+                messagesQuery.onSnapshot((messagesSnapshot) => {
+                    const messagesArray = messagesSnapshot.docs.map((doc) => {
+                        const data = doc.data();
+                        return {
+                            _id: doc.id,
+                            user: {
+                                _id: data.senderId,
+                                name: data.user?.name || 'Unknown', // Ensure `name` is included
+                            },
+                            text: data.text,
+                            maindis: data.maindis,
+                            audio: data.audio ? data.audio : null,
+                            createdAt: data.createdAt.toDate(),
+                            senderId: data.senderId,
+                            receiverId: data.receiverId,
+                            roomId: data.roomId,
+                        };
+                    });
+
+                    // Add a check to distinguish between sent and received messages
+                    const formattedMessages = messagesArray.map(msg => ({
+                        ...msg,
+                        user: {
+                            ...msg.user,
+                            _id: msg.senderId === senderId ? senderId : msg.user._id,
+                            name: msg.senderId === senderId ? 'Me' : msg.user.name,
+                        },
+                    }));
+
+                    setMessages(formattedMessages);
+                    setLoading(false);
                 }, (error) => {
-                    console.error('Error fetching document with reverseId in real-time:', error);
+                    console.error('Error fetching messages:', error);
                     setLoading(false);
                 });
+            } else {
+                console.log('No existing room found for the given sender and receiver.');
+                setMessages([]);
+                setLoading(false);
             }
-        };
-
-        chatDocRef.onSnapshot(handleDocument, (error) => {
-            console.error('Error fetching document with groupId or reverseId in real-time:', error);
+        }, (error) => {
+            console.error('Error fetching room:', error);
             setLoading(false);
         });
-        return () => setMessages(null)
-    }, [id, currentUser?.uid, groupId]);
+
+        return () => unsubscribe();
+    }, [id, currentUser?.uid]);
+
+
+
+
 
     const onSend = useCallback(async (messages = []) => {
-        const groupId = `${id}-${currentUser?.uid}`;
-        const reverseId = `${currentUser?.uid}-${id}`;
         const senderId = currentUser?.uid;
         const receiverId = id;
 
@@ -168,14 +190,11 @@ const DialogScreen = () => {
 
         const {
             _id,
-            user,
             text,
             audio,
             maindis,
-            // image,
             createdAt,
         } = messages[0];
-
 
         let audioUrl = null;
         if (audio) {
@@ -188,115 +207,53 @@ const DialogScreen = () => {
             }
         }
 
-        const chatDocRef = db.collection('chats').doc(groupId);
+        // Check if there's an existing room with either senderId-receiverId or receiverId-senderId
+        let roomDocRef = db.collection('Rooms')
+            .where('senderId', 'in', [senderId, receiverId])
+            .where('receiverId', 'in', [senderId, receiverId])
+            .limit(1);  // We only need one match
 
-        chatDocRef.get()
-            .then((docSnapshot) => {
-                if (docSnapshot.exists) {
-                    chatDocRef.update({
-                        messages: firebase.firestore.FieldValue.arrayUnion({
-                            _id,
-                            ...(text && { text }),
-                            user,
-                            ...(audioUrl && { audio: audioUrl }),
-                            createdAt,
-                            maindis,
-                            groupId,
-                            senderId,
-                            receiverId,
-                        })
-                    }).then(() => {
-                        console.log('Message successfully added to the array!');
-                    }).catch((error) => {
-                        console.error('Error updating message:', error);
-                    });
+        const roomQuerySnapshot = await roomDocRef.get();
 
-                } else {
-                    // If groupId document does not exist, check reverseId
-                    console.log('Document does not exist with groupId. Trying reverseId...');
-
-                    const reverseDocRef = db.collection('chats').doc(reverseId);
-                    reverseDocRef.get()
-                        .then((reverseDocSnapshot) => {
-                            if (reverseDocSnapshot.exists) {
-                                // If reverseId document exists, update it
-                                // console.log('Document with reverseId exists:', reverseDocSnapshot.data());
-                                console.log({
-                                    _id,
-                                    ...(text && { text }),
-                                    user,
-                                    createdAt,
-                                    ...(audioUrl && { audio: audioUrl }),
-                                    groupId,
-                                    senderId,
-                                    maindis,
-                                    receiverId,
-                                }, 7777);
-
-                                reverseDocRef.update({
-                                    messages: firebase.firestore.FieldValue.arrayUnion({
-                                        _id,
-                                        ...(text && { text }),
-                                        user,
-                                        createdAt,
-                                        ...(audioUrl && { audio: audioUrl }),
-                                        groupId,
-                                        maindis,
-                                        senderId,
-                                        receiverId,
-                                    })
-                                }).then(() => {
-                                    console.log('Message successfully added to the array!');
-                                }).catch((error) => {
-                                    console.error('Error updating message:', error);
-                                });
-
-                            } else {
-                                // If neither document exists, create reverseId document
-                                console.log('Neither document exists. Creating document with reverseId:', reverseId);
-                                console.log({
-                                    messages: [{
-                                        _id,
-                                        ...(text && { text }),
-                                        user,
-                                        maindis,
-                                        createdAt,
-                                        ...(audioUrl && { audio: audioUrl }),
-                                        groupId,
-                                        senderId,
-                                        receiverId,
-                                    }]
-                                }, 9000);
-
-                                reverseDocRef.set({
-                                    messages: [{
-                                        _id,
-                                        ...(text && { text }),
-                                        user,
-                                        maindis,
-                                        createdAt,
-                                        ...(audioUrl && { audio: audioUrl }),
-                                        groupId,
-                                        senderId,
-                                        receiverId,
-                                    }]
-                                }).then(() => {
-                                    console.log('Document successfully created with reverseId:', reverseId);
-                                }).catch((error) => {
-                                    console.error('Error creating document:', error);
-                                });
-                            }
-                        })
-                        .catch((error) => {
-                            console.error('Error fetching document with reverseId:', error);
-                        });
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching document with groupId:', error);
+        let targetRoomId;
+        if (roomQuerySnapshot.empty) {
+            // Create a new room if it doesn't exist
+            const newRoomDocRef = db.collection('Rooms').doc();
+            await newRoomDocRef.set({
+                senderId,
+                receiverId,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
+            targetRoomId = newRoomDocRef.id; // Auto-generated roomId
+        } else {
+            targetRoomId = roomQuerySnapshot.docs[0].id; // Use existing roomId
+        }
 
+        // Add message to the Messages collection
+        const messageDocRef = db.collection('Messages').doc();
+        await messageDocRef.set({
+            _id,
+            roomId: targetRoomId,
+            user: {
+                _id: senderId,
+                name: currentUser?.displayName || 'Me',
+            },
+            ...(text && { text }),
+            ...(audioUrl && { audio: audioUrl }),
+            createdAt,
+            ...(maindis && { maindis }),
+            senderId,
+            receiverId,
+        });
+
+        console.log('Message successfully added to the Messages collection!');
     }, [id, currentUser]);
+
+
+
+
+
+
 
 
     const renderMessageImage = props => {
@@ -377,8 +334,8 @@ const DialogScreen = () => {
                                 renderMessage={(props) => <CustomMessage {...props} />}
                                 onSend={messages => onSend(messages)}
                                 user={{
-                                    _id: auth().currentUser.email,
-                                    name: '',
+                                    _id: auth().currentUser?.uid,
+                                    name: auth().currentUser.displayName,
                                     avatar: auth().currentUser.photoURL
                                 }}
                                 renderInputToolbar={(props) => (

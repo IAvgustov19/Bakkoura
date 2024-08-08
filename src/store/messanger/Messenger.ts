@@ -4,6 +4,8 @@ import { UserType } from "../../types/user";
 import auth from '@react-native-firebase/auth';
 import { getAllUsersFromFirestore } from "../../services/firestoreService";
 import { db } from "../../config/firebase";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export class MessengerStore {
     private readonly root: RootStore;
@@ -22,69 +24,106 @@ export class MessengerStore {
 
 
     getAllUsers = async () => {
-    this.loading = true;
-    try {
-      const uid = auth()?.currentUser?.uid;
-      console.log("Fetching users with lastDocId:", this.lastDocId);
-      const users = await getAllUsersFromFirestore(uid, this.lastDocId);
-      runInAction(() => {
-        if (users.length > 0) {
-          this.allUsers = [...this.allUsers, ...users];
-          this.lastDocId = users[users.length - 1].id;
-          console.log("Updated lastDocId to:", this.lastDocId);
-        } else {
-          this.lastDocId = null; // No more users to fetch
-          console.log("No more users to fetch");
+        this.loading = true;
+        try {
+            const uid = auth()?.currentUser?.uid;
+            console.log("Fetching users with lastDocId:", this.lastDocId);
+            const users = await getAllUsersFromFirestore(uid, this.lastDocId);
+            runInAction(() => {
+                if (users.length > 0) {
+                    this.allUsers = [...this.allUsers, ...users];
+                    this.lastDocId = users[users.length - 1].id;
+                    console.log("Updated lastDocId to:", this.lastDocId);
+                } else {
+                    this.lastDocId = null; // No more users to fetch
+                    console.log("No more users to fetch");
+                }
+            });
+        } catch (error) {
+            console.error("Failed to fetch users", error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
         }
-      });
-    } catch (error) {
-      console.error("Failed to fetch users", error);
-    } finally {
-      runInAction(() => {
-        this.loading = false;
-      });
-    }
-  };
+    };
 
 
-    
-  filterUsers = (query: string) => {
-    runInAction(() => {
-        if (!query) {
-            this.searchedUsers = [];
-        } else {
-            this.searchedUsers = this.allUsers.filter(user =>
-                user.name.toLowerCase().includes(query.toLowerCase())
-            );
-        }
-    });
-};
+
+    filterUsers = (query: string) => {
+        runInAction(() => {
+            if (!query) {
+                this.searchedUsers = [];
+            } else {
+                this.searchedUsers = this.allUsers.filter(user =>
+                    user.name.toLowerCase().includes(query.toLowerCase())
+                );
+            }
+        });
+    };
 
     getAllUsersWithLastMessages = async () => {
         try {
             const currentUser = auth().currentUser;
+            // Fetch all users except the current one
             const usersSnapshot = await db.collection('users').where('id', '!=', currentUser.uid).get();
-            const usersData = usersSnapshot?.docs.map(doc => doc.data());
+            const usersData = usersSnapshot.docs.map(doc => doc.data());
 
-            const usersWithMessages = await Promise.all(usersData.map(async user => {
-                const groupId = `${user.id}-${currentUser?.uid}`;
-                const reverseId = `${currentUser?.uid}-${user.id}`;
-                const chatDoc = await db.collection('chats').doc(groupId).get();
-                const reverseChatDoc = await db.collection('chats').doc(reverseId).get();
-                let lastMessage = null;
+            // Extract all unique roomIds in parallel
+            const roomQueries = usersData.map(user => {
+                const senderId = currentUser.uid;
+                const receiverId = user.id;
 
-                if (chatDoc.exists) {
-                    const messages = chatDoc.data().messages || [];
-                    lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-                } else if (reverseChatDoc.exists) {
-                    const messages = reverseChatDoc.data().messages || [];
-                    lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-                }
+                // Find the chat room between the current user and this user
+                return db.collection('Rooms')
+                    .where('senderId', 'in', [senderId, receiverId])
+                    .where('receiverId', 'in', [senderId, receiverId])
+                    .limit(1)
+                    .get()
+                    .then(roomQuerySnapshot => {
+                        if (!roomQuerySnapshot.empty) {
+                            return roomQuerySnapshot.docs[0].id;
+                        }
+                        return null;
+                    });
+            });
 
-                return {
-                    ...user,
-                    lastMessage
-                };
+            // Await all room queries
+            const roomIds = await Promise.all(roomQueries);
+
+            // Fetch the latest message for each room in parallel
+            const messagesQueries = roomIds.map(roomId => {
+                if (!roomId) return null;
+
+                return db.collection('Messages')
+                    .where('roomId', '==', roomId)
+                    .orderBy('createdAt', 'desc')
+                    .limit(1)
+                    .get()
+                    .then(messagesSnapshot => {
+                        if (!messagesSnapshot.empty) {
+                            const messageDoc = messagesSnapshot.docs[0].data();
+                            return {
+                                _id: messageDoc._id,
+                                text: messageDoc.text,
+                                createdAt: messageDoc.createdAt.toDate(),
+                                senderId: messageDoc.senderId,
+                                receiverId: messageDoc.receiverId,
+                                roomId: messageDoc.roomId,
+                                audio: messageDoc.audio || null,
+                            };
+                        }
+                        return null;
+                    });
+            });
+
+            // Await all messages queries
+            const lastMessages = await Promise.all(messagesQueries);
+
+            // Combine user data with their last messages
+            const usersWithMessages = usersData.map((user, index) => ({
+                ...user,
+                lastMessage: lastMessages[index] || null,
             }));
 
             runInAction(() => {
