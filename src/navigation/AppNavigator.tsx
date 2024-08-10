@@ -75,6 +75,8 @@ import SearchContact from '../screens/messenger/SearchContact';
 import DialogScreen from '../screens/messenger/DialogScreen';
 import TermsOfUse from '../screens/auth/SignUpScreen/TermsOfUse';
 import PrivacyPolicy from '../screens/auth/SignUpScreen/PrivacyPolicy';
+import Recommendation from '../screens/timeClinic/Recommendation';
+import RecommendationView from '../screens/timeClinic/RecomendationView';
 
 const Stack = createStackNavigator();
 
@@ -571,6 +573,20 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.REPEAT_TYPE_SCREEN}
           component={RepeatTypeScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.RECOMMENDATION}
+          component={Recommendation}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.RECOMMENDATION_View}
+          component={RecommendationView}
           options={{
             headerTitleAlign: 'center',
           }}
