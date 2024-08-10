@@ -135,4 +135,6 @@ export enum APP_ROUTES {
   ABOUT_TIME_INFO = 'AboutTimeInfo',
   TIME_WEALTH = 'TimeWealth',
   FRANS_VILA = 'FransVila',
+  RECOMMENDATION = 'Recommendation',
+  RECOMMENDATION_View = 'RecommendationView',
 }

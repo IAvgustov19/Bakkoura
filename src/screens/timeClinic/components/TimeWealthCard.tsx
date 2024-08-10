@@ -11,9 +11,17 @@ type Props = {
   imageUrl?: ImageSourcePropType;
   texts?: string[];
   title?: string;
+  date?: string;
+  onPress?: () => void;
 };
 
-const TimeWealthCard: React.FC<Props> = ({texts, imageUrl, title}) => {
+const TimeWealthCard: React.FC<Props> = ({
+  texts,
+  imageUrl,
+  title,
+  date,
+  onPress,
+}) => {
   const renderTexts = React.useCallback(() => {
     return texts.map((item, index) => {
       return <TextView key={index} textAlign="left" text={item} />;
@@ -21,13 +29,14 @@ const TimeWealthCard: React.FC<Props> = ({texts, imageUrl, title}) => {
   }, [texts]);
 
   return (
-    <RN.View style={styles.container}>
+    <RN.Pressable style={styles.container} onPress={onPress}>
       <RN.View style={styles.wealthImageBox}>
         <RN.Image style={styles.wealthImage} source={imageUrl} />
       </RN.View>
       <TextView style={styles.title} textAlign="left" title={title} />
       <RN.View>{renderTexts()}</RN.View>
-    </RN.View>
+      {date ? <TextView textAlign="left" text={date} /> : null}
+    </RN.Pressable>
   );
 };
 

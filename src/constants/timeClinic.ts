@@ -45,6 +45,7 @@ export type TimeWealthDataType = {
   navigate: string;
   imageUrl: ImageSourcePropType;
   texts: string[];
+  date?: string;
 };
 export const TimeWealthDataInitial: TimeWealthDataType = {
   id: 0,
@@ -52,6 +53,7 @@ export const TimeWealthDataInitial: TimeWealthDataType = {
   navigate: '',
   imageUrl: 0,
   texts: [''],
+  date: '',
 };
 
 export const TimeClinicList: TimeClinicListType[] = [
@@ -71,34 +73,41 @@ export const TimeClinicList: TimeClinicListType[] = [
   },
   {
     id: 3,
+    title: 'Reccomendations',
+    info: 'Stories about the time...',
+    navigate: APP_ROUTES.RECOMMENDATION,
+    isbtn: false,
+  },
+  {
+    id: 4,
     title: 'The Book of The Time',
     info: 'Stories about the time...',
     navigate: APP_ROUTES.THE_BOOK,
     isbtn: false,
   },
   {
-    id: 4,
+    id: 5,
     title: '30H concept',
     info: 'Stories about the time...',
     navigate: APP_ROUTES.CONCEPT_30H,
     isbtn: false,
   },
   {
-    id: 5,
+    id: 6,
     title: 'Jihad Bakkoura',
     info: 'About the Founder...',
     navigate: APP_ROUTES.JIHAD_BAKKOURA_TIME_CLINIC,
     isbtn: false,
   },
   {
-    id: 6,
+    id: 7,
     title: 'Time Wealth',
     info: 'Stories about the time...',
     navigate: APP_ROUTES.TIME_WEALTH,
     isbtn: false,
   },
   {
-    id: 7,
+    id: 8,
     title: 'FrancVila Watch',
     info: 'About the Founder....',
     navigate: APP_ROUTES.FRANS_VILA,
@@ -419,6 +428,25 @@ export const FrancVillaTexts = {
     `Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury».`,
   ],
 };
+export const RecommendationViewData = {
+  id: 1,
+  title: `New Era of Bakkoura Dynasty`,
+  date: '07:08.2023 - Jihad Bakkoura',
+  image: Images.Img.rec1,
+  texts: [
+    `Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. These timepieces live for everyone who has achieved success. And it doesn't matter who he is: an athlete, a politician, the head of a mafia clan, a star or an IT specialist. The company specializes in the production of all swiss watches with complications in super-limited series of 4, 8, 48 and 88 copies, which guarantees an exclusive high-tech design and a bright personality. The FRANC VILA watch is a mechanic created by a philosopher.`,
+    `Businessman, Poet, Designer, Creator Of Revolutionary Watch Concepts Of Time.Jihad Bakkoura Continues To Write A Story That Began In 2004 In Spain With No Less Passion And Imagination.He Has Come Up With An Exciting New Life For Each Model`,
+    `A globally recognized independent all Swiss luxury watch brand. The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles. Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury»`,
+    `The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is completeness and individuality.`,
+    `A globally recognized independent all Swiss luxury watch brand.`,
+    `The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles.`,
+    `Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury».`,
+    `The case in the form of an inverted "figure eight" later became a distinctive feature of Franc Vila watches.The symbol has an infinite number of meanings.This is infinite confidence, this is completeness and individuality.`,
+    `A globally recognized independent all Swiss luxury watch brand.`,
+    `The philosophy behind the Franc Vila brand is pure perfection. Innovation, creativity and excellency are our fundamental principles`,
+    `Our aim is to create a complete range of watch complications presented in a strong, contemporary and - above all - unique design.«Exclusivity is the heart of luxury».`,
+  ],
+};
 
 export const TimeWealthData: TimeWealthDataType[] = [
   {
@@ -460,6 +488,49 @@ export const TimeWealthData: TimeWealthDataType[] = [
       'Jihad Bakkura has dedicated 20 years to the luxury industry. First as a client, then as a distributor and finally as an owner and brand creator.',
       ' He has spent part of his life in the East and part in the West: integrating the best of both cultures into his concepts and his projects.',
     ],
+  },
+];
+
+export const RecommendationsData: TimeWealthDataType[] = [
+  {
+    id: 1,
+    imageUrl: Images.Img.rec1,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. ',
+    ],
+    date: '07:08.2023 - Jihad Bakkoura',
+  },
+  {
+    id: 2,
+    imageUrl: Images.Img.rec2,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. ',
+    ],
+    date: '07:08.2023 - Jihad Bakkoura',
+  },
+  {
+    id: 3,
+    imageUrl: Images.Img.rec3,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. ',
+    ],
+    date: '07:08.2023 - Jihad Bakkoura',
+  },
+  {
+    id: 4,
+    imageUrl: Images.Img.rec4,
+    navigate: '',
+    title: `Bakkoura Dynasty is success built on a personal brand JIHAD BAKKOURA`,
+    texts: [
+      'Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. ',
+    ],
+    date: '07:08.2023 - Jihad Bakkoura',
   },
 ];
 

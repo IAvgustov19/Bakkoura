@@ -319,6 +319,10 @@ export const Images = {
     francvillaMarket: require('./images/francvillaMarket.png'),
     marketCardLight: require('./images/marketCardlight.png'),
     btnTopLight: require('./images/btnTopLight.png'),
+    rec1: require('./images/rec1.png'),
+    rec2: require('./images/rec2.png'),
+    rec3: require('./images/rec3.png'),
+    rec4: require('./images/rec4.png'),
   },
 };
 
