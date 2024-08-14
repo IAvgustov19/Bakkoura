@@ -90,7 +90,7 @@ const Input: React.FC<Props> = ({
               {
                 height: height,
                 paddingTop: paddingTop,
-                width: width ? width : '80%',
+                width: '100%',
               },
             ]}
             onChangeText={onChangeText}

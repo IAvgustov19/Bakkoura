@@ -176,11 +176,11 @@ const PersonalArea = () => {
                     }
                   />
                 </RN.View> */}
-                <RN.View style={styles.eventsTypeList}>
+                {/* <RN.View style={styles.eventsTypeList}>
                   <ListItemCont title="Important Dates" onPress={() => {}} />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont title="Couple Time" onPress={() => {}} />
-                </RN.View>
+                </RN.View> */}
                 <RN.View style={[styles.eventsTypeList, {marginTop: 10}]}>
                   <ButtonComp
                     title="Delete account"

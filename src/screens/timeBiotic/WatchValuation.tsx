@@ -26,6 +26,7 @@ const WatchValuation = () => {
   const [accept, setAccept] = useState(false);
   const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
+  const {onHandleWebVIew} = useRootStore().marketStore;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -33,6 +34,11 @@ const WatchValuation = () => {
   };
 
   const scrollViewRef = useRef(null);
+
+  const onHandleCategory = () => {
+    navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
+    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
+  };
 
   const Scroll = () => {
     if (scrollViewRef.current) {
@@ -82,9 +88,9 @@ const WatchValuation = () => {
                   <RN.Text style={styles.privacyInfo}>
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
                   </RN.Text>
-                  <RN.Text style={styles.privacyLink}>
-                    I accept the privacy policy.
-                  </RN.Text>
+                  <RN.Pressable onPress={onHandleCategory}>
+      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
+    </RN.Pressable>
                 </RN.View>
               </RN.View>
               <SimpleBtn

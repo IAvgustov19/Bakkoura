@@ -127,7 +127,7 @@ export const etapCountData = [
 export const HistoryData = [
   {
     id: 1,
-    title: 'lastDay',
+    title: 'Last Day',
     key: 'lastDay',
   },
   {

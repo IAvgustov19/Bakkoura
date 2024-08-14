@@ -215,7 +215,7 @@ function getMonthArray(): Array<ItemType> {
 }
 function PriceArray(): Array<ItemType> {
   const arr = [];
-  for (let index = 0; index <= 100; index++) {
+  for (let index = 0; index <= 1000; index++) {
     const element = {value: index, text: `${index}`, id: `${index}`};
     arr.push(element);
   }
