@@ -76,6 +76,8 @@ messaging().onMessage(async remoteMessage => {
 });
 
 
+
+
 const App = () => {
   const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
   const { cloneAllEventsData, checkEvent } = useRootStore().calendarStore;

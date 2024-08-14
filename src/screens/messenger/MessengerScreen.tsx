@@ -133,11 +133,37 @@ const MessengerScreen = () => {
 };
 
 export default observer(MessengerScreen);
+export default observer(MessengerScreen);
 
+const styles = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flex: 1,
     paddingHorizontal: 5,
+  },
+  flatList: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    marginBottom: 55,
+  },
+  text: {
+    fontSize: 20,
+    color: 'white',
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  startBtnContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: windowWidth - 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   flatList: {
     flex: 1,
