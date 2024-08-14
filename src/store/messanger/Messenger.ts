@@ -111,6 +111,7 @@ export class MessengerStore {
                                 receiverId: messageDoc.receiverId,
                                 roomId: messageDoc.roomId,
                                 audio: messageDoc.audio || null,
+                                video: messageDoc.video || null,
                             };
                         }
                         return null;

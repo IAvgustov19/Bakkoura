@@ -549,7 +549,7 @@ const CustomComposer = props => {
         </View>
         {text.trim() ? (
           <TouchableOpacity onPress={handleSendText} style={{ paddingTop: 12 }}>
-            <Images.Svg.sendMessage width={30} height={30} />
+            <Images.Svg.sendMessage width={30} height={30} color={'red'}/>
           </TouchableOpacity>
         ) : (
           <>

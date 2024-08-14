@@ -1,4 +1,4 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { ActivityIndicator, Keyboard, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
 import RN from '../../components/RN';
@@ -27,6 +27,7 @@ import VideoPlayer from './components/VideoPlayer';
 import { uploadAudioToStorage } from '../../services/firestoreService';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid } from 'react-native';
+import functions from '@react-native-firebase/functions';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 
@@ -44,50 +45,91 @@ const DialogScreen = () => {
 
 
     useEffect(() => {
+        if (id && currentUser?.uid) {
+            const userRef = db.collection('users').doc(currentUser.uid);
+            userRef.update({ openChatWith: id });
+
+            return () => {
+                userRef.update({ openChatWith: null });
+            };
+        }
+    }, [id, currentUser?.uid]);
+
+    useEffect(() => {
         const deviceToken = async () => {
             await messaging().registerDeviceForRemoteMessages();
             const token = await messaging().getToken();
-            console.log('tokentokentoken', token)
-            await firestore().collection('users').doc(currentUser.uid).update({
-                deviceToken: token,
-            });
-        }
+            console.log('tokentokentoken', token);
+
+            const userDocRef = firestore().collection('users').doc(currentUser.uid);
+            const userDoc = await userDocRef.get();
+            const userData = userDoc.data();
+            const existingTokens = userData?.deviceTokens || [];
+            if (!existingTokens.includes(token)) {
+                const updatedTokens = [...existingTokens, token];
+                await userDocRef.update({
+                    deviceTokens: updatedTokens,
+                });
+            }
+        };
         deviceToken();
     }, []);
+
+    async function sendNotification(tokens, title, body, senderId, chatId) {
+        const sendNotification = functions().httpsCallable('sendNotification');
+        try {
+            const sendPromises = tokens.map(async (token) => {
+                try {
+                    const result = await sendNotification({
+                        token: token,
+                        title: title,
+                        body: body,
+                        senderId: senderId,
+                        chatId: chatId,
+                    });
+                    return { token, success: true, result: result.data };
+                } catch (error) {
+                    return { token, success: false, error: error.message };
+                }
+            });
+            const results = await Promise.all(sendPromises);
+            results.forEach((result) => {
+                if (result.success) {
+                    console.log(`Notification sent successfully to token ${result.token}:`, result.result);
+                } else {
+                    console.error(`Error sending notification to token ${result.token}:`, result.error);
+                }
+            });
+        } catch (error) {
+            console.error('Error sending notifications:', error);
+        }
+    }
+
 
     useEffect(() => {
         if (!id) {
             navigation.navigate(APP_ROUTES.MESSENGER as never);
             return;
         }
-
         const userRef = firestore().collection('users').doc(id);
 
         const unsubscribe = userRef.onSnapshot((snapshot) => {
             const userData = snapshot.data();
             if (userData?.lastSeen) {
-                // Convert lastSeen to a moment object for easier manipulation
                 const lastSeenTimestamp = moment(userData.lastSeen.toDate());
                 const now = moment();
-
-                // Check if lastSeenTimestamp is today, yesterday, or earlier
                 const isToday = lastSeenTimestamp.isSame(now, 'day');
                 const isYesterday = lastSeenTimestamp.clone().add(1, 'day').isSame(now, 'day');
-
-                // Format lastSeenTimestamp
                 let lastSeenFormatted;
                 if (isToday) {
-                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm'); // Today, HH:mm format
+                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm'); 
                 } else if (isYesterday) {
-                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm'); // Yesterday, HH:mm format
+                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
                 } else {
-                    lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm'); // Month DD, HH:mm format
+                    lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm'); 
                 }
-
-                // Calculate time difference in minutes
                 const diffInMinutes = now.diff(lastSeenTimestamp, 'minutes');
 
-                // Update state based on time difference
                 if (diffInMinutes < 2) {
                     setLastSeen('Online');
                 } else if (diffInMinutes < 60) {
@@ -109,11 +151,9 @@ const DialogScreen = () => {
 
     useLayoutEffect(() => {
         setLoading(true);
-
         const senderId = currentUser?.uid;
         const receiverId = id;
 
-        // Find the existing room based on senderId and receiverId
         const roomQuery = db.collection('Rooms')
             .where('senderId', 'in', [senderId, receiverId])
             .where('receiverId', 'in', [senderId, receiverId])
@@ -121,11 +161,9 @@ const DialogScreen = () => {
 
         const unsubscribe = roomQuery.onSnapshot(async (roomQuerySnapshot) => {
             if (!roomQuerySnapshot.empty) {
-                // Room exists, fetch the roomId
                 const roomDoc = roomQuerySnapshot.docs[0];
                 const roomId = roomDoc.id;
 
-                // Fetch the messages for the found roomId
                 const messagesQuery = db.collection('Messages')
                     .where('roomId', '==', roomId)
                     .orderBy('createdAt', 'desc');
@@ -133,23 +171,25 @@ const DialogScreen = () => {
                 messagesQuery.onSnapshot((messagesSnapshot) => {
                     const messagesArray = messagesSnapshot.docs.map((doc) => {
                         const data = doc.data();
+                        
                         return {
                             _id: doc.id,
                             user: {
                                 _id: data.senderId,
-                                name: data.user?.name || 'Unknown', // Ensure `name` is included
+                                name: data.user?.name || 'Unknown', 
                             },
                             text: data.text,
                             maindis: data.maindis,
                             audio: data.audio ? data.audio : null,
-                            createdAt: data.createdAt.toDate(),
+                            video: data.video ? data.video : null,
+                            createdAt: moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss'),
                             senderId: data.senderId,
+                            circle: data?.circle ?? data?.circle,
+                            fileName: data?.fileName ?? data?.fileName,
                             receiverId: data.receiverId,
                             roomId: data.roomId,
                         };
                     });
-
-                    // Add a check to distinguish between sent and received messages
                     const formattedMessages = messagesArray.map(msg => ({
                         ...msg,
                         user: {
@@ -176,10 +216,7 @@ const DialogScreen = () => {
         });
 
         return () => unsubscribe();
-    }, [id, currentUser?.uid]);
-
-
-
+    }, [id]);
 
 
     const onSend = useCallback(async (messages = []) => {
@@ -192,10 +229,12 @@ const DialogScreen = () => {
             _id,
             text,
             audio,
+            video,
             maindis,
-            createdAt,
+            fileName,
+            circle,
         } = messages[0];
-
+        let createdAt = moment.utc().toDate();
         let audioUrl = null;
         if (audio) {
             const audioFilePath = `audios/${Date.now()}.mp4`;
@@ -206,30 +245,34 @@ const DialogScreen = () => {
                 return;
             }
         }
+        let videoUrl = null;
+        if (video) {
+            const videoFilePath = `videos/${Date.now()}.mp4`;
+            try {
+                videoUrl = await uploadAudioToStorage(video, videoFilePath);
+            } catch (error) {
+                console.error('Error uploading video file:', error);
+            }
+        }
 
-        // Check if there's an existing room with either senderId-receiverId or receiverId-senderId
         let roomDocRef = db.collection('Rooms')
             .where('senderId', 'in', [senderId, receiverId])
             .where('receiverId', 'in', [senderId, receiverId])
-            .limit(1);  // We only need one match
+            .limit(1); 
 
         const roomQuerySnapshot = await roomDocRef.get();
-
         let targetRoomId;
         if (roomQuerySnapshot.empty) {
-            // Create a new room if it doesn't exist
             const newRoomDocRef = db.collection('Rooms').doc();
             await newRoomDocRef.set({
                 senderId,
                 receiverId,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
-            targetRoomId = newRoomDocRef.id; // Auto-generated roomId
+            targetRoomId = newRoomDocRef.id;
         } else {
-            targetRoomId = roomQuerySnapshot.docs[0].id; // Use existing roomId
+            targetRoomId = roomQuerySnapshot.docs[0].id; 
         }
-
-        // Add message to the Messages collection
         const messageDocRef = db.collection('Messages').doc();
         await messageDocRef.set({
             _id,
@@ -240,21 +283,25 @@ const DialogScreen = () => {
             },
             ...(text && { text }),
             ...(audioUrl && { audio: audioUrl }),
+            ...(videoUrl && { video: videoUrl }),
             createdAt,
             ...(maindis && { maindis }),
+            ...(fileName && {fileName}),
+            ...(circle && {circle}),
             senderId,
             receiverId,
         });
 
+
+        const recipientDoc = await firestore().collection('users').doc(receiverId).get();
+        const recipientData = recipientDoc.data();
+        const recipientTokens = recipientData?.deviceTokens || [];
+
+        if (recipientTokens.length > 0) {
+            sendNotification(recipientTokens, currentUser?.displayName || 'Me', text || 'Sent a message', senderId, targetRoomId);
+        }
         console.log('Message successfully added to the Messages collection!');
     }, [id, currentUser]);
-
-
-
-
-
-
-
 
     const renderMessageImage = props => {
         const { currentMessage } = props;
@@ -303,7 +350,6 @@ const DialogScreen = () => {
                                 /> :
                                     <Images.Svg.userIcon style={styles.profileImg} />
                             }
-
                         </RN.View>
                     }
                     title={
@@ -322,9 +368,8 @@ const DialogScreen = () => {
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                 >
-
                     <RN.View style={styles.container}>
-                        {loading ? ( // Display loading indicator when loading is true
+                        {loading ? (
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <ActivityIndicator size="large" color={COLORS.white} />
                             </View>) :
@@ -359,10 +404,10 @@ export default observer(DialogScreen);
 const styles = RN.StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: Platform.OS === 'ios' ? 30 : 10,
         width: '100%',
         height: '100%',
         backgroundColor: 'black',
+        paddingBottom: Platform.OS === 'ios' ? 30 : 10,
     },
     audioContainer: {
         flexDirection: 'row',

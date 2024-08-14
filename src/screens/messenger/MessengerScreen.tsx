@@ -28,16 +28,15 @@ const MessengerScreen = () => {
   const [loading, setLoading] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Ref to track previous userData for comparison
   const previousUserDataRef = useRef(userData);
 
   const formatTimestampToTime = (timestamp) => {
-    if (!timestamp) return ''; 
+    if (!timestamp) return '';
 
-    const date = new Date(timestamp); 
+    const date = new Date(timestamp);
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`; 
+    return `${hours}:${minutes}`;
   };
 
   useEffect(() => {
@@ -45,22 +44,20 @@ const MessengerScreen = () => {
       setLoading(true);
       getAllUsersWithLastMessages()
         .then(() => {
-          // console.log("User data fetched:", userData);
           setDataLoaded(true);
           previousUserDataRef.current = userData;
         })
         .finally(() => setLoading(false));
     }
-    // Removing userData from dependencies to avoid re-triggering the effect
   }, [isFocused, getAllUsersWithLastMessages]);
-  
+
 
   const renderItems = useCallback(() => {
     const sortedUserData = [...userData].sort((a, b) => {
       if (!a.lastMessage || !b.lastMessage) return 0;
-      const aDate:any = new Date(a.lastMessage.createdAt); 
-      const bDate:any = new Date(b.lastMessage.createdAt);
-      return bDate - aDate; 
+      const aDate: any = new Date(a.lastMessage.createdAt);
+      const bDate: any = new Date(b.lastMessage.createdAt);
+      return bDate - aDate;
     });
 
     return sortedUserData.map((item, index) => {
@@ -79,7 +76,14 @@ const MessengerScreen = () => {
           key={index}
           avatar={item.avatar}
           name={item.name}
-          description={item.lastMessage?.audio ? 'Voice message' : item.lastMessage?.text ?? 'Hi! Please call me at 16...'}
+          description={
+            item.lastMessage?.audio
+              ? 'Voice message'
+              : item.lastMessage?.video
+                ? 'Video message'
+                : item.lastMessage?.text || ''
+          }
+
           time={formattedTime}
         />
       );
