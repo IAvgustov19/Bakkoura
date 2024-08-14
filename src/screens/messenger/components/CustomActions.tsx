@@ -496,7 +496,6 @@ const CustomComposer = props => {
   }, [audioRec, maindis, onPressCheck, onPressCheck2]);
 
 
-
   return (
     <>
       {renderCamera()}

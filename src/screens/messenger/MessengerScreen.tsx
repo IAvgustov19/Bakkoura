@@ -13,7 +13,6 @@ import { RootStackParamList } from '../../types/navigation';
 import LoadingScreen from '../auth/Loading/LoadingScreen';
 import { windowWidth } from '../../utils/styles';
 import { observer } from 'mobx-react-lite';
-
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
 const MessengerScreen = () => {

@@ -75,6 +75,7 @@ messaging().onMessage(async remoteMessage => {
   }
 });
 
+
 const App = () => {
   const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
   const { cloneAllEventsData, checkEvent } = useRootStore().calendarStore;
@@ -187,9 +188,24 @@ const App = () => {
   //   }
   // };
 
+  // useEffect(() => {
+  //   syncUsersToFirestore();
+  // }, [])
 
 
 
+
+const { ForegroundService } = NativeModules;
+  
+
+const startService = () => {
+  ForegroundService.startService();
+};
+
+
+useEffect(() => {
+  console.log('ForegroundService', ForegroundService)
+}, [])
 
 
   useEffect(() => {
