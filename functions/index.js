@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const serviceAccount = require('./'); // Path to your service account key
+const serviceAccount = require('./bakkoura-app-firebase-adminsdk-ziu1e-cada306c64.json'); // Path to your service account key
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
