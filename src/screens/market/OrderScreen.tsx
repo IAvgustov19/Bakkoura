@@ -24,6 +24,7 @@ const OrderScreen = () => {
   const [accept, setAccept] = useState(false);
   const {setOrderState, orderState} = useRootStore().marketStore;
   const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
+  const {onHandleWebVIew} = useRootStore().marketStore;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -39,6 +40,11 @@ const OrderScreen = () => {
         animated: true,
       });
     }
+  };
+
+  const onHandleCategory = () => {
+    navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
+    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
   };
 
   const onSendEmail = () => {
@@ -82,9 +88,9 @@ const OrderScreen = () => {
                     Your personal data are guaranteed to be safe and will not be
                     handed over to third parties.
                   </RN.Text>
-                  <RN.Text style={styles.privacyLink}>
-                    I accept the privacy policy.
-                  </RN.Text>
+                  <RN.Pressable onPress={onHandleCategory}>
+      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
+    </RN.Pressable>
                 </RN.View>
               </RN.View>
               <ButtonComp
@@ -137,6 +143,6 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   privacyLink: {
-    color: COLORS.blue,
+    color: '#ECC271',
   },
 });

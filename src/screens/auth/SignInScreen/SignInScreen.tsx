@@ -110,28 +110,37 @@ const SignInScreen = () => {
   });
 
   const signIn = async (email, password) => {
-    try {
-      const userCredential = await authh().signInWithEmailAndPassword(
-        email,
-        password,
-      );
-      const user = userCredential.user;
-      const token = await user.getIdToken();
-      console.log(
-        'user.emailVerifieduser.emailVerifieduser.emailVerified',
-        user.emailVerified,
-      );
-      if (user.emailVerified) {
-        setAuthorized();
-      } else {
-        Alert.alert('email doesnt exist');
+    if(email != null && email != '' && password != null && password != ''){
+      try {
+        const userCredential = await authh().signInWithEmailAndPassword(
+          email,
+          password,
+        );
+        const user = userCredential.user;
+        const token = await user.getIdToken();
+        // console.log(
+        //   'user.emailVerifieduser.emailVerifieduser.emailVerified',
+        //   user.emailVerified,
+        // );
+        if (user.emailVerified) {
+          setAuthorized();
+        } else {
+          Alert.alert('Account does not exist');
+        }
+        //console.log(token, 77);
+        // You can use the token or user object as needed
+      } catch (error) {
+        //console.error('Error signing in:', error.message);
+        // Handle the error here, such as displaying a message to the user
+        if((error.message as string).includes('invalid')){
+          Alert.alert('Incorrect username or password')
+        }
+        else if((error.message as string).includes('network')){
+          Alert.alert('Check your internet connection')
+        }
       }
-      console.log(token, 77);
-      // You can use the token or user object as needed
-    } catch (error) {
-      console.error('Error signing in:', error.message);
-      // Handle the error here, such as displaying a message to the user
     }
+    
   };
 
   const signInWithGoogle = async () => {
@@ -194,19 +203,19 @@ const SignInScreen = () => {
               />
               <RN.View style={styles.content}>
                 <View style={styles.titleBox}>
-                  {/* <TextView title="Hello Friend!" />
-                <TextView text="Start tracking and improving Your Live!" /> */}
+                  <TextView title="Hello Friend!" />
+                <TextView text="Start tracking and improving Your Live!" />
                 </View>
                 <View style={styles.formBox}>
                   <TextView style={styles.label} text="Login" />
                   <Input
-                    placeholder="JB"
+                    placeholder="Enter your login"
                     onChangeText={text => setEmail(text)}
                     value={email}
                   />
                   <TextView style={styles.label} text="Password" />
                   <Input
-                    placeholder="77777"
+                    placeholder="Enter your password"
                     onChangeText={text => setPassword(text)}
                     value={password}
                     secureTextEntry
@@ -345,4 +354,7 @@ const styles = StyleSheet.create({
   signUpText: {
     color: '#ECC271',
   },
+  input:{
+    color:'red'
+  }
 });

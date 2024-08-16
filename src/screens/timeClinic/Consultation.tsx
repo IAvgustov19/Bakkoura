@@ -26,6 +26,7 @@ const Consultation: React.FC<Props> = ({}) => {
   const navigation = useNavigation();
   const {setOrderState, orderState} = useRootStore().marketStore;
   const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
+  const {onHandleWebVIew} = useRootStore().marketStore;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -41,6 +42,11 @@ const Consultation: React.FC<Props> = ({}) => {
         animated: true,
       });
     }
+  };
+
+  const onHandleCategory = () => {
+    navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
+    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
   };
 
   const onSendEmail = () => {
@@ -75,9 +81,9 @@ const Consultation: React.FC<Props> = ({}) => {
                     Your personal data are guaranteed to be safe and will not be
                     handed over to third parties.
                   </RN.Text>
-                  <RN.Text style={styles.privacyLink}>
-                    I accept the privacy policy.
-                  </RN.Text>
+                  <RN.Pressable onPress={onHandleCategory}>
+      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
+    </RN.Pressable>
                 </RN.View>
               </RN.View>
               <ButtonComp

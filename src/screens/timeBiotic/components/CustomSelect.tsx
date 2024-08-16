@@ -57,7 +57,7 @@ const styles = RN.StyleSheet.create({
     right: 0,
     zIndex: 1,
     top: '100%',
-    borderRadius: 30,
+    borderRadius: 20,
     borderWidth: 1,
     position: 'absolute',
     backgroundColor: COLORS.black,

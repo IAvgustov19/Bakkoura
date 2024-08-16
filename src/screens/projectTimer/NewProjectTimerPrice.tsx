@@ -39,7 +39,7 @@ const NewProjectTimerPrice = () => {
                 itemHeight={55}
                 onChange={selectPrice}
                 selectedValue={firstSelectedValue}
-                label="$ / H"
+                label="  $ / H"
                 labelLeft={'60%'}
                 initialScrollIndex={Number(newProjectTimerState.price)}
               />

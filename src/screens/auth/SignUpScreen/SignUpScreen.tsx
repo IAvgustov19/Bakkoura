@@ -138,23 +138,26 @@ const SignUpScreen = () => {
         switch (error.code) {
           case 'auth/weak-password':
             Alert.alert(
-              'Password is too weak. Please enter a stronger password.',
+              'Password is too weak.', 'Please enter a stronger password.',
             );
             break;
           case 'auth/invalid-email':
             Alert.alert(
-              'Email address is badly formatted. Please enter a valid email.',
+              'Email address is badly formatted', 'Please enter a valid email.',
             );
             break;
           case 'auth/email-already-in-use':
-            Alert.alert(
+            Alert.alert('Email is busy',
               'The email address is already in use by another account.',
             );
             break;
+            case 'auth/network-request-failed':
+            Alert.alert('Check your internet connection');
+            break;
           default:
-            Alert.alert('Sign-up error:', error.message);
+            Alert.alert('Something went wrong', 'Please try again later');
         }
-        clearNewUserState();
+        //clearNewUserState();
         clearLoginUseState();
       } finally {
         setLoading(false);
@@ -196,8 +199,8 @@ const SignUpScreen = () => {
             />
             <RN.ScrollView
               ref={scrollViewRef}
-              // showsHorizontalScrollIndicator={false}
-              // showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
             >
               <RN.View style={styles.content}>
                 <LoadingScreen loading={loading} setLoading={setLoading} />
@@ -278,7 +281,6 @@ const styles = StyleSheet.create({
   content: {
     height: windowHeight - 100,
     paddingBottom: 20,
-    // backgroundColor: 'red',
   },
   signUpBtn: {
     marginTop: 30,
