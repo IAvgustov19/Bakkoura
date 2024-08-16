@@ -30,7 +30,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
     <RN.View style={styles.formBox}>
       <Input
         title="Name"
-        placeholder="JB"
+        placeholder="Enter your name"
         value={newUser.name}
         onPressIn={() => focusInput('name')}
         onChangeText={e => setNewUser('name', e)}
@@ -38,7 +38,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
       />
       <Input
         title="Username"
-        placeholder="Username"
+        placeholder="Enter your username"
         value={newUser.username}
         onPressIn={() => focusInput('username')}
         onChangeText={e => setNewUser('username', e)}
@@ -47,7 +47,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
       />
       <Input
         title="Email"
-        placeholder="Email"
+        placeholder="Enter your email"
         value={newUser.email}
         onPressIn={() => focusInput('email')}
         onChangeText={e => setNewUser('email', e)}
@@ -56,7 +56,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
       <Input
         secureTextEntry
         title="Password"
-        placeholder="77777"
+        placeholder="Enter your password"
         value={newUser.password}
         onChangeText={e => setNewUser('password', e)}
         inputRef={(ref) => (inputRefs.current.password = ref)}

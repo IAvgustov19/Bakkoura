@@ -68,6 +68,7 @@ const styles = RN.StyleSheet.create({
         paddingBottom: 24,
         flexDirection: 'row',
         alignItems: 'center',
+        width:200
     },
     itemInfo: { alignItems: 'center', width: 80 },
     label: {
