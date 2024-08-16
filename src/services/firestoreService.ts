@@ -9,9 +9,16 @@ import {
 import {NewEventStateType} from '../types/calendar';
 import {SelectedCountriesType} from '../types/worldTime';
 import {AlarmListsItemType} from '../types/alarm';
+import { query, orderBy, limit } from "firebase/firestore"; 
+import { v4 as uuidv4 } from 'uuid';
+import RNFS from 'react-native-fs';
 
 import auth from '@react-native-firebase/auth';
 import {UserType} from '../types/user';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Platform } from 'react-native';
+import storage from '@react-native-firebase/storage';
+import RNFetchBlob from 'rn-fetch-blob';
 
 // calendar events
 export const addEventToFirestore = async event => {
@@ -486,11 +493,15 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
   }
 };
 
-export const updateEtapsInFirestore = async (id, updatedEtap) => {
+export const updateEtapsInFirestore = async (id: any, updatedEtap: Partial<TogetherDataType>) => {
   try {
-    await db.collection('etaps').doc(id).update(updatedEtap);
+    const filteredEtap = Object.fromEntries(
+      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined)
+    );
+
+    await db.collection('etaps').doc(id).update(filteredEtap);
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error updating document:', error);
   }
 };
 
@@ -884,11 +895,24 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
     console.error('Error deleting project timer:', error);
   }
 };
-
-// users
-export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]> => {
+export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string): Promise<UserType[]> => {
   try {
-    const usersSnapshot = await db.collection('users').where('id', '!=', uid).get();
+    let query = db.collection('users')
+      .where('id', '!=', uid)
+      .orderBy('id');
+
+    if (lastDocId) {
+      const lastDoc = await db.collection('users').doc(lastDocId).get();
+      if (lastDoc.exists) {
+        query = query.startAfter(lastDoc);
+      } else {
+        console.warn(`Document with id ${lastDocId} does not exist.`);
+        return []; // Optionally return an empty array if the lastDocId does not exist
+      }
+    }
+
+    const usersSnapshot = await query.get();
+
     const usersData: UserType[] = [];
 
     usersSnapshot.forEach(doc => {
@@ -898,22 +922,19 @@ export const getAllUsersFromFirestore = async (uid:  string): Promise<UserType[]
 
     return usersData;
   } catch (error) {
-    console.error('Error', error);
+    console.error('Error fetching users from Firestore', error);
     return [];
   }
 };
 
-// export const syncUsersToRealtimeDB = async () => {
-//   try {
-//     const usersData = await getAlarmsFromFirestore();
-//     const realtimeDBRef = firebase.database().ref('users');
-
-//     usersData.forEach(user => {
-//       realtimeDBRef.child(user.id).set(user);
-//     });
-
-//     console.log('Users synchronized to Realtime Database successfully!');
-//   } catch (error) {
-//     console.error('Error synchronizing users to Realtime Database:', error);
-//   }
-// };
+export const uploadAudioToStorage = async (uri, path) => {
+  try {
+      const reference = storage().ref(path);
+      await reference.putFile(uri);
+      const url = await reference.getDownloadURL();
+      return url;
+  } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+  }
+};

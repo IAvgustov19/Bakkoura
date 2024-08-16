@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ViewStyle} from 'react-native';
 import {verticalScale} from '../../utils/dimensions';
 import {windowHeight} from '../../utils/styles';
 import RN from '../RN';
@@ -10,6 +10,7 @@ type Props = {
   rightItem?: React.ReactNode;
   title?: any;
   centerItem?: React.ReactNode;
+  containerStyle?: ViewStyle;
 };
 
 const HeaderContent: React.FC<Props> = ({
@@ -17,9 +18,10 @@ const HeaderContent: React.FC<Props> = ({
   rightItem,
   title,
   centerItem,
+  containerStyle,
 }) => {
   return (
-    <RN.View style={styles.header}>
+    <RN.View style={[styles.header, containerStyle]}>
       {leftItem && <RN.View style={styles.leftItem}>{leftItem}</RN.View>}
       {title && (
         <TextView

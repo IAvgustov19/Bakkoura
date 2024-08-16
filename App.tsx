@@ -20,14 +20,9 @@ import {
 } from 'react-native';
 import RN from './src/components/RN';
 import AppNavigator from './src/navigation/AppNavigator';
-// import { PermissionsAndroid, Platform } from 'react-native';
-// import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
-// import { useEffect } from 'react';
-// import auth from '@react-native-firebase/auth'
-// import { syncUsersToFirestore } from './src/services/firestoreService';
-
 import BackgroundTimer from 'react-native-background-timer';
 import useRootStore from './src/hooks/useRootStore';
+import messaging from '@react-native-firebase/messaging';
 import 'react-native-reanimated';
 
 import SharedGroupPreferences from 'react-native-shared-group-preferences';
@@ -48,9 +43,58 @@ export const updateLastSeen = userId => {
       console.error('Error updating lastSeen field:', error);
     });
 };
-import {db, firebase} from './src/config/firebase';
-import {Images} from './src/assets';
-import {windowWidth} from './src/utils/styles';
+import { db, firebase } from './src/config/firebase';
+import PushNotification from 'react-native-push-notification';
+
+
+export const channelId = 'bts';
+
+PushNotification.createChannel(
+  {
+    channelId: channelId,
+    channelName: 'Default Channel',
+    channelDescription: 'A default channel for notifications',
+    soundName: 'default',
+    importance: 4,
+    vibrate: true,
+  },
+  (created) => console.log(`createChannel returned '${created}'`)
+);
+
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
+messaging().onMessage(async remoteMessage => {
+  const { title, body } = remoteMessage.notification;
+  const { senderId, chatId } = remoteMessage.data;
+  const uid = auth().currentUser.uid;
+  const openChatWith = await db.collection('users').doc(uid).get();
+  console.log(openChatWith.data().openChatWith);
+  let openWith = openChatWith.data().openChatWith;
+
+  console.log(senderId,"senderIdsenderIdsenderId",openWith);
+  
+
+  if (senderId !== openWith) {
+    console.log('Message received from a different user in the foreground!', remoteMessage);
+
+    // Show local notification
+    PushNotification.localNotification({
+      channelId: channelId,
+      title: title,
+      message: body,
+    });
+  } else {
+    console.log('Message received from the currently active chat user');
+    // Optionally, update the chat UI here without changing the screen
+    // You might want to update the chat view with the new message.
+  }
+});
+
+
+
+
 const App = () => {
   const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
   const {cloneAllEventsData, checkEvent} = useRootStore().calendarStore;
@@ -166,6 +210,22 @@ const App = () => {
   // useEffect(() => {
   //   syncUsersToFirestore();
   // }, [])
+
+
+
+
+const { ForegroundService } = NativeModules;
+  
+
+const startService = () => {
+  ForegroundService.startService();
+};
+
+
+useEffect(() => {
+  console.log('ForegroundService', ForegroundService)
+}, [])
+
 
   useEffect(() => {
     const requestStoragePermissions = async () => {

@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.2.1)" variant="all" version="8.2.1">
+
+    <issue
+        id="MissingClass"
+        message="Class referenced in the manifest, `com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService`, was not found in the project or the libraries"
+        errorLine1="        &lt;service android:name=&quot;com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService&quot;/>"
+        errorLine2="                              ">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="81"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="ScopedStorage"
+        message="WRITE_EXTERNAL_STORAGE is deprecated (and is not granted) when targeting Android 13+. If you need to write to shared storage, use the `MediaStore.createWriteRequest` intent."
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; />"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="7"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="ScopedStorage"
+        message="READ_EXTERNAL_STORAGE is deprecated (and is not granted) when targeting Android 13+. If you need to query or interact with MediaStore or media files on the shared storage, you should instead use one or more new storage permissions: `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO` or `READ_MEDIA_AUDIO`."
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; />"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="8"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="RedundantLabel"
+        message="Redundant label can be removed"
+        errorLine1="            android:label=&quot;@string/app_name&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="93"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.facebook.flipper:flipper than 0.76.0 is available: 0.201.0"
+        errorLine1="    implementation(&apos;com.facebook.flipper:flipper:0.76.0&apos;) // Update this to the latest available version"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="128"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.facebook.flipper:flipper-network-plugin than 0.76.0 is available: 0.201.0"
+        errorLine1="    implementation(&apos;com.facebook.flipper:flipper-network-plugin:0.76.0&apos;)"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="129"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.firebase:firebase-bom than 32.1.1 is available: 33.1.2"
+        errorLine1="     implementation platform(&apos;com.google.firebase:firebase-bom:32.1.1&apos;) "
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="131"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.android.gms:play-services-auth than 20.1.0 is available: 21.2.0"
+        errorLine1="    implementation (&apos;com.google.android.gms:play-services-auth:20.1.0&apos;)"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="136"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.firebase:firebase-analytics than 17.3.0 is available: 22.0.2"
+        errorLine1="    implementation (&apos;com.google.firebase:firebase-analytics:17.3.0&apos;)"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="138"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="LockedOrientationActivity"
+        message="Expecting `android:screenOrientation=&quot;unspecified&quot;` or `&quot;fullSensor&quot;` for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices"
+        errorLine1="            android:screenOrientation=&quot;portrait&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="95"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="PermissionImpliesUnsupportedChromeOsHardware"
+        message="Permission exists without corresponding hardware `&lt;uses-feature android:name=&quot;android.hardware.camera&quot; required=&quot;false&quot;>` tag"
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.CAMERA&quot; />    "
+        errorLine2="     ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="19"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="TrustAllX509TrustManager"
+        message="`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers">
+        <location
+            file="$HOME/Desktop/works/Bakkoura/node_modules/rn-fetch-blob/android/build/.transforms/5155851abd243aea1c897be26583b612/transformed/out/jars/classes.jar"/>
+    </issue>
+
+    <issue
+        id="TrustAllX509TrustManager"
+        message="`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers">
+        <location
+            file="$HOME/Desktop/works/Bakkoura/node_modules/rn-fetch-blob/android/build/.transforms/5155851abd243aea1c897be26583b612/transformed/out/jars/classes.jar"/>
+    </issue>
+
+    <issue
+        id="SystemPermissionTypo"
+        message="Did you mean `android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE`?"
+        errorLine1="    &lt;uses-permission android:name=&quot;${applicationId}.permission.C2D_MESSAGE&quot; />"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="17"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        message="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        errorLine1="        android:allowBackup=&quot;false&quot;"
+        errorLine2="                             ~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="33"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.react_native_dev_server_port` appears to be unused">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.white` appears to be unused"
+        errorLine1="    &lt;color name=&quot;white&quot;>#FFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="2"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.ic_launcher_foreground` appears to be unused">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_foreground.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.font.my_font_family` appears to be unused"
+        errorLine1="&lt;font-family xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/font/my_font_family.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnativeratings_dist_images_airbnbstar` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnativeratings_dist_images_airbnbstar.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnativeratings_dist_images_airbnbstarselected` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnativeratings_dist_images_airbnbstarselected.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnativeratings_dist_images_bell` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnativeratings_dist_images_bell.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnativeratings_dist_images_heart` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnativeratings_dist_images_heart.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnativeratings_dist_images_rocket` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnativeratings_dist_images_rocket.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnativeratings_dist_images_star` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnativeratings_dist_images_star.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnavigation_elements_src_assets_backicon` appears to be unused">
+        <location
+            file="src/main/res/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.node_modules_reactnavigation_elements_src_assets_backiconmask` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.preview` appears to be unused">
+        <location
+            file="src/main/res/drawable/preview.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.ringtone1` appears to be unused">
+        <location
+            file="src/main/res/raw/ringtone1.wav"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.ringtone2` appears to be unused">
+        <location
+            file="src/main/res/raw/ringtone2.wav"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.ringtone3` appears to be unused">
+        <location
+            file="src/main/res/raw/ringtone3.wav"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.ringtone4` appears to be unused">
+        <location
+            file="src/main/res/raw/ringtone4.wav"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.ringtone5` appears to be unused">
+        <location
+            file="src/main/res/raw/ringtone5.wav"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.ringtone6` appears to be unused">
+        <location
+            file="src/main/res/raw/ringtone6.wav"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.sound` appears to be unused">
+        <location
+            file="src/main/res/raw/sound.mp3"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_bakkourawatch` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_bakkourawatch.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_bakkourawatchlines` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_bakkourawatchlines.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_bakkourawatchmain` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_bakkourawatchmain.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_bottomsheetbg` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_bottomsheetbg.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_duringtimerbg` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_duringtimerbg.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_homewatch24` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_homewatch24.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_homewatch24and30` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_homewatch24and30.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_homewatch30` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_homewatch30.webp"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_justbakkurawatch` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_justbakkurawatch.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_light` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_light.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_pandatimer` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_pandatimer.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_sectorwatch` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_sectorwatch.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_sectorwatchhours` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_sectorwatchhours.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_stopwatch24` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_stopwatch24.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_stopwatch30` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_stopwatch30.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_stopwatchbg` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_stopwatchbg.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_watchback` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_watchback.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_welcome1` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_welcome1.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_welcome2` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_welcome2.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_welcome3` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_welcome3.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_welcome4` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_welcome4.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.src_assets_images_welcomebg` appears to be unused">
+        <location
+            file="src/main/res/drawable-mdpi/src_assets_images_welcomebg.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.raw.src_assets_sounds_metronom` appears to be unused">
+        <location
+            file="src/main/res/raw/src_assets_sounds_metronom.mp3"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.xml.widget_info` appears to be unused"
+        errorLine1="&lt;appwidget-provider xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/xml/widget_info.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-mdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-xhdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-xxhdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-xxxhdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/preview.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/preview.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/widget_preview.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/widget_preview.png"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-hdpi`: node_modules_reactnativeratings_dist_images_airbnbstar.png, node_modules_reactnativeratings_dist_images_airbnbstarselected.png, node_modules_reactnativeratings_dist_images_bell.png, node_modules_reactnativeratings_dist_images_heart.png, node_modules_reactnativeratings_dist_images_rocket.png... (24 more)">
+        <location
+            file="src/main/res/drawable-hdpi"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-xhdpi`: node_modules_reactnativeratings_dist_images_airbnbstar.png, node_modules_reactnativeratings_dist_images_airbnbstarselected.png, node_modules_reactnativeratings_dist_images_bell.png, node_modules_reactnativeratings_dist_images_heart.png, node_modules_reactnativeratings_dist_images_rocket.png... (24 more)">
+        <location
+            file="src/main/res/drawable-xhdpi"/>
+    </issue>
+
+    <issue
+        id="IconDensities"
+        message="Missing the following drawables in `drawable-xxhdpi`: node_modules_reactnativeratings_dist_images_airbnbstar.png, node_modules_reactnativeratings_dist_images_airbnbstarselected.png, node_modules_reactnativeratings_dist_images_bell.png, node_modules_reactnativeratings_dist_images_heart.png, node_modules_reactnativeratings_dist_images_rocket.png... (24 more)">
+        <location
+            file="src/main/res/drawable-xxhdpi"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: preview.png, ic_launcher_foreground.png">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_foreground.png"/>
+        <location
+            file="src/main/res/drawable/preview.png"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_layout.xml"
+            line="9"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Text 1&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;Text 1&quot; "
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_layout.xml"
+            line="35"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Text 2&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;Text 2&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_layout.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Text 3&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;Text 3&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_layout.xml"
+            line="53"
+            column="13"/>
+    </issue>
+
+</issues>

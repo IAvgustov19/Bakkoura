@@ -181,7 +181,7 @@ const PersonalArea = () => {
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont title="Couple Time" onPress={() => {}} />
                 </RN.View>
-                <RN.View style={[styles.eventsTypeList, {marginTop: 10}]}>
+                <RN.View style={[styles.eventsTypeList, {marginTop: 20}]}>
                   <ButtonComp
                     title="Delete account"
                     onPress={onHandleDeleteUser}

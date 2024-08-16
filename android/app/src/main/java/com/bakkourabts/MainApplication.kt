@@ -20,7 +20,8 @@ class MainApplication : Application(), ReactApplication {
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
-              //add(ReactNativeFirebaseMessagingPackage())
+              // add(ReactNativeFirebaseMessagingPackage())
+              add(WidgetManagerPackage()) // Add your custom package here
             }
 
         override fun getJSMainModuleName(): String = "index"
