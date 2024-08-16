@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
+import {NativeModules} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   onPress?: () => void;
@@ -10,12 +12,19 @@ type Props = {
   time30?: string;
 };
 
+const {WidgetManager} = NativeModules;
+
 const AlarmNotification: React.FC<Props> = ({
   onPress,
   time24,
   extraTime,
   time30,
 }) => {
+  useEffect(() => {
+    // Send data to native module
+    WidgetManager?.updateWidgetData(time24, extraTime, time30);
+  }, [time24, extraTime, time30]);
+
   return (
     <RN.TouchableOpacity style={styles.container} onPress={onPress}>
       <Images.Svg.alarmNotificatiion />
@@ -28,7 +37,7 @@ const AlarmNotification: React.FC<Props> = ({
   );
 };
 
-export default AlarmNotification;
+export default observer(AlarmNotification);
 
 const styles = RN.StyleSheet.create({
   container: {
@@ -42,6 +51,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     height: '100%',
+    bottom: 5,
   },
   extraTime: {
     color: COLORS.yellow,
@@ -51,6 +61,7 @@ const styles = RN.StyleSheet.create({
   time: {
     color: COLORS.white,
     fontSize: 14,
+    fontFamily: 'Rationale-Regular',
     textAlign: 'center',
   },
 });

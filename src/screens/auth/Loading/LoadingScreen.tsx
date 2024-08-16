@@ -34,11 +34,9 @@ export default LoadingScreen;
 const styles = RN.StyleSheet.create({
     overlay: {
         width: '100%',
-        position: 'absolute',
-        height: windowHeight,
-        alignItems: 'center',
-        // backgroundColor: 'transparent',
         zIndex: 1000,
+        height: '100%',
+        alignItems: 'center',
         justifyContent: 'center',
     },
 })

@@ -1,33 +1,27 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
-import RN from '../../components/RN';
-import LinearContainer from '../../components/LinearContainer/LinearContainer';
-import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets';
-import StartBtn from '../../components/StopStartBtn/StopStartBtn';
+import React, {useCallback, useEffect, useState, useRef} from 'react';
+import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {
   useFocusEffect,
   useIsFocused,
   useNavigation,
-  useRoute,
 } from '@react-navigation/native';
-import {windowHeight, windowWidth} from '../../utils/styles';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import {Images} from '../../assets';
+import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import {APP_ROUTES} from '../../navigation/routes';
-import {Text} from 'react-native';
 import MessageItem from './components/MessageItem';
-import {formatDateTime, secondsToHMS} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../types/navigation';
-import {db} from '../../config/firebase';
-import auth from '@react-native-firebase/auth';
-import {getAllUsersFromFirestore} from '../../services/firestoreService';
-import {observer} from 'mobx-react-lite';
 import LoadingScreen from '../auth/Loading/LoadingScreen';
-
+import {windowWidth} from '../../utils/styles';
+import {observer} from 'mobx-react-lite';
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
   APP_ROUTES.DIALOG_SCREEN
 >;
+
 const MessengerScreen = () => {
   // const navigation = useNavigation<NavigationProp>();
   // const {
@@ -77,15 +71,50 @@ const MessengerScreen = () => {
 
   const navigation = useNavigation<NavigationProp>();
   const isFocused = useIsFocused();
+  const {
+    loading: storeLoading,
+    userData,
+    getAllUsersWithLastMessages,
+  } = useRootStore().messangerStore;
 
-  const {userData, getAllUsers} = useRootStore().messangerStore;
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const previousUserDataRef = useRef(userData);
+
+  const formatTimestampToTime = timestamp => {
+    if (!timestamp) return '';
+
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
 
   useEffect(() => {
-    getAllUsers();
-  }, [isFocused]);
+    if (isFocused && !loading) {
+      setLoading(true);
+      getAllUsersWithLastMessages()
+        .then(() => {
+          setDataLoaded(true);
+          previousUserDataRef.current = userData;
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [isFocused, getAllUsersWithLastMessages]);
 
   const renderItems = useCallback(() => {
-    return userData.map((item, index) => {
+    const sortedUserData = [...userData].sort((a, b) => {
+      if (!a.lastMessage || !b.lastMessage) return 0;
+      const aDate: any = new Date(a.lastMessage.createdAt);
+      const bDate: any = new Date(b.lastMessage.createdAt);
+      return bDate - aDate;
+    });
+
+    return sortedUserData.map((item, index) => {
+      const createdAt = item.lastMessage?.createdAt;
+      const formattedTime = createdAt ? formatTimestampToTime(createdAt) : '';
+
       return (
         <MessageItem
           onNavigate={() =>
@@ -98,44 +127,52 @@ const MessengerScreen = () => {
           key={index}
           avatar={item.avatar}
           name={item.name}
-          description={' Hi! Please call me at 16...'}
-          time={'02:30'}
+          description={
+            item.lastMessage?.audio
+              ? 'Voice message'
+              : item.lastMessage?.video
+              ? 'Video message'
+              : item.lastMessage?.text || ''
+          }
+          time={formattedTime}
         />
       );
     });
-  }, [userData]);
+  }, [userData, navigation]);
 
   return (
-    <LinearContainer
-      children={
-        <RN.View style={styles.container}>
-          <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
-            rightItem={
-              <Images.Svg.searchButton
-                width={39}
-                height={39}
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)
-                }
-              />
-            }
-            title="Messenger"
-          />
-          <RN.View style={styles.content}>
-            {/* {loading ? <LoadingScreen loading={loading} setLoading={() => { }} /> : userData.length == 0 ?
-              <RN.View style={styles.center}>
-                <Text style={styles.text}>There are no dialogues</Text>
-              </RN.View>
-              :
-              <RN.ScrollView
-                style={styles.flatList}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}>
-                {renderItems()}
-              </RN.ScrollView>
-             } 
-            <RN.View style={{ position: 'absolute', display: 'flex', width: windowWidth - 12, bottom: 0, justifyContent: 'center', alignItems: 'center', }}>
+    <LinearContainer>
+      <View style={styles.container}>
+        <HeaderContent
+          leftItem={<Images.Svg.btsRightLinear />}
+          rightItem={
+            <Images.Svg.searchButton
+              width={39}
+              height={39}
+              onPress={() =>
+                navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)
+              }
+            />
+          }
+          title="Messenger"
+        />
+        <View style={styles.content}>
+          {loading ? (
+            <LoadingScreen loading={loading} setLoading={() => {}} />
+          ) : userData.length === 0 ? (
+            <View style={styles.center}>
+              <Text style={styles.text}>There are no dialogues</Text>
+            </View>
+          ) : (
+            <ScrollView
+              style={styles.flatList}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}>
+              {renderItems()}
+            </ScrollView>
+          )}
+          {!loading && (
+            <View style={styles.startBtnContainer}>
               <StartBtn
                 elWidth={55}
                 subWidth={75}
@@ -145,74 +182,42 @@ const MessengerScreen = () => {
                   navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)
                 }
               />
-            </RN.View> */}
-            {userData.length == 0 ? (
-              <RN.View style={styles.center}>
-                <Text style={styles.text}>There are no dialogues</Text>
-              </RN.View>
-            ) : (
-              <RN.ScrollView
-                style={styles.flatList}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}>
-                {renderItems()}
-              </RN.ScrollView>
-            )}
-            <RN.View
-              style={{
-                position: 'absolute',
-                display: 'flex',
-                width: windowWidth - 12,
-                bottom: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <StartBtn
-                elWidth={55}
-                subWidth={75}
-                icon={<Images.Svg.btnAddIcon />}
-                primary
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)
-                }
-              />
-            </RN.View>
-          </RN.View>
-        </RN.View>
-      }
-    />
+            </View>
+          )}
+        </View>
+      </View>
+    </LinearContainer>
   );
 };
 
 export default observer(MessengerScreen);
 
-const styles = RN.StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    justifyContent: 'center',
-    // alignItems: 'center',
+    flex: 1,
     paddingHorizontal: 5,
   },
   flatList: {
-    height: '100%',
+    flex: 1,
   },
   content: {
-    display: 'flex',
-    // backgroundColor: 'red',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // justifyContent: 'space-between',
-    height: windowHeight - windowHeight / 4,
+    flex: 1,
+    marginBottom: 55,
   },
   text: {
     fontSize: 20,
     color: 'white',
   },
   center: {
-    display: 'flex',
-    height: '90%',
-    width: windowWidth,
-    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  startBtnContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: windowWidth - 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

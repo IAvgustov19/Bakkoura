@@ -5,19 +5,20 @@ import {useNavigation} from '@react-navigation/native';
 import {windowHeight, windowWidth} from '../../../utils/styles';
 import TextView from '../../../components/Text/Text';
 import Input from '../../../components/Input/Input';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import {observer} from 'mobx-react-lite';
 import {db} from '../../../config/firebase';
 import firestore from '@react-native-firebase/firestore';
 import reactNativeBcrypt from 'react-native-bcrypt';
-import {Alert} from 'react-native';
+import {ActivityIndicator, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useRootStore from '../../../hooks/useRootStore';
 import LoadingScreen from '../../auth/Loading/LoadingScreen';
+import {COLORS} from '../../../utils/colors';
 
 const LoginPassword = () => {
   const navigation = useNavigation();
@@ -32,6 +33,15 @@ const LoginPassword = () => {
     showPassword: false,
     showRepeatPassword: true,
   });
+
+  const inputRefs = useRef<{[key: string]: any}>({
+    login: null,
+    password: null,
+  });
+
+  const focusInput = (refName: string) => {
+    inputRefs.current[refName]?.focus();
+  };
 
   const updateUser = async () => {
     try {
@@ -73,9 +83,7 @@ const LoginPassword = () => {
       if (error.code === 'auth/weak-password') {
         Alert.alert('Password should be at least 6 characters');
       } else if (error.code === 'auth/requires-recent-login') {
-        Alert.alert(
-          'To update your password, you need to have logged in recently.',
-        );
+        Alert.alert('To update your password, you need to log in again.');
       } else {
         Alert.alert(error.code);
       }
@@ -87,66 +95,87 @@ const LoginPassword = () => {
   return (
     <LinearContainer
       children={
-        <RN.View style={styles.container}>
-          <LoadingScreen loading={loading} setLoading={setLoading} />
-          {/* <RN.View style={styles.bgContainer}>
-                            <Images.Svg.bg style={styles.bg} />
-                        </RN.View> */}
-          <HeaderContent
-            leftItem={
-              <RN.TouchableOpacity
-                style={styles.back}
-                onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
-              </RN.TouchableOpacity>
-            }
-            title="Login & Password"
-          />
-          <RN.View style={styles.content}>
-            <RN.View style={styles.inputBox}>
-              <Input placeholder="Login" value={userData.login} />
-            </RN.View>
-            <RN.View style={styles.inputBox}>
-              <Input
-                secureTextEntry={showHide.showPassword}
-                placeholder="New Password"
-                value={userData.newPassword}
-                onChangeText={text =>
-                  setUserData(prevData => ({
-                    ...prevData,
-                    newPassword: text,
-                  }))
-                }
-              />
-              <RN.TouchableOpacity
-                style={styles.deleteBox}
-                onPress={() =>
-                  setShowHide(prevData => ({
-                    ...prevData,
-                    showPassword: !prevData.showPassword,
-                  }))
-                }>
-                {showHide.showPassword ? (
-                  <Images.Svg.hidePassword />
-                ) : (
-                  <Images.Svg.showPassword />
-                )}
-              </RN.TouchableOpacity>
-            </RN.View>
-            <RN.View style={styles.addBtn}>
-              <StartBtn
-                text={'Ok'}
-                elWidth={55}
-                subWidth={70}
-                primary={true}
-                onPress={() => {
-                  !loading && updateUser();
-                }}
-              />
+        <>
+          {loading && <RN.View style={styles.overlay} />}
+          <RN.View
+            style={styles.container}
+            pointerEvents={updateLoading ? 'none' : 'auto'}>
+            {/* <LoadingScreen loading={loading} setLoading={setLoading} /> */}
+            {/* <RN.View style={styles.bgContainer}>
+            <Images.Svg.bg style={styles.bg} />
+        </RN.View> */}
+            <HeaderContent
+              leftItem={
+                <RN.TouchableOpacity
+                  style={styles.back}
+                  onPress={() => navigation.goBack()}>
+                  <Images.Svg.arrowLeft />
+                  <TextView text="Back" />
+                </RN.TouchableOpacity>
+              }
+              title="Login & Password"
+            />
+            <RN.View style={styles.content}>
+              <RN.View style={styles.inputBox}>
+                <Input
+                  placeholder="Login"
+                  value={userData.login}
+                  inputRef={ref => (inputRefs.current.login = ref)}
+                  onPressIn={() => focusInput('login')}
+                />
+              </RN.View>
+              <RN.View style={styles.inputBox}>
+                <Input
+                  secureTextEntry={showHide.showPassword}
+                  placeholder="New Password"
+                  value={userData.newPassword}
+                  inputRef={ref => (inputRefs.current.password = ref)}
+                  onPressIn={() => focusInput('password')}
+                  onChangeText={text =>
+                    setUserData(prevData => ({
+                      ...prevData,
+                      newPassword: text,
+                    }))
+                  }
+                />
+                <RN.TouchableOpacity
+                  style={styles.deleteBox}
+                  onPress={() =>
+                    setShowHide(prevData => ({
+                      ...prevData,
+                      showPassword: !prevData.showPassword,
+                    }))
+                  }>
+                  {showHide.showPassword ? (
+                    <Images.Svg.hidePassword />
+                  ) : (
+                    <Images.Svg.showPassword />
+                  )}
+                </RN.TouchableOpacity>
+              </RN.View>
+              <RN.View style={styles.addBtn}>
+                <StartBtn
+                  text={
+                    loading ? (
+                      <ActivityIndicator
+                        color={COLORS.black}
+                        style={{marginTop: 3}}
+                      />
+                    ) : (
+                      'Ok'
+                    )
+                  }
+                  elWidth={55}
+                  subWidth={70}
+                  primary={true}
+                  onPress={() => {
+                    !loading && updateUser();
+                  }}
+                />
+              </RN.View>
             </RN.View>
           </RN.View>
-        </RN.View>
+        </>
       }
     />
   );
@@ -190,5 +219,14 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
     right: '7%',
     top: '30%',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    width: '100%',
+    height: '100%',
   },
 });

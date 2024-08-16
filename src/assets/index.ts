@@ -139,7 +139,11 @@ import imageMessage from './svg/imageMessage.svg';
 import videoMessage from './svg/videoIcon.svg';
 import videoRecord from './svg/videoRecord.svg';
 import fileIcon from './svg/file-1453.svg';
-import instagramIcon from './svg/instagram-logo-thin-svgrepo-com.svg';
+import sendMessage from './svg/sendMessage.svg';
+import audioRecord from './svg/audioRecord.svg';
+import audio from './svg/audio.svg';
+import audioBackground from './svg/audioBackground.svg';
+import voiceLines from './svg/voiceLines.svg';
 
 export const Images = {
   Svg: {
@@ -287,7 +291,11 @@ export const Images = {
     videoMessage,
     videoRecord,
     fileIcon,
-    instagramIcon,
+    sendMessage,
+    audioRecord,
+    audio,
+    audioBackground,
+    voiceLines,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),

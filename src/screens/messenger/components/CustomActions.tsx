@@ -1,5 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, TouchableOpacity, StyleSheet, Pressable} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+  Platform,
+  Alert,
+} from 'react-native';
 import {Composer} from 'react-native-gifted-chat';
 import {launchImageLibrary} from 'react-native-image-picker';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
@@ -17,14 +24,36 @@ import TextView from '../../../components/Text/Text';
 import {Swipeable} from 'react-native-gesture-handler';
 import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
+import RNFS from 'react-native-fs';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const CustomComposer = props => {
   const {text, onTextChanged, composerHeight, onSend} = props;
   const [isModalVisible, setModalVisible] = useState(false);
-  const {startRecordVideo, stopRecordVideo, maindis} =
-    useRootStore().stopWatchStore;
+  const {
+    startRecordVideo,
+    stopRecordVideo,
+    maindis,
+    startRecordAudio,
+    stopRecordAudio,
+  } = useRootStore().stopWatchStore;
+
+  const [recording, setRecording] = useState(false);
+  const [audioRec, setAudioRec] = useState(false);
+  const isStopRefVideo = useRef(false);
+  const isStopRefAudio = useRef(false);
+  const camera = useRef<Camera>(null);
+  const swipeableRefVideo = useRef(null);
+  const [audioRecording, setAudioRecording] = useState(false);
+  const [audioPath, setAudioPath] = useState(null);
+  const audioRecorder = useRef(null);
+  const swipeableRefAudio = useRef(null);
+  const sendingMessageRef = useRef(false);
+  const [isAudio, setIsAudio] = useState<boolean>(true);
+
+  const [onPressCheck, setOnPresCheck] = useState<boolean>(false);
+  const [onPressCheck2, setOnPresCheck2] = useState<boolean>(false);
 
   const handlePickImage = () => {
     launchImageLibrary(
@@ -37,7 +66,7 @@ const CustomComposer = props => {
         if (response.didCancel || response.errorMessage) {
           console.log('User cancelled image picker or there was an error');
         } else {
-          const newMessages = response.assets.map(asset => ({
+          const newMessage = response.assets.map(asset => ({
             _id: Math.random().toString(36).substring(7),
             createdAt: new Date(),
             user: {
@@ -49,45 +78,15 @@ const CustomComposer = props => {
             fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
           }));
 
-          console.log('newMessages', newMessages);
-          onSend(newMessages);
+          console.log('newMessages', newMessage);
+          onSend([newMessage]);
         }
       },
     );
   };
 
-  const handleRecordVoice = async () => {
-    if (props.recording) {
-      const result = await audioRecorderPlayer.stopRecorder();
-      props.setRecording(false);
-      props.setAudioPath(result);
-      const newMessage = {
-        _id: Math.random().toString(36).substring(7),
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-        },
-        audio: result,
-      };
-      props.onSend([newMessage]);
-    } else {
-      const newMessages = response.assets.map(asset => ({
-        _id: Math.random().toString(36).substring(7),
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-        },
-        image: asset.type.startsWith('image/') ? asset.uri : null,
-        video: asset.type.startsWith('video/') ? asset.uri : null,
-        fileName: asset.fileName,
-        fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
-      }));
-
-      console.log('newMessages', newMessages);
-      onSend(newMessages);
-    }
-  };
-
+  // );
+  // };
   const handlePickDocument = async () => {
     try {
       const result = await DocumentPicker.pick({
@@ -97,7 +96,7 @@ const CustomComposer = props => {
         const file = result[0];
         console.log('file', file);
 
-        const message = {
+        const newMessage = {
           _id: Math.random().toString(36).substring(7),
           text: '',
           createdAt: new Date(),
@@ -109,7 +108,7 @@ const CustomComposer = props => {
           fileName: file.name,
           fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
         };
-        onSend([message]);
+        onSend([newMessage]);
       }
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -123,27 +122,6 @@ const CustomComposer = props => {
   const handlePickMediaOrDocument = () => {
     setModalVisible(true);
   };
-
-  // const handleRecordVoice = async () => {
-  //   if (props.recording) {
-  //     const result = await audioRecorderPlayer.stopRecorder();
-  //     props.setRecording(false);
-  //     props.setAudioPath(result);
-  //     const newMessage = {
-  //       _id: Math.random().toString(36).substring(7),
-  //       createdAt: new Date(),
-  //       user: {
-  //         _id: 1,
-  //       },
-  //       audio: result,
-  //     };
-  //     props.onSend([newMessage]);
-  //   } else {
-  //     const result = await audioRecorderPlayer.startRecorder();
-  //     props.setRecording(true);
-  //     props.setAudioPath(result);
-  //   }
-  // };
 
   const handleSendText = () => {
     if (text.trim()) {
@@ -178,17 +156,103 @@ const CustomComposer = props => {
     })();
   }, []);
 
-  const [recording, setRecording] = useState(false);
-  const isStopRef = useRef(false);
-  const camera = useRef<Camera>(null);
-  const swipeableRef = useRef(null);
+  const toggleAudio = () => {
+    setIsAudio(prev => !prev);
+  };
 
-  const handleSwipeableOpen = () => {
-    isStopRef.current = true;
-    console.log('handleSwipeableOpen', isStopRef.current);
+  const handleSwipeableVideoOpen = () => {
+    if (recording) {
+      handleRecordVideo();
+    }
+    isStopRefVideo.current = true;
 
-    if (swipeableRef.current) {
-      swipeableRef.current.close();
+    if (swipeableRefVideo.current && swipeableRefVideo.current.close) {
+      swipeableRefVideo.current.close();
+    }
+  };
+
+  // const [isRecordingCancelled, setIsRecordingCancelled] = useState(false);
+  const isRecordingCancelledRef = useRef(false);
+
+  const handleSwipeableAudioOpen = () => {
+    console.log('blablabla');
+
+    // setIsRecordingCancelled(true);
+    isRecordingCancelledRef.current = true;
+
+    if (audioRec) {
+      handleRecordAudio();
+    }
+    isStopRefAudio.current = true;
+
+    if (swipeableRefAudio.current && swipeableRefAudio.current.close) {
+      swipeableRefAudio.current.close();
+    }
+  };
+
+  const handleRecordAudio = async () => {
+    try {
+      if (!audioRec) {
+        // Start recording if not already recording
+        console.log('Starting recording');
+        startRecordAudio();
+        setAudioRec(true);
+        setAudioRecording(true);
+
+        const path = Platform.select({
+          ios: 'audio.m4a',
+          android: `${RNFS.DocumentDirectoryPath}/audio.mp3`,
+        });
+
+        setAudioPath(path);
+        await audioRecorderPlayer.startRecorder(path);
+
+        audioRecorderPlayer.addRecordBackListener(e => {
+          setAudioRecording(true);
+        });
+      } else {
+        // Stop recording if already recording
+        const result = await audioRecorderPlayer.stopRecorder();
+        audioRecorderPlayer.removeRecordBackListener();
+        setAudioRec(false);
+        stopRecordAudio();
+        setAudioRecording(false);
+
+        // Check if the file exists
+        const fileExists = await RNFS.exists(audioPath);
+        console.log('fileExistsfileExistsfileExistsfileExists', fileExists);
+        console.log(
+          'cancelledcancelledcancelled',
+          isRecordingCancelledRef.current,
+        );
+
+        if (fileExists) {
+          if (!isRecordingCancelledRef.current) {
+            const newMessage = {
+              _id: Math.random().toString(36).substring(7),
+              createdAt: new Date(),
+              user: {
+                _id: 1, // Update with the actual user ID
+              },
+              audio: result,
+              fileName: result.substring(result.lastIndexOf('/') + 1),
+              maindis: maindis, // Ensure `maindis` is correctly set
+            };
+
+            onSend([newMessage]);
+          } else {
+            console.log('Recording was cancelled');
+            return;
+          }
+        } else {
+          console.error('File does not exist:', audioPath);
+          Alert.alert('Error', 'The audio file does not exist.');
+        }
+      }
+      isRecordingCancelledRef.current = false;
+    } catch (error) {
+      console.error('Recording error:', error);
+      setAudioRecording(false);
     }
   };
 
@@ -203,9 +267,9 @@ const CustomComposer = props => {
         setRecording(true);
         camera.current.startRecording({
           onRecordingFinished: async video => {
-            if (isStopRef.current) {
-              isStopRef.current = false;
-              console.log('isStop:else', isStopRef.current);
+            if (isStopRefVideo.current) {
+              isStopRefVideo.current = false;
+              console.log('isStop:else', isStopRefVideo.current);
               return;
             } else {
               const filePath = video.path;
@@ -225,7 +289,7 @@ const CustomComposer = props => {
               onSend([newMessage]);
               setRecording(false);
             }
-            console.log('isStop:', isStopRef.current);
+            console.log('isStop:', isStopRefVideo.current);
           },
           onRecordingError: error => {
             console.error('Recording error:', error);
@@ -264,7 +328,7 @@ const CustomComposer = props => {
           ) : null}
         </View>
         <Swipeable
-          ref={swipeableRef}
+          ref={swipeableRefVideo}
           renderRightActions={() => {
             return (
               <Pressable style={{opacity: 0}}>
@@ -272,27 +336,47 @@ const CustomComposer = props => {
               </Pressable>
             );
           }}
-          onSwipeableWillOpen={handleSwipeableOpen}>
+          onSwipeableWillOpen={handleSwipeableVideoOpen}>
           <Pressable
             style={[
               styles.videoRecord,
               {
-                width: recording ? 100 : 50,
-                bottom: recording ? 10 : 0,
+                width: recording ? 100 : 30,
+                bottom: recording ? 20 : 0,
               },
             ]}
-            onPressIn={handleRecordVideo}
-            onPressOut={handleRecordVideo}>
-            {recording ? (
+            onPress={() => {
+              setOnPresCheck2(true);
+              toggleAudio();
+              console.log('1video');
+            }}
+            onLongPress={() => {
+              setOnPresCheck2(false);
+              if (!onPressCheck2) {
+                handleRecordVideo();
+                console.log('3video');
+              }
+            }}
+            onPressOut={() => {
+              console.log(onPressCheck2, 'ssvideo');
+
+              if (onPressCheck2) {
+                console.log('bavideo');
+              } else {
+                recording && !audioRec && handleRecordVideo();
+                console.log('4vidoe');
+              }
+            }}>
+            {!audioRec && recording ? (
               <Images.Svg.videoRecord width={80} height={80} />
             ) : (
-              <Images.Svg.instagramIcon width={30} height={30} />
+              <Images.Svg.videoMessage width={30} height={30} />
             )}
           </Pressable>
         </Swipeable>
       </>
     );
-  }, [recording, maindis]);
+  }, [recording, maindis, onPressCheck, onPressCheck2]);
 
   const renderCamera = useCallback(() => {
     return (
@@ -322,6 +406,87 @@ const CustomComposer = props => {
       </RN.View>
     );
   }, [recording, device, format]);
+
+  // audio
+
+  const renderRecordingAudio = useCallback(() => {
+    return (
+      <>
+        <View
+          style={[
+            styles.recordingbottom,
+            {
+              bottom: audioRec ? 0 : -200,
+              width: audioRec ? windowWidth : 'auto',
+            },
+          ]}>
+          {audioRec ? (
+            <>
+              <View style={[styles.recordingItem, styles.recordingItemTime]}>
+                <View style={styles.redDot}></View>
+                <TextView text={maindis} />
+              </View>
+              <Pressable style={styles.recordingItem}>
+                <Images.Svg.deleteIcon />
+                <TextView text={'pull left to delete'} />
+              </Pressable>
+            </>
+          ) : null}
+        </View>
+        <Swipeable
+          ref={swipeableRefAudio}
+          renderRightActions={() => {
+            return (
+              <Pressable style={{opacity: 0}}>
+                <Images.Svg.deleteIcon />
+              </Pressable>
+            );
+          }}
+          onSwipeableWillOpen={handleSwipeableAudioOpen}>
+          <Pressable
+            style={[
+              styles.videoRecord,
+              {
+                width: audioRec ? 100 : 30,
+                bottom: audioRec ? 20 : 0,
+              },
+            ]}
+            onPress={() => {
+              setOnPresCheck(true);
+              toggleAudio();
+              console.log('1');
+            }}
+            // onPressIn={() => console.log('2')}
+            onLongPress={() => {
+              setOnPresCheck(false);
+              if (!onPressCheck) {
+                handleRecordAudio();
+                console.log('3');
+              }
+            }}
+            onPressOut={() => {
+              console.log(onPressCheck, 'ss');
+
+              if (onPressCheck) {
+                console.log('ba');
+              } else {
+                !recording && audioRec && handleRecordAudio();
+                console.log('4');
+              }
+            }}>
+            {audioRec && !recording ? (
+              <RN.View style={styles.imageContainer}>
+                <Images.Svg.audioBackground width={90} height={90} />
+                <Images.Svg.audio style={styles.audioImg} />
+              </RN.View>
+            ) : (
+              <Images.Svg.voiceMessage width={30} height={30} />
+            )}
+          </Pressable>
+        </Swipeable>
+      </>
+    );
+  }, [audioRec, maindis, onPressCheck, onPressCheck2]);
 
   return (
     <>
@@ -372,14 +537,17 @@ const CustomComposer = props => {
             textInputStyle={styles.textInput}
             composerHeight={composerHeight}
           />
-          <TouchableOpacity onPress={handleSendText}>
-            <RN.Text style={{color: 'white'}}>Send</RN.Text>
-          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleRecordVoice} style={{paddingTop: 8}}>
-          <Images.Svg.voiceMessage />
-        </TouchableOpacity>
-        {renderRecordingVideo()}
+        {text.trim() ? (
+          <TouchableOpacity onPress={handleSendText} style={{paddingTop: 12}}>
+            <Images.Svg.sendMessage width={30} height={30} color={'red'} />
+          </TouchableOpacity>
+        ) : (
+          <>
+            {renderRecordingAudio()}
+            {!audioRec && renderRecordingVideo()}
+          </>
+        )}
       </View>
     </>
   );
@@ -405,7 +573,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    color: '#636366',
+    color: 'white',
     borderColor: '#3A3A3C',
     backgroundColor: '#060606',
     borderWidth: 1,
@@ -437,7 +605,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     textAlign: 'center',
     backgroundColor: '#333',
-    color: '#2f81fd',
+    color: 'red',
   },
   modalOptionBtn: {
     borderRadius: 10,
@@ -491,8 +659,19 @@ const styles = StyleSheet.create({
   redDot: {
     width: 10,
     height: 10,
-    backgroundColor: 'red',
     borderRadius: 5,
+    backgroundColor: 'red',
+  },
+  imageContainer: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  audioImg: {
+    zIndex: 2,
+    left: 'auto',
+    right: '24%',
+    position: 'absolute',
   },
 });
 
