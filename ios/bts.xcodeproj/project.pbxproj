@@ -15,13 +15,11 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A1DD17D9211BDE376C33E9AC /* Pods_bts_btsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88EE844CCE282D5ED536DBF4 /* Pods_bts_btsTests.framework */; };
 		B53713AFE8BC9DF00FF557FC /* Pods_bts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C79613DBE6480F53ECD19AF8 /* Pods_bts.framework */; };
-		D3F5526E3B041785F3562F5D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 610A31FEAE39F4D10126ABF4 /* PrivacyInfo.xcprivacy */; };
 		DC3E8FB12C6724FC0029D154 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC3E8F952C6720DD0029D154 /* WidgetKit.framework */; };
 		DC3E8FB22C6724FC0029D154 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC3E8F972C6720DD0029D154 /* SwiftUI.framework */; };
 		DC3E8FB52C6724FC0029D154 /* WidgetBtsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E8FB42C6724FC0029D154 /* WidgetBtsBundle.swift */; };
 		DC3E8FB72C6724FC0029D154 /* WidgetBts.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E8FB62C6724FC0029D154 /* WidgetBts.swift */; };
 		DC3E8FB92C6724FC0029D154 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3E8FB82C6724FC0029D154 /* AppIntent.swift */; };
-		DC3E8FBB2C6724FD0029D154 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC3E8FBA2C6724FD0029D154 /* Assets.xcassets */; };
 		DC3E8FBF2C6724FD0029D154 /* WidgetBtsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DC3E8FB02C6724FC0029D154 /* WidgetBtsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DC7F68E02BF7279B0030D166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */; };
 		DC7F68E12BF7279B0030D166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC7F68DF2BF7279B0030D166 /* GoogleService-Info.plist */; };
@@ -76,7 +74,6 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = bts/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bts/main.m; sourceTree = "<group>"; };
 		39F42BFAF8C5B157CF08D6D6 /* Pods-bts-btsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts-btsTests.debug.xcconfig"; path = "Target Support Files/Pods-bts-btsTests/Pods-bts-btsTests.debug.xcconfig"; sourceTree = "<group>"; };
-		610A31FEAE39F4D10126ABF4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = bts/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		6E49BB129FAAF4B26E0E77DF /* Pods-bts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts.debug.xcconfig"; path = "Target Support Files/Pods-bts/Pods-bts.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bts/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		864AB54CA7FB302D528955A0 /* Pods-bts-btsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bts-btsTests.release.xcconfig"; path = "Target Support Files/Pods-bts-btsTests/Pods-bts-btsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -294,7 +291,6 @@
 			buildPhases = (
 				DC3E8FAC2C6724FC0029D154 /* Sources */,
 				DC3E8FAD2C6724FC0029D154 /* Frameworks */,
-				DC3E8FAE2C6724FC0029D154 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -871,7 +867,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = WPQV4HJ5DW;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetBts/Info.plist;
@@ -915,7 +911,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = WPQV4HJ5DW;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetBts/Info.plist;

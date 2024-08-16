@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
-import { NativeModules } from 'react-native';
-import { observer } from 'mobx-react-lite';
+import {NativeModules} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   onPress?: () => void;
@@ -12,7 +12,7 @@ type Props = {
   time30?: string;
 };
 
-const { WidgetManager } = NativeModules;
+const {WidgetManager} = NativeModules;
 
 const AlarmNotification: React.FC<Props> = ({
   onPress,
@@ -20,12 +20,11 @@ const AlarmNotification: React.FC<Props> = ({
   extraTime,
   time30,
 }) => {
-
   useEffect(() => {
     // Send data to native module
-    WidgetManager.updateWidgetData(time24, extraTime, time30);
+    WidgetManager?.updateWidgetData(time24, extraTime, time30);
   }, [time24, extraTime, time30]);
-  
+
   return (
     <RN.TouchableOpacity style={styles.container} onPress={onPress}>
       <Images.Svg.alarmNotificatiion />
