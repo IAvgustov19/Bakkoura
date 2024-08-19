@@ -79,7 +79,6 @@ messaging().onMessage(async remoteMessage => {
   if (senderId !== openWith) {
     console.log('Message received from a different user in the foreground!', remoteMessage);
 
-    // Show local notification
     PushNotification.localNotification({
       channelId: channelId,
       title: title,
@@ -87,10 +86,13 @@ messaging().onMessage(async remoteMessage => {
     });
   } else {
     console.log('Message received from the currently active chat user');
-    // Optionally, update the chat UI here without changing the screen
-    // You might want to update the chat view with the new message.
   }
 });
+
+const currentUser = auth().currentUser;
+if (currentUser) {
+  scheduleNotifications(currentUser.uid);
+}
 
 
 
@@ -99,21 +101,21 @@ const App = () => {
   const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
   const {cloneAllEventsData, checkEvent} = useRootStore().calendarStore;
 
-  useEffect(() => {
-    const currentUser = auth().currentUser;
-    if (currentUser) {
-      scheduleNotifications(currentUser.uid);
-    }
+  // useEffect(() => {
+  //   const currentUser = auth().currentUser;
+  //   if (currentUser) {
+  //     scheduleNotifications(currentUser.uid);
+  //   }
 
-    const onAuthStateChanged = user => {
-      if (user) {
-        scheduleNotifications(user.uid);
-      }
-    };
+  //   const onAuthStateChanged = user => {
+  //     if (user) {
+  //       scheduleNotifications(user.uid);
+  //     }
+  //   };
 
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; 
+  // }, []);
 
   const requestNotificationPermission = async () => {
     if (RN.Platform.OS === 'android') {
@@ -211,20 +213,6 @@ const App = () => {
   //   syncUsersToFirestore();
   // }, [])
 
-
-
-
-const { ForegroundService } = NativeModules;
-  
-
-const startService = () => {
-  ForegroundService.startService();
-};
-
-
-useEffect(() => {
-  console.log('ForegroundService', ForegroundService)
-}, [])
 
 
   useEffect(() => {

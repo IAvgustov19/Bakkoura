@@ -1,10 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { RootStore } from "../rootStore";
-import { UserType } from "../../types/user";
 import auth from '@react-native-firebase/auth';
+import moment from "moment";
+
 import { getAllUsersFromFirestore } from "../../services/firestoreService";
+import { UserType } from "../../types/user";
 import { db } from "../../config/firebase";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RootStore } from "../rootStore";
 
 
 export class MessengerStore {
@@ -35,7 +36,7 @@ export class MessengerStore {
                     this.lastDocId = users[users.length - 1].id;
                     console.log("Updated lastDocId to:", this.lastDocId);
                 } else {
-                    this.lastDocId = null; // No more users to fetch
+                    this.lastDocId = null; 
                     console.log("No more users to fetch");
                 }
             });
@@ -62,19 +63,28 @@ export class MessengerStore {
         });
     };
 
+    getUnreadMessagesCount = async (roomId: string, receiverId: string) => {
+        const messagesRef = db.collection('Messages');
+        const snapshot = await messagesRef
+            .where('roomId', '==', roomId)
+            .where('receiverId', '==', receiverId)
+            .where('read', '==', false)
+            .get();
+        return snapshot.size;
+    }
+
     getAllUsersWithLastMessages = async () => {
         try {
             const currentUser = auth().currentUser;
-            // Fetch all users except the current one
+            if (!currentUser) throw new Error("No current user");
+
             const usersSnapshot = await db.collection('users').where('id', '!=', currentUser.uid).get();
             const usersData = usersSnapshot.docs.map(doc => doc.data());
 
-            // Extract all unique roomIds in parallel
             const roomQueries = usersData.map(user => {
                 const senderId = currentUser.uid;
                 const receiverId = user.id;
 
-                // Find the chat room between the current user and this user
                 return db.collection('Rooms')
                     .where('senderId', 'in', [senderId, receiverId])
                     .where('receiverId', 'in', [senderId, receiverId])
@@ -88,12 +98,9 @@ export class MessengerStore {
                     });
             });
 
-            // Await all room queries
             const roomIds = await Promise.all(roomQueries);
-
-            // Fetch the latest message for each room in parallel
             const messagesQueries = roomIds.map(roomId => {
-                if (!roomId) return null;
+                if (!roomId) return Promise.resolve(null);
 
                 return db.collection('Messages')
                     .where('roomId', '==', roomId)
@@ -106,7 +113,7 @@ export class MessengerStore {
                             return {
                                 _id: messageDoc._id,
                                 text: messageDoc.text,
-                                createdAt: messageDoc.createdAt.toDate(),
+                                createdAt: messageDoc.createdAt ? moment.utc(messageDoc?.createdAt?.toDate()).local().format('YYYY-MM-DD HH:mm:ss') : null,
                                 senderId: messageDoc.senderId,
                                 receiverId: messageDoc.receiverId,
                                 roomId: messageDoc.roomId,
@@ -118,14 +125,30 @@ export class MessengerStore {
                     });
             });
 
-            // Await all messages queries
             const lastMessages = await Promise.all(messagesQueries);
 
-            // Combine user data with their last messages
-            const usersWithMessages = usersData.map((user, index) => ({
-                ...user,
-                lastMessage: lastMessages[index] || null,
-            }));
+            const unreadMessagesQueries = roomIds.map((roomId, index) => {
+                if (!roomId) return Promise.resolve({ userId: usersData[index].id, unreadCount: 0 });
+
+                const receiverId = auth().currentUser.uid;
+                return this.getUnreadMessagesCount(roomId, receiverId)
+                    .then(count => ({
+                        userId: usersData[index].id,
+                        unreadCount: count
+                    }));
+            });
+
+            const unreadMessageCounts = await Promise.all(unreadMessagesQueries);
+
+            const usersWithMessages = usersData.map((user, index) => {
+                const unreadCount = unreadMessageCounts.find(count => count.userId === user.id)?.unreadCount || 0;
+
+                return {
+                    ...user,
+                    lastMessage: lastMessages[index] || null,
+                    unreadMessages: unreadCount
+                };
+            });
 
             runInAction(() => {
                 this.userData = usersWithMessages.filter(user => user.lastMessage !== null);
@@ -137,5 +160,6 @@ export class MessengerStore {
                 this.loading = false;
             });
         }
-    };
+    }
+
 }

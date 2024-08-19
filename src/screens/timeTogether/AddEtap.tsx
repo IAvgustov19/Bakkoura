@@ -53,7 +53,7 @@ const AddEtap = () => {
     clearState,
   } = useRootStore().togetherTimeStore;
   const [repeat, setRepeat] = useState(false);
-  const [reminder, setReminder] = useState(false);
+  const [reminder, setReminder] = useState(addEtapState.reminder);
   const [control, setControl] = useState(false);
 
   const onHandleNavigation = (route: string) => {
@@ -61,8 +61,10 @@ const AddEtap = () => {
   };
 
   const onSetReminder = () => {
-    setAddEtapState('reminder', reminder);
-    setReminder(e => !e);
+    setReminder((prev) => {
+      setAddEtapState('reminder', !prev);
+      return !prev;
+    });
   };
 
   const AddNewEtap = (synchronizedEmail, synchronized) => {
@@ -119,7 +121,7 @@ const AddEtap = () => {
                   <RN.View style={styles.listItem}>
                     <RN.Text style={styles.listItemText}>Reminder</RN.Text>
                     <SimpleSwitch
-                      active={reminder}
+                      active={addEtapState.reminder}
                       handlePress={onSetReminder}
                     />
                   </RN.View>
@@ -144,27 +146,27 @@ const AddEtap = () => {
                   />
                 </RN.View>
               </RN.View>
-              {isUpdate ? 
-              <RN.View style={styles.addBtn}>
-                <StartBtn
-                  onPress={UpdateTask}
-                  primary={true}
-                  text="Ok"
-                  subWidth={70}
-                  elWidth={55}
-                />
-              </RN.View>
-              : 
-              <RN.View style={styles.addBtn}>
-              <StartBtn
-                onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
-                primary={true}
-                text="Add"
-                subWidth={70}
-                elWidth={55}
-              />
-            </RN.View>
-      }
+              {isUpdate ?
+                <RN.View style={styles.addBtn}>
+                  <StartBtn
+                    onPress={UpdateTask}
+                    primary={true}
+                    text="Ok"
+                    subWidth={70}
+                    elWidth={55}
+                  />
+                </RN.View>
+                :
+                <RN.View style={styles.addBtn}>
+                  <StartBtn
+                    onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
+                    primary={true}
+                    text="Add"
+                    subWidth={70}
+                    elWidth={55}
+                  />
+                </RN.View>
+              }
             </RN.View>
             <SoundsContent
               headerTitle="Status"

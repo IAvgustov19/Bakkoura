@@ -1,74 +1,23 @@
-import React, {useCallback, useEffect, useState, useRef} from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
-import {
-  useFocusEffect,
-  useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { observer } from 'mobx-react-lite';
+
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import {APP_ROUTES} from '../../navigation/routes';
-import MessageItem from './components/MessageItem';
-import useRootStore from '../../hooks/useRootStore';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../types/navigation';
+import { RootStackParamList } from '../../types/navigation';
 import LoadingScreen from '../auth/Loading/LoadingScreen';
-import {windowWidth} from '../../utils/styles';
-import {observer} from 'mobx-react-lite';
-type NavigationProp = StackNavigationProp<
-  RootStackParamList,
-  APP_ROUTES.DIALOG_SCREEN
->;
+import { APP_ROUTES } from '../../navigation/routes';
+import useRootStore from '../../hooks/useRootStore';
+import MessageItem from './components/MessageItem';
+import { windowWidth } from '../../utils/styles';
+import { Images } from '../../assets';
+
+type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
 const MessengerScreen = () => {
-  // const navigation = useNavigation<NavigationProp>();
-  // const {
-  //   loading,
-  //   userData,
-  //   getAllUsersWithLastMessages,
-  // } = useRootStore().messangerStore;
-
-  // function formatTimestampToTime(seconds) {
-  //   const date = new Date(seconds * 1000);
-  //   let hours = date.getHours();
-  //   let minutes = date.getMinutes();
-
-  //   const formattedHours = hours < 10 ? '0' + hours : hours;
-  //   const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-
-  //   return `${formattedHours}:${formattedMinutes}`;
-  // }
-
-  // useFocusEffect(() => {
-  //   getAllUsersWithLastMessages();
-  // });
-
-  // const renderItems = useCallback(() => {
-  //   return userData.map((item, index) => {
-  //     return (
-  //       <MessageItem
-  //         onNavigate={() =>
-  //           navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
-  //             id: item.id,
-  //             name: item.name,
-  //             avatar: item.avatar
-  //           })
-  //         }
-  //         key={index}
-  //         avatar={item.avatar}
-  //         name={item.name}
-  //         description={
-  //           item.lastMessage.text ??
-  //           ' Hi! Please call me at 16...'
-  //         }
-  //         time={formatTimestampToTime(item.lastMessage.createdAt.seconds)}
-  //       />
-  //     );
-  //   });
-  // }, [userData]);
-
   const navigation = useNavigation<NavigationProp>();
   const isFocused = useIsFocused();
   const {
@@ -82,7 +31,7 @@ const MessengerScreen = () => {
 
   const previousUserDataRef = useRef(userData);
 
-  const formatTimestampToTime = timestamp => {
+  const formatTimestampToTime = (timestamp) => {
     if (!timestamp) return '';
 
     const date = new Date(timestamp);
@@ -103,6 +52,7 @@ const MessengerScreen = () => {
     }
   }, [isFocused, getAllUsersWithLastMessages]);
 
+
   const renderItems = useCallback(() => {
     const sortedUserData = [...userData].sort((a, b) => {
       if (!a.lastMessage || !b.lastMessage) return 0;
@@ -117,12 +67,13 @@ const MessengerScreen = () => {
 
       return (
         <MessageItem
+          unreadMessages={item.unreadMessages}
           onNavigate={() =>
             navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
-              uid: item.uid,
+              id: item.id,
               name: item.name,
-              avatar: item.avatar,
-            } as never)
+              avatar: item.avatar
+            })
           }
           key={index}
           avatar={item.avatar}
@@ -131,9 +82,10 @@ const MessengerScreen = () => {
             item.lastMessage?.audio
               ? 'Voice message'
               : item.lastMessage?.video
-              ? 'Video message'
-              : item.lastMessage?.text || ''
+                ? 'Video message'
+                : item.lastMessage?.text || ''
           }
+
           time={formattedTime}
         />
       );
@@ -146,19 +98,13 @@ const MessengerScreen = () => {
         <HeaderContent
           leftItem={<Images.Svg.btsRightLinear />}
           rightItem={
-            <Images.Svg.searchButton
-              width={39}
-              height={39}
-              onPress={() =>
-                navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)
-              }
-            />
+            <Images.Svg.searchButton width={39} height={39} onPress={() => navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)} />
           }
           title="Messenger"
         />
         <View style={styles.content}>
           {loading ? (
-            <LoadingScreen loading={loading} setLoading={() => {}} />
+            <LoadingScreen loading={loading} setLoading={() => { }} />
           ) : userData.length === 0 ? (
             <View style={styles.center}>
               <Text style={styles.text}>There are no dialogues</Text>
@@ -167,23 +113,22 @@ const MessengerScreen = () => {
             <ScrollView
               style={styles.flatList}
               showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}>
+              showsVerticalScrollIndicator={false}
+            >
               {renderItems()}
             </ScrollView>
           )}
-          {!loading && (
+          {!loading &&
             <View style={styles.startBtnContainer}>
               <StartBtn
                 elWidth={55}
                 subWidth={75}
                 icon={<Images.Svg.btnAddIcon />}
                 primary
-                onPress={() =>
-                  navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)
-                }
+                onPress={() => navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)}
               />
             </View>
-          )}
+          }
         </View>
       </View>
     </LinearContainer>
@@ -220,4 +165,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
 });

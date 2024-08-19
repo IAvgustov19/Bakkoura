@@ -77,6 +77,7 @@ import TermsOfUse from '../screens/auth/SignUpScreen/TermsOfUse';
 import PrivacyPolicy from '../screens/auth/SignUpScreen/PrivacyPolicy';
 import Recommendation from '../screens/timeClinic/Recommendation';
 import RecommendationView from '../screens/timeClinic/RecomendationView';
+import Podcasts from '../screens/podcasts/Podcasts';
 
 const Stack = createStackNavigator();
 
@@ -509,6 +510,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.TIME_WEALTH}
           component={TimeWealth}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+         <Stack.Screen
+          name={APP_ROUTES.PODCASTS}
+          component={Podcasts}
           options={{
             headerTitleAlign: 'center',
           }}

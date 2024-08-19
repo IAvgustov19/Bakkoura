@@ -137,7 +137,7 @@ const HomeScreen = () => {
             <RN.View style={styles.watchBox}>
               <TextView
                 style={[styles.title, {marginTop: -15}]}
-                text={'Jihad, Message to You!'}
+                text={`${personalAreaData.name}, Message to You!`}
               />
               <TextView
                 fonWeight="300"

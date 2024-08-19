@@ -60,6 +60,10 @@
     {
       "path": "src/assets/fonts/Rationale-Regular.ttf",
       "sha1": "469725f05dcb5b7fdcc7d10552ea7e4c63229695"
+    },
+    {
+      "path": "/src/assets/fonts/Montserrat-Regular.ttf",
+      "sha1": "bb895d19b8a1fbe1c57fc89cac5da82fdc8fdef4"
     }
   ]
 }

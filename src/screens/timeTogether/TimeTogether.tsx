@@ -96,10 +96,20 @@ const TimeTogether = () => {
                     text: 'Cancel',
                     style: 'cancel',
                     onPress: async () => {
-                      await updateEtapsMailInFirestore("");
-                      await updateEtapsSynchronizedInFirestore(false);
-                      setSynchronized(false);
+                      try {
+                        await updateEtapsMailInFirestore(null);
+                        await updateEtapsSynchronizedInFirestore(false);
+                        setSynchronized(false);
+                        console.log('Sync deleted successfully');
+                      } catch (error) {
+                        console.error('Error deleting sync: ', error);
+                      }
                     },
+                    // onPress: async () => {
+                    //   await updateEtapsMailInFirestore("");
+                    //   await updateEtapsSynchronizedInFirestore(false);
+                    //   setSynchronized(false);
+                    // },
                   },
                   {
                     text: 'OK',

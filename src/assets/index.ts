@@ -144,6 +144,16 @@ import audioRecord from './svg/audioRecord.svg';
 import audio from './svg/audio.svg';
 import audioBackground from './svg/audioBackground.svg';
 import voiceLines from './svg/voiceLines.svg';
+import sendArrow from './svg/sendArrow.svg';
+import pinIcon from './svg/pinIcon.svg';
+import deleteMessage from './svg/deleteIcon.svg';
+import answerArrow from './svg/answerArrow.svg';
+import scrollSmiles from './svg/scrollSmiles.svg';
+import sent from './svg/sent.svg';
+import read from './svg/read.svg';
+import podcastLeftArrow from './svg/podcastLeftArrow.svg';
+import podcastRightArrow from './svg/podcastRightArrow.svg';
+
 
 export const Images = {
   Svg: {
@@ -296,6 +306,15 @@ export const Images = {
     audio,
     audioBackground,
     voiceLines,
+    sendArrow,
+    pinIcon,
+    deleteMessage,
+    answerArrow,
+    scrollSmiles,
+    sent,
+    read,
+    podcastLeftArrow,
+    podcastRightArrow
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -331,6 +350,10 @@ export const Images = {
     rec2: require('./images/rec2.png'),
     rec3: require('./images/rec3.png'),
     rec4: require('./images/rec4.png'),
+    podcast1: require('./images/podcast1.png'),
+    podcast2: require('./images/podcast2.png'),
+    podcast3: require('./images/podcast3.png'),
+    podcast4: require('./images/podcast4.png'),
   },
 };
 
@@ -365,4 +388,8 @@ export const Sounds = {
   r4: 'ringtone4.wav',
   r5: 'ringtone5.wav',
   r6: 'ringtone6.wav',
+  podcast1: require('./sounds/podcast1.mp3'),
+  podcast2: require('./sounds/podcast2.mp3'),
+  podcast3: require('./sounds/podcast3.mp3'),
+  podcast4: require('./sounds/podcast4.mp3'),
 };
