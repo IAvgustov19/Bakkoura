@@ -111,7 +111,7 @@ struct SimpleEntry: TimelineEntry {
 }
 
 // Widget View
-struct WidgetBtsEntryView: View {
+struct bakkourabtsEntryView: View {
     var entry: SimpleEntry
     @Environment(\.widgetFamily) var widgetFamily
 
@@ -123,7 +123,7 @@ struct WidgetBtsEntryView: View {
         ZStack {
           Color.clear
           
-            Image("widget") // Replace with actual image
+            Image("clock") // Replace with actual image
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -167,12 +167,12 @@ struct WidgetBtsEntryView: View {
 }
 
 // Widget Configuration
-struct WidgetBts: Widget {
+struct bakkourabts: Widget {
     let kind: String = "WidgetBts"
 
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            WidgetBtsEntryView(entry: entry)
+          bakkourabtsEntryView(entry: entry)
                 .environment(\.widgetFamily, .systemSmall) // Pass the default widget family here
                 .containerBackground(Color(hex: "1C242A").gradient, for: .widget)
         }
@@ -183,7 +183,7 @@ struct WidgetBts: Widget {
 
 // Preview
 #Preview(as: .systemSmall) {
-    WidgetBts()
+  bakkourabts()
 } timeline: {
     SimpleEntry(date: .now)
 }
