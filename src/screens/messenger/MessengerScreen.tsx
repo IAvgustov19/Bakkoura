@@ -1,18 +1,20 @@
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
-import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { observer } from 'mobx-react-lite';
+
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import { Images } from '../../assets';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import { APP_ROUTES } from '../../navigation/routes';
-import MessageItem from './components/MessageItem';
-import useRootStore from '../../hooks/useRootStore';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation';
 import LoadingScreen from '../auth/Loading/LoadingScreen';
+import { APP_ROUTES } from '../../navigation/routes';
+import useRootStore from '../../hooks/useRootStore';
+import MessageItem from './components/MessageItem';
 import { windowWidth } from '../../utils/styles';
-import { observer } from 'mobx-react-lite';
+import { Images } from '../../assets';
+
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
 const MessengerScreen = () => {
@@ -65,6 +67,7 @@ const MessengerScreen = () => {
 
       return (
         <MessageItem
+          unreadMessages={item.unreadMessages}
           onNavigate={() =>
             navigation.navigate(APP_ROUTES.DIALOG_SCREEN, {
               id: item.id,

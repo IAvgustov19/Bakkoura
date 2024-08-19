@@ -95,7 +95,7 @@ export class TimeBioticStore {
     runInAction(() => {
       this.sendEmailLoading = true;
     });
-
+  
     const emailData: EmailDataType = {
       service_id: this.serviceId,
       template_id: this.templateId,
@@ -110,42 +110,44 @@ export class TimeBioticStore {
         country: data.country,
       },
     };
-    if ((data.isAccept === true && data.phone && type, this.isvalidEmail)) {
-      try {
-        const response = await fetch(this.emailJs, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(emailData),
-        });
-        if (response) {
-          runInAction(() => {
-            this.responseText =
-              'Successfully sended, we will contact with you soon';
-            this.sendEmailLoading = false;
-          });
-
-          callBack();
-          this.clearState();
-        }
-      } catch (err) {
-        runInAction(() => {
-          this.sendEmailLoading = false;
-          this.responseText = 'Error, something went wrong';
-        });
-        Alert.alert(err);
-        console.log('error', err);
-      }
-    } else {
-      Alert.alert(
-        'Something wrong please accept privacy policy and fill your form',
-      );
+  
+    if (!data.name || !data.phone || !data.email || !data.isAccept || !this.isvalidEmail) {
+      Alert.alert('Please fill out all required fields and accept the privacy policy.');
       runInAction(() => {
         this.sendEmailLoading = false;
       });
+      return;
+    }
+  
+    try {
+      const response = await fetch(this.emailJs, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+      if (response.ok) {
+        runInAction(() => {
+          this.responseText = 'Successfully sent, we will contact you soon.';
+          this.sendEmailLoading = false;
+        });
+  
+        if (callBack) callBack();
+        this.clearState();
+      } else {
+        throw new Error('Failed to send email.');
+      }
+    } catch (err) {
+      runInAction(() => {
+        this.sendEmailLoading = false;
+        this.responseText = 'Error, something went wrong';
+      });
+      Alert.alert('Error', err.message);
+      console.log('error', err);
     }
   };
+  
 
   clearState = () => {
     runInAction(() => {

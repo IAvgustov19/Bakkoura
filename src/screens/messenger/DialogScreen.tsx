@@ -28,7 +28,10 @@ import { uploadAudioToStorage } from '../../services/firestoreService';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid } from 'react-native';
 import functions from '@react-native-firebase/functions';
+import { Timestamp } from "firebase/firestore";
+import MessageActionSheet from './components/MessageAction';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+import 'react-native-console-time-polyfill'
 
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
@@ -42,9 +45,83 @@ const DialogScreen = () => {
     const [messages, setMessages] = useState([]);
     const [lastSeen, setLastSeen] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loadingMessages, setLoadingMessages] = useState<{ [key: string]: boolean }>({});
+    const [selectedMessage, setSelectedMessage] = useState(null);
+    const [actionSheetVisible, setActionSheetVisible] = useState(false);
+    const [chatOpenedAt, setChatOpenedAt] = useState(null);
 
 
     useEffect(() => {
+        const chatOpenedAt = new Date();
+        setChatOpenedAt(chatOpenedAt);
+    }, []);
+
+
+    const onLongPressMessage = (context, message) => {
+        setSelectedMessage(message);
+        setActionSheetVisible(true);
+        console.log('Long pressed message:', message);
+    };
+
+    const onSelect = async (action) => {
+        setActionSheetVisible(false);
+        if (!selectedMessage) return;
+
+        switch (action) {
+            case 'delete':
+                try {
+                    // 1. Remove the message from local state
+                    setMessages((previousMessages) =>
+                        previousMessages.filter((message) => message._id !== selectedMessage._id)
+                    );
+
+                    // 2. Delete the message from Firebase
+                    await db.collection('Messages').doc(selectedMessage._id).delete();
+
+                    console.log('Message deleted successfully!');
+                } catch (error) {
+                    console.error('Error deleting message:', error);
+                }
+                break;
+            case 'answer':
+                // Handle answer action
+                break;
+            case 'pin':
+                // Handle pin action
+                break;
+            case 'send':
+                // Handle send action
+                break;
+            default:
+                break;
+        }
+    };
+
+    const onReaction = (reaction) => {
+        if (!selectedMessage) return;
+
+        setMessages((previousMessages) =>
+            previousMessages.map((message) =>
+                message._id === selectedMessage._id
+                    ? { ...message, reaction }
+                    : message
+            )
+        );
+
+        db.collection('Messages').doc(selectedMessage._id).update({
+            reaction: reaction
+        }).catch((error) => {
+            console.error('Error updating reaction:', error);
+        });
+    };
+
+
+
+
+
+    useEffect(() => {
+        console.time('userRef');
+
         if (id && currentUser?.uid) {
             const userRef = db.collection('users').doc(currentUser.uid);
             userRef.update({ openChatWith: id });
@@ -53,9 +130,13 @@ const DialogScreen = () => {
                 userRef.update({ openChatWith: null });
             };
         }
+        console.timeEnd('userRef');
+
     }, [id, currentUser?.uid]);
 
     useEffect(() => {
+        console.time('deviceToken');
+
         const deviceToken = async () => {
             await messaging().registerDeviceForRemoteMessages();
             const token = await messaging().getToken();
@@ -73,6 +154,8 @@ const DialogScreen = () => {
             }
         };
         deviceToken();
+        console.timeEnd('deviceToken');
+
     }, []);
 
     async function sendNotification(tokens, title, body, senderId, chatId) {
@@ -122,11 +205,11 @@ const DialogScreen = () => {
                 const isYesterday = lastSeenTimestamp.clone().add(1, 'day').isSame(now, 'day');
                 let lastSeenFormatted;
                 if (isToday) {
-                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm'); 
+                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
                 } else if (isYesterday) {
                     lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
                 } else {
-                    lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm'); 
+                    lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm');
                 }
                 const diffInMinutes = now.diff(lastSeenTimestamp, 'minutes');
 
@@ -146,8 +229,7 @@ const DialogScreen = () => {
             }
         });
         return () => unsubscribe();
-    }, [id]);
-
+    }, [id]);    
 
     useLayoutEffect(() => {
         setLoading(true);
@@ -158,6 +240,20 @@ const DialogScreen = () => {
             .where('senderId', 'in', [senderId, receiverId])
             .where('receiverId', 'in', [senderId, receiverId])
             .limit(1);
+
+        const updateChatOpenedAt = async () => {
+            const currentTime = new Date();
+            const roomDoc = await roomQuery.get();
+            if (!roomDoc.empty) {
+                const roomId = roomDoc.docs[0].id;
+                await db.collection('Rooms').doc(roomId).update({
+                    [`chatOpenedAt.${senderId}`]: currentTime,
+                });
+            }
+        };
+
+        // Call the function to update the timestamp when the chat is opened
+        updateChatOpenedAt();
 
         const unsubscribe = roomQuery.onSnapshot(async (roomQuerySnapshot) => {
             if (!roomQuerySnapshot.empty) {
@@ -171,35 +267,53 @@ const DialogScreen = () => {
                 messagesQuery.onSnapshot((messagesSnapshot) => {
                     const messagesArray = messagesSnapshot.docs.map((doc) => {
                         const data = doc.data();
-                        
+                        const isLoading = data.audio || data.video;
+                        setLoadingMessages(prev => ({ ...prev, [doc.id]: isLoading }));
+
                         return {
                             _id: doc.id,
                             user: {
                                 _id: data.senderId,
-                                name: data.user?.name || 'Unknown', 
+                                name: data.user?.name || 'Unknown',
                             },
                             text: data.text,
                             maindis: data.maindis,
                             audio: data.audio ? data.audio : null,
                             video: data.video ? data.video : null,
-                            createdAt: moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss'),
+                            createdAt: data?.createdAt ? moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss') : null,
                             senderId: data.senderId,
                             circle: data?.circle ?? data?.circle,
                             fileName: data?.fileName ?? data?.fileName,
                             receiverId: data.receiverId,
                             roomId: data.roomId,
+                            reaction: data?.reaction ? data?.reaction : null,
+                            read: data?.read ? data?.read : false,
                         };
                     });
-                    const formattedMessages = messagesArray.map(msg => ({
-                        ...msg,
-                        user: {
-                            ...msg.user,
-                            _id: msg.senderId === senderId ? senderId : msg.user._id,
-                            name: msg.senderId === senderId ? 'Me' : msg.user.name,
-                        },
-                    }));
+                    const updatedMessages = messagesArray.map(msg => {
+                        const chatOpenedAtForCurrentUser = roomDoc.data().chatOpenedAt[senderId];
 
-                    setMessages(formattedMessages);
+                        if (msg.receiverId === currentUser?.uid && chatOpenedAtForCurrentUser && msg.createdAt <= moment(chatOpenedAtForCurrentUser.toDate()).format('YYYY-MM-DD HH:mm:ss')) {
+                            db.collection('Messages').doc(msg._id).update({ read: true });
+                        }
+                        // if (msg.receiverId !== currentUser?.uid && chatOpenedAt && msg.createdAt <= moment(chatOpenedAt).format('YYYY-MM-DD HH:mm:ss')) {
+                        //     db.collection('Messages').doc(msg._id).update({ read: true });
+                        // }
+                        // console.log('chatOpenedAtchatOpenedAtchatOpenedAt', moment(chatOpenedAt).format('YYYY-MM-DD HH:mm:ss'));
+                        // console.log('msg.createdAtmsg.createdAtmsg.createdAt', msg.createdAt);
+
+                        return {
+                            ...msg,
+                            user: {
+                                ...msg.user,
+                                _id: msg.senderId === senderId ? senderId : msg.user._id,
+                                name: msg.senderId === senderId ? 'Me' : msg.user.name,
+                                reaction: msg.reaction || null,
+                            },
+                        };
+                    });
+
+                    setMessages(updatedMessages);
                     setLoading(false);
                 }, (error) => {
                     console.error('Error fetching messages:', error);
@@ -216,14 +330,110 @@ const DialogScreen = () => {
         });
 
         return () => unsubscribe();
-    }, [id]);
+    }, [id, currentUser.uid]);
 
+
+    // const onSend = async (messages = []) => {
+    //     console.log(11111);
+        
+    //     console.time('onSendMessagae')
+    //     const senderId = currentUser?.uid;
+    //     const receiverId = id;
+    
+    //     setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+    
+    //     const {
+    //         _id,
+    //         text,
+    //         audio,
+    //         video,
+    //         maindis,
+    //         fileName,
+    //         circle,
+    //     } = messages[0];
+    //     console.log(messages,908098);
+        
+    //     try {
+    //         // Handle file uploads
+    //     console.time('trySendMessage')
+    //         console.log(222);
+            
+    //         const audioUrl = audio ? await uploadAudioToStorage(audio, 'audios') : null;
+    //         const videoUrl = video ? await uploadAudioToStorage(video, 'videos') : null;
+    //         console.log(3333);
+            
+    //         // Get or create room
+    //         const roomQuerySnapshot = await db.collection('Rooms')
+    //             .where('senderId', 'in', [senderId, receiverId])
+    //             .where('receiverId', 'in', [senderId, receiverId])
+    //             .limit(1)
+    //             .get();
+    //         console.log(4444);
+            
+    //         let targetRoomId;
+    //         if (roomQuerySnapshot.empty) {
+    //             console.log(5555);
+                
+    //             const newRoomDocRef = db.collection('Rooms').doc();
+    //             await newRoomDocRef.set({
+    //                 senderId,
+    //                 receiverId,
+    //                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //             });
+    //             targetRoomId = newRoomDocRef.id;
+    //         } else {
+    //             targetRoomId = roomQuerySnapshot.docs[0].id;
+    //         }
+    
+    //         // Use batch for messages
+    //         const batch = db.batch();
+    //         const messageDocRef = db.collection('Messages').doc();
+    //         batch.set(messageDocRef, {
+    //             _id,
+    //             roomId: targetRoomId,
+    //             user: {
+    //                 _id: senderId,
+    //                 name: currentUser?.displayName || 'Me',
+    //             },
+    //             ...(text && { text }),
+    //             ...(audioUrl && { audio: audioUrl }),
+    //             ...(videoUrl && { video: videoUrl }),
+    //             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //             ...(maindis && { maindis }),
+    //             ...(fileName && { fileName }),
+    //             ...(circle && { circle }),
+    //             senderId,
+    //             receiverId,
+    //             read: false,
+    //         });
+            
+    //         // Commit batch
+    //         await batch.commit();
+    
+    //         // Send notification
+    //         const recipientDoc = await firestore().collection('users').doc(receiverId).get();
+    //         const recipientTokens = recipientDoc.data()?.deviceTokens || [];
+    //     console.timeEnd('trySendMessage')
+
+    //         if (recipientTokens.length > 0) {
+    //             await sendNotification(recipientTokens, currentUser?.displayName || 'Me', text || 'Sent a message', senderId, targetRoomId);
+    //         } else {
+    //             console.log('No tokens found for recipient.');
+    //         }
+    //         console.timeEnd('onSendMessagae')
+    
+    //         console.log('Message successfully added to the Messages collection!');
+    //     } catch (error) {
+    //         console.error('Error sending message:', error);
+    //     }
+    // };
 
     const onSend = useCallback(async (messages = []) => {
         const senderId = currentUser?.uid;
         const receiverId = id;
+        console.time('onSendMessagae')
 
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+        // setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
 
         const {
             _id,
@@ -234,7 +444,6 @@ const DialogScreen = () => {
             fileName,
             circle,
         } = messages[0];
-        let createdAt = moment.utc().toDate();
         let audioUrl = null;
         if (audio) {
             const audioFilePath = `audios/${Date.now()}.mp4`;
@@ -258,7 +467,7 @@ const DialogScreen = () => {
         let roomDocRef = db.collection('Rooms')
             .where('senderId', 'in', [senderId, receiverId])
             .where('receiverId', 'in', [senderId, receiverId])
-            .limit(1); 
+            .limit(1);
 
         const roomQuerySnapshot = await roomDocRef.get();
         let targetRoomId;
@@ -271,7 +480,7 @@ const DialogScreen = () => {
             });
             targetRoomId = newRoomDocRef.id;
         } else {
-            targetRoomId = roomQuerySnapshot.docs[0].id; 
+            targetRoomId = roomQuerySnapshot.docs[0].id;
         }
         const messageDocRef = db.collection('Messages').doc();
         await messageDocRef.set({
@@ -284,22 +493,31 @@ const DialogScreen = () => {
             ...(text && { text }),
             ...(audioUrl && { audio: audioUrl }),
             ...(videoUrl && { video: videoUrl }),
-            createdAt,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             ...(maindis && { maindis }),
-            ...(fileName && {fileName}),
-            ...(circle && {circle}),
+            ...(fileName && { fileName }),
+            ...(circle && { circle }),
             senderId,
             receiverId,
+            read: false,
         });
 
 
         const recipientDoc = await firestore().collection('users').doc(receiverId).get();
+        console.log('recipientDocrecipientDocrecipientDoc', recipientDoc);
+
         const recipientData = recipientDoc.data();
         const recipientTokens = recipientData?.deviceTokens || [];
 
+
         if (recipientTokens.length > 0) {
             sendNotification(recipientTokens, currentUser?.displayName || 'Me', text || 'Sent a message', senderId, targetRoomId);
+        } else {
+            console.log('tadaaaaaaaaam');
+
         }
+        console.timeEnd('onSendMessagae')
+
         console.log('Message successfully added to the Messages collection!');
     }, [id, currentUser]);
 
@@ -373,22 +591,33 @@ const DialogScreen = () => {
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <ActivityIndicator size="large" color={COLORS.white} />
                             </View>) :
-                            (<GiftedChat
-                                renderMessageImage={renderMessageImage}
-                                messages={messages}
-                                renderMessage={(props) => <CustomMessage {...props} />}
-                                onSend={messages => onSend(messages)}
-                                user={{
-                                    _id: auth().currentUser?.uid,
-                                    name: auth().currentUser.displayName,
-                                    avatar: auth().currentUser.photoURL
-                                }}
-                                renderInputToolbar={(props) => (
-                                    <CustomActions {...props} />
-                                )}
-                                renderMessageAudio={props => <AudioPlayer {...props} />}
-                                renderMessageVideo={props => <VideoPlayer {...props} />}
-                            />)
+                            (
+                                <>
+                                    <GiftedChat
+                                        renderMessageImage={renderMessageImage}
+                                        messages={messages}
+                                        onLongPress={onLongPressMessage}
+                                        renderMessage={(props) => <CustomMessage {...props} />}
+                                        onSend={messages => onSend(messages)}
+                                        user={{
+                                            _id: auth().currentUser?.uid,
+                                            name: auth().currentUser.displayName,
+                                            avatar: auth().currentUser.photoURL
+                                        }}
+                                        renderInputToolbar={(props) => (
+                                            <CustomActions {...props} />
+                                        )}
+                                        renderMessageAudio={props => <AudioPlayer {...props} />}
+                                        // renderMessageVideo={props => <VideoPlayer {...props} />}
+                                    />
+                                    <MessageActionSheet
+                                        visible={actionSheetVisible}
+                                        onClose={() => setActionSheetVisible(false)}
+                                        onSelect={onSelect}
+                                        onReact={onReaction}
+                                    />
+                                </>
+                            )
                         }
                     </RN.View>
                 </KeyboardAvoidingView>

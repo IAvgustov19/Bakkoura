@@ -1,17 +1,52 @@
-import React from 'react';
-import {Images} from '../../assets';
-import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import Sound from 'react-native-sound';
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import PodcastItem from './components/PodcastItem';
+import { podcastData } from '../../utils/podcasts';
 import RN from '../../components/RN';
 
+Sound.setCategory('Playback');
+
 const Podcasts = () => {
+  const navigation = useNavigation();
+
+  const [playingId, setPlayingId] = useState<string | null>(null);
+
+  const onPlayPress = (id: string) => {
+    if (playingId === id) {
+      setPlayingId(null);
+    } else {
+      setPlayingId(id);
+    }
+  };
   return (
     <LinearContainer
       children={
         <RN.View>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Podcasts"
+          />
+          <RN.FlatList
+            data={podcastData}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.container}
+            renderItem={({ item }) => (
+              <PodcastItem
+                id={item.id}
+                imageSource={item.imageSource}
+                description={item.description}
+                time={item.time}
+                isPlaying={playingId === item.id}
+                soundSource={item.soundSource}
+                onPlayPress={onPlayPress}
+              />
+            )}
           />
         </RN.View>
       }
@@ -20,3 +55,10 @@ const Podcasts = () => {
 };
 
 export default Podcasts;
+
+const styles = RN.StyleSheet.create({
+  container: {
+    width: '100%',
+    alignItems: 'center',
+  }
+});

@@ -73,6 +73,7 @@ import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 import MessengerScreen from '../screens/messenger/MessengerScreen';
 import SearchContact from '../screens/messenger/SearchContact';
 import DialogScreen from '../screens/messenger/DialogScreen';
+import Podcasts from '../screens/podcasts/Podcasts';
 
 const Stack = createStackNavigator();
 
@@ -492,6 +493,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.TIME_WEALTH}
           component={TimeWealth}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+         <Stack.Screen
+          name={APP_ROUTES.PODCASTS}
+          component={Podcasts}
           options={{
             headerTitleAlign: 'center',
           }}

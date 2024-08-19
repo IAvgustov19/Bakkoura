@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Sound from 'react-native-sound';
 import { observer } from 'mobx-react-lite';
 import { Images } from '../../../assets';
@@ -8,6 +8,7 @@ const AudioPlayer = (props) => {
   const { currentMessage } = props;
   const [sound, setSound] = useState(null);
   const [paused, setPaused] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (currentMessage.audio) {
@@ -17,6 +18,7 @@ const AudioPlayer = (props) => {
           return;
         }
         setSound(newSound);
+        setLoading(false);
       });
 
       // Cleanup sound when component unmounts or audio changes
@@ -48,10 +50,14 @@ const AudioPlayer = (props) => {
     <View style={styles.container}>
       <TouchableOpacity>
         <View style={styles.audio}>
-          <TouchableOpacity onPress={handlePlayPause}>
-            {paused ? <Images.Svg.pausa /> : <Images.Svg.play />}
-          </TouchableOpacity>
-          <View style={{display: 'flex', gap: 5}}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#000" />
+          ) : (
+            <TouchableOpacity onPress={handlePlayPause}>
+              {paused ? <Images.Svg.pausa /> : <Images.Svg.play />}
+            </TouchableOpacity>
+          )}
+          <View style={{ display: 'flex', gap: 5 }}>
             <Images.Svg.voiceLines />
             <Text style={styles.mainDis}>{currentMessage.maindis}</Text>
           </View>

@@ -5,11 +5,12 @@ export const scheduleNotifications = async (uid) => {
   try {
     const userDoc = await db.collection('etaps').where('uid', '==', uid).get();
     if (userDoc) {
-      const userData = userDoc.docs.map(doc => doc.data());
-      console.log('userData', userData.length, userData[0].control)
+      const userData = userDoc.docs
+        .map(doc => doc.data())
+        .filter(item => item.control !== 'Stopped' && item.reminder === true);
       userData.forEach(item => {
-        const currentDate:any = new Date();
-        const fromDate:any = new Date(item.fromDateFormat);
+        const currentDate: any = new Date();
+        const fromDate: any = new Date(item.fromDateFormat);
         const timeZoneOffsetInMinutes = currentDate.getTimezoneOffset();
         const timeZoneOffsetInHours = -timeZoneOffsetInMinutes / 60;
 
@@ -21,7 +22,7 @@ export const scheduleNotifications = async (uid) => {
           currentDate.getDate(),
           9 + timeZoneOffsetInHours, 6, 0
         );
-        
+
         let notificationMessage = '';
         const repeatLower = item.repeat.toLowerCase();
         const daysDating = Math.floor((currentDate - fromDate) / (1000 * 60 * 60 * 24));

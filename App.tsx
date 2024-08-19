@@ -62,7 +62,6 @@ messaging().onMessage(async remoteMessage => {
   if (senderId !== openWith) {
     console.log('Message received from a different user in the foreground!', remoteMessage);
 
-    // Show local notification
     PushNotification.localNotification({
       channelId: channelId,
       title: title,
@@ -70,10 +69,13 @@ messaging().onMessage(async remoteMessage => {
     });
   } else {
     console.log('Message received from the currently active chat user');
-    // Optionally, update the chat UI here without changing the screen
-    // You might want to update the chat view with the new message.
   }
 });
+
+const currentUser = auth().currentUser;
+if (currentUser) {
+  scheduleNotifications(currentUser.uid);
+}
 
 
 
@@ -82,21 +84,21 @@ const App = () => {
   const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
   const { cloneAllEventsData, checkEvent } = useRootStore().calendarStore;
 
-  useEffect(() => {
-    const currentUser = auth().currentUser;
-    if (currentUser) {
-      scheduleNotifications(currentUser.uid);
-    }
+  // useEffect(() => {
+  //   const currentUser = auth().currentUser;
+  //   if (currentUser) {
+  //     scheduleNotifications(currentUser.uid);
+  //   }
 
-    const onAuthStateChanged = user => {
-      if (user) {
-        scheduleNotifications(user.uid);
-      }
-    };
+  //   const onAuthStateChanged = user => {
+  //     if (user) {
+  //       scheduleNotifications(user.uid);
+  //     }
+  //   };
 
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; 
+  // }, []);
 
   const requestNotificationPermission = async () => {
     if (RN.Platform.OS === 'android') {
@@ -196,20 +198,6 @@ const App = () => {
 
 
 
-
-const { ForegroundService } = NativeModules;
-  
-
-const startService = () => {
-  ForegroundService.startService();
-};
-
-
-useEffect(() => {
-  console.log('ForegroundService', ForegroundService)
-}, [])
-
-
   useEffect(() => {
     const permission = async () => {
       if (Platform.OS === 'android') {
@@ -244,37 +232,6 @@ useEffect(() => {
     permission();
   }, []);
 
-
-  // useEffect(() => {
-  //   let interval;
-
-  //   const handleAppStateChange = (nextAppState) => {
-  //     const currentUser = auth().currentUser;
-  //     if (currentUser) {
-  //       if (nextAppState === 'active') {
-  //         // Start updating lastSeen every second
-  //         interval = setInterval(() => {
-  //           updateLastSeen(currentUser.uid);
-  //         }, 1000);
-  //       } else {
-  //         // Stop updating lastSeen when the app goes to the background
-  //         if (interval) {
-  //           clearInterval(interval);
-  //         }
-  //         updateLastSeen(currentUser.uid);
-  //       }
-  //     }
-  //   };
-
-  //   AppState.addEventListener('change', handleAppStateChange);
-
-  //   return () => {
-  //     if (interval) {
-  //       clearInterval(interval);
-  //     }
-  //    ((AppState as any)?.removeEventListener('change', handleAppStateChange))
-  //   };
-  // }, []);
 
   useLayoutEffect(() => {
     const currentUser = auth().currentUser;

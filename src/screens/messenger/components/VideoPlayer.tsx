@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
 import RN from '../../../components/RN';
 import Video from 'react-native-video';
 import {observer} from 'mobx-react-lite';
@@ -12,6 +12,9 @@ const VideoPlayer = (props: any) => {
   const [initialPausa, setInitialPausa] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [opacity, setOpacity] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [muted, setMuted] = useState(true);
+
 
   const handlePlay = () => {
     if (videoRef.current) {
@@ -55,6 +58,7 @@ const VideoPlayer = (props: any) => {
     setModalVisible(true);
     setPaused(false);
     setOpacity(1);
+    setMuted(false);
     setInitialPausa(true);
     setTimeout(() => {
       setOpacity(0);
@@ -63,6 +67,18 @@ const VideoPlayer = (props: any) => {
 
   const onVideoEnd = () => {
     setPaused(true);
+  };
+
+  const handleLoadStart = () => {
+    setLoading(true);
+  };
+
+  const handleLoad = () => {
+    setLoading(false);
+  };
+
+  const handleError = () => {
+    setLoading(false); 
   };
 
   return (
@@ -77,11 +93,16 @@ const VideoPlayer = (props: any) => {
                 style={styles.circleVideo}
                 resizeMode="cover"
                 controls={false}
+                muted={muted}
                 paused={initialPausa}
                 onEnd={onVideoEnd}
+                onLoadStart={handleLoadStart}
+                onLoad={handleLoad}
+                onError={handleError}
               />
+              {loading && <ActivityIndicator size="large" color="#fff" style={styles.loadingIndicator} />}
               <View style={styles.videoInfo}>
-                <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+                {/* <Text style={styles.fileName}>{currentMessage.fileName}</Text> */}
                 <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
                 <Text style={styles.time}>{currentMessage.time}</Text>
               </View>
@@ -101,6 +122,7 @@ const VideoPlayer = (props: any) => {
                   source={{uri: currentMessage.video}}
                   style={styles.modalCircleVideo}
                   controls={false}
+                  muted={muted}
                   resizeMode="cover"
                   paused={paused}
                   onEnd={onVideoEnd}
@@ -131,6 +153,7 @@ const VideoPlayer = (props: any) => {
                 style={styles.video}
                 resizeMode="cover"
                 controls={false}
+                muted={muted}
                 paused={initialPausa}
                 onEnd={onVideoEnd}
               />
@@ -155,6 +178,7 @@ const VideoPlayer = (props: any) => {
                   source={{uri: currentMessage.video}}
                   style={styles.modalVideo}
                   controls={false}
+                  muted={muted}
                   resizeMode="contain"
                   paused={paused}
                   onEnd={onVideoEnd}
@@ -255,5 +279,11 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 150,
     overflow: 'hidden',
+  },
+  loadingIndicator: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -25 }, { translateY: -25 }],
   },
 });

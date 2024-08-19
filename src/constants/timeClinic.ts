@@ -1,6 +1,6 @@
-import {ImageSourcePropType} from 'react-native';
-import {Images} from '../assets';
-import {APP_ROUTES} from '../navigation/routes';
+import { ImageSourcePropType } from 'react-native';
+import { Images } from '../assets';
+import { APP_ROUTES } from '../navigation/routes';
 
 export const TimeManagementTexts = {
   first: `Watches, like a luxury car, eventually require an update of style and character, while remaining themselves. Our brand atelier will create a new style for your watch by adding a few artful touches.`,
@@ -104,6 +104,13 @@ export const TimeClinicList: TimeClinicListType[] = [
     navigate: APP_ROUTES.FRANS_VILA,
     isbtn: false,
   },
+  {
+    id: 8,
+    title: 'Podcass',
+    navigate: APP_ROUTES.PODCASTS,
+    info: 'Stories about the time...',
+    isbtn: false,
+  }
 ];
 
 export const AboutTimeData: AboutTimeType[] = [

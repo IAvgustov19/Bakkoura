@@ -107,15 +107,17 @@ export class TogetherTimeStore {
   //   this.clearState();
   // };
 
+
   updateEtap = async (id: string | number) => {
     console.log('id', id);
-    console.log(this.addEtapState)
-    await updateEtapsInFirestore(id, this.addEtapState);
+    console.log(this.addEtapState);  // Check if this log prints the correct `reminder` value
+    await updateEtapsInFirestore(id, this.addEtapState);  // Firestore update
     runInAction(() => {
       this.etapList = this.etapList.map(item => item.id === id ? this.addEtapState : item);
       this.isUpdate = false;
     });
   };
+  
 
 SelectOneEtap = (id: number | string) => {
   this.selcetedEtap = this.etapList.find(item => item.id === id) ?? TogetherDataInitial;
