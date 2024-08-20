@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     position: 'absolute',
     // left: 150,
     width: '100%',

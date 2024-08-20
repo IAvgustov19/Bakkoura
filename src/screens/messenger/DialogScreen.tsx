@@ -1,6 +1,6 @@
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { ActivityIndicator, Keyboard, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { ActivityIndicator, Keyboard, PanResponder, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
 import RN from '../../components/RN';
 import { GiftedChat, MessageImage } from 'react-native-gifted-chat';
 import { RootStackParamList } from '../../types/navigation';
@@ -32,6 +32,7 @@ import { Timestamp } from "firebase/firestore";
 import MessageActionSheet from './components/MessageAction';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 import 'react-native-console-time-polyfill'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
@@ -49,6 +50,46 @@ const DialogScreen = () => {
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [actionSheetVisible, setActionSheetVisible] = useState(false);
     const [chatOpenedAt, setChatOpenedAt] = useState(null);
+
+
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
+    const scrollViewRef = useRef(null);
+
+    // Handle keyboard visibility
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => setKeyboardVisible(true)
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => setKeyboardVisible(false)
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
+    // Handle gestures when keyboard is visible
+    const panResponder = useRef(
+        PanResponder.create({
+            onStartShouldSetPanResponder: () => keyboardVisible,
+            onPanResponderMove: (evt, gestureState) => {
+                if (scrollViewRef.current) {
+                    scrollViewRef.current.scrollTo({
+                        y: -gestureState.dy,
+                        animated: false,
+                    });
+                }
+            },
+            onPanResponderRelease: () => {
+                // Optionally handle what happens when the gesture is released
+            },
+        })
+    ).current;
+
 
 
     useEffect(() => {
@@ -229,7 +270,7 @@ const DialogScreen = () => {
             }
         });
         return () => unsubscribe();
-    }, [id]);    
+    }, [id]);
 
     useLayoutEffect(() => {
         setLoading(true);
@@ -335,13 +376,13 @@ const DialogScreen = () => {
 
     // const onSend = async (messages = []) => {
     //     console.log(11111);
-        
+
     //     console.time('onSendMessagae')
     //     const senderId = currentUser?.uid;
     //     const receiverId = id;
-    
+
     //     setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
-    
+
     //     const {
     //         _id,
     //         text,
@@ -352,16 +393,16 @@ const DialogScreen = () => {
     //         circle,
     //     } = messages[0];
     //     console.log(messages,908098);
-        
+
     //     try {
     //         // Handle file uploads
     //     console.time('trySendMessage')
     //         console.log(222);
-            
+
     //         const audioUrl = audio ? await uploadAudioToStorage(audio, 'audios') : null;
     //         const videoUrl = video ? await uploadAudioToStorage(video, 'videos') : null;
     //         console.log(3333);
-            
+
     //         // Get or create room
     //         const roomQuerySnapshot = await db.collection('Rooms')
     //             .where('senderId', 'in', [senderId, receiverId])
@@ -369,11 +410,11 @@ const DialogScreen = () => {
     //             .limit(1)
     //             .get();
     //         console.log(4444);
-            
+
     //         let targetRoomId;
     //         if (roomQuerySnapshot.empty) {
     //             console.log(5555);
-                
+
     //             const newRoomDocRef = db.collection('Rooms').doc();
     //             await newRoomDocRef.set({
     //                 senderId,
@@ -384,7 +425,7 @@ const DialogScreen = () => {
     //         } else {
     //             targetRoomId = roomQuerySnapshot.docs[0].id;
     //         }
-    
+
     //         // Use batch for messages
     //         const batch = db.batch();
     //         const messageDocRef = db.collection('Messages').doc();
@@ -406,10 +447,10 @@ const DialogScreen = () => {
     //             receiverId,
     //             read: false,
     //         });
-            
+
     //         // Commit batch
     //         await batch.commit();
-    
+
     //         // Send notification
     //         const recipientDoc = await firestore().collection('users').doc(receiverId).get();
     //         const recipientTokens = recipientDoc.data()?.deviceTokens || [];
@@ -421,7 +462,7 @@ const DialogScreen = () => {
     //             console.log('No tokens found for recipient.');
     //         }
     //         console.timeEnd('onSendMessagae')
-    
+
     //         console.log('Message successfully added to the Messages collection!');
     //     } catch (error) {
     //         console.error('Error sending message:', error);
@@ -554,7 +595,7 @@ const DialogScreen = () => {
     return (
         <PlatfromView>
             <LinearGradient
-                style={{ height: '15%', top: 0, paddingHorizontal: 10, paddingVertical: 30 }}
+                style={{ minHeight: '10%', top: 0, paddingHorizontal: 10, paddingVertical: 30 }}
                 colors={['#323D45', '#1B2024']}
             >
                 <HeaderContent
@@ -573,55 +614,60 @@ const DialogScreen = () => {
                     title={
                         <RN.View>
                             <RN.Text style={styles.name}>{name}</RN.Text>
-                            <RN.Text style={styles.lastSeen}></RN.Text>
+                            <RN.Text style={styles.lastSeen}>Last seen</RN.Text>
                             <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : 'Yesterday, 07:04'}</RN.Text>
                         </RN.View>
                     }
                     leftItem={<ArrowLeftBack onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never)} title='Chats' titleColor='#656E77' />}
                 />
             </LinearGradient>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <KeyboardAvoidingView
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            >
+                <RN.View
                     style={styles.container}
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                 >
-                    <RN.View style={styles.container}>
-                        {loading ? (
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <ActivityIndicator size="large" color={COLORS.white} />
-                            </View>) :
-                            (
-                                <>
-                                    <GiftedChat
-                                        renderMessageImage={renderMessageImage}
-                                        messages={messages}
-                                        onLongPress={onLongPressMessage}
-                                        renderMessage={(props) => <CustomMessage {...props} />}
-                                        onSend={messages => onSend(messages)}
-                                        user={{
-                                            _id: auth().currentUser?.uid,
-                                            name: auth().currentUser.displayName,
-                                            avatar: auth().currentUser.photoURL
-                                        }}
-                                        renderInputToolbar={(props) => (
-                                            <CustomActions {...props} />
-                                        )}
-                                        renderMessageAudio={props => <AudioPlayer {...props} />}
-                                        // renderMessageVideo={props => <VideoPlayer {...props} />}
-                                    />
-                                    <MessageActionSheet
-                                        visible={actionSheetVisible}
-                                        onClose={() => setActionSheetVisible(false)}
-                                        onSelect={onSelect}
-                                        onReact={onReaction}
-                                    />
-                                </>
-                            )
-                        }
-                    </RN.View>
-                </KeyboardAvoidingView>
-            </TouchableWithoutFeedback>
+                    {loading ? (
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <ActivityIndicator size="large" color={COLORS.white} />
+                        </View>) :
+                        (
+                            <RN.View style={{ flex: 1 }}>
+                                <GiftedChat
+                                    renderMessageImage={renderMessageImage}
+                                    messages={messages}
+                                    messagesContainerStyle={{ flexGrow: 1 }}
+                                    onLongPress={onLongPressMessage}
+                                    renderMessage={(props) => <CustomMessage {...props} />}
+                                    onSend={messages => onSend(messages)}
+                                    user={{
+                                        _id: auth().currentUser?.uid,
+                                        name: auth().currentUser.displayName,
+                                        avatar: auth().currentUser.photoURL
+                                    }}
+                                    keyboardShouldPersistTaps="handled"
+                                    isKeyboardInternallyHandled={false}
+                                    renderInputToolbar={(props) => (
+                                        <CustomActions {...props} />
+                                    )}
+                                    renderMessageAudio={props => <AudioPlayer {...props} />}
+                                    renderMessageVideo={props => <VideoPlayer {...props} />}
+                                    // infiniteScroll={true}
+                                    scrollToBottom={true}
+                                />
+                                <MessageActionSheet
+                                    visible={actionSheetVisible}
+                                    onClose={() => setActionSheetVisible(false)}
+                                    onSelect={onSelect}
+                                    onReact={onReaction}
+                                />
+                            </RN.View>
+                        )
+                    }
+                </RN.View>
+            </KeyboardAvoidingView>
         </PlatfromView>
     )
 }
@@ -634,7 +680,7 @@ const styles = RN.StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        height: '100%',
+        // height: '100%',
         backgroundColor: 'black',
         paddingBottom: Platform.OS === 'ios' ? 30 : 10,
     },
