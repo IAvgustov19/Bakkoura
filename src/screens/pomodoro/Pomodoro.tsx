@@ -17,6 +17,7 @@ import Line from '../../components/Line/Line';
 import LottieContent from '../../components/LottieContent/LottieContent';
 import { Lotties } from '../../lotties/lottie';
 import { windowHeight, windowWidth } from '../../utils/styles';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const Pomodoro = () => {
   const {
@@ -134,7 +135,7 @@ const Pomodoro = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Pomodoro"
             rightItem={<Images.Svg.timerLogo />}
           />

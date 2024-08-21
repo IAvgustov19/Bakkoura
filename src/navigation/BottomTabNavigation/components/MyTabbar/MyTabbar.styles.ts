@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {COLORS} from '../../../../utils/colors';
+import { StyleSheet } from 'react-native';
+import { COLORS } from '../../../../utils/colors';
 
 export const styles = StyleSheet.create({
   bottomSheet: {
@@ -38,10 +38,10 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center',
-    gap: 5,
+    gap: 1,
     width: '25%',
-    height: 115,
-    paddingTop: 20,
+    paddingTop: 10,
+    paddingBottom: 12,
   },
   iconBox: {
     height: 55,
@@ -51,6 +51,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: -5,
     left: '50%',
-    transform: [{translateX: -15}],
+    zIndex: 1,
+    transform: [{ translateX: -15 }],
   },
 });

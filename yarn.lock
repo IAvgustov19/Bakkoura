@@ -5176,6 +5176,11 @@ emittery@^0.13.1:
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.13.1.tgz#c04b8c3457490e0847ae51fced3af52d338e3dad"
   integrity sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==
 
+emoji-datasource@^6.0.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-6.1.1.tgz#95a38737a322bedae130385c26ce291d0833ce62"
+  integrity sha512-fbS3QJpzGHhujvBULSKXcvsYmVg+1ldfI3VVXG3jnFuniZtkp7rz/OcTcQjbp3m43BYxmiJgKmaoOUPxXQupRQ==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -9033,6 +9038,13 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-animatable@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
+  integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-audio-recorder-player@^3.6.10:
   version "3.6.10"
   resolved "https://registry.yarnpkg.com/react-native-audio-recorder-player/-/react-native-audio-recorder-player-3.6.10.tgz#261ec3927ee9a44d6249e23dd6f03ec46ba95de2"
@@ -9065,6 +9077,11 @@ react-native-confirmation-code-field@^7.3.2:
   resolved "https://registry.yarnpkg.com/react-native-confirmation-code-field/-/react-native-confirmation-code-field-7.4.0.tgz#58cc2d5adad59882d1805bf164cd6099d432d21e"
   integrity sha512-Kw7rD0RXi6vZnt0Y67nkSW2wYmZFdnxJ23yxkKm3jqwvSxAvaA1NP3h3MHSPmJd25l0WK/+fjXOeCliDqWZ9rw==
 
+react-native-console-time-polyfill@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.3.tgz#1039dab1bb9e2d8040f5e19de68e0da781dc9b60"
+  integrity sha512-C7CUb1c6GsCssqvjtRuqVqnGwlfEHXxXDvCUuGNbq/gpZZt+9YbZD3ODmXBDxis3tDQA0k1lbT1VMTqWQw9rDg==
+
 react-native-document-picker@^9.3.0:
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-9.3.0.tgz#4651d354623367d06397fe6dbf4a496f7d92ca6b"
@@ -9078,6 +9095,13 @@ react-native-dotenv@^3.4.11:
   integrity sha512-6vnIE+WHABSeHCaYP6l3O1BOEhWxKH6nHAdV7n/wKn/sciZ64zPPp2NUdEUf1m7g4uuzlLbjgr+6uDt89q2DOg==
   dependencies:
     dotenv "^16.4.5"
+
+react-native-emoji-selector@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-emoji-selector/-/react-native-emoji-selector-0.2.0.tgz#b1ed980cd585a3fd0fca1da6a29006c1a5979615"
+  integrity sha512-+rPPWG5vl5AexdH8udEwtzdq9QUGD6kp+dQ8C/459d3ScM0S3UnT/qAvhmpsTgCbgjpdwiJIcrKNxKmGEDb15g==
+  dependencies:
+    emoji-datasource "^6.0.0"
 
 react-native-file-viewer@^2.1.5:
   version "2.1.5"
@@ -9123,6 +9147,11 @@ react-native-gifted-chat@^2.4.0:
     use-memo-one "1.1.3"
     uuid "3.4.0"
 
+react-native-google-recaptcha-v2@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-recaptcha-v2/-/react-native-google-recaptcha-v2-1.1.0.tgz#9dc129c71ffa61c06470d5c95c6ea165bfdf4100"
+  integrity sha512-J8bGXcNqfx3obiDn9wptElO5OzqO55QUUVTZJEIqjZ0GcTx6cPnttGkO96cbTHvG+k6FMLRSm2GeUXmk7otj+Q==
+
 react-native-image-crop-picker@^0.41.1:
   version "0.41.2"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.41.2.tgz#824fa8fee8391fbb3e0b5ae2973221a2dff0cafb"
@@ -9166,6 +9195,14 @@ react-native-linear-gradient@^2.8.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
+react-native-modal@^13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
+  integrity sha512-UB+mjmUtf+miaG/sDhOikRfBOv0gJdBU2ZE1HtFWp6UixW9jCk/bhGdHUgmZljbPpp0RaO/6YiMmQSSK3kkMaw==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-animatable "1.3.3"
+
 react-native-parsed-text@0.0.22:
   version "0.0.22"
   resolved "https://registry.yarnpkg.com/react-native-parsed-text/-/react-native-parsed-text-0.0.22.tgz#a23c756eaa5d6724296814755085127f9072e5f5"
@@ -9197,7 +9234,7 @@ react-native-really-awesome-button@^2.0.4:
   resolved "https://registry.yarnpkg.com/react-native-really-awesome-button/-/react-native-really-awesome-button-2.0.4.tgz#10ffcc6debf43fbf4d3b6aa89c909e17ba7026ed"
   integrity sha512-dC8K6/sj3MixM/7MGIkDiuy8oGrbVSoYxbhR2e2LMw8Zvp7s5uxY5R8Ka4AZfEFhreXNL2bFV3Jrxd8QlNNGAg==
 
-react-native-reanimated@^3.8.1:
+react-native-reanimated@^3.10.1:
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-3.15.0.tgz#8814af7c78bbdf4c92bbd583f2266febf962e66a"
   integrity sha512-yGxOyYAAu/5CyjonM2SgsM5sviiiK8HiHL9jT1bKfRxMLnNX9cFP8/UXRkbMT7ZXIfOlCvNFR0AqnphpuXIPVA==

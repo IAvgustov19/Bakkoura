@@ -10,6 +10,7 @@ import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import StressTestResult from './components/StressTestResult';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const StressTest = () => {
   const navigation = useNavigation();
@@ -48,7 +49,7 @@ const StressTest = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Stress Tests"
             rightItem={<Images.Svg.timerLogo />}
           />

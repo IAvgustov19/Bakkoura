@@ -1,6 +1,6 @@
-import {ImageSourcePropType} from 'react-native';
-import {Images} from '../assets';
-import {APP_ROUTES} from '../navigation/routes';
+import { ImageSourcePropType } from 'react-native';
+import { Images } from '../assets';
+import { APP_ROUTES } from '../navigation/routes';
 
 export const TimeManagementTexts = {
   first: `Watches, like a luxury car, eventually require an update of style and character, while remaining themselves. Our brand atelier will create a new style for your watch by adding a few artful touches.`,
@@ -59,58 +59,37 @@ export const TimeWealthDataInitial: TimeWealthDataType = {
 export const TimeClinicList: TimeClinicListType[] = [
   {
     id: 1,
-    title: 'Time Management',
-    info: 'Details about the concept...',
-    navigate: APP_ROUTES.TIME_MANAGEMENT,
-    isbtn: true,
+    title: 'Podcass',
+    navigate: APP_ROUTES.PODCASTS,
+    info: 'Stories about the time...',
+    isbtn: false,
   },
   {
     id: 2,
-    title: 'About Time',
+    title: 'Consultation',
+    navigate: APP_ROUTES.CONSULTATION,
     info: 'Stories about the time...',
-    navigate: APP_ROUTES.ABOUT_TIME,
     isbtn: false,
   },
   {
     id: 3,
-    title: 'Reccomendations',
-    info: 'Stories about the time...',
-    navigate: APP_ROUTES.RECOMMENDATION,
-    isbtn: false,
-  },
-  {
-    id: 4,
     title: 'The Book of The Time',
     info: 'Stories about the time...',
     navigate: APP_ROUTES.THE_BOOK,
     isbtn: false,
   },
   {
+    id: 4,
+    title: 'Reccomendations',
+    info: 'Stories about the time...',
+    navigate: APP_ROUTES.RECOMMENDATION,
+    isbtn: false,
+  },
+  {
     id: 5,
-    title: '30H concept',
+    title: 'About Time',
     info: 'Stories about the time...',
-    navigate: APP_ROUTES.CONCEPT_30H,
-    isbtn: false,
-  },
-  {
-    id: 6,
-    title: 'Jihad Bakkoura',
-    info: 'About the Founder...',
-    navigate: APP_ROUTES.JIHAD_BAKKOURA_TIME_CLINIC,
-    isbtn: false,
-  },
-  {
-    id: 7,
-    title: 'Time Wealth',
-    info: 'Stories about the time...',
-    navigate: APP_ROUTES.TIME_WEALTH,
-    isbtn: false,
-  },
-  {
-    id: 8,
-    title: 'FrancVila Watch',
-    info: 'About the Founder....',
-    navigate: APP_ROUTES.FRANS_VILA,
+    navigate: APP_ROUTES.ABOUT_TIME,
     isbtn: false,
   },
 ];

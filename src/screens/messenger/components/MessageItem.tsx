@@ -2,14 +2,14 @@ import React from 'react';
 import RN from '../../../components/RN';
 import { Images } from '../../../assets/index';
 import { COLORS } from '../../../utils/colors';
-import { observer } from 'mobx-react-lite';
 
 type Props = {
     name?: string;
     day?: string;
     description?: string;
     time?: string;
-    avatar?: any,
+    avatar?: any;
+    unreadMessages: number;
     onNavigate?: () => void;
 };
 
@@ -19,7 +19,8 @@ const MessageItem: React.FC<Props> = ({
     time,
     description,
     avatar,
-    onNavigate
+    onNavigate,
+    unreadMessages
 }) => {
     return (
         <RN.Pressable onPress={onNavigate} style={styles.container}>
@@ -50,9 +51,11 @@ const MessageItem: React.FC<Props> = ({
                         ]}>
                         {time}
                     </RN.Text>
-                    <RN.View style={styles.messagesCount}>
-                        <RN.Text style={styles.messageText}>20</RN.Text>
-                    </RN.View>
+                    {unreadMessages > 0 && (
+                        <RN.View style={styles.messagesCount}>
+                            <RN.Text style={styles.messageText}>{unreadMessages}</RN.Text>
+                        </RN.View>
+                    )}
                 </RN.View>
             </RN.View>
         </RN.Pressable>

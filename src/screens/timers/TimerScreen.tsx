@@ -15,8 +15,11 @@ import FirstTimerDuring from './components/FirstTimerDuring';
 import SecondTimer from './components/SecondTimer';
 import SecondTimerDuring from './components/SecondTimerDuring';
 import {styles} from './TimerScreenStyles';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { useNavigation } from '@react-navigation/native';
 
 const TimerScreen = () => {
+  const navigation = useNavigation();
   const {
     timerStatus,
     inActive,
@@ -78,7 +81,7 @@ const TimerScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title="Timer"
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Images.Svg.timerLogo />}
           />
           {timerStatus.reset ? null : (

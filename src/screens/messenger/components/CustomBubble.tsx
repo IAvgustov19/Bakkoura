@@ -1,36 +1,55 @@
-// CustomMessage.js
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Bubble} from 'react-native-gifted-chat';
+import { View, Text, StyleSheet } from 'react-native';
+import { Bubble } from 'react-native-gifted-chat';
+import auth from '@react-native-firebase/auth';
 import moment from 'moment';
+import React from 'react';
+
+import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 
 const CustomTime = props => {
-  const {currentMessage, position} = props;
+  const currentUser = auth().currentUser;
+  const { currentMessage, position } = props;
+  const isRead = currentMessage.read;
+
   return (
-    <View>
+    <View style={styles.timeContainer}>
       <Text
         style={[
           styles.time,
-          {textAlign: position === 'right' ? 'right' : 'left'},
+          { textAlign: position === 'right' ? 'right' : 'left' },
         ]}>
         {moment(currentMessage.createdAt).format('HH:mm')}
+        {currentMessage.user._id === currentUser?.uid &&
+          <>{isRead ? <Images.Svg.read /> : <Images.Svg.sent />}</>
+        }
       </Text>
     </View>
   );
 };
 
-const CustomMessage = props => {
-  const {currentMessage} = props;
-  const {image, user} = currentMessage;
-  const {selectedImage, imageName, imageSize} = currentMessage;
 
-  // console.log('currentMessagecurrentMessage', currentMessage)
+const CustomMessage = (props) => {
+  const { currentMessage, position } = props;
+  const { image, user, reaction } = currentMessage;
+  const { selectedImage, imageName, imageSize } = currentMessage;
+
 
   return (
     <View style={styles.container}>
+      <View
+        style={[
+          styles.reactionsContainer,
+          position === 'right' ? styles.reactionRight : styles.reactionLeft,
+        ]}
+      >
+        {reaction && (
+          <View style={styles.reaction}>
+            <Text style={styles.reactionText}>{reaction}</Text>
+          </View>
+        )}
+      </View>
       <View style={styles.messageContainer}>
-        {/* <Text style={styles.name}>{currentMessage.user.name}</Text> */}
         <Bubble
           {...props}
           wrapperStyle={{
@@ -51,15 +70,15 @@ const CustomMessage = props => {
           }}
           renderTime={timeProps => <CustomTime {...timeProps} />}
         />
-        {/* {selectedImage && (
+        {selectedImage && (
           <View style={styles.imageContainer}>
-            <RN.Image source={{uri: selectedImage}} style={styles.image} />
+            <RN.Image source={{ uri: selectedImage }} style={styles.image} />
             <View style={styles.imageInfo}>
               <Text style={styles.imageName}>{imageName}</Text>
               <Text style={styles.imageSize}>{imageSize} MB</Text>
             </View>
           </View>
-        )} */}
+        )}
       </View>
     </View>
   );
@@ -86,11 +105,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#313131',
     borderRadius: 15,
     padding: 10,
+    position: 'relative',
+
   },
   bubbleRight: {
     color: 'white',
     backgroundColor: '#313131',
     borderRadius: 15,
+    position: 'relative',
     padding: 10,
   },
   textLeft: {
@@ -100,12 +122,12 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   time: {
-    fontFamily: 'SF Pro Text',
+    color: '#fff',
     fontSize: 11,
-    fontStyle: 'italic',
     fontWeight: '400',
     lineHeight: 13.13,
-    color: '#fff',
+    fontStyle: 'italic',
+    fontFamily: 'SF Pro Text',
   },
   imageContainer: {
     flexDirection: 'row',
@@ -131,6 +153,31 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666666',
   },
+  reactionsContainer: {
+    bottom: -20,
+    zIndex: 1000,
+    position: 'absolute',
+    alignItems: 'center',
+  },
+  reactionLeft: {
+    left: 0,
+  },
+  reactionRight: {
+    right: 0,
+  },
+  reaction: {
+    padding: 5,
+    marginBottom: 5,
+    borderRadius: 15,
+  },
+  reactionText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  timeContainer: {
+    gap: 10,
+    display: 'flex',
+  }
 });
 
 export default CustomMessage;

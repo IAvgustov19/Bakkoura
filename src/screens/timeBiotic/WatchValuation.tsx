@@ -1,31 +1,32 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import FormContainer from '../market/components/FormContainer/FormContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
-import {useNavigation} from '@react-navigation/native';
-import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
-import {APP_ROUTES} from '../../navigation/routes';
+import { useNavigation } from '@react-navigation/native';
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
+import { APP_ROUTES } from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
 import Cancel from '../../components/Cancel/Cancel';
-import {windowHeight} from '../../utils/styles';
+import { windowHeight } from '../../utils/styles';
 import TextView from '../../components/Text/Text';
-import {COLORS} from '../../utils/colors';
+import { COLORS } from '../../utils/colors';
 import RN from '../../components/RN';
-import {Images} from '../../assets';
-import {ActivityIndicator} from 'react-native';
-import {observer} from 'mobx-react-lite';
+import { Images } from '../../assets';
+import { ActivityIndicator } from 'react-native';
+import { observer } from 'mobx-react-lite';
 import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
 import CustomSelect from './components/CustomSelect';
-import {Countries} from '../../utils/languages';
+import { Countries } from '../../utils/languages';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const WatchValuation = () => {
   const navigation = useNavigation();
 
   const [accept, setAccept] = useState(false);
-  const {setOrderState, orderState} = useRootStore().marketStore;
-  const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
-  const {onHandleWebVIew} = useRootStore().marketStore;
+  const { setOrderState, orderState } = useRootStore().marketStore;
+  const { sendEmailLoading, onSubmitEmail } = useRootStore().timeBiotic;
+  const { onHandleWebVIew } = useRootStore().marketStore;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -60,7 +61,7 @@ const WatchValuation = () => {
         <RN.View style={styles.container}>
           {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title="Assestment Watch"
           />
@@ -100,8 +101,8 @@ const WatchValuation = () => {
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-    </RN.Pressable>
+                    <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
+                  </RN.Pressable>
                 </RN.View>
               </RN.View>
               <SimpleBtn
@@ -110,7 +111,7 @@ const WatchValuation = () => {
                   sendEmailLoading ? (
                     <ActivityIndicator
                       color={COLORS.black}
-                      style={{marginTop: 3}}
+                      style={{ marginTop: 3 }}
                     />
                   ) : null
                 }

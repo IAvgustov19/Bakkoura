@@ -12,6 +12,7 @@ import {Lotties} from '../../lotties/lottie';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 import TimeClinicListItem from './components/TimeClinicListItem';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const TimeClinic = () => {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ const TimeClinic = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Time Clinic"
           />
           <RN.View style={styles.content}>

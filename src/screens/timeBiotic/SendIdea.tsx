@@ -18,6 +18,7 @@ import ButtonComp from '../../components/Button/Button';
 import GiveImage from '../../components/GiveImage/GiveImage';
 import {ActivityIndicator} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const SendIdea = () => {
   const navigation = useNavigation();
@@ -62,7 +63,7 @@ const SendIdea = () => {
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View> */}
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title="Your Idea"
           />

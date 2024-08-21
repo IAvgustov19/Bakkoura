@@ -60,7 +60,7 @@ const styles = RN.StyleSheet.create({
     },
     content: {
         paddingTop: 18,
-        paddingBottom: windowHeight / 4,
+        paddingBottom: 70,
     },
     itemContainer: {
         gap: 35,

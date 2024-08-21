@@ -1,17 +1,18 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Pressable} from 'react-native';
-import {Images} from '../../../assets';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Images } from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import RN from '../../../components/RN';
 import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
 import TextView from '../../../components/Text/Text';
-import {COLORS} from '../../../utils/colors';
+import { COLORS } from '../../../utils/colors';
 
 type Props = {
   isBtn?: boolean;
   onPressBtn?: () => void;
   onPressItem?: () => void;
   title?: string;
+  icon?: any;
   text?: string;
 };
 
@@ -20,12 +21,14 @@ const TimeClinicListItem: React.FC<Props> = ({
   onPressBtn,
   onPressItem,
   text,
+  icon,
   title,
 }) => {
   return (
     <RN.Pressable style={styles.container} onPress={onPressItem}>
       <RN.View
-        style={[styles.clinicItemLeft, {maxWidth: isBtn ? '55%' : '85%'}]}>
+        style={[styles.clinicItemLeft, { maxWidth: isBtn ? '55%' : '85%', flexDirection: icon ? 'row' : 'column', alignItems: icon ? 'center' : 'flex-start' }]}>
+        {icon && icon}
         <TextView style={styles.title} title={title} textAlign="left" />
         {text ? (
           <TextView text={text} style={styles.listInfo} textAlign="left" />

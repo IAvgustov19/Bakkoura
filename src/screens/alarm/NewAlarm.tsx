@@ -1,7 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useState} from 'react';
-import {Images} from '../../assets';
+import { useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
+import { Images } from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -13,8 +13,8 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import SoundsContent from '../../components/SoundsContent/SoundsContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import {APP_ROUTES} from '../../navigation/routes';
-import {COLORS} from '../../utils/colors';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
 import SetAlarmClock from './components/SetAlarmClock';
 
 const NewAlarmScreen = () => {
@@ -51,9 +51,8 @@ const NewAlarmScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Alarm Clock"
-            rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
             <RN.View>

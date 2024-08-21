@@ -1,5 +1,5 @@
-import React, {useState, useRef, useCallback} from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
 import RN from '../../../components/RN';
 import Video from 'react-native-video';
 import {observer} from 'mobx-react-lite';
@@ -12,6 +12,9 @@ const VideoPlayer = (props: any) => {
   const [initialPausa, setInitialPausa] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [opacity, setOpacity] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [muted, setMuted] = useState(true);
+
 
   const handlePlay = () => {
     if (videoRef.current) {
@@ -55,6 +58,7 @@ const VideoPlayer = (props: any) => {
     setModalVisible(true);
     setPaused(false);
     setOpacity(1);
+    setMuted(false);
     setInitialPausa(true);
     setTimeout(() => {
       setOpacity(0);
@@ -65,23 +69,17 @@ const VideoPlayer = (props: any) => {
     setPaused(true);
   };
 
-  const renderPreviewVideo = useCallback(
-    (isCircle: boolean) => {
-      return (
-        <Video
-          ref={videoRef}
-          source={{uri: currentMessage.video}}
-          style={isCircle ? styles.modalCircleVideo : styles.modalVideo}
-          controls={false}
-          resizeMode={isCircle ? 'cover' : 'contain'}
-          paused={paused}
-          onEnd={onVideoEnd}
-          muted={false}
-        />
-      );
-    },
-    [videoRef, currentMessage, modalVisible, paused, initialPausa],
-  );
+  const handleLoadStart = () => {
+    setLoading(true);
+  };
+
+  const handleLoad = () => {
+    setLoading(false);
+  };
+
+  const handleError = () => {
+    setLoading(false); 
+  };
 
   return (
     <>
@@ -95,15 +93,19 @@ const VideoPlayer = (props: any) => {
                 style={styles.circleVideo}
                 resizeMode="cover"
                 controls={false}
+                muted={muted}
                 paused={initialPausa}
                 onEnd={onVideoEnd}
-                muted={true}
+                onLoadStart={handleLoadStart}
+                onLoad={handleLoad}
+                onError={handleError}
               />
-              {/* <View style={styles.videoInfo}>
-                <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+              {loading && <ActivityIndicator size="large" color="#fff" style={styles.loadingIndicator} />}
+              <View style={styles.videoInfo}>
+                {/* <Text style={styles.fileName}>{currentMessage.fileName}</Text> */}
                 <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
                 <Text style={styles.time}>{currentMessage.time}</Text>
-              </View> */}
+              </View>
             </RN.TouchableOpacity>
             <RN.Modal
               visible={modalVisible}
@@ -115,7 +117,16 @@ const VideoPlayer = (props: any) => {
                   onPress={() => setModalVisible(false)}>
                   <Images.Svg.whiteDelete />
                 </RN.TouchableOpacity>
-                {renderPreviewVideo(true)}
+                <Video
+                  ref={videoRef}
+                  source={{uri: currentMessage.video}}
+                  style={styles.modalCircleVideo}
+                  controls={false}
+                  muted={muted}
+                  resizeMode="cover"
+                  paused={paused}
+                  onEnd={onVideoEnd}
+                />
                 <RN.Pressable
                   style={[styles.buttons, {opacity: opacity}]}
                   onPress={onPlayPuasa}>
@@ -142,9 +153,9 @@ const VideoPlayer = (props: any) => {
                 style={styles.video}
                 resizeMode="cover"
                 controls={false}
+                muted={muted}
                 paused={initialPausa}
                 onEnd={onVideoEnd}
-                muted={true}
               />
               <View style={styles.videoInfo}>
                 <Text style={styles.fileName}>{currentMessage.fileName}</Text>
@@ -162,7 +173,16 @@ const VideoPlayer = (props: any) => {
                   onPress={() => setModalVisible(false)}>
                   <Images.Svg.whiteDelete />
                 </RN.TouchableOpacity>
-                {renderPreviewVideo(false)}
+                <Video
+                  ref={videoRef}
+                  source={{uri: currentMessage.video}}
+                  style={styles.modalVideo}
+                  controls={false}
+                  muted={muted}
+                  resizeMode="contain"
+                  paused={paused}
+                  onEnd={onVideoEnd}
+                />
                 <RN.Pressable
                   style={[styles.buttons, {opacity: opacity}]}
                   onPress={onPlayPuasa}>
@@ -191,7 +211,7 @@ const styles = StyleSheet.create({
   container: {},
   fileName: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     flexWrap: 'wrap',
     maxWidth: 200,
   },
@@ -205,14 +225,15 @@ const styles = StyleSheet.create({
   },
   videoMessage: {
     flexDirection: 'row',
+
     overflow: 'hidden',
-    gap: 10,
+    gap: 5,
     maxWidth: '100%',
   },
   video: {
-    width: 80,
-    height: 80,
-    borderRadius: 5,
+    width: 100,
+    height: 100,
+    borderRadius: 10,
     overflow: 'hidden',
   },
   videoInfo: {
@@ -258,5 +279,11 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 150,
     overflow: 'hidden',
+  },
+  loadingIndicator: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -25 }, { translateY: -25 }],
   },
 });
