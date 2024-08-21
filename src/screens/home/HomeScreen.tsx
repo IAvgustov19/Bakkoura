@@ -98,12 +98,12 @@ const HomeScreen = () => {
             // title="Home"
             rightItem={
               <RN.View style={styles.profile}>
-                {/* <RN.TouchableOpacity
+                <RN.TouchableOpacity
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.MESSENGER as never)
                   }>
                   <Images.Svg.messageIcon />
-                </RN.TouchableOpacity> */}
+                </RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   style={{alignItems: 'center'}}
                   onPress={() =>

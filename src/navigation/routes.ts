@@ -49,6 +49,11 @@ export enum APP_ROUTES {
   //bottomsheet screens
   HOME_START = 'HomeScreen',
   MARKET = 'MarketScreen',
+  TOOLS = 'Tools',
+  OTHER = 'Other',
+
+  // others
+
   MESSENGER = 'Messanger',
   SEARCH_CONTACT = 'SearchContact',
   DIALOG_SCREEN = 'DialogScreen',

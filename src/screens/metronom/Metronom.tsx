@@ -16,8 +16,11 @@ import {windowHeight, windowWidth} from '../../utils/styles';
 import EllipseBotton from './components/EllipseBotton';
 import FirstMetronom from './components/FirstMetronom';
 import SecondMetronom from './components/SecondMetronom';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { useNavigation } from '@react-navigation/native';
 
 const Metronom = () => {
+  const navigation = useNavigation();
   const {
     setMetronomCountMinut,
     metronomState,
@@ -89,7 +92,7 @@ const Metronom = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title="Metronom"
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Images.Svg.timerLogo />}
           />
           <RN.View style={styles.content}>

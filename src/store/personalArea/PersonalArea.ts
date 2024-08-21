@@ -104,7 +104,7 @@ export class PersonalAreaStore {
               if (this.personalAreaData.initialRouteName) {
                 this.initialRouteName = MenuItems.find(
                   item =>
-                    item.routeName === this.personalAreaData.initialRouteName,
+                    item.routeName === 'HomeScreen',
                 );
                 this.initialRouteNameChanged = this.initialRouteName;
               }

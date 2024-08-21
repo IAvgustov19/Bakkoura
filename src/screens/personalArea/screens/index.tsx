@@ -147,7 +147,7 @@ const PersonalArea = () => {
                     }
                   />
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                {/* <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
                     title="Organize Menu"
                     onPress={() =>
@@ -164,7 +164,7 @@ const PersonalArea = () => {
                       )
                     }
                   />
-                </RN.View>
+                </RN.View> */}
                 {/* <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
                     title="Language"

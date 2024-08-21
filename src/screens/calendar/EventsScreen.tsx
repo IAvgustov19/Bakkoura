@@ -12,6 +12,7 @@ import {observer} from 'mobx-react-lite';
 import Events from './components/Events';
 import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const EventScreen = () => {
   const {
@@ -54,7 +55,7 @@ const EventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.Text style={styles.currentTime}>
                 {calendarCurrentTime}

@@ -32,7 +32,6 @@ import { Timestamp } from "firebase/firestore";
 import MessageActionSheet from './components/MessageAction';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 import 'react-native-console-time-polyfill'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
@@ -50,46 +49,6 @@ const DialogScreen = () => {
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [actionSheetVisible, setActionSheetVisible] = useState(false);
     const [chatOpenedAt, setChatOpenedAt] = useState(null);
-
-
-    const [keyboardVisible, setKeyboardVisible] = useState(false);
-    const scrollViewRef = useRef(null);
-
-    // Handle keyboard visibility
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            () => setKeyboardVisible(true)
-        );
-        const keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            () => setKeyboardVisible(false)
-        );
-
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        };
-    }, []);
-
-    // Handle gestures when keyboard is visible
-    const panResponder = useRef(
-        PanResponder.create({
-            onStartShouldSetPanResponder: () => keyboardVisible,
-            onPanResponderMove: (evt, gestureState) => {
-                if (scrollViewRef.current) {
-                    scrollViewRef.current.scrollTo({
-                        y: -gestureState.dy,
-                        animated: false,
-                    });
-                }
-            },
-            onPanResponderRelease: () => {
-                // Optionally handle what happens when the gesture is released
-            },
-        })
-    ).current;
-
 
 
     useEffect(() => {
@@ -111,12 +70,10 @@ const DialogScreen = () => {
         switch (action) {
             case 'delete':
                 try {
-                    // 1. Remove the message from local state
                     setMessages((previousMessages) =>
                         previousMessages.filter((message) => message._id !== selectedMessage._id)
                     );
 
-                    // 2. Delete the message from Firebase
                     await db.collection('Messages').doc(selectedMessage._id).delete();
 
                     console.log('Message deleted successfully!');
@@ -125,13 +82,10 @@ const DialogScreen = () => {
                 }
                 break;
             case 'answer':
-                // Handle answer action
                 break;
             case 'pin':
-                // Handle pin action
                 break;
             case 'send':
-                // Handle send action
                 break;
             default:
                 break;
@@ -293,7 +247,6 @@ const DialogScreen = () => {
             }
         };
 
-        // Call the function to update the timestamp when the chat is opened
         updateChatOpenedAt();
 
         const unsubscribe = roomQuery.onSnapshot(async (roomQuerySnapshot) => {
@@ -337,12 +290,6 @@ const DialogScreen = () => {
                         if (msg.receiverId === currentUser?.uid && chatOpenedAtForCurrentUser && msg.createdAt <= moment(chatOpenedAtForCurrentUser.toDate()).format('YYYY-MM-DD HH:mm:ss')) {
                             db.collection('Messages').doc(msg._id).update({ read: true });
                         }
-                        // if (msg.receiverId !== currentUser?.uid && chatOpenedAt && msg.createdAt <= moment(chatOpenedAt).format('YYYY-MM-DD HH:mm:ss')) {
-                        //     db.collection('Messages').doc(msg._id).update({ read: true });
-                        // }
-                        // console.log('chatOpenedAtchatOpenedAtchatOpenedAt', moment(chatOpenedAt).format('YYYY-MM-DD HH:mm:ss'));
-                        // console.log('msg.createdAtmsg.createdAtmsg.createdAt', msg.createdAt);
-
                         return {
                             ...msg,
                             user: {
@@ -372,102 +319,6 @@ const DialogScreen = () => {
 
         return () => unsubscribe();
     }, [id, currentUser.uid]);
-
-
-    // const onSend = async (messages = []) => {
-    //     console.log(11111);
-
-    //     console.time('onSendMessagae')
-    //     const senderId = currentUser?.uid;
-    //     const receiverId = id;
-
-    //     setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
-
-    //     const {
-    //         _id,
-    //         text,
-    //         audio,
-    //         video,
-    //         maindis,
-    //         fileName,
-    //         circle,
-    //     } = messages[0];
-    //     console.log(messages,908098);
-
-    //     try {
-    //         // Handle file uploads
-    //     console.time('trySendMessage')
-    //         console.log(222);
-
-    //         const audioUrl = audio ? await uploadAudioToStorage(audio, 'audios') : null;
-    //         const videoUrl = video ? await uploadAudioToStorage(video, 'videos') : null;
-    //         console.log(3333);
-
-    //         // Get or create room
-    //         const roomQuerySnapshot = await db.collection('Rooms')
-    //             .where('senderId', 'in', [senderId, receiverId])
-    //             .where('receiverId', 'in', [senderId, receiverId])
-    //             .limit(1)
-    //             .get();
-    //         console.log(4444);
-
-    //         let targetRoomId;
-    //         if (roomQuerySnapshot.empty) {
-    //             console.log(5555);
-
-    //             const newRoomDocRef = db.collection('Rooms').doc();
-    //             await newRoomDocRef.set({
-    //                 senderId,
-    //                 receiverId,
-    //                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    //             });
-    //             targetRoomId = newRoomDocRef.id;
-    //         } else {
-    //             targetRoomId = roomQuerySnapshot.docs[0].id;
-    //         }
-
-    //         // Use batch for messages
-    //         const batch = db.batch();
-    //         const messageDocRef = db.collection('Messages').doc();
-    //         batch.set(messageDocRef, {
-    //             _id,
-    //             roomId: targetRoomId,
-    //             user: {
-    //                 _id: senderId,
-    //                 name: currentUser?.displayName || 'Me',
-    //             },
-    //             ...(text && { text }),
-    //             ...(audioUrl && { audio: audioUrl }),
-    //             ...(videoUrl && { video: videoUrl }),
-    //             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    //             ...(maindis && { maindis }),
-    //             ...(fileName && { fileName }),
-    //             ...(circle && { circle }),
-    //             senderId,
-    //             receiverId,
-    //             read: false,
-    //         });
-
-    //         // Commit batch
-    //         await batch.commit();
-
-    //         // Send notification
-    //         const recipientDoc = await firestore().collection('users').doc(receiverId).get();
-    //         const recipientTokens = recipientDoc.data()?.deviceTokens || [];
-    //     console.timeEnd('trySendMessage')
-
-    //         if (recipientTokens.length > 0) {
-    //             await sendNotification(recipientTokens, currentUser?.displayName || 'Me', text || 'Sent a message', senderId, targetRoomId);
-    //         } else {
-    //             console.log('No tokens found for recipient.');
-    //         }
-    //         console.timeEnd('onSendMessagae')
-
-    //         console.log('Message successfully added to the Messages collection!');
-    //     } catch (error) {
-    //         console.error('Error sending message:', error);
-    //     }
-    // };
 
     const onSend = useCallback(async (messages = []) => {
         const senderId = currentUser?.uid;
@@ -595,7 +446,7 @@ const DialogScreen = () => {
     return (
         <PlatfromView>
             <LinearGradient
-                style={{ minHeight: '10%', top: 0, paddingHorizontal: 10, paddingVertical: 30 }}
+                style={{ minHeight: '12%', top: 0, paddingHorizontal: 10, paddingVertical: 8 }}
                 colors={['#323D45', '#1B2024']}
             >
                 <HeaderContent

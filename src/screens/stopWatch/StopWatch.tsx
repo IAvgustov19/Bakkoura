@@ -14,9 +14,12 @@ import useRootStore from '../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import Line from '../../components/Line/Line';
 import {moderateScale} from '../../utils/dimensions';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { useNavigation } from '@react-navigation/native';
 
 const StopWatch = () => {
   const [isWatch, setIsWatch] = useState(true);
+  const navigation = useNavigation();
   const {
     maindis,
     startStopTimer,
@@ -59,8 +62,8 @@ const StopWatch = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
-            title="StopWatch"
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            title="Stop Watch"
             rightItem={<Images.Svg.timerLogo />}
           />
           <RN.View

@@ -14,6 +14,7 @@ import useRootStore from '../../hooks/useRootStore';
 import MessageItem from './components/MessageItem';
 import { windowWidth } from '../../utils/styles';
 import { Images } from '../../assets';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
@@ -96,7 +97,7 @@ const MessengerScreen = () => {
     <LinearContainer>
       <View style={styles.container}>
         <HeaderContent
-          leftItem={<Images.Svg.btsRightLinear />}
+          leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           rightItem={
             <Images.Svg.searchButton width={39} height={39} onPress={() => navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)} />
           }

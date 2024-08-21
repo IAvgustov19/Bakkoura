@@ -17,6 +17,7 @@ import {windowHeight} from '../../utils/styles';
 import ButtonComp from '../../components/Button/Button';
 import RenderProjectTimer from './components/RenderProjectTimer';
 import ListFooter from '../../components/ListFooter/ListFooter';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const ProjectTimer = () => {
   const {
@@ -88,7 +89,7 @@ const ProjectTimer = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title="Project Timer"
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <ButtonComp
                 width={90}

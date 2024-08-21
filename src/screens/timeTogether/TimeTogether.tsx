@@ -20,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 import { updateEtapsMailInFirestore, updateEtapsSynchronizedInFirestore } from '../../services/firestoreService';
 import LottieContent from '../../components/LottieContent/LottieContent';
 import { Lotties } from '../../lotties/lottie';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
@@ -171,7 +172,7 @@ const TimeTogether = () => {
         <RN.View key={index}>
           <Line />
           <RN.Pressable
-            onPress={() => {SelectOneEtap(item.id); setData(item);}}
+            onPress={() => { SelectOneEtap(item.id); setData(item); }}
             style={styles.etapList}>
             <RN.Text style={styles.etapType}>{item.type}</RN.Text>
             <TextView text={item.fromDate} />
@@ -205,7 +206,7 @@ const TimeTogether = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Couple Time"
             rightItem={
               <SwitchContain
