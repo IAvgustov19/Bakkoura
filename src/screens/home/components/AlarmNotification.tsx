@@ -4,6 +4,8 @@ import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
 import {NativeModules} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
+import {normalizeHeight} from '../../../utils/dimensions';
 
 type Props = {
   onPress?: () => void;
@@ -24,14 +26,27 @@ const AlarmNotification: React.FC<Props> = ({
     // Send data to native module
     WidgetManager?.updateWidgetData(time24, extraTime, time30);
   }, [time24, extraTime, time30]);
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <RN.TouchableOpacity style={styles.container} onPress={onPress}>
-      <Images.Svg.alarmNotificatiion />
+      <themeState.eventAndTime />
       <RN.View style={styles.info}>
-        <RN.Text style={styles.time}>{time24}</RN.Text>
-        <RN.Text style={styles.extraTime}>{extraTime}</RN.Text>
-        <RN.Text style={styles.time}>{time30}</RN.Text>
+        <RN.Text
+          fontFamily="Rationale-Regular"
+          style={[styles.time, {color: themeState.title}]}>
+          {time24}
+        </RN.Text>
+        <RN.Text
+          fontFamily="Rationale-Regular"
+          style={[styles.extraTime, {color: themeState.yellow}]}>
+          {extraTime}
+        </RN.Text>
+        <RN.Text
+          fontFamily="Rationale-Regular"
+          style={[styles.time, {color: themeState.title}]}>
+          {time30}
+        </RN.Text>
       </RN.View>
     </RN.TouchableOpacity>
   );
@@ -51,16 +66,15 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     height: '100%',
-    bottom: 5,
+    bottom: 15,
   },
   extraTime: {
-    color: COLORS.yellow,
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: normalizeHeight(42),
   },
   time: {
     color: COLORS.white,
-    fontSize: 14,
+    fontSize: normalizeHeight(50),
     fontFamily: 'Rationale-Regular',
     textAlign: 'center',
   },

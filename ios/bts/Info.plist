@@ -72,6 +72,7 @@
 		<string>RedHatDisplay-Regular.ttf</string>
 		<string>RedHatDisplay-SemiBold.ttf</string>
 		<string>RedHatDisplay-SemiBoldItalic.ttf</string>
+		<string>Rationale-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

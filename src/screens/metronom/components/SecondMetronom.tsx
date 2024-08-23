@@ -5,6 +5,7 @@ import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
 import LinearRange from '../../../components/LinearRangeSlider/LinearRangeSlider';
+import {normalizeHeight, normalizeWidth} from '../../../utils/dimensions';
 
 type Props = {
   countMinut?: number;
@@ -21,6 +22,7 @@ const SecondMetronom: React.FC<Props> = ({
 }) => {
   const {setMetronomState, etapData, stopSound, playSound, metronomState} =
     useRootStore().metronomStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const SetBpm = (value: number) => {
     setMetronomState('countMinut', Math.round(value));
     stopSound();
@@ -33,17 +35,29 @@ const SecondMetronom: React.FC<Props> = ({
   const renderEtapData = useMemo(() => {
     return etapData.map((item, index) => {
       return (
-        <Images.Svg.ellipseDotLarge
+        <RN.View
           key={index}
-          fill={
-            metronomState.etapCount === 1
-              ? metronomState.etapLine === 1
-                ? COLORS.yellow
-                : COLORS.black
-              : item === etap
-              ? COLORS.yellow
-              : COLORS.black
-          }
+          style={[
+            styles.ellipse,
+            {
+              backgroundColor:
+                metronomState.etapCount === 1
+                  ? metronomState.etapLine === 1
+                    ? COLORS.yellow
+                    : themeState.inputBaack
+                  : item === etap
+                  ? COLORS.yellow
+                  : themeState.inputBaack,
+              borderColor:
+                metronomState.etapCount === 1
+                  ? metronomState.etapLine === 1
+                    ? COLORS.inActiveYellow
+                    : themeState.inputBaack
+                  : item === etap
+                  ? COLORS.inActiveYellow
+                  : themeState.inputBorder,
+            },
+          ]}
         />
       );
     });
@@ -51,7 +65,9 @@ const SecondMetronom: React.FC<Props> = ({
 
   return (
     <RN.View style={styles.container}>
-      <RN.Text style={styles.activeNumber}>{etap ? etap : 1}</RN.Text>
+      <RN.Text style={[styles.activeNumber, {color: themeState.title}]}>
+        {etap ? etap : 1}
+      </RN.Text>
       <RN.View style={styles.dots}>{renderEtapData}</RN.View>
       <RN.View style={styles.sliderBox}>
         <RN.TouchableOpacity onPress={removeCount}>
@@ -121,5 +137,12 @@ const styles = RN.StyleSheet.create({
     fontSize: 14,
     color: COLORS.grey,
     bottom: 2,
+  },
+  ellipse: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 0.5,
+    borderBottomWidth: 0,
   },
 });

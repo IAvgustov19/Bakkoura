@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { Images } from '../../assets';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useEffect, useState} from 'react';
+import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -11,8 +11,8 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import { COLORS } from '../../utils/colors';
-import { windowHeight } from '../../utils/styles';
+import {COLORS} from '../../utils/colors';
+import {windowHeight} from '../../utils/styles';
 
 const AddTaskScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +26,7 @@ const AddTaskScreen = () => {
     updateTask,
     handleDeleteTask,
   } = useRootStore().pomodoroStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const [minut, setMinut] = useState(newTaskState.minut ?? 1);
   const addMinut = () => {
@@ -40,7 +41,7 @@ const AddTaskScreen = () => {
       setNewTaskState('minut', minut - 1);
       setNewTaskState('totalCycle', newTaskState.minut);
     } else {
-      return
+      return;
     }
     calculateTime();
   };
@@ -60,9 +61,9 @@ const AddTaskScreen = () => {
     handleDeleteTask(newTaskState.id);
   };
 
-useEffect(() => {
-  !isUpdate && clearState();
-}, []);
+  useEffect(() => {
+    !isUpdate && clearState();
+  }, []);
 
   return (
     <LinearContainer
@@ -75,11 +76,13 @@ useEffect(() => {
           <RN.ScrollView style={styles.scrollView}>
             <RN.View style={styles.content}>
               <RN.View style={styles.fomrBox}>
-                <RN.View style={styles.form}>
+                <RN.View
+                  style={[styles.form, {backgroundColor: themeState.mainBack}]}>
                   <Input
                     placeholder="Name"
                     value={newTaskState.name}
                     onChangeText={e => setNewTaskState('name', e)}
+                    backColor={themeState.mainBack}
                   />
                   <Line />
                   <Input
@@ -90,16 +93,31 @@ useEffect(() => {
                     value={newTaskState.description}
                     textAlignVertical={'top'}
                     onChangeText={e => setNewTaskState('description', e)}
+                    backColor={themeState.mainBack}
                   />
                 </RN.View>
-                <RN.View style={styles.timeSelect}>
+                <RN.View
+                  style={[
+                    styles.timeSelect,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <RN.Text style={styles.estPom}>Est Pomodoros</RN.Text>
-                  <RN.View style={styles.timeSelectBox}>
+                  <RN.View
+                    style={[
+                      styles.timeSelectBox,
+                      {backgroundColor: themeState.mainBack},
+                    ]}>
                     <RN.TouchableOpacity onPress={subMinut}>
                       <Images.Svg.minusDelete />
                     </RN.TouchableOpacity>
                     <RN.TextInput
-                      style={styles.timeInput}
+                      style={[
+                        styles.timeInput,
+                        {
+                          backgroundColor: themeState.input2,
+                          color: themeState.title,
+                        },
+                      ]}
                       placeholder="0"
                       placeholderTextColor={COLORS.grey}
                       value={`${newTaskState.minut}`}

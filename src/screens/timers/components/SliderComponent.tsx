@@ -6,6 +6,7 @@ import TextView from '../../../components/Text/Text';
 import {observer} from 'mobx-react-lite';
 import LinearRangeSlider from '../../../components/LinearRangeSlider/LinearRangeSlider';
 import {COLORS} from '../../../utils/colors';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   minValue?: number;
@@ -22,10 +23,13 @@ const SliderComponent: React.FC<Props> = ({
   onChangeValue,
   value,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <View style={styles.container}>
       <RN.View style={styles.hoursBox}>
-        <RN.Text style={styles.hour}>{value ? value : '0'}</RN.Text>
+        <RN.Text style={[styles.hour, {color: themeState.title}]}>
+          {value ? value : '0'}
+        </RN.Text>
         <TextView text={label} style={styles.label} />
       </RN.View>
       <LinearRangeSlider
@@ -35,7 +39,7 @@ const SliderComponent: React.FC<Props> = ({
         onChangeValue={onChangeValue}
         firstColor={COLORS.black}
         secondColor={COLORS.green}
-        colors={[COLORS.black, COLORS.darkGreyText, COLORS.lightGreen]}
+        colors={themeState.timer}
         height={8}
       />
     </View>

@@ -56,11 +56,11 @@ const Recommendation = () => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <RN.View style={styles.cardBox}>{renderCards()}</RN.View>
-              <TimeWebView
+              {/* <TimeWebView
                 linkName="jihadbakkoura.com"
                 logo={<Images.Svg.jihadBakkouraSiteLogo />}
                 onHandleCategory={onHandleCategory}
-              />
+              /> */}
             </RN.View>
           </RN.ScrollView>
         </RN.View>

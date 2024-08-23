@@ -11,6 +11,7 @@ import {StresTestResult} from '../../../constants/stresTest';
 const StressTestResult = () => {
   const navigation = useNavigation();
   const {stressTestData, stressTestStatus} = useRootStore().stressTestStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const renderResult = useCallback(() => {
     if (stressTestData.seconds > 70) {
@@ -30,9 +31,11 @@ const StressTestResult = () => {
 
   return (
     <RN.View style={styles.content}>
-      <Images.Svg.yellowPanda />
+      <themeState.yellowPanda />
       <RN.View style={styles.textInfo}>
-        <RN.Text style={styles.result}>{stressTestData.time}</RN.Text>
+        <RN.Text style={[styles.result, {color: themeState.title}]}>
+          {stressTestData.time}
+        </RN.Text>
         <TextView title="Result" />
         <TextView text={renderResult()} />
       </RN.View>

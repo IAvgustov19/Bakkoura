@@ -1,4 +1,3 @@
-import {WallpapersImages} from '../assets';
 import {APP_ROUTES} from '../navigation/routes';
 import {ImageSourcePropType} from 'react-native';
 

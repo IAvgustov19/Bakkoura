@@ -6,12 +6,15 @@ import RN from '../../../components/RN';
 import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
 import TextView from '../../../components/Text/Text';
 import {COLORS} from '../../../utils/colors';
+import useRootStore from '../../../hooks/useRootStore';
+import {normalizeHeight} from '../../../utils/dimensions';
 
 type Props = {
   isBtn?: boolean;
   onPressBtn?: () => void;
   onPressItem?: () => void;
   title?: string;
+  icon?: any;
   text?: string;
 };
 
@@ -20,12 +23,24 @@ const TimeClinicListItem: React.FC<Props> = ({
   onPressBtn,
   onPressItem,
   text,
+  icon,
   title,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
-    <RN.Pressable style={styles.container} onPress={onPressItem}>
+    <RN.Pressable
+      style={[styles.container, {backgroundColor: themeState.mainBack}]}
+      onPress={onPressItem}>
       <RN.View
-        style={[styles.clinicItemLeft, {maxWidth: isBtn ? '55%' : '85%'}]}>
+        style={[
+          styles.clinicItemLeft,
+          {
+            maxWidth: isBtn ? '55%' : '85%',
+            flexDirection: icon ? 'row' : 'column',
+            alignItems: icon ? 'center' : 'flex-start',
+          },
+        ]}>
+        {icon && icon}
         <TextView style={styles.title} title={title} textAlign="left" />
         {text ? (
           <TextView text={text} style={styles.listInfo} textAlign="left" />
@@ -36,7 +51,7 @@ const TimeClinicListItem: React.FC<Props> = ({
           <ButtonComp title="Consultation" width={125} onPress={onPressBtn} />
         ) : (
           <RN.TouchableOpacity onPress={onPressItem}>
-            <Images.Svg.arrowRight />
+            <themeState.arrowRight />
           </RN.TouchableOpacity>
         )}
       </RN.View>
@@ -51,7 +66,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: COLORS.black,
     paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 4,
@@ -66,6 +80,6 @@ const styles = StyleSheet.create({
     writingDirection: 'ltr',
   },
   title: {
-    fontSize: 17,
+    fontSize: normalizeHeight(56),
   },
 });

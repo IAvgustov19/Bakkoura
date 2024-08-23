@@ -10,10 +10,12 @@ import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import StressTestResult from './components/StressTestResult';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const StressTest = () => {
   const navigation = useNavigation();
   const {stressTestStatus, resetStressTimer} = useRootStore().stressTestStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const NewStressTest = () => {
     if (stressTestStatus.finished) {
@@ -32,9 +34,11 @@ const StressTest = () => {
           <Images.Svg.yellowPanda1 />
           <RN.View style={styles.textInfo}>
             <TextView
+              color={themeState.darkGrayText}
               text={`The "subjective minute" test was developed by Dr. Litvak, a specialist in psychiatry, psychology, and stress management. Instructions: press the START button, close your eyes, and mentally imagine when 60 seconds have passed. It is IMPORTANT not to count the minute, but to feel the time.`}
             />
             <TextView
+              color={themeState.darkGrayText}
               text={`When you feel: a minute has passed, press STOP,`}
             />
           </RN.View>
@@ -48,9 +52,9 @@ const StressTest = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Stress Tests"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View style={styles.content}>
             {renderComponent}

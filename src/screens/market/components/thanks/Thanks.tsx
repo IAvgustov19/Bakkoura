@@ -12,6 +12,7 @@ import LinearContainer from '../../../../components/LinearContainer/LinearContai
 import Cancel from '../../../../components/Cancel/Cancel';
 import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../../hooks/useRootStore';
+import ArrowLeftBack from '../../../../components/ArrowLeftBack/ArrowLeftBack';
 
 type Props = {};
 
@@ -28,14 +29,7 @@ const OrderThanks: React.FC<Props> = ({}) => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={
-              <RN.TouchableOpacity
-                style={styles.back}
-                onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
-              </RN.TouchableOpacity>
-            }
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           {/* <HeaderContent leftItem={<Images.Svg.btsGreyLogo /> */}

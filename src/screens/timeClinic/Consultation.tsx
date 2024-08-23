@@ -24,6 +24,7 @@ type Props = {};
 const Consultation: React.FC<Props> = ({}) => {
   const [accept, setAccept] = React.useState(false);
   const navigation = useNavigation();
+  const {themeState} = useRootStore().personalAreaStore;
   const {setOrderState, orderState} = useRootStore().marketStore;
   const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
   const {onHandleWebVIew} = useRootStore().marketStore;
@@ -69,6 +70,7 @@ const Consultation: React.FC<Props> = ({}) => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <TextView
+                color={themeState.darkGrayText}
                 text={
                   "BAKKOURA is the only atelier in the world that will translate you into a brand. Each person's story is unique, it cannot be repeated or falsified, we help you to write your own legend, because this brand is you yourself."
                 }
@@ -77,13 +79,20 @@ const Consultation: React.FC<Props> = ({}) => {
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
+                  <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {color: themeState.darkGrayText},
+                    ]}>
                     Your personal data are guaranteed to be safe and will not be
                     handed over to third parties.
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-    </RN.Pressable>
+                    <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>
+                      I accept the privacy policy.
+                    </RN.Text>
+                  </RN.Pressable>
                 </RN.View>
               </RN.View>
               <ButtonComp

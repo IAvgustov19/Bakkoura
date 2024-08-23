@@ -3,7 +3,7 @@ import {COLORS} from '../../../../utils/colors';
 
 export const styles = StyleSheet.create({
   bottomSheet: {
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
   },
   container: {
     flexDirection: 'row',
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   bottomSheetScrollView: {
-    backgroundColor: COLORS.black,
+    // backgroundColor: COLORS.black,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
   },
@@ -34,14 +34,14 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     height: '100%',
     width: '100%',
-    backgroundColor: '#0D0D0D',
+    // backgroundColor: '#0D0D0D',
   },
   buttonContainer: {
     alignItems: 'center',
-    gap: 5,
+    gap: 1,
     width: '25%',
-    height: 115,
-    paddingTop: 20,
+    paddingTop: 10,
+    paddingBottom: 12,
   },
   iconBox: {
     height: 55,
@@ -51,6 +51,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: -5,
     left: '50%',
+    zIndex: 1,
     transform: [{translateX: -15}],
   },
 });

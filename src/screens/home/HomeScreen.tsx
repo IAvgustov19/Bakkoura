@@ -29,7 +29,8 @@ const HomeScreen = () => {
   const {getPersonalState} = useRootStore().personalAreaStore;
   const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
   const navigation = useNavigation();
-  const {personalAreaData, updateLoading} = useRootStore().personalAreaStore;
+  const {personalAreaData, updateLoading, themeState} =
+    useRootStore().personalAreaStore;
   const [userData, setUserData] = useState(null);
 
   const fetchUserData = async uid => {
@@ -98,12 +99,13 @@ const HomeScreen = () => {
             // title="Home"
             rightItem={
               <RN.View style={styles.profile}>
-                {/* <RN.TouchableOpacity
+                <RN.TouchableOpacity
+                  style={styles.messageIcon}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.MESSENGER as never)
                   }>
-                  <Images.Svg.messageIcon />
-                </RN.TouchableOpacity> */}
+                  <themeState.messageIcon />
+                </RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   style={{alignItems: 'center'}}
                   onPress={() =>
@@ -111,7 +113,7 @@ const HomeScreen = () => {
                   }>
                   {personalAreaData?.avatar ? (
                     <RN.View style={styles.imageContainer}>
-                      <Images.Svg.profileBackground width={55} height={55} />
+                      <themeState.profileBackIcon width={55} height={55} />
                       <RN.Image
                         source={{uri: personalAreaData.avatar}}
                         style={styles.profileImg}
@@ -127,7 +129,7 @@ const HomeScreen = () => {
                       ) : null}
                     </RN.View>
                   ) : (
-                    <Images.Svg.userIcon width={50} height={50} />
+                    <themeState.userIcon width={50} height={50} />
                   )}
                 </RN.TouchableOpacity>
               </RN.View>
@@ -136,13 +138,14 @@ const HomeScreen = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.watchBox}>
               <TextView
+                color={themeState.darkGrayText}
                 style={[styles.title, {marginTop: -15}]}
                 text={`${personalAreaData.name}, Message to You!`}
               />
               <TextView
                 fonWeight="300"
                 style={[styles.title, {marginTop: 5}]}
-                title={'Today is your day! Do something good!'}
+                text={'Today is your day! Do something good!'}
               />
               <RN.View style={styles.renderWatchs}>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
@@ -223,5 +226,8 @@ const styles = RN.StyleSheet.create({
   },
   renderWatchs: {
     marginTop: 9,
+  },
+  messageIcon: {
+    justifyContent: 'center',
   },
 });

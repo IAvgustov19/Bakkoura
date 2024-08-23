@@ -3,6 +3,8 @@ import {Text, View, StyleSheet, DimensionValue, ViewStyle} from 'react-native';
 import {DefinitionProps} from 'react-native-svg';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   borderColor?: string;
@@ -25,6 +27,7 @@ const OutlineBtn: React.FC<Props> = ({
   customStyle,
   icon,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.TouchableOpacity
       onPress={onPress}
@@ -32,9 +35,10 @@ const OutlineBtn: React.FC<Props> = ({
         styles.container,
         customStyle,
         {
-          borderColor: borderColor ? borderColor : COLORS.darkGreyText,
+          borderColor: borderColor ? borderColor : COLORS.grey,
           width: Width ? Width : 110,
           height: Height ? Height : 35,
+          backgroundColor: themeState.inputBaack,
         },
       ]}>
       <RN.Text style={{color: textColor ? textColor : COLORS.grey}}>
@@ -45,7 +49,7 @@ const OutlineBtn: React.FC<Props> = ({
   );
 };
 
-export default OutlineBtn;
+export default observer(OutlineBtn);
 
 const styles = StyleSheet.create({
   container: {

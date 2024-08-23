@@ -21,6 +21,7 @@ const Calendars: React.FC<Props> = ({}) => {
   const navigation = useNavigation();
   const {months, getOneMonth, oneMonth, calendarData} =
     useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -43,7 +44,11 @@ const Calendars: React.FC<Props> = ({}) => {
       calendarData?.map((item, indexMonth) => {
         return (
           <RN.View style={styles.calendar} key={indexMonth}>
-            <RN.Text style={styles.year}>{`${item?.year}`}</RN.Text>
+            <RN.Text
+              style={[
+                styles.year,
+                {color: themeState.title},
+              ]}>{`${item?.year}`}</RN.Text>
             <RN.View style={styles.month}>
               {item.months?.map((month, index) => {
                 return (
@@ -87,7 +92,7 @@ const styles = RN.StyleSheet.create({
     width: '100%',
   },
   scrollView: {
-    height: windowHeight - windowHeight / 4,
+    height: windowHeight - windowHeight / 5,
   },
   calendar: {
     paddingBottom: 30,

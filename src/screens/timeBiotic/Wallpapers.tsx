@@ -45,7 +45,7 @@ const Wallpapers = () => {
               <ButtonComp
                 title="Download"
                 width={100}
-                paddingVertical={8}
+                paddingVertical={6}
                 onPress={() => saveImagesToGallery(getSelectedWallpapers)}
               />
             }

@@ -1,7 +1,7 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Images } from '../../assets';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Images} from '../../assets';
 import ButtonComp from '../../components/Button/Button';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -9,14 +9,15 @@ import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import { APP_ROUTES } from '../../navigation/routes';
-import { COLORS } from '../../utils/colors';
-import { BreakData } from '../../utils/repeat';
+import {APP_ROUTES} from '../../navigation/routes';
+import {COLORS} from '../../utils/colors';
+import {BreakData} from '../../utils/repeat';
 import TextView from '../../components/Text/Text';
 import Line from '../../components/Line/Line';
 import LottieContent from '../../components/LottieContent/LottieContent';
-import { Lotties } from '../../lotties/lottie';
-import { windowHeight, windowWidth } from '../../utils/styles';
+import {Lotties} from '../../lotties/lottie';
+import {windowHeight, windowWidth} from '../../utils/styles';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const Pomodoro = () => {
   const {
@@ -36,14 +37,15 @@ const Pomodoro = () => {
     setCurrentBreakTime,
     getAllPomodorosFromFirestore,
   } = useRootStore().pomodoroStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
   const [currentBreakIndex, setCurrentBreakIndex] = useState(1);
-  const [finishTime, setFinishTime] = useState(new Date(new Date().getTime()).toLocaleTimeString());
-
-
+  const [finishTime, setFinishTime] = useState(
+    new Date(new Date().getTime()).toLocaleTimeString(),
+  );
 
   const onHandleTask = (data: any) => {
     clearState();
@@ -51,15 +53,11 @@ const Pomodoro = () => {
     navigation.navigate(APP_ROUTES.ADD_TASK_SCREEN as never);
   };
 
-
-
   useEffect(() => {
     handleBreakTimeSelection(1);
-  }, [])
+  }, []);
 
-
-  const calculateFinishTime = (breackType) => {
-
+  const calculateFinishTime = breackType => {
     const now = new Date();
     let minutes;
     if (breackType === 'Pomodoro') {
@@ -71,14 +69,12 @@ const Pomodoro = () => {
     }
     const finishTime = new Date(now.getTime() + minutes * 60000);
 
-    return finishTime.toLocaleTimeString('en-US', { hour12: false });
+    return finishTime.toLocaleTimeString('en-US', {hour12: false});
   };
-
 
   useEffect(() => {
     getAllPomodorosFromFirestore();
   }, [isFocused]);
-
 
   const renderTasks = useCallback(() => {
     return taskList.map((item, index) => {
@@ -87,16 +83,26 @@ const Pomodoro = () => {
         <RN.Pressable
           style={styles.taskLists}
           key={index}
-          onPress={() => { setData(item); setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro')); }}
-        >
+          onPress={() => {
+            setData(item);
+            setFinishTime(
+              calculateFinishTime(newTaskState.breackType || 'Pomodoro'),
+            );
+          }}>
           <RN.View>
-            <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
+            <RN.View
+              style={[
+                styles.taskTitleContainer,
+                !hasDescription && styles.alignCenter,
+              ]}>
               <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
             </RN.View>
             {hasDescription && <TextView text={item.description} />}
           </RN.View>
           <RN.View style={styles.spaceBetween}>
-            <RN.Text style={styles.tasksText}>{`${0}`}/{`${item.minut}`}</RN.Text>
+            <RN.Text style={styles.tasksText}>
+              {`${0}`}/{`${item.minut}`}
+            </RN.Text>
             <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.View>
         </RN.Pressable>
@@ -107,7 +113,7 @@ const Pomodoro = () => {
   const pomodoroLottie = useMemo(() => {
     return (
       <LottieContent
-        source={Lotties.pomodoro}
+        source={themeState.lotties.tomato}
         width={windowWidth}
         autoPlay={isStartCurrent}
         speed={isStartCurrent ? 1 : 0}
@@ -120,23 +126,18 @@ const Pomodoro = () => {
     setCurrentBreakIndex(id);
   };
 
-
   useEffect(() => {
     setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro'));
-
-  }, [newTaskState.breackType])
-
-
-
+  }, [newTaskState.breackType]);
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Pomodoro"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={<themeState.timeLogo />}
           />
           {/* <RN.ScrollView
             showsHorizontalScrollIndicator={false}
@@ -151,10 +152,12 @@ const Pomodoro = () => {
                       key={index}
                       text={item.title}
                       textColor={
-                        currentBreakTime.id === item.id && COLORS.yellow
+                        currentBreakTime.id === item.id &&
+                        themeState.selectYellow
                       }
                       borderColor={
-                        currentBreakTime.id === item.id && COLORS.yellow
+                        currentBreakTime.id === item.id &&
+                        themeState.selectYellow
                       }
                       onPress={() => handleBreakTimeSelection(item.id)}
                     />
@@ -164,30 +167,47 @@ const Pomodoro = () => {
               <RN.View style={styles.pomodoroBox}>
                 <RN.View style={styles.breakTime}>
                   <TextView text={newTaskState.name} />
-                  <RN.Text style={styles.breakTimeText}>{newTaskState ? newTaskState.breackType : 'Pomodoro'}</RN.Text>
+                  <RN.Text
+                    style={[styles.breakTimeText, {color: themeState.title}]}>
+                    {newTaskState ? newTaskState.breackType : 'Pomodoro'}
+                  </RN.Text>
                 </RN.View>
                 {pomodoroLottie}
                 <RN.View style={styles.pomodoroTime}>
-                  <RN.Text style={styles.time}>{currentTime}</RN.Text>
+                  <RN.Text style={[styles.time, {color: themeState.title}]}>
+                    {currentTime}
+                  </RN.Text>
                 </RN.View>
                 {isCurrentPomodoro && (
                   <RN.View style={styles.pomodoroInfoBox}>
-                    <RN.Text style={styles.pomodoroInfoName}>
+                    <RN.Text
+                      style={[
+                        styles.pomodoroInfoName,
+                        {color: themeState.green},
+                      ]}>
                       Pomos: {`${estimatedPomodoros} / ${newTaskState.minut}`}
                     </RN.Text>
-                    <RN.Text style={styles.pomodoroInfoName}>
+                    <RN.Text
+                      style={[
+                        styles.pomodoroInfoName,
+                        {color: themeState.green},
+                      ]}>
                       Finish At: {finishTime}
                     </RN.Text>
                     <RN.Text
-                      style={
-                        styles.pomodoroInfoName
-                      }>{`(${newTaskState.estimatedHours}h)`}</RN.Text>
+                      style={[
+                        styles.pomodoroInfoName,
+                        {color: themeState.green},
+                      ]}>{`(${newTaskState.estimatedHours}h)`}</RN.Text>
                   </RN.View>
                 )}
               </RN.View>
               {isRunCurrent ? (
                 <RN.View style={styles.btnsBox}>
-                  <StartBtn text="Stop" onPress={() => stopCurrentPomodoro(currentBreakIndex)} />
+                  <StartBtn
+                    text="Stop"
+                    onPress={() => stopCurrentPomodoro(currentBreakIndex)}
+                  />
                   <StartBtn
                     text={isStartCurrent ? 'Pause' : 'Start'}
                     primary
@@ -289,7 +309,6 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroInfoName: {
     textAlign: 'center',
-    color: '#71EC85',
   },
   btnsBox: {
     flexDirection: 'row',
@@ -302,6 +321,7 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     bottom: 80,
+    marginTop: 20,
   },
   taskListBox: {
     bottom: 50,

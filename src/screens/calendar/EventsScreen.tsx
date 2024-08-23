@@ -12,17 +12,13 @@ import {observer} from 'mobx-react-lite';
 import Events from './components/Events';
 import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const EventScreen = () => {
-  const {
-    calendarCurrentTime,
-    setSwitchCalendar,
-    switchCalendar,
-    setAllEvents,
-    allEventsData,
-  } = useRootStore().calendarStore;
+  const {calendarCurrentTime, setSwitchCalendar, switchCalendar, setAllEvents} =
+    useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const navigation = useNavigation();
-  // console.log('allEventsData', allEventsData);
 
   const toggleSwitch = () => {
     setTimeout(() => {
@@ -54,9 +50,9 @@ const EventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
-              <RN.Text style={styles.currentTime}>
+              <RN.Text style={[styles.currentTime, {color: themeState.title}]}>
                 {calendarCurrentTime}
               </RN.Text>
             }
@@ -110,7 +106,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    bottom: '13%',
+    bottom: 30,
     paddingRight: 5,
   },
   currentTime: {

@@ -6,6 +6,7 @@ import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
 import {verticalScale} from '../../../utils/dimensions';
 import {windowWidth} from '../../../utils/styles';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   text?: string;
@@ -13,13 +14,18 @@ type Props = {
 };
 
 const AboutTimeInfoItem: React.FC<Props> = ({author, text}) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.View style={styles.container}>
-      <RN.Text fontFamily="RedHatDisplay-Italic" style={styles.text}>
+      <RN.Text
+        fontFamily="RedHatDisplay-Italic"
+        style={[styles.text, {color: themeState.title}]}>
         {text}
       </RN.Text>
       <Images.Svg.aboutTimeLine width={windowWidth - 40} />
-      <RN.Text style={styles.author}>{author}</RN.Text>
+      <RN.Text style={[styles.author, {color: themeState.yellow}]}>
+        {author}
+      </RN.Text>
     </RN.View>
   );
 };

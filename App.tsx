@@ -43,9 +43,8 @@ export const updateLastSeen = userId => {
       console.error('Error updating lastSeen field:', error);
     });
 };
-import { db, firebase } from './src/config/firebase';
+import {db, firebase} from './src/config/firebase';
 import PushNotification from 'react-native-push-notification';
-
 
 export const channelId = 'bts';
 
@@ -58,26 +57,28 @@ PushNotification.createChannel(
     importance: 4,
     vibrate: true,
   },
-  (created) => console.log(`createChannel returned '${created}'`)
+  created => console.log(`createChannel returned '${created}'`),
 );
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
 messaging().onMessage(async remoteMessage => {
-  const { title, body } = remoteMessage.notification;
-  const { senderId, chatId } = remoteMessage.data;
+  const {title, body} = remoteMessage.notification;
+  const {senderId, chatId} = remoteMessage.data;
   const uid = auth().currentUser.uid;
   const openChatWith = await db.collection('users').doc(uid).get();
   console.log(openChatWith.data().openChatWith);
   let openWith = openChatWith.data().openChatWith;
 
-  console.log(senderId,"senderIdsenderIdsenderId",openWith);
-  
+  console.log(senderId, 'senderIdsenderIdsenderId', openWith);
 
   if (senderId !== openWith) {
-    console.log('Message received from a different user in the foreground!', remoteMessage);
+    console.log(
+      'Message received from a different user in the foreground!',
+      remoteMessage,
+    );
 
     PushNotification.localNotification({
       channelId: channelId,
@@ -93,9 +94,6 @@ const currentUser = auth().currentUser;
 if (currentUser) {
   scheduleNotifications(currentUser.uid);
 }
-
-
-
 
 const App = () => {
   const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
@@ -114,7 +112,7 @@ const App = () => {
   //   };
 
   //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; 
+  //   return subscriber;
   // }, []);
 
   const requestNotificationPermission = async () => {
@@ -213,7 +211,11 @@ const App = () => {
   //   syncUsersToFirestore();
   // }, [])
 
+  const {ForegroundService} = NativeModules;
 
+  const startService = () => {
+    ForegroundService.startService();
+  };
 
   useEffect(() => {
     const requestStoragePermissions = async () => {

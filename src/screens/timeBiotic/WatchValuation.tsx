@@ -18,10 +18,13 @@ import {observer} from 'mobx-react-lite';
 import SimpleBtn from '../../components/SimpleBtn/SimpleBtn';
 import CustomSelect from './components/CustomSelect';
 import {Countries} from '../../utils/languages';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import Button from '../../components/Button/Button';
+import GiveImage from '../../components/GiveImage/GiveImage';
 
 const WatchValuation = () => {
   const navigation = useNavigation();
-
+  const {themeState} = useRootStore().personalAreaStore;
   const [accept, setAccept] = useState(false);
   const {setOrderState, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
@@ -60,7 +63,7 @@ const WatchValuation = () => {
         <RN.View style={styles.container}>
           {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title="Assestment Watch"
           />
@@ -77,6 +80,7 @@ const WatchValuation = () => {
                 />
                 <TextView
                   style={styles.text}
+                  color={themeState.darkGrayText}
                   text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
                 />
               </RN.View>
@@ -96,15 +100,24 @@ const WatchValuation = () => {
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
+                  <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {
+                        color: themeState.darkGrayText,
+                      },
+                    ]}>
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-    </RN.Pressable>
+                    <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>
+                      I accept the privacy policy.
+                    </RN.Text>
+                  </RN.Pressable>
                 </RN.View>
               </RN.View>
-              <SimpleBtn
+              <Button
                 title="Send"
                 icon={
                   sendEmailLoading ? (
@@ -112,12 +125,15 @@ const WatchValuation = () => {
                       color={COLORS.black}
                       style={{marginTop: 3}}
                     />
-                  ) : null
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
                 }
                 onPress={onSendEmail}
               />
               <TextView
                 style={[styles.text, styles.pv39]}
+                color={themeState.darkGrayText}
                 text={`But that's not all. To learn how to embody beautiful and strong \n souls in watches, we have spent years studying more than just \n watchmaking. Psychology, art history, biographies of great people,\n fine arts, philosophy - all this knowledge has taught us how to feel \n people and create brands.`}
               />
             </RN.View>

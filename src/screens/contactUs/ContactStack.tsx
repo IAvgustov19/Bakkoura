@@ -1,50 +1,74 @@
-import React from 'react'
+import { useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useState } from 'react';
+import { Images } from '../../assets';
+import HeaderContent from '../../components/HeaderContent/HeaderContent';
+import LinearContainer from '../../components/LinearContainer/LinearContainer';
+import ListFooter from '../../components/ListFooter/ListFooter';
+import LottieContent from '../../components/LottieContent/LottieContent';
+import RN from '../../components/RN';
+import { TimeClinicList } from '../../constants/timeClinic';
 import { APP_ROUTES } from '../../navigation/routes';
-import { createStackNavigator } from '@react-navigation/stack';
-import ContactUs from './screens/ContactUs';
-import SendIdea from './screens/SendIdea';
-import WatchValuation from './screens/WatchValuation';
-import Thanks from './screens/ContactThanks';
-import ContactThanks from './screens/ContactThanks';
-
-const Stack = createStackNavigator();
+import { windowHeight } from '../../utils/styles';
+import TimeClinicListItem from '../timeClinic/components/TimeClinicListItem';
+import { AboutList } from '../../constants/aboutCompany';
+import { ContactList } from '../../constants/contact';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const ContactStack = () => {
+    const navigation = useNavigation();
+
+    const renderItem = useCallback(
+        ({ item }) => {
+            return (
+                <TimeClinicListItem
+                    title={item.title}
+                    text={item.info}
+                    isBtn={item.isbtn}
+                    onPressItem={() => navigation.navigate(item.navigate as never)}
+                    onPressBtn={() =>
+                        navigation.navigate(APP_ROUTES.CONSULTATION as never)
+                    }
+                />
+            );
+        },
+        [TimeClinicList],
+    );
 
     return (
-        <Stack.Navigator initialRouteName={APP_ROUTES.SEND_IDEA} screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-                name={APP_ROUTES.SEND_IDEA}
-                component={SendIdea}
-                options={{
-                    headerTitleAlign: 'center',
-                }}
-            />
-            <Stack.Screen
-                name={APP_ROUTES.THANKS}
-                component={ContactThanks}
-                options={{
-                    headerTitleAlign: 'center',
-                }}
-            />
-            <Stack.Screen
-                name={APP_ROUTES.CONTACT_US}
-                component={ContactUs}
-                options={{
-                    headerTitleAlign: 'center',
-                }}
-            />
-            <Stack.Screen
-                name={APP_ROUTES.WATCH_VALUATION}
-                component={WatchValuation}
-                options={{
-                    headerTitleAlign: 'center',
-                }}
-            />
-        </Stack.Navigator>
-    )
-}
+        <LinearContainer
+            children={
+                <RN.View style={styles.container}>
+                    <HeaderContent
+                        leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+                        title="About company"
+                    />
+                    <RN.View style={styles.content}>
+                        <RN.FlatList
+                            showsVerticalScrollIndicator={false}
+                            style={styles.flatlist}
+                            data={ContactList}
+                            renderItem={({ item }) => renderItem({ item })}
+                            ListFooterComponent={<ListFooter />}
+                        />
+                    </RN.View>
+                </RN.View>
+            }
+        />
+    );
+};
 
+export default observer(ContactStack);
 
-
-export default ContactStack;
+const styles = RN.StyleSheet.create({
+    container: {
+        paddingHorizontal: 5,
+    },
+    content: {
+        gap: 5,
+        paddingBottom: 20,
+    },
+    flatlist: {
+        height: windowHeight - windowHeight / 7,
+    },
+});

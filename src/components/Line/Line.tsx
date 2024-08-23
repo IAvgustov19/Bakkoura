@@ -1,15 +1,20 @@
 import React from 'react';
 import RN from '../RN';
+import {observer} from 'mobx-react-lite';
+import useRootStore from '../../hooks/useRootStore';
 
 const Line = () => {
-  return <RN.View style={styles.line}></RN.View>;
+  const {themeState} = useRootStore().personalAreaStore;
+  return (
+    <RN.View
+      style={[styles.line, {backgroundColor: themeState.line}]}></RN.View>
+  );
 };
 
-export default Line;
+export default observer(Line);
 
 const styles = RN.StyleSheet.create({
   line: {
-    backgroundColor: '#131F28',
     width: '100%',
     height: 1,
   },

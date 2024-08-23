@@ -16,8 +16,11 @@ import {windowHeight, windowWidth} from '../../utils/styles';
 import EllipseBotton from './components/EllipseBotton';
 import FirstMetronom from './components/FirstMetronom';
 import SecondMetronom from './components/SecondMetronom';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import {useNavigation} from '@react-navigation/native';
 
 const Metronom = () => {
+  const navigation = useNavigation();
   const {
     setMetronomCountMinut,
     metronomState,
@@ -30,6 +33,7 @@ const Metronom = () => {
     stopSound,
     playSound,
   } = useRootStore().metronomStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [one, isOne] = useState(true);
 
   const SetEtap = (id: number) => {
@@ -89,8 +93,8 @@ const Metronom = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title="Metronom"
-            leftItem={<Images.Svg.btsRightLinear />}
-            rightItem={<Images.Svg.timerLogo />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View style={styles.content}>
             <RN.ScrollView>
@@ -99,13 +103,25 @@ const Metronom = () => {
                   <RN.TouchableOpacity
                     style={[
                       styles.changeBtn,
-                      {backgroundColor: one ? '#ECC271' : '#000'},
+                      {
+                        backgroundColor: one
+                          ? '#ECC271'
+                          : themeState.inputBaack,
+                        borderColor: one
+                          ? COLORS.inActiveYellow
+                          : themeState.inputBorder,
+                      },
                     ]}></RN.TouchableOpacity>
                   <RN.TouchableOpacity
                     style={[
                       styles.changeBtn,
                       {
-                        backgroundColor: !one ? '#ECC271' : '#000',
+                        borderColor: !one
+                          ? COLORS.inActiveYellow
+                          : themeState.inputBorder,
+                        backgroundColor: !one
+                          ? '#ECC271'
+                          : themeState.inputBaack,
                       },
                     ]}></RN.TouchableOpacity>
                 </RN.View>
@@ -132,11 +148,7 @@ const Metronom = () => {
                   </RN.View>
                 </SwiperFlatList>
                 <RN.View style={styles.btnBox}>
-                  <StartBtn
-                    text="Tap Tempo"
-                    color={COLORS.grey}
-                    onPress={clearState}
-                  />
+                  <StartBtn text="Tap Tempo" onPress={clearState} />
                   <StartBtn
                     primary
                     text={isPlaying ? 'Stop' : 'Start'}
@@ -186,12 +198,14 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 50,
+    borderWidth: 0.5,
+    borderBottomWidth: 0,
   },
   activeBtn: {
     position: 'absolute',
     right: 0,
     flexDirection: 'row',
-    gap: 5,
+    gap: 10,
   },
   child: {
     width: windowWidth - 40,

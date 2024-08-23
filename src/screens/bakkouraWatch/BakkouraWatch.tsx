@@ -1,37 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { Images } from '../../assets';
+import React, {useEffect, useState} from 'react';
+import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
-import { windowHeight } from '../../utils/styles';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { APP_ROUTES } from '../../navigation/routes';
+import {windowHeight} from '../../utils/styles';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {APP_ROUTES} from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import Vertices from './components/Vertices';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const BakkouraWatch = () => {
   const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const { listSelects, getOneSector, getAllSectorsFromFirestore } = useRootStore().bakkouraWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
+  const {listSelects, getOneSector, getAllSectorsFromFirestore} =
+    useRootStore().bakkouraWatchStore;
   const onGetSector = (id: number | string) => {
     getOneSector(id);
     navigation.navigate(APP_ROUTES.CREATE_SECTOR as never);
   };
 
+  console.log('listSelects', listSelects);
+
   useEffect(() => {
     getAllSectorsFromFirestore();
-  }, [isFocused])
+  }, [isFocused]);
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Bakkoura Watch"
             rightItem={
               <SwitchContain
@@ -48,8 +53,8 @@ const BakkouraWatch = () => {
             <RN.View style={styles.content}>
               <Vertices
                 data={listSelects}
-                watchBack={Images.Img.watchBack}
-                watchFront={Images.Img.bakkouraWatchMain}
+                watchBack={themeState.bakkouraWatchs.watchBack}
+                watchFront={themeState.bakkouraWatchs.watchMain}
                 watchLines
               />
               <RN.View style={styles.sectors}>
@@ -60,7 +65,7 @@ const BakkouraWatch = () => {
                         key={index}
                         style={styles.sectorItem}
                         onPress={() => onGetSector(item.id)}>
-                        <Images.Svg.outlineSubstrack fill={item.color} />
+                        <themeState.outlineSubtrack fill={item.color} />
                       </RN.TouchableOpacity>
                     );
                   })}

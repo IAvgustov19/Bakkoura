@@ -8,6 +8,7 @@ import JihadBakkoura from '../../screens/jihadBakkoura/JihadBakkoura';
 import MarketScreen from '../../screens/market/MarketScreen';
 import MessengerScreen from '../../screens/messenger/MessengerScreen';
 import Metronom from '../../screens/metronom/Metronom';
+import Other from '../../screens/other/Other';
 import Podcasts from '../../screens/podcasts/Podcasts';
 import Pomodoro from '../../screens/pomodoro/Pomodoro';
 import ProjectTimer from '../../screens/projectTimer/ProjectTimer';
@@ -26,6 +27,7 @@ import TimeWealth from '../../screens/timeClinic/TimeWealth';
 import TimerScreen from '../../screens/timers/TimerScreen';
 import TimeTogether from '../../screens/timeTogether/TimeTogether';
 import ToDoTimer from '../../screens/todoTimer/ToDoTimer';
+import Tools from '../../screens/Tools/Tools';
 import WatchConstructor from '../../screens/watchConstructor/WatchConstructor';
 import WorldTime from '../../screens/worldTime/WorldTime';
 import {APP_ROUTES} from '../routes';
@@ -46,95 +48,102 @@ export const bottomTabBarOptions = {
     },
     {
       index: 1,
+      tabName: APP_ROUTES.TOOLS,
+      component: Tools,
+      buttonLabel: 'Tools',
+      key: 'tools',
+    },
+    {
+      index: 2,
       tabName: APP_ROUTES.MARKET,
       component: MarketScreen,
       buttonLabel: 'Market',
       key: 'market',
     },
     {
-      index: 2,
-      tabName: APP_ROUTES.MESSENGER,
-      component: MessengerScreen,
-      buttonLabel: 'Messenger',
-      key: 'messenger',
-    },
-    {
       index: 3,
-      tabName: APP_ROUTES.TODOTIMER,
-      component: ToDoTimer,
-      buttonLabel: 'To do timer',
-      key: 'todo_timer',
+      tabName: APP_ROUTES.OTHER,
+      component: Other,
+      buttonLabel: 'Other',
+      key: 'other',
     },
-    {
-      index: 4,
-      tabName: APP_ROUTES.TIMER,
-      component: TimerScreen,
-      buttonLabel: 'Timers',
-      key: 'timers',
-    },
-    {
-      index: 5,
-      tabName: APP_ROUTES.PROJECT_TIMER,
-      component: ProjectTimer,
-      buttonLabel: 'Project timer',
-      key: 'project_timer',
-    },
-    {
-      index: 6,
-      tabName: APP_ROUTES.WORLD_TIME,
-      component: WorldTime,
-      buttonLabel: 'World time',
-      key: 'world_time',
-    },
-    {
-      index: 7,
-      tabName: APP_ROUTES.STOP_WATCH,
-      component: StopWatch,
-      buttonLabel: 'Stop watch',
-      key: 'stop_watch',
-    },
-    {
-      index: 8,
-      tabName: APP_ROUTES.METRONOM,
-      component: Metronom,
-      buttonLabel: 'Metronom',
-      key: 'metronome',
-    },
-    {
-      index: 9,
-      tabName: APP_ROUTES.STRESS_TEST,
-      component: StressTest,
-      buttonLabel: 'Stress Test',
-      key: 'stress_test',
-    },
-    {
-      index: 10,
-      tabName: APP_ROUTES.POMODORO,
-      component: Pomodoro,
-      buttonLabel: 'Pomodoro',
-      key: 'pomodoro',
-    },
-    {
-      index: 11,
-      tabName: APP_ROUTES.ALARM_SCREEN,
-      component: AlarmScreen,
-      buttonLabel: 'Alarm Clock',
-      key: 'alarm_clock',
-    },
-    {
-      index: 12,
-      tabName: APP_ROUTES.EVENTS_SCREEN,
-      component: EventsScreen,
-      buttonLabel: 'Calendar',
-      key: 'calendar',
-    },
-    {
-      index: 13,
-      tabName: APP_ROUTES.TIME_TOGETHER,
-      component: TimeTogether,
-      buttonLabel: 'Time Together',
-      key: 'time_together',
-    },
+    // {
+    //   index: 3,
+    //   tabName: APP_ROUTES.TODOTIMER,
+    //   component: ToDoTimer,
+    //   buttonLabel: 'To do timer',
+    //   key: 'todo_timer',
+    // },
+    // {
+    //   index: 3,
+    //   tabName: APP_ROUTES.TIMER,
+    //   component: TimerScreen,
+    //   buttonLabel: 'Timers',
+    //   key: 'timers',
+    // },
+    // {
+    //   index: 5,
+    //   tabName: APP_ROUTES.PROJECT_TIMER,
+    //   component: ProjectTimer,
+    //   buttonLabel: 'Project timer',
+    //   key: 'project_timer',
+    // },
+    // {
+    //   index: 6,
+    //   tabName: APP_ROUTES.WORLD_TIME,
+    //   component: WorldTime,
+    //   buttonLabel: 'World time',
+    //   key: 'world_time',
+    // },
+    // {
+    //   index: 7,
+    //   tabName: APP_ROUTES.STOP_WATCH,
+    //   component: StopWatch,
+    //   buttonLabel: 'Stop watch',
+    //   key: 'stop_watch',
+    // },
+    // {
+    //   index: 8,
+    //   tabName: APP_ROUTES.METRONOM,
+    //   component: Metronom,
+    //   buttonLabel: 'Metronom',
+    //   key: 'metronome',
+    // },
+    // {
+    //   index: 9,
+    //   tabName: APP_ROUTES.STRESS_TEST,
+    //   component: StressTest,
+    //   buttonLabel: 'Stress Test',
+    //   key: 'stress_test',
+    // },
+    // {
+    //   index: 10,
+    //   tabName: APP_ROUTES.POMODORO,
+    //   component: Pomodoro,
+    //   buttonLabel: 'Pomodoro',
+    //   key: 'pomodoro',
+    // },
+    // {
+    //   index: 11,
+    //   tabName: APP_ROUTES.ALARM_SCREEN,
+    //   component: AlarmScreen,
+    //   buttonLabel: 'Alarm Clock',
+    //   key: 'alarm_clock',
+    // },
+    // {
+    //   index: 12,
+    //   tabName: APP_ROUTES.EVENTS_SCREEN,
+    //   component: EventsScreen,
+    //   buttonLabel: 'Calendar',
+    //   key: 'calendar',
+    // },
+    // {
+    //   index: 13,
+    //   tabName: APP_ROUTES.TIME_TOGETHER,
+    //   component: TimeTogether,
+    //   buttonLabel: 'Time Together',
+    //   key: 'time_together',
+    // },
     // {
     //   index: 14,
     //   tabName: APP_ROUTES.JIHAD_BAKKOURA,
@@ -149,20 +158,20 @@ export const bottomTabBarOptions = {
     //   buttonLabel: 'Family Tree',
     //   key: 'family_tree',
     // },
-    {
-      index: 15,
-      tabName: APP_ROUTES.BAKKOURA_WATCH,
-      component: BakkouraWatch,
-      buttonLabel: 'Bakkoura Watch',
-      key: 'bakkoura_watch',
-    },
-    {
-      index: 16,
-      tabName: APP_ROUTES.TIME_CLINIC,
-      component: TimeClinic,
-      buttonLabel: 'Time Clinic',
-      key: 'time_clinic',
-    },
+    // {
+    //   index: 15,
+    //   tabName: APP_ROUTES.BAKKOURA_WATCH,
+    //   component: BakkouraWatch,
+    //   buttonLabel: 'Bakkoura Watch',
+    //   key: 'bakkoura_watch',
+    // },
+    // {
+    //   index: 16,
+    //   tabName: APP_ROUTES.TIME_CLINIC,
+    //   component: TimeClinic,
+    //   buttonLabel: 'Time Clinic',
+    //   key: 'time_clinic',
+    // },
     // {
     //   index: 17,
     //   tabName: APP_ROUTES.PODCASTS,
@@ -198,13 +207,13 @@ export const bottomTabBarOptions = {
     //   buttonLabel: 'Send Your Idea',
     //   key: 'send_your_idea',
     // },
-    {
-      index: 21,
-      tabName: APP_ROUTES.TIME_BIOTIC,
-      component: TimeBiotic,
-      buttonLabel: 'Time Biotic',
-      key: 'time_biotic',
-    },
+    // {
+    //   index: 21,
+    //   tabName: APP_ROUTES.TIME_BIOTIC,
+    //   component: TimeBiotic,
+    //   buttonLabel: 'Time Biotic',
+    //   key: 'time_biotic',
+    // },
     // {
     //   index: 22,
     //   tabName: APP_ROUTES.ABOUT_TIME,

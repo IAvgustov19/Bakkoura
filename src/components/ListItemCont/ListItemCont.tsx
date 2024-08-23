@@ -3,6 +3,9 @@ import {Text, View, StyleSheet, DimensionValue, Pressable} from 'react-native';
 import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
+import {normalizeHeight} from '../../utils/dimensions';
 
 type Props = {
   title?: string | any;
@@ -21,14 +24,18 @@ const ListItemCont: React.FC<Props> = ({
   rightItem,
   rightVertical,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
+
   return (
     <RN.Pressable
       style={[
         styles.listItem,
-        {backgroundColor: backBlack ? COLORS.black : COLORS.transparent},
+        {backgroundColor: backBlack ? themeState.mainBack : COLORS.transparent},
       ]}
       onPress={onPress}>
-      <RN.Text style={styles.listItemText}>{title}</RN.Text>
+      <RN.Text style={[styles.listItemText, {color: themeState.darkGrayText}]}>
+        {title}
+      </RN.Text>
       {rightItem ? (
         <RN.TouchableOpacity style={styles.listItemRight} onPress={onPress}>
           <RN.Text style={styles.listItemRightText}>{value}</RN.Text>
@@ -39,14 +46,14 @@ const ListItemCont: React.FC<Props> = ({
       ) : (
         <RN.TouchableOpacity style={styles.listItemRight} onPress={onPress}>
           <RN.Text style={styles.listItemRightText}>{value}</RN.Text>
-          <Images.Svg.arrowRight />
+          <themeState.arrowRight />
         </RN.TouchableOpacity>
       )}
     </RN.Pressable>
   );
 };
 
-export default ListItemCont;
+export default observer(ListItemCont);
 
 const styles = StyleSheet.create({
   listItem: {
@@ -59,8 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   listItemText: {
-    color: COLORS.grey,
-    fontSize: 16,
+    fontSize: normalizeHeight(48),
   },
   listItemRight: {
     flexDirection: 'row',

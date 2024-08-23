@@ -78,6 +78,24 @@ import PrivacyPolicy from '../screens/auth/SignUpScreen/PrivacyPolicy';
 import Recommendation from '../screens/timeClinic/Recommendation';
 import RecommendationView from '../screens/timeClinic/RecomendationView';
 import Podcasts from '../screens/podcasts/Podcasts';
+import Tools from '../screens/Tools/Tools';
+import Other from '../screens/other/Other';
+import Pomodoro from '../screens/pomodoro/Pomodoro';
+import AlarmClock from '../screens/alarm/components/AlarmClock';
+import Metronom from '../screens/metronom/Metronom';
+import TimeTogether from '../screens/timeTogether/TimeTogether';
+import ToDoTimer from '../screens/todoTimer/ToDoTimer';
+import TimeClinic from '../screens/timeClinic/TimeClinic';
+import JihadBakkoura from '../screens/jihadBakkoura/JihadBakkoura';
+import ContactStack from '../screens/contactUs/ContactStack';
+import TimerScreen from '../screens/timers/TimerScreen';
+import ProjectTimer from '../screens/projectTimer/ProjectTimer';
+import WorldTime from '../screens/worldTime/WorldTime';
+import StopWatch from '../screens/stopWatch/StopWatch';
+import StressTest from '../screens/stressTest/StressTest';
+import EventsScreen from '../screens/calendar/EventsScreen';
+import BakkouraWatch from '../screens/bakkouraWatch/BakkouraWatch';
+import AlarmScreen from '../screens/alarm/AlarmScreen';
 
 const Stack = createStackNavigator();
 
@@ -312,12 +330,118 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.ALARM_SCREEN}
+          component={AlarmScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.METRONOM}
+          component={Metronom}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TIME_TOGETHER}
+          component={TimeTogether}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.POMODORO}
+          component={Pomodoro}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TODOTIMER}
+          component={ToDoTimer}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TIME_CLINIC}
+          component={TimeClinic}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.ADD_ETAP}
           component={AddEtap}
           options={{
             headerTitleAlign: 'center',
           }}
         />
+        <Stack.Screen
+          name={APP_ROUTES.JIHAD_BAKKOURA}
+          component={JihadBakkoura}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.CONTACT_STACK}
+          component={ContactStack}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TIMER}
+          component={TimerScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.PROJECT_TIMER}
+          component={ProjectTimer}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.WORLD_TIME}
+          component={WorldTime}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.STOP_WATCH}
+          component={StopWatch}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.STRESS_TEST}
+          component={StressTest}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.EVENTS_SCREEN}
+          component={EventsScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.BAKKOURA_WATCH}
+          component={BakkouraWatch}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+
         <Stack.Screen
           name={APP_ROUTES.DELETE_ETAP}
           component={DeleteEtap}
@@ -514,7 +638,7 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.PODCASTS}
           component={Podcasts}
           options={{
@@ -595,6 +719,20 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.RECOMMENDATION_View}
           component={RecommendationView}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TOOLS}
+          component={Tools}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.OTHER}
+          component={Other}
           options={{
             headerTitleAlign: 'center',
           }}

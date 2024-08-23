@@ -16,6 +16,7 @@ const SectorName = () => {
   const navigation = useNavigation();
   const {setNewSelectState, clearName, newSelectState} =
     useRootStore().bakkouraWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <LinearContainer
@@ -29,7 +30,7 @@ const SectorName = () => {
             <RN.View style={styles.nameBox}>
               <Input
                 placeholder={'Name'}
-                icon={<Images.Svg.deleteIcon />}
+                icon={<themeState.delete />}
                 iconPress={clearName}
                 value={newSelectState.name}
                 onChangeText={e => setNewSelectState('name', e)}

@@ -43,7 +43,7 @@ const NewProjectTimerPrice = () => {
                 labelLeft={'60%'}
                 initialScrollIndex={Number(newProjectTimerState.price)}
               />
-              <DataListLinearBack top={165} />
+              <DataListLinearBack top={160} />
             </RN.View>
             <StartBtn
               text="Ok"

@@ -28,11 +28,14 @@ import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import storage from '@react-native-firebase/storage';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
+import Line from '../../components/Line/Line';
+import Button from '../../components/Button/Button';
 
 const WatchConstructor = () => {
   const {currentPart, setPart, setCurrentWatch} =
     useRootStore().watchConstructor;
   const {setOrderState} = useRootStore().marketStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const viewShotRef = useRef(null);
   const navigation = useNavigation();
   const [ideaLoading, setIdeaLoading] = useState(false);
@@ -122,18 +125,25 @@ const WatchConstructor = () => {
   };
 
   const renderCons = useCallback(() => {
-    return WatchConstrctorData[currentPart].map((Item, index) => {
+    return themeState.watchConstrctorData[currentPart].map((Item, index) => {
       return (
-        <RN.Pressable
-          key={index}
-          style={styles.part}
-          onPress={() => setCurrentWatch(currentPart as never, Item)}>
-          {'options' === currentPart ? (
-            <RN.Image style={styles.costImage} source={Item} />
-          ) : (
-            <Item width={windowWidth / 5} height={100} />
-          )}
-        </RN.Pressable>
+        <RN.View style={styles.faceCont} key={index}>
+          {currentPart === 'faceTypes' ? (
+            <RN.View style={styles.faceBox}>
+              <themeState.watchConstructor.faceBack />
+            </RN.View>
+          ) : null}
+          <RN.Pressable
+            key={index}
+            style={styles.part}
+            onPress={() => setCurrentWatch(currentPart as never, Item)}>
+            {'options' === currentPart ? (
+              <RN.Image style={styles.costImage} source={Item} />
+            ) : (
+              <Item width={windowWidth / 5} height={100} />
+            )}
+          </RN.Pressable>
+        </RN.View>
       );
     });
   }, [currentPart]);
@@ -141,18 +151,21 @@ const WatchConstructor = () => {
   const renderParts = useCallback(() => {
     return ConstructorParts.map((item, index) => {
       return (
-        <ListItemCont
-          key={index}
-          title={item.title}
-          rightItem={
-            <RadioBtn
-              active={item.key === currentPart}
-              onPress={() => setPart(item.key)}
-            />
-          }
-          onPress={() => setPart(item.key)}
-          backBlack
-        />
+        <RN.View key={index}>
+          <ListItemCont
+            key={index}
+            title={item.title}
+            rightItem={
+              <RadioBtn
+                active={item.key === currentPart}
+                onPress={() => setPart(item.key)}
+              />
+            }
+            onPress={() => setPart(item.key)}
+            backBlack
+          />
+          <Line />
+        </RN.View>
       );
     });
   }, [currentPart]);
@@ -176,16 +189,16 @@ const WatchConstructor = () => {
             </ViewShot>
           </RN.View>
           <RN.View style={styles.btns}>
-            <OutlineBtn
-              text="Save in gallery"
-              Width={'48%'}
-              Height={45}
+            <Button
+              title="Save in gallery"
+              width={'48%'}
               onPress={() => captureAndSaveScreenshot('save')}
+              outline
             />
-            <OutlineBtn
-              text="Send idea"
-              Width={'48%'}
-              Height={45}
+            <Button
+              title="Send idea"
+              width={'48%'}
+              outline
               onPress={captureAndSaveScreenshot}
               icon={
                 ideaLoading ? <ActivityIndicator color={COLORS.white} /> : null
@@ -201,7 +214,10 @@ const WatchConstructor = () => {
           <RN.ScrollView
             style={styles.partsScroll}
             showsHorizontalScrollIndicator={false}>
-            <RN.View style={styles.parts}>{renderParts()}</RN.View>
+            <RN.View
+              style={[styles.parts, {backgroundColor: themeState.mainBack}]}>
+              {renderParts()}
+            </RN.View>
           </RN.ScrollView>
         </RN.View>
       }
@@ -255,5 +271,11 @@ const styles = RN.StyleSheet.create({
     width: 80,
     height: 80,
     objectFit: 'contain',
+  },
+  faceCont: {
+    justifyContent: 'center',
+  },
+  faceBox: {
+    position: 'absolute',
   },
 });

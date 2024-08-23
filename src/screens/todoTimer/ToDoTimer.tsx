@@ -13,6 +13,7 @@ import {APP_ROUTES} from '../../navigation/routes';
 import {formatDateTime, secondsToHMS} from '../../helper/helper';
 import {COLORS} from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const ToDoTimer = () => {
   const {getOneTask, tasksList, playProject, fetchTasks, tasksListClone} =
@@ -61,7 +62,7 @@ const ToDoTimer = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="To do Timer"
             rightItem={
               <ButtonComp
@@ -70,7 +71,7 @@ const ToDoTimer = () => {
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.TODO_TIMER_HISTORY as never)
                 }
-                paddingVertical={8}
+                paddingVertical={6}
               />
             }
           />
@@ -107,7 +108,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    height: windowHeight - windowHeight / 3.5,
+    height: windowHeight - windowHeight / 5,
     justifyContent: 'space-between',
   },
   flatList: {
@@ -118,7 +119,6 @@ const styles = RN.StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     height: '90%',
-    marginTop: '0.5%',
     borderRadius: 5,
     width: '100%',
     paddingHorizontal: 15,

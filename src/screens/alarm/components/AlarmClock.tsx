@@ -12,13 +12,19 @@ import {COLORS} from '../../../utils/colors';
 import {windowHeight, windowWidth} from '../../../utils/styles';
 import AlarmClockFront24 from './AlarmClockFront24';
 import AlarmClockFront30 from './AlarmClockFront30';
+import LinearContainer from '../../../components/LinearContainer/LinearContainer';
+import HeaderContent from '../../../components/HeaderContent/HeaderContent';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+import {useNavigation} from '@react-navigation/native';
 
 type Props = {
   is24h?: boolean;
 };
 
 const AlarmClock: React.FC<Props> = ({is24h}) => {
+  const navigation = useNavigation();
   const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const {isRing, handleLaterAction, handleStopAction, activeAlarm} =
     useRootStore().alarmStore;
 
@@ -34,7 +40,7 @@ const AlarmClock: React.FC<Props> = ({is24h}) => {
     return (
       <LottieContent
         width={windowWidth + 20}
-        source={Lotties.clock}
+        source={themeState.lotties.clock}
         speed={isRing ? 1 : 0}
         loop={isRing ? true : false}
         autoPlay={isRing ? true : false}
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    bottom: 130,
+    bottom: 80,
   },
   time: {
     color: COLORS.blue,

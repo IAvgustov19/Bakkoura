@@ -5,6 +5,7 @@ import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
 import RN from '../RN';
 import TextView from '../Text/Text';
+import useRootStore from '../../hooks/useRootStore';
 
 type Props = {
   title?: string;
@@ -21,14 +22,17 @@ const SelectInput: React.FC<Props> = ({
   title,
   value,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
-    <LinearGradient style={styles.container} colors={['#0f1317', '#272F35']}>
+    <LinearGradient
+      style={[styles.container, {borderColor: themeState.inputBorder}]}
+      colors={themeState.button}>
       <RN.TouchableOpacity style={styles.content} onPress={onPress}>
-        <TextView text={title} />
+        <TextView title={title} />
         <RN.View style={styles.arrow}>
           <TextView text={value} textAlign="left" />
           <RN.TouchableOpacity onPress={iconPress}>
-            {icon ? icon : <Images.Svg.arrowRight />}
+            {icon ? icon : <themeState.arrowRight />}
           </RN.TouchableOpacity>
         </RN.View>
       </RN.TouchableOpacity>

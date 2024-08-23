@@ -14,9 +14,12 @@ import useRootStore from '../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import Line from '../../components/Line/Line';
 import {moderateScale} from '../../utils/dimensions';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import {useNavigation} from '@react-navigation/native';
 
 const StopWatch = () => {
   const [isWatch, setIsWatch] = useState(true);
+  const navigation = useNavigation();
   const {
     maindis,
     startStopTimer,
@@ -30,6 +33,7 @@ const StopWatch = () => {
     is24h,
     sethours,
   } = useRootStore().stopWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const handleIndexChange = () => {
     setIsWatch(e => !e);
@@ -43,8 +47,12 @@ const StopWatch = () => {
           {laps.map((item, index) => {
             return (
               <RN.View style={styles.laps} key={index}>
-                <RN.Text style={styles.lap}>Circle {item.id}</RN.Text>
-                <RN.Text style={styles.lap}>{item.lap}</RN.Text>
+                <RN.Text style={[styles.lap, {color: themeState.title}]}>
+                  Circle {item.id}
+                </RN.Text>
+                <RN.Text style={[styles.lap, {color: themeState.gray}]}>
+                  {item.lap}
+                </RN.Text>
               </RN.View>
             );
           })}
@@ -59,9 +67,9 @@ const StopWatch = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
-            title="StopWatch"
-            rightItem={<Images.Svg.timerLogo />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            title="Stop Watch"
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View
             style={[
@@ -81,7 +89,12 @@ const StopWatch = () => {
                   hitSlop={HITSLOP}
                   style={[
                     styles.changeBtn,
-                    {backgroundColor: isWatch ? '#ECC271' : '#000'},
+                    {
+                      backgroundColor: isWatch
+                        ? themeState.yellow
+                        : themeState.inputBaack,
+                      borderColor: isWatch ? '#ECC271' : themeState.inputBaack,
+                    },
                   ]}></RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   onPress={handleIndexChange}
@@ -89,7 +102,12 @@ const StopWatch = () => {
                   style={[
                     styles.changeBtn,
                     {
-                      backgroundColor: !isWatch ? '#ECC271' : '#000',
+                      backgroundColor: !isWatch
+                        ? themeState.yellow
+                        : themeState.inputBaack,
+                      borderColor: !isWatch
+                        ? '#ECC271'
+                        : themeState.inputBorder,
                     },
                   ]}></RN.TouchableOpacity>
               </RN.View>
@@ -101,7 +119,9 @@ const StopWatch = () => {
                 </RN.View>
               ) : (
                 <RN.View style={[styles.child, styles.childTwo]}>
-                  <RN.Text style={styles.text}>{maindis}</RN.Text>
+                  <RN.Text style={[styles.text, {color: themeState.stopWatch}]}>
+                    {maindis}
+                  </RN.Text>
                   {stop ? <RN.Text style={styles.pausa}>Pause</RN.Text> : null}
                 </RN.View>
               )}
@@ -161,7 +181,6 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   text: {
-    color: COLORS.white,
     fontSize: moderateScale(50),
     fontWeight: '100',
     width: '100%',
@@ -169,9 +188,11 @@ const styles = StyleSheet.create({
   },
 
   changeBtn: {
-    width: 10,
-    height: 10,
-    borderRadius: 50,
+    width: 15,
+    height: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderBottomWidth: 0,
   },
   activeBtn: {
     flexDirection: 'row',

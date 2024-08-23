@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useRootStore from '../../../hooks/useRootStore';
 import LoadingScreen from '../../auth/Loading/LoadingScreen';
 import {COLORS} from '../../../utils/colors';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 const LoginPassword = () => {
   const navigation = useNavigation();
@@ -105,14 +106,7 @@ const LoginPassword = () => {
             <Images.Svg.bg style={styles.bg} />
         </RN.View> */}
             <HeaderContent
-              leftItem={
-                <RN.TouchableOpacity
-                  style={styles.back}
-                  onPress={() => navigation.goBack()}>
-                  <Images.Svg.arrowLeft />
-                  <TextView text="Back" />
-                </RN.TouchableOpacity>
-              }
+              leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
               title="Login & Password"
             />
             <RN.View style={styles.content}>

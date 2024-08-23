@@ -15,6 +15,7 @@ import useRootStore from '../../hooks/useRootStore';
 import { observer } from 'mobx-react-lite';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import { windowHeight } from '../../utils/styles';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
@@ -56,7 +57,7 @@ const WorldTime = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="World Time"
             rightItem={
               <SwitchContain
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   },
   btnBox: {
     position: 'absolute',
-    bottom: windowHeight / 5.5,
+    bottom: windowHeight / 16,
     alignItems: 'center',
     width: '100%',
   },

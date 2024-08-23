@@ -6,6 +6,8 @@ import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import {windowWidth} from '../../../utils/styles';
 import ConceptItem from './ConceptItem';
+import useRootStore from '../../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   imageUrl?: ImageSourcePropType;
@@ -22,9 +24,17 @@ const TimeWealthCard: React.FC<Props> = ({
   date,
   onPress,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   const renderTexts = React.useCallback(() => {
     return texts.map((item, index) => {
-      return <TextView key={index} textAlign="left" text={item} />;
+      return (
+        <TextView
+          key={index}
+          textAlign="left"
+          text={item}
+          color={themeState.darkGrayText}
+        />
+      );
     });
   }, [texts]);
 
@@ -40,7 +50,7 @@ const TimeWealthCard: React.FC<Props> = ({
   );
 };
 
-export default TimeWealthCard;
+export default observer(TimeWealthCard);
 
 const styles = StyleSheet.create({
   container: {

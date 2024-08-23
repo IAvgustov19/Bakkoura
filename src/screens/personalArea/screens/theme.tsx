@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
@@ -8,52 +8,63 @@ import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
 import ListItemCont from '../../../components/ListItemCont/ListItemCont';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
-
-import {Themes} from '../../../utils/themes';
 import {observer} from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
+import {Themes, ThemeTypes} from '../../../utils/themes';
+import Line from '../../../components/Line/Line';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 const Theme = () => {
   const navigation = useNavigation();
-  const [active, setActive] = useState(0);
-
-  const renderItem = ({item, index}) => {
-    return (
-      <RN.View style={styles.eventsTypeList}>
-        <ListItemCont
-          rightItem={
-            <RadioBtn
-              active={active == index}
-              onPress={() => setActive(index)}
-            />
-          }
-          title={item}
-          onPress={() => setActive(index)}
-        />
-        <RN.View style={styles.line}></RN.View>
-      </RN.View>
-    );
+  const {
+    personalAreaData,
+    setPersonalAreaState,
+    updateProfile,
+    themeState,
+    currentTheme,
+    setUpdateCurrentTheme,
+  } = useRootStore().personalAreaStore;
+  const onUpdateProfile = () => {
+    updateProfile(() => {
+      navigation.goBack();
+    });
   };
+
+  const renderItem = useCallback(
+    ({item, index}) => {
+      return (
+        <RN.View
+          style={[
+            styles.eventsTypeList,
+            {backgroundColor: themeState.mainBack},
+          ]}>
+          <ListItemCont
+            rightItem={
+              <RadioBtn
+                active={currentTheme == item}
+                onPress={() => setUpdateCurrentTheme(item)}
+              />
+            }
+            title={item}
+            onPress={() => setUpdateCurrentTheme(item)}
+          />
+          <Line />
+        </RN.View>
+      );
+    },
+    [personalAreaData.theme, currentTheme],
+  );
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          {/* <RN.View style={styles.bgContainer}>
-                        <Images.Svg.bg style={styles.bg} />
-                    </RN.View> */}
           <HeaderContent
-            leftItem={
-              <RN.TouchableOpacity
-                style={styles.back}
-                onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
-              </RN.TouchableOpacity>
-            }
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Theme"
           />
           <RN.FlatList
-            data={Themes}
+            data={ThemeTypes}
             keyExtractor={(item, index) => index.toString()}
             renderItem={renderItem}
           />
@@ -63,7 +74,7 @@ const Theme = () => {
               text={'Ok'}
               subWidth={70}
               elWidth={55}
-              onPress={() => navigation.goBack()}
+              onPress={onUpdateProfile}
             />
           </RN.View>
         </RN.View>
@@ -79,24 +90,10 @@ const styles = RN.StyleSheet.create({
     height: '100%',
     paddingHorizontal: 10,
   },
-  bgContainer: {
-    width: '100%',
-    position: 'relative',
-    alignItems: 'center',
-  },
-  bg: {
-    position: 'absolute',
-  },
   eventsTypeList: {
-    backgroundColor: '#0D0D0D',
     borderRadius: 3,
     paddingHorizontal: 5,
     marginTop: 5,
-  },
-  line: {
-    backgroundColor: '#131F28',
-    width: '100%',
-    height: 1,
   },
   addBtn: {
     position: 'absolute',

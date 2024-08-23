@@ -1,10 +1,16 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { Alert } from 'react-native';
-import { genPos } from '../../helper/chart';
-import { hoursSecondsToS } from '../../helper/helper';
-import { SelectListDataInitial, SelectListDataType } from '../../types/alarm';
-import { SelectColorData } from '../../utils/colors';
-import { addSectorToFirestore, deleteSectorFromFirestore, getSectorFromFirestore, getSectorsFromFirestore, updateSectorInFirestore } from '../../services/firestoreService';
+import {makeAutoObservable, runInAction} from 'mobx';
+import {Alert} from 'react-native';
+import {genPos} from '../../helper/chart';
+import {hoursSecondsToS} from '../../helper/helper';
+import {SelectListDataInitial, SelectListDataType} from '../../types/alarm';
+import {SelectColorData} from '../../utils/colors';
+import {
+  addSectorToFirestore,
+  deleteSectorFromFirestore,
+  getSectorFromFirestore,
+  getSectorsFromFirestore,
+  updateSectorInFirestore,
+} from '../../services/firestoreService';
 import auth from '@react-native-firebase/auth';
 
 export class BakkouraWatchStore {
@@ -41,19 +47,20 @@ export class BakkouraWatchStore {
       genPos({
         hour: this.newSelectState.fromHour,
         min: this.newSelectState.fromMin,
-      })
+      }),
     );
     this.setNewSelectState(
       'end',
       genPos({
         hour: this.newSelectState.toHour,
         min: this.newSelectState.toMin,
-      })
+      }),
     );
   };
 
   selectStartEndTime = (callback?: () => void) => {
-    const startMins = this.newSelectState.fromHour * 60 + this.newSelectState.fromMin;
+    const startMins =
+      this.newSelectState.fromHour * 60 + this.newSelectState.fromMin;
     const endMins = this.newSelectState.toHour * 60 + this.newSelectState.toMin;
 
     if (startMins < endMins) {
@@ -61,7 +68,7 @@ export class BakkouraWatchStore {
         !this.listSelects.some(
           item =>
             this.newSelectState.start >= item.start &&
-            this.newSelectState.end <= item.end
+            this.newSelectState.end <= item.end,
         )
       ) {
         this.listSelects = [...this.listSelects, this.newSelectState];
@@ -82,13 +89,11 @@ export class BakkouraWatchStore {
       return;
     }
     if (this.isHas) {
-      console.log('Updating sector', this.newSelectState);
       await this.updateSector(this.newSelectState.id);
       this.isHas = false;
       callback?.();
       this.clearState();
     } else {
-      
       if (this.newSelectState.name && this.newSelectState.color) {
         this.setNewSelectState('uid', userId);
         await addSectorToFirestore(this.newSelectState);
@@ -115,9 +120,9 @@ export class BakkouraWatchStore {
   updateSector = async (id: number | string) => {
     const sectorToUpdate = this.listSelects.find(item => item.id === id);
     if (sectorToUpdate) {
-      const updatedSector = { ...sectorToUpdate, ...this.newSelectState };
+      const updatedSector = {...sectorToUpdate, ...this.newSelectState};
       const updatedList = this.listSelects.map(item =>
-        item.id === id ? updatedSector : item
+        item.id === id ? updatedSector : item,
       );
 
       try {

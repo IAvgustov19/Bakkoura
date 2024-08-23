@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { Images } from '../../../../assets';
-import { COLORS } from '../../../../utils/colors';
+import {Images} from '../../../../assets';
+import {COLORS} from '../../../../utils/colors';
 import RN from '../../../../components/RN';
 import TextView from '../../../../components/Text/Text';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import * as Progress from 'react-native-progress';
+import useRootStore from '../../../../hooks/useRootStore';
 
 type Props = {
   hour?: number;
@@ -32,8 +33,9 @@ const WorldWatch: React.FC<Props> = ({
   isLoading,
   minut30,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   const renderClock = useMemo(() => {
-    return is24 ? <Images.Svg.worldWatch /> : <Images.Svg.worldWatch30 />;
+    return is24 ? <themeState.worldWatch24 /> : <themeState.worldWatch30 />;
   }, [is24]);
 
   return (
@@ -45,23 +47,33 @@ const WorldWatch: React.FC<Props> = ({
           style={[
             styles.hourLine,
             {
-              transform: `rotate(${is24 ? hour * 30 + minut / 2 : hour30 / 2
-                }deg)`,
+              transform: `rotate(${
+                is24 ? hour * 30 + minut / 2 : hour30 / 2
+              }deg)`,
             },
           ]}></LinearGradient>
         <LinearGradient
           colors={['#E10000', '#792525', '#0152aa']}
           style={[
             styles.minutLine,
-            { transform: `rotate(${is24 ? minut * 6 : minut30 * 7.5}deg)` },
+            {transform: `rotate(${is24 ? minut * 6 : minut30 * 7.5}deg)`},
           ]}></LinearGradient>
       </RN.View>
       <RN.View style={styles.infoBox}>
-        <RN.Text style={styles.country}>{country}</RN.Text>
-        {!isLoading ?
-          <RN.Text style={styles.weather}>{weather}</RN.Text> :
-          <Progress.Circle size={20} indeterminate={true} color={COLORS.yellow}/>
-        }
+        <RN.Text style={[styles.country, {color: themeState.title}]}>
+          {country}
+        </RN.Text>
+        {!isLoading ? (
+          <RN.Text style={[styles.weather, {color: themeState.yellow}]}>
+            {weather}
+          </RN.Text>
+        ) : (
+          <Progress.Circle
+            size={20}
+            indeterminate={true}
+            color={COLORS.yellow}
+          />
+        )}
       </RN.View>
     </RN.View>
   );

@@ -12,12 +12,18 @@ import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../hooks/useRootStore';
 import {ActivityIndicator} from 'react-native';
 import {COLORS} from '../../../utils/colors';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 const PersonalDetails = () => {
   const navigation = useNavigation();
 
-  const {personalAreaData, setPersonalAreaState, updateProfile, updateLoading} =
-    useRootStore().personalAreaStore;
+  const {
+    personalAreaData,
+    setPersonalAreaState,
+    updateProfile,
+    updateLoading,
+    themeState,
+  } = useRootStore().personalAreaStore;
 
   const updateName = () => {
     updateProfile(() => navigation.goBack());
@@ -31,14 +37,7 @@ const PersonalDetails = () => {
             <Images.Svg.bg style={styles.bg} />
           </RN.View> */}
           <HeaderContent
-            leftItem={
-              <RN.TouchableOpacity
-                style={styles.back}
-                onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
-              </RN.TouchableOpacity>
-            }
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Name"
           />
           <RN.ScrollView>
@@ -48,12 +47,9 @@ const PersonalDetails = () => {
                   placeholder={'Name'}
                   value={personalAreaData ? personalAreaData?.name : 'User'}
                   onChangeText={text => setPersonalAreaState('name', text)}
+                  icon={<themeState.delete />}
+                  iconPress={() => setPersonalAreaState('name', ' ' as never)}
                 />
-                <RN.TouchableOpacity
-                  style={styles.deleteBox}
-                  onPress={() => setPersonalAreaState('name', ' ' as never)}>
-                  <Images.Svg.deleteIcon />
-                </RN.TouchableOpacity>
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn

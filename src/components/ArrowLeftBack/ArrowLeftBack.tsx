@@ -5,6 +5,8 @@ import {COLORS} from '../../utils/colors';
 import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
+import {observer} from 'mobx-react-lite';
+import useRootStore from '../../hooks/useRootStore';
 
 type Props = {
   onPress?: () => void;
@@ -19,18 +21,19 @@ const ArrowLeftBack: React.FC<Props> = ({
   icon,
   titleColor = COLORS.white,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.TouchableOpacity
       style={styles.container}
       onPress={onPress}
       hitSlop={HITSLOP}>
-      {icon ? icon : <Images.Svg.arrowLeft />}
+      {icon ? icon : <themeState.arrowLeft />}
       <TextView text={title ? title : 'Back'} style={{color: titleColor}} />
     </RN.TouchableOpacity>
   );
 };
 
-export default ArrowLeftBack;
+export default observer(ArrowLeftBack);
 
 const styles = StyleSheet.create({
   container: {

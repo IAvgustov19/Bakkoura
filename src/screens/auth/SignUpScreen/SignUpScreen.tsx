@@ -40,6 +40,7 @@ type ISelect = {label: string; value: string};
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const {setAuthorized} = useRootStore().authStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -105,6 +106,7 @@ const SignUpScreen = () => {
           inActiveMenus: newUser.inActiveMenus,
           startScreen: newUser.initialRouteName,
           id: user.uid,
+          theme: newUser.theme,
         });
 
         await AsyncStorage.setItem('userData', JSON.stringify(user));
@@ -138,20 +140,23 @@ const SignUpScreen = () => {
         switch (error.code) {
           case 'auth/weak-password':
             Alert.alert(
-              'Password is too weak.', 'Please enter a stronger password.',
+              'Password is too weak.',
+              'Please enter a stronger password.',
             );
             break;
           case 'auth/invalid-email':
             Alert.alert(
-              'Email address is badly formatted', 'Please enter a valid email.',
+              'Email address is badly formatted',
+              'Please enter a valid email.',
             );
             break;
           case 'auth/email-already-in-use':
-            Alert.alert('Email is busy',
+            Alert.alert(
+              'Email is busy',
               'The email address is already in use by another account.',
             );
             break;
-            case 'auth/network-request-failed':
+          case 'auth/network-request-failed':
             Alert.alert('Check your internet connection');
             break;
           default:
@@ -200,8 +205,7 @@ const SignUpScreen = () => {
             <RN.ScrollView
               ref={scrollViewRef}
               showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-            >
+              showsVerticalScrollIndicator={false}>
               <RN.View style={styles.content}>
                 <LoadingScreen loading={loading} setLoading={setLoading} />
                 <TextView title="Sign up" textAlign="center" />
@@ -220,7 +224,9 @@ const SignUpScreen = () => {
                           color={COLORS.black}
                           style={{marginTop: 3}}
                         />
-                      ) : null
+                      ) : (
+                        <GiveImage source={Images.Img.eye} />
+                      )
                     }
                   />
                 </RN.View>
@@ -231,7 +237,7 @@ const SignUpScreen = () => {
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
                   }>
-                  <TextView style={styles.signUpText} text="Sign In" />
+                  <TextView color={themeState.yellow} text="Sign In" />
                 </RN.TouchableOpacity>
               </View>
               <View style={styles.terms}>

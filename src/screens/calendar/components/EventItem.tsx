@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   eventName?: string;
@@ -28,22 +29,13 @@ const EventItem: React.FC<Props> = ({
   already,
   allDay,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <LinearGradient
       style={styles.linearBox}
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
-      colors={
-        already
-          ? [
-              COLORS.green,
-              COLORS.listGreen,
-              COLORS.listCenterGreen,
-              COLORS.listDarkGreen,
-              COLORS.black2,
-            ]
-          : [COLORS.black, COLORS.black]
-      }>
+      colors={already ? themeState.eventItem : themeState.eventActiveItem}>
       <RN.Pressable
         style={[
           styles.container,
@@ -55,8 +47,22 @@ const EventItem: React.FC<Props> = ({
         ]}
         onPress={onPress}>
         <RN.View style={styles.timeBox}>
-          <RN.Text style={styles.name}>{eventName}</RN.Text>
-          {isShowDate ? <RN.Text style={styles.date}>{date}</RN.Text> : null}
+          <RN.Text
+            style={[
+              styles.name,
+              {color: already ? COLORS.white : themeState.title},
+            ]}>
+            {eventName}
+          </RN.Text>
+          {isShowDate ? (
+            <RN.Text
+              style={[
+                styles.date,
+                {color: already ? COLORS.white : themeState.title},
+              ]}>
+              {date}
+            </RN.Text>
+          ) : null}
           <RN.Text
             style={[
               styles.time,
@@ -68,8 +74,10 @@ const EventItem: React.FC<Props> = ({
         <RN.TouchableOpacity style={styles.arrowRight}>
           {already ? (
             <RN.View style={styles.already}>
+              <RN.Text style={[styles.alreadyText, {color: themeState.green}]}>
+                Already
+              </RN.Text>
               <Images.Svg.bellGreen width={24} />
-              <RN.Text style={styles.alreadyText}>Already</RN.Text>
             </RN.View>
           ) : null}
           <Images.Svg.arrowRight />
@@ -116,6 +124,7 @@ const styles = RN.StyleSheet.create({
   already: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
   },
   alreadyText: {
     color: COLORS.green,
