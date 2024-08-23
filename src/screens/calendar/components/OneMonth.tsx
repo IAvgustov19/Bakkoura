@@ -17,6 +17,7 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
   );
   const {filterEvents, oneMonth, cloneAllEventsData} =
     useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const _onPress = (item: string) => {
     if (item) {
@@ -67,7 +68,7 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
                       ? COLORS.grey
                       : colIndex == 5
                       ? COLORS.grey
-                      : COLORS.white,
+                      : themeState.title,
                   fontSize: 18,
                 },
               ]}>
@@ -98,7 +99,8 @@ const OneMonth: React.FC<Props> = ({date, selectedDays}) => {
 
   return (
     <RN.View style={styles.container}>
-      <RN.View style={styles.weekDays}>
+      <RN.View
+        style={[styles.weekDays, {backgroundColor: themeState.mainBack}]}>
         {weekDays.map((item, index) => (
           <RN.Text style={styles.dayNames} key={index}>
             {item}

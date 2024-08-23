@@ -11,6 +11,7 @@ import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
+import {normalizeHeight, normalizeWidth} from '../../../utils/dimensions';
 
 type Props = {
   countMinut?: number;
@@ -26,6 +27,7 @@ const FirstMetronom: React.FC<Props> = ({
   etap,
 }) => {
   const {etapData, metronomState} = useRootStore().metronomStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const translateX = useSharedValue(0);
 
@@ -47,17 +49,29 @@ const FirstMetronom: React.FC<Props> = ({
   const renderEtapData = useMemo(() => {
     return etapData.map((item, index) => {
       return (
-        <Images.Svg.ellipseDot
+        <RN.View
           key={index}
-          fill={
-            metronomState.etapCount === 1
-              ? metronomState.etapLine === 1
-                ? COLORS.yellow
-                : COLORS.black
-              : item === etap
-              ? COLORS.yellow
-              : COLORS.black
-          }
+          style={[
+            styles.ellipse,
+            {
+              backgroundColor:
+                metronomState.etapCount === 1
+                  ? metronomState.etapLine === 1
+                    ? COLORS.yellow
+                    : themeState.inputBaack
+                  : item === etap
+                  ? COLORS.yellow
+                  : themeState.inputBaack,
+              borderColor:
+                metronomState.etapCount === 1
+                  ? metronomState.etapLine === 1
+                    ? COLORS.inActiveYellow
+                    : themeState.inputBaack
+                  : item === etap
+                  ? COLORS.inActiveYellow
+                  : themeState.inputBorder,
+            },
+          ]}
         />
       );
     });
@@ -66,7 +80,7 @@ const FirstMetronom: React.FC<Props> = ({
   return (
     <RN.View style={styles.metronom}>
       <RN.View style={styles.metronomImage}>
-        <Images.Svg.metronom />
+        <themeState.metronom />
       </RN.View>
       <RN.View style={styles.plusMinus}>
         <RN.TouchableOpacity onPress={removeCount}>
@@ -74,7 +88,9 @@ const FirstMetronom: React.FC<Props> = ({
         </RN.TouchableOpacity>
         <RN.View style={styles.minCountBox}>
           <TextView text={'BPM'} />
-          <RN.Text style={styles.minCount}>{countMinut}</RN.Text>
+          <RN.Text style={[styles.minCount, {color: themeState.title}]}>
+            {countMinut}
+          </RN.Text>
         </RN.View>
         <RN.TouchableOpacity onPress={addCount}>
           <Images.Svg.addCount />
@@ -133,5 +149,12 @@ const styles = RN.StyleSheet.create({
   dots: {
     flexDirection: 'row',
     gap: 10,
+  },
+  ellipse: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderBottomWidth: 0,
   },
 });

@@ -20,6 +20,7 @@ import {windowHeight} from '../../utils/styles';
 const NewProjectTimer = () => {
   const navigation = useNavigation();
   const [isPaid, setIsPaid] = useState(false);
+  const {themeState} = useRootStore().personalAreaStore;
   const {
     newProjectTimerState,
     setNewProjectTimeState,
@@ -59,11 +60,13 @@ const NewProjectTimer = () => {
           <RN.ScrollView style={styles.scrollView}>
             <RN.View style={styles.content}>
               <RN.View style={styles.formBox}>
-                <RN.View style={styles.form}>
+                <RN.View
+                  style={[styles.form, {backgroundColor: themeState.mainBack}]}>
                   <Input
                     placeholder="Name"
                     value={newProjectTimerState.title}
                     onChangeText={e => setNewProjectTimeState('title', e)}
+                    backColor={themeState.mainBack}
                   />
                   <Line />
                   <Input
@@ -75,9 +78,11 @@ const NewProjectTimer = () => {
                     onChangeText={e => setNewProjectTimeState('description', e)}
                     textAlignVertical="top"
                     maxLenght={100}
+                    backColor={themeState.mainBack}
                   />
                 </RN.View>
-                <RN.View style={styles.form}>
+                <RN.View
+                  style={[styles.form, {backgroundColor: themeState.mainBack}]}>
                   <ListItemCont
                     title="Paid"
                     rightItem={

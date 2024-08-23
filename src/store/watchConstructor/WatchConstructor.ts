@@ -3,10 +3,13 @@ import {
   ConstructorWatchInitial,
   ConstructorWatchType,
 } from '../../types/worldTime';
+import {RootStore} from '../rootStore';
 
 export class WatchConstructor {
-  constructor() {
+  private readonly root: RootStore;
+  constructor(root: RootStore) {
     makeAutoObservable(this);
+    this.root = root;
   }
 
   currentWatch: ConstructorWatchType = ConstructorWatchInitial;

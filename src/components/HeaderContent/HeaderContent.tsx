@@ -22,7 +22,7 @@ const HeaderContent: React.FC<Props> = ({
 }) => {
   return (
     <RN.View style={[styles.header, containerStyle]}>
-      {leftItem && <RN.View style={styles.leftItem}>{leftItem}</RN.View>}
+      <RN.View style={styles.leftItem}>{leftItem && leftItem}</RN.View>
       {title && (
         <TextView
           fontFamily="RedHatDisplay-SemiBold"
@@ -32,7 +32,7 @@ const HeaderContent: React.FC<Props> = ({
         />
       )}
       {centerItem && centerItem}
-      {rightItem && <RN.View style={styles.rightItem}>{rightItem}</RN.View>}
+      <RN.View style={styles.rightItem}>{rightItem && rightItem}</RN.View>
     </RN.View>
   );
 };
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignContent: 'center',
+    alignItems: 'center',
     width: '100%',
     marginTop: 25,
     marginBottom: 20,
   },
   title: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     position: 'absolute',
     // left: 150,
     width: '100%',

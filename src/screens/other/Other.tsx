@@ -1,19 +1,20 @@
-import { useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useCallback } from 'react';
-import { Images } from '../../assets';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useCallback} from 'react';
+import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import { windowHeight } from '../../utils/styles';
+import {windowHeight} from '../../utils/styles';
 import TimeClinicListItem from '../timeClinic/components/TimeClinicListItem';
-import { TimeBioticList } from '../../constants/timeBiotic';
-import { OtherList } from '../../constants/other';
+import {TimeBioticList} from '../../constants/timeBiotic';
+import {OtherList} from '../../constants/other';
+import ListFooter from '../../components/ListFooter/ListFooter';
 
 const Other = () => {
   const navigation = useNavigation();
 
-  const renderItem = useCallback(({ item }) => {
+  const renderItem = useCallback(({item}) => {
     return (
       <TimeClinicListItem
         title={item.title}
@@ -37,7 +38,8 @@ const Other = () => {
               showsVerticalScrollIndicator={false}
               style={styles.flatlist}
               data={OtherList}
-              renderItem={({ item }) => renderItem({ item })}
+              renderItem={({item}) => renderItem({item})}
+              ListFooterComponent={<ListFooter />}
             />
           </RN.View>
         </RN.View>

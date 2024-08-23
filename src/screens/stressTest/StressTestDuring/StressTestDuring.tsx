@@ -26,6 +26,7 @@ const StressTestDuring = () => {
     resetStressTimer,
     finishStressTest,
   } = useRootStore().stressTestStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const FinishStressTest = () => {
     finishStressTest();
@@ -33,7 +34,9 @@ const StressTestDuring = () => {
   };
 
   const pandaLottie = useMemo(() => {
-    return <LottieContent source={Lotties.stressTest} width={windowWidth} />;
+    return (
+      <LottieContent source={themeState.lotties.panda} width={windowWidth} />
+    );
   }, []);
 
   return (
@@ -43,14 +46,14 @@ const StressTestDuring = () => {
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Stress Test"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.timeBox}>
               <RN.View style={styles.panda}>
-                {stressTestStatus.reset ? pandaLottie : <Images.Svg.panda />}
+                {stressTestStatus.reset ? pandaLottie : <themeState.panda />}
               </RN.View>
-              <RN.Text style={styles.time}>
+              <RN.Text style={[styles.time, {color: themeState.title}]}>
                 {stressTestData.time ? stressTestData.time : '00:00:00'}
               </RN.Text>
             </RN.View>

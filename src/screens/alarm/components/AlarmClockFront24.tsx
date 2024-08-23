@@ -14,6 +14,7 @@ type Props = {};
 
 const AlarmClockFront24: React.FC<Props> = ({}) => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <RN.View
@@ -21,7 +22,7 @@ const AlarmClockFront24: React.FC<Props> = ({}) => {
         styles.alarmFront,
         {top: RN.Platform.OS == 'ios' && windowHeight / 7.5},
       ]}>
-      <Images.Svg.alarmClockFront24 width={windowWidth - 140} />
+      <themeState.alarmFront24 width={windowWidth - 140} />
       <LinearGradient
         style={[
           styles.lineMinut,

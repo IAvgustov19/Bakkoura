@@ -13,6 +13,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {windowWidth} from '../../utils/styles';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
 
 export const themeColors = {
   black: '#000000',
@@ -60,6 +61,7 @@ const List = ({
   label,
   labelLeft,
 }: Props) => {
+  const {themeState} = useRootStore().personalAreaStore;
   const scrollY = useRef(new Animated.Value(0)).current;
   const {flatListStyle, iosTextVerticalCenter, textStyle, dividerStyle} =
     useMemo(
@@ -145,6 +147,7 @@ const List = ({
                   : iosTextVerticalCenter,
                 calculateStyle(index),
                 listItemStyle,
+                {color: themeState.title},
               ]}>
               {item.text}
             </Animated.Text>
@@ -216,7 +219,7 @@ const styles = StyleSheet.create({
   label: {
     position: 'absolute',
     paddingBottom: 12,
-    color: '#cac9c9',
+    color: '#787878',
     fontSize: 12,
     right: 0,
   },

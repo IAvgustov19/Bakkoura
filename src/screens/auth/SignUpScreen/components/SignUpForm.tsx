@@ -12,10 +12,10 @@ type Props = {
   bottomInputPress?: () => void;
 };
 
-const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) => {
+const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect}) => {
   const {newUser, setNewUser} = useRootStore().authStore;
 
-  const inputRefs = React.useRef<{ [key: string]: TextInput }>({
+  const inputRefs = React.useRef<{[key: string]: TextInput}>({
     name: null,
     username: null,
     email: null,
@@ -24,8 +24,8 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
 
   const focusInput = (refName: string) => {
     inputRefs.current[refName]?.focus();
-  }
-  
+  };
+
   return (
     <RN.View style={styles.formBox}>
       <Input
@@ -34,7 +34,8 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
         value={newUser.name}
         onPressIn={() => focusInput('name')}
         onChangeText={e => setNewUser('name', e)}
-        inputRef={(ref) => (inputRefs.current.name = ref)}
+        inputRef={ref => (inputRefs.current.name = ref)}
+        bordered
       />
       <Input
         title="Username"
@@ -42,8 +43,8 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
         value={newUser.username}
         onPressIn={() => focusInput('username')}
         onChangeText={e => setNewUser('username', e)}
-        inputRef={(ref) => (inputRefs.current.username = ref)}
-        
+        inputRef={ref => (inputRefs.current.username = ref)}
+        bordered
       />
       <Input
         title="Email"
@@ -51,7 +52,8 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
         value={newUser.email}
         onPressIn={() => focusInput('email')}
         onChangeText={e => setNewUser('email', e)}
-        inputRef={(ref) => (inputRefs.current.email = ref)}
+        inputRef={ref => (inputRefs.current.email = ref)}
+        bordered
       />
       <Input
         secureTextEntry
@@ -59,13 +61,14 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect, }) =>
         placeholder="Enter your password"
         value={newUser.password}
         onChangeText={e => setNewUser('password', e)}
-        inputRef={(ref) => (inputRefs.current.password = ref)}
+        inputRef={ref => (inputRefs.current.password = ref)}
+        bordered
         onPressIn={() => {
           focusInput('password');
           bottomInputPress && bottomInputPress();
         }}
       />
-      <CustomSelect options={options} onSelect={onSelect} black={true}/>
+      <CustomSelect options={options} onSelect={onSelect} black={true} />
     </RN.View>
   );
 };

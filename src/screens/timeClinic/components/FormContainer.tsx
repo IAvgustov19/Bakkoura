@@ -18,34 +18,37 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         value={orderState.name}
         title="Name"
         placeholder="Name"
-        backColor={COLORS.black}
+        // backColor={COLORS.black}
         width="100%"
         onChangeText={e => setOrderState('name', e)}
         black={true}
+        bordered
       />
       <Input
         value={orderState.phone}
         title="Phone"
         placeholder="Phone"
-        backColor={COLORS.black}
+        // backColor={COLORS.black}
         width="100%"
         onPressIn={bottomInputPress}
         onChangeText={e => setOrderState('phone', e)}
         black={true}
         keyBoardType="numeric"
+        bordered
       />
       <Input
         value={orderState.message}
         title="Comment"
         height={100}
         placeholder="Text"
-        backColor={COLORS.black}
+        // backColor={COLORS.black}
         width="100%"
         multiLine={true}
         textAlignVertical="top"
         onChangeText={e => setOrderState('message', e)}
         onPressIn={bottomInputPress}
         black={true}
+        bordered
       />
     </RN.View>
   );

@@ -16,6 +16,7 @@ import {windowHeight} from '../../utils/styles';
 
 const TaskName = () => {
   const {hide} = useRootStore().visibleStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const {setNewTaskState, taskState} = useRootStore().todoTimer;
   const navigation = useNavigation();
 
@@ -39,7 +40,8 @@ const TaskName = () => {
             title={'Task Name'}
           />
           <RN.View style={styles.content}>
-            <RN.View style={styles.list}>
+            <RN.View
+              style={[styles.list, {backgroundColor: themeState.mainBack}]}>
               {ToDoTaskNameData.map((item, index) => {
                 return (
                   <RN.View key={index}>

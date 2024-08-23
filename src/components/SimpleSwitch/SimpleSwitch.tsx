@@ -9,6 +9,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
 type Props = {
   handlePress?: () => void;
   active?: boolean;
@@ -27,6 +28,7 @@ const SimpleSwitch: React.FC<Props> = ({
   topMenu,
 }) => {
   const translateX = useSharedValue(active ? 20 : 0);
+  const {themeState} = useRootStore().personalAreaStore;
 
   const handlePresss = React.useCallback(() => {
     if (!active) {
@@ -47,7 +49,11 @@ const SimpleSwitch: React.FC<Props> = ({
       onPress={() => {
         handlePresss(), handlePress();
       }}>
-      <RN.View style={[styles.box, {width: width ? width : 50}]}>
+      <RN.View
+        style={[
+          styles.box,
+          {width: width ? width : 50, backgroundColor: themeState.radioback},
+        ]}>
         <Animated.View style={[styles.animatedBox, animatedStyles]}>
           <LinearGradient
             colors={['#ECC271', '#7F642E']}

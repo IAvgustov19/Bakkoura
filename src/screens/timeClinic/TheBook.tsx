@@ -7,6 +7,7 @@ import RN from '../../components/RN';
 import {TheBookTexts} from '../../constants/timeClinic';
 import {windowHeight} from '../../utils/styles';
 import TheBookitem from './components/TheBookItem';
+import {observer} from 'mobx-react-lite';
 
 const TheBook = () => {
   const navigation = useNavigation();
@@ -43,7 +44,7 @@ const TheBook = () => {
   );
 };
 
-export default TheBook;
+export default observer(TheBook);
 
 const styles = RN.StyleSheet.create({
   container: {

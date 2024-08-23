@@ -10,16 +10,21 @@ import CurrentDate from './CurrentDate';
 
 const HomeWatch30h24h = () => {
   const {homeCurrentTime, today} = useRootStore().homeClockStore;
+  const {themeState} = useRootStore().personalAreaStore;
+
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.logo}>
-        <Images.Svg.timerLogo />
+        <themeState.timeLogo />
       </RN.View>
       <RN.View style={styles.currentDate}>
         <CurrentDate day={today.day} month={today.monthYear} />
       </RN.View>
       <RN.View style={styles.watchBox}>
-        <RN.Image style={styles.watch} source={Images.Img.homeWatch24and30} />
+        <RN.Image
+          style={styles.watch}
+          source={themeState.homeWatchs.home24and30}
+        />
       </RN.View>
       <LinearGradient
         style={[

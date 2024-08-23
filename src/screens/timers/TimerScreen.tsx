@@ -16,7 +16,9 @@ import SecondTimer from './components/SecondTimer';
 import SecondTimerDuring from './components/SecondTimerDuring';
 import {styles} from './TimerScreenStyles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import Line from '../../components/Line/Line';
+import {COLORS} from '../../utils/colors';
 
 const TimerScreen = () => {
   const navigation = useNavigation();
@@ -32,6 +34,7 @@ const TimerScreen = () => {
     selectedSound,
     resetTimerBack,
   } = useRootStore().timerStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [isWork, setWork] = useState(true);
 
   const StartTimer = () => {
@@ -82,7 +85,7 @@ const TimerScreen = () => {
           <HeaderContent
             title="Timer"
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={<themeState.timeLogo />}
           />
           {timerStatus.reset ? null : (
             <RN.View style={styles.switchHours}>
@@ -97,7 +100,14 @@ const TimerScreen = () => {
                   onPress={timerChange}
                   style={[
                     styles.changeBtn,
-                    {backgroundColor: timerStatus.isFirst ? '#ECC271' : '#000'},
+                    {
+                      backgroundColor: timerStatus.isFirst
+                        ? '#ECC271'
+                        : themeState.inputBaack,
+                      borderColor: timerStatus.isFirst
+                        ? COLORS.inActiveYellow
+                        : themeState.inputBorder,
+                    },
                   ]}></RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   onPress={timerChange}
@@ -106,7 +116,10 @@ const TimerScreen = () => {
                     {
                       backgroundColor: !timerStatus.isFirst
                         ? '#ECC271'
-                        : '#000',
+                        : themeState.inputBaack,
+                      borderColor: !timerStatus.isFirst
+                        ? COLORS.inActiveYellow
+                        : themeState.inputBorder,
                     },
                   ]}></RN.TouchableOpacity>
               </RN.View>
@@ -141,9 +154,9 @@ const TimerScreen = () => {
             <SwitchBtn isWork={isWork} onPress={() => setWork(e => !e)} />
           </RN.View>
           <RN.TouchableOpacity
-            style={styles.soundList}
+            style={[styles.soundList, {borderColor: themeState.input2}]}
             onPress={() => toggle('soundsVisible')}>
-            <RN.Text color="#fff">Sound</RN.Text>
+            <RN.Text color={themeState.title}>Sound</RN.Text>
             <RN.View style={styles.sound}>
               <RN.Text color="#2F4252">{selectedSound.title}</RN.Text>
               <Images.Svg.arrowRight />
@@ -154,11 +167,7 @@ const TimerScreen = () => {
             data={soundsData}
             onItemPress={onSoundItemPress as never}
             headerLeftItem={
-              <RN.TouchableOpacity
-                hitSlop={HITSLOP}
-                onPress={() => toggle('soundsVisible')}>
-                <Images.Svg.arrowLeft />
-              </RN.TouchableOpacity>
+              <ArrowLeftBack onPress={() => toggle('soundsVisible')} />
             }
             onClose={() => toggle('soundsVisible')}
             modalVisible={timerStatus.soundsVisible}

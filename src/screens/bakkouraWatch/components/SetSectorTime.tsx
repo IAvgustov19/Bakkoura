@@ -17,6 +17,7 @@ type Props = {
 const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
   const navigation = useNavigation();
   const {setNewSelectState, setStartEnd} = useRootStore().bakkouraWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const startListData = _getTimeData(0, {is24Hour: false, minuteInterval: 0});
   const middleListData = _getTimeData(1, {minuteInterval: 0});
@@ -74,7 +75,7 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
         />
         <DataListLinearBack top={80} height={40} />
       </RN.View>
-      <Images.Svg.betweenTimesLine />
+      <themeState.betweenLine />
       <RN.View style={styles.row}>
         <DateList
           data={startListData}

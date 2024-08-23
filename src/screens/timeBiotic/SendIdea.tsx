@@ -23,7 +23,7 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 const SendIdea = () => {
   const navigation = useNavigation();
   const {onHandleWebVIew} = useRootStore().marketStore;
-
+  const {themeState} = useRootStore().personalAreaStore;
   const [accept, setAccept] = useState(false);
   const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
@@ -63,7 +63,7 @@ const SendIdea = () => {
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View> */}
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title="Your Idea"
           />
@@ -76,22 +76,30 @@ const SendIdea = () => {
               <RN.View style={styles.ideaInfo}>
                 <TextView
                   style={styles.text}
+                  color={themeState.darkGrayText}
                   text={`Your preferences are very important to us. We strive to satisfy your most sophisticated tastes. Just imagine, \n you have the opportunity to realize your idea in the  \n most exquisite form!`}
                 />
               </RN.View>
               <FormContainer bottomInputPress={Scroll} uploadAtTop black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy}/>
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
+                  <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {color: themeState.darkGrayText},
+                    ]}>
                     {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-    </RN.Pressable>
+                    <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>
+                      I accept the privacy policy.
+                    </RN.Text>
+                  </RN.Pressable>
                 </RN.View>
               </RN.View>
-              <SimpleBtn
+              <ButtonComp
                 title="Send"
                 icon={
                   sendEmailLoading ? (
@@ -99,7 +107,9 @@ const SendIdea = () => {
                       color={COLORS.black}
                       style={{marginTop: 3}}
                     />
-                  ) : null
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
                 }
                 onPress={onSendEmail}
               />

@@ -1,7 +1,9 @@
+import {observer} from 'mobx-react-lite';
 import * as React from 'react';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {BG, Images} from '../../assets';
+import useRootStore from '../../hooks/useRootStore';
 import {windowHeight} from '../../utils/styles';
 import RN from '../RN';
 
@@ -10,9 +12,10 @@ type Props = {
 };
 
 const LinearContainer: React.FC<Props> = ({children}) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <LinearGradient
-      colors={['#323D45', '#1B2024', '#020202']}
+      colors={themeState.linearBackground}
       style={styles.container}>
       {/* <RN.View style={styles.borderImage}> */}
       {/* <Images.Svg.borderBg
@@ -29,7 +32,7 @@ const LinearContainer: React.FC<Props> = ({children}) => {
   );
 };
 
-export default LinearContainer;
+export default observer(LinearContainer);
 
 const styles = StyleSheet.create({
   container: {

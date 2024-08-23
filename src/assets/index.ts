@@ -31,6 +31,7 @@ import bellBlue from './svg/bellBlue.svg';
 import bellGreen from './svg/bellGreen.svg';
 import bellBlueLeft from './svg/bellBlueLeft.svg';
 import timerLogo from './svg/timerLogo.svg';
+import lightTimerLogo from './svg/lightTimerLogo.svg';
 import calendarIcon from './svg/calendar.svg';
 import dateMenu from './svg/dateMenu.svg';
 import panda from './svg/panda.svg';
@@ -154,6 +155,67 @@ import read from './svg/read.svg';
 import podcastLeftArrow from './svg/podcastLeftArrow.svg';
 import podcastRightArrow from './svg/podcastRightArrow.svg';
 
+import lightHomeIcon from './svg/light-bottomSheet-icons/home icon.svg';
+import lightMarketIcon from './svg/light-bottomSheet-icons/market icon.svg';
+import lightMessengerIcon from './svg/light-bottomSheet-icons/messenger.svg';
+import lightToDoTimerIcon from './svg/light-bottomSheet-icons/to do icon.svg';
+import lightTimersIcon from './svg/light-bottomSheet-icons/timers icon.svg';
+import lightProjectTimersIcon from './svg/light-bottomSheet-icons/pt icon.svg';
+import lightWorldTimeIcon from './svg/light-bottomSheet-icons/wt icon.svg';
+import lightStopWatchIcon from './svg/light-bottomSheet-icons/stpw icon.svg';
+import lightMetronomIcon from './svg/light-bottomSheet-icons/stress icon.svg';
+import lightStressTestIcon from './svg/light-bottomSheet-icons/lotus-yoga-svgrepo-com 1.svg';
+import lightPomodoroIcon from './svg/light-bottomSheet-icons/pomod icon.svg';
+import lightAlarmIcon from './svg/light-bottomSheet-icons/alarm icon.svg';
+import lightCalendarIcon from './svg/light-bottomSheet-icons/calendar.svg';
+import lightTimeTogetherIcon from './svg/light-bottomSheet-icons/ее icon.svg';
+import lightJihadBakkouraIcon from './svg/light-bottomSheet-icons/calendar (1).svg';
+import lightFamilyTreeIcon from './svg/light-bottomSheet-icons/tree icon.svg';
+import lightBakkouraWatchIcon from './svg/light-bottomSheet-icons/about bakk icon.svg';
+import lightTimeClinicIcon from './svg/light-bottomSheet-icons/clinic icon.svg';
+import lightPodcastsIcon from './svg/light-bottomSheet-icons/podcasts.svg';
+import lightH30LegendIcon from './svg/light-bottomSheet-icons/30h icon.svg';
+import lightAssestmentWatchIcon from './svg/light-bottomSheet-icons/assess icon.svg';
+import lightTimeManagementIcon from './svg/light-bottomSheet-icons/management.svg';
+import lightWatchConstructorIcon from './svg/light-bottomSheet-icons/watchConstructor.svg';
+import lightWatchAtelierIcon from './svg/light-bottomSheet-icons/atelier icon.svg';
+import lightSendYourIdeaIcon from './svg/light-bottomSheet-icons/send idea icon.svg';
+import lightTimeBioticIcon from './svg/light-bottomSheet-icons/Tbiotic.svg';
+import lightAboutTimeIcon from './svg/light-bottomSheet-icons/about time icon.svg';
+import lightFrancvillaWatchIcon from './svg/light-bottomSheet-icons/FV icon.svg';
+import lightWallpapersIcon from './svg/light-bottomSheet-icons/ее icon.svg';
+import lightContactUsIcon from './svg/light-bottomSheet-icons/contact icon.svg';
+import lightBtsNavigationIcon from './svg/light-bottomSheet-icons/BTS.svg';
+import lightTimeWealthIcon from './svg/light-bottomSheet-icons/timeWealth.svg';
+import lightRecommendationsIcon from './svg/light-bottomSheet-icons/reccomend.svg';
+import lightMenuIcon from './svg/light-bottomSheet-icons/menu.svg';
+import lightEventNot from './svg/lightEventNot.svg';
+import lightProfileBack from './svg/lightProfileBack.svg';
+import lightUser from './svg/lightUser.svg';
+import lightArrowRight from './svg/lightArrowRight.svg';
+import lightArrowLeft from './svg/lightArrowLeft.svg';
+import lightDelete from './svg/lightDELETE.svg';
+import lightCheckbox from './svg/lightCheckbox.svg';
+import lightUpload from './svg/lightUpload.svg';
+import lightEllipse from './svg/lightEllipse.svg';
+import lightSubstrack from './svg/lightSubstrack.svg';
+import lightSmallSubtrack from './svg/lightSmallSubtract.svg';
+import lightMetronom from './svg/lightMetotron.svg';
+import lightTodoTimerBack from './svg/lightTodoTimerBack.svg';
+import lightTimerBg from './svg/lightTimerBg.svg';
+import lightDollar from './svg/lightDollar.svg';
+import lightWorldWatch30 from './svg/lightWorldWatch30.svg';
+import lightWorldWatch24 from './svg/lightWorldWatch24.svg';
+import lightPanda from './svg/lightPanda.svg';
+import lightYellowPanda from './svg/lightYellowPanda.svg';
+import lightBetweenLine from './svg/lightBetweenLine.svg';
+import lightOutlineSubtrack from './svg/lightOutlineSubtrack.svg';
+import lightAlarmFront24 from './svg/lightAlarmFront24.svg';
+import lightAlarmFront30 from './svg/lightAlarmFront30.svg';
+import lightMessageIcon from './svg/lightMessageIcon.svg';
+import lightSearchButton from './svg/lightSearchButton.svg';
+import eventAndTime from './svg/eventAndTime.svg';
+import lightEventAndTime from './svg/lightEventAndTime.svg';
 
 export const Images = {
   Svg: {
@@ -192,6 +254,43 @@ export const Images = {
     menuIcon,
     timeWealthIcon,
     watchConstructorLogo,
+
+    lightBottomSheetLogo: {
+      lightHomeIcon,
+      lightMarketIcon,
+      lightMessengerIcon,
+      lightToDoTimerIcon,
+      lightTimersIcon,
+      lightProjectTimersIcon,
+      lightWorldTimeIcon,
+      lightStopWatchIcon,
+      lightMetronomIcon,
+      lightStressTestIcon,
+      lightPomodoroIcon,
+      lightAlarmIcon,
+      lightCalendarIcon,
+      lightTimeTogetherIcon,
+      lightJihadBakkouraIcon,
+      lightFamilyTreeIcon,
+      lightBakkouraWatchIcon,
+      lightTimeClinicIcon,
+      lightPodcastsIcon,
+      lightH30LegendIcon,
+      lightAssestmentWatchIcon,
+      lightTimeManagementIcon,
+      lightWatchConstructorIcon,
+      lightWatchAtelierIcon,
+      lightSendYourIdeaIcon,
+      lightTimeBioticIcon,
+      lightAboutTimeIcon,
+      lightFrancvillaWatchIcon,
+      lightWallpapersIcon,
+      lightContactUsIcon,
+      lightBtsNavigationIcon,
+      lightTimeWealthIcon,
+      lightRecommendationsIcon,
+      lightMenuIcon,
+    },
 
     //other
     eye,
@@ -314,11 +413,40 @@ export const Images = {
     sent,
     read,
     podcastLeftArrow,
-    podcastRightArrow
+    podcastRightArrow,
+    lightTimerLogo,
+    lightEventNot,
+    lightProfileBack,
+    lightUser,
+    lightArrowRight,
+    lightArrowLeft,
+    lightDelete,
+    lightCheckbox,
+    lightUpload,
+    lightEllipse,
+    lightSubstrack,
+    lightSmallSubtrack,
+    lightMetronom,
+    lightTodoTimerBack,
+    lightTimerBg,
+    lightDollar,
+    lightWorldWatch30,
+    lightWorldWatch24,
+    lightPanda,
+    lightYellowPanda,
+    lightBetweenLine,
+    lightOutlineSubtrack,
+    lightAlarmFront24,
+    lightAlarmFront30,
+    lightMessageIcon,
+    lightSearchButton,
+    eventAndTime,
+    lightEventAndTime,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
     stopwatchBg: require('./images/stopwatchBg.png'),
+    lightStopwatchBg: require('./images/lightStopWatchBg.png'),
     bakkouraWatch30h: require('./images/justBakkuraWatch.png'),
     bakkouraWatch: require('./images/bakkouraWatch.png'),
     sectorWatch: require('./images/sectorWatch.png'),
@@ -326,11 +454,17 @@ export const Images = {
     bakkouraFront30: require('./images/bakkouraFront30.webp'),
     sectorWatchHours: require('./images/sectorWatchHours.png'),
     bakkouraWatchLines: require('./images/bakkouraWatchLines.png'),
+    lightBakkouraWatchFront: require('./images/lightBakkouraWatchFront.png'),
     bakkouraWatchMain: require('./images/bakkouraWatchMain.png'),
+    lightBakkouraWatchMain: require('./images/lightBakkouraWatchMain.png'),
     watchBack: require('./images/watchBack.png'),
+    lightWatchBack: require('./images/lightWatchBack.png'),
     homeWatch24and30: require('./images/homeWatch24and30.png'),
     homeWatch24: require('./images/homewatch24.png'),
     homeWatch30: require('./images/homeWatch30.png'),
+    lightHomeWatch24and30: require('./images/lightHomeWatch30and24.png'),
+    lightHomeWatch24: require('./images/lightHomeWatch24.png'),
+    lightHomeWatch30: require('./images/lightHomeWatch30.png'),
     stopwatch24: require('./images/stopwatch24.png'),
     stopwatch30: require('./images/stopwatch30.png'),
     eye: require('./images/eye.webp'),
@@ -365,7 +499,9 @@ export const BG = {
   welcomeBg: require('./images/welcomeBg.png'),
   light: require('./images/light.png'),
   bottomSheetBg: require('./images/bottomSheetBg.png'),
+  bottomSheetLightBg: require('./images/bottomSheetLightBg.png'),
   duringTimerBg: require('./images/duringTimerBg.png'),
+  lightDuringTimerBg: require('./images/lightDuringTimer.png'),
 };
 
 export const Sounds = {

@@ -8,6 +8,7 @@ import Input from '../../components/Input/Input';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import useRootStore from '../../hooks/useRootStore';
+import StopStartBtn from '../../components/StopStartBtn/StopStartBtn';
 
 const NameAlarm = () => {
   const navigation = useNavigation();
@@ -21,17 +22,28 @@ const NameAlarm = () => {
             title="Name"
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
-          <RN.View style={styles.inputBox}>
-            <Input
-              placeholder="Name"
-              value={alarmItemData.name}
-              onChangeText={e => setNewAlarmState('name', e)}
-            />
-            <RN.TouchableOpacity
-              style={styles.deleteBox}
-              onPress={() => setNewAlarmState('name', '')}>
-              <Images.Svg.deleteIcon />
-            </RN.TouchableOpacity>
+          <RN.View style={styles.content}>
+            <RN.View style={styles.inputBox}>
+              <Input
+                placeholder="Name"
+                value={alarmItemData.name}
+                onChangeText={e => setNewAlarmState('name', e)}
+              />
+              <RN.TouchableOpacity
+                style={styles.deleteBox}
+                onPress={() => setNewAlarmState('name', '')}>
+                <Images.Svg.deleteIcon />
+              </RN.TouchableOpacity>
+            </RN.View>
+            <RN.View>
+              <StopStartBtn
+                text={'Ok'}
+                primary
+                elWidth={55}
+                subWidth={70}
+                onPress={() => navigation.goBack()}
+              />
+            </RN.View>
           </RN.View>
         </RN.View>
       }
@@ -52,5 +64,9 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
     right: '7%',
     top: '30%',
+  },
+  content: {
+    height: '90%',
+    justifyContent: 'space-between',
   },
 });

@@ -19,6 +19,7 @@ const OneMonthAndEvents = () => {
   const {oneMonth, cloneAllEventsData, allEventsData} =
     useRootStore().calendarStore;
   const navigation = useNavigation();
+  const {themeState} = useRootStore().personalAreaStore;
 
   const currentDay = new Date();
   const currentYear = new Date(oneMonth).getFullYear();
@@ -46,7 +47,7 @@ const OneMonthAndEvents = () => {
               />
             }
             title={`${currentMonth.slice(0, 3)} ${currentYear}`}
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View style={styles.yearBottom}>
             <Images.Svg.calendarMonthBottom />

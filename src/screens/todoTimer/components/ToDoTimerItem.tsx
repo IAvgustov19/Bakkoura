@@ -3,6 +3,7 @@ import RN from '../../../components/RN';
 import {Images} from '../../../assets/index';
 import {COLORS} from '../../../utils/colors';
 import {observer} from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   name?: string;
@@ -25,8 +26,11 @@ const ToDoTimerItem: React.FC<Props> = ({
   onPlay,
   onEnter,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
-    <RN.Pressable onPress={onEnter} style={styles.container}>
+    <RN.Pressable
+      onPress={onEnter}
+      style={[styles.container, {backgroundColor: themeState.mainBack}]}>
       {/* <RN.View style={styles.header}>
         <RN.Text style={styles.darkGreyText}>{day}</RN.Text>
         <RN.Text style={styles.darkGreyText}>{time}</RN.Text>
@@ -34,7 +38,7 @@ const ToDoTimerItem: React.FC<Props> = ({
       <RN.View style={styles.itemContent}>
         <RN.View style={styles.leftBox}>
           <RN.View style={styles.timerInfo}>
-            <RN.Text style={styles.whiteText}>
+            <RN.Text style={[styles.whiteText, {color: themeState.title}]}>
               {name.length > 25 ? name.slice(0, 22) + '...' : name}
             </RN.Text>
             <RN.Text style={styles.darkGreyText}>{description}</RN.Text>
@@ -44,7 +48,7 @@ const ToDoTimerItem: React.FC<Props> = ({
           <RN.Text
             style={[
               styles.whiteText,
-              {color: play ? COLORS.green : COLORS.white},
+              {color: play ? COLORS.green : themeState.title},
             ]}>
             {workTime}
           </RN.Text>
@@ -67,7 +71,6 @@ export default observer(ToDoTimerItem);
 
 const styles = RN.StyleSheet.create({
   container: {
-    backgroundColor: COLORS.black,
     borderRadius: 5,
     marginBottom: 5,
   },

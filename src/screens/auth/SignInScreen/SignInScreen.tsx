@@ -1,44 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import TextView from '../../../components/Text/Text';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
-import { APP_ROUTES } from '../../../navigation/routes';
+import {APP_ROUTES} from '../../../navigation/routes';
 import CaptchaV2Lib1 from './components/CaptchaV2Lib1';
 import useRootStore from '../../../hooks/useRootStore';
 import firestore from '@react-native-firebase/firestore';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from '../Loading/LoadingScreen';
+import GiveImage from '../../../components/GiveImage/GiveImage';
+import {Images} from '../../../assets';
 
 const SignInScreen = () => {
-
   const [loading, setLoading] = useState(false);
-  const { setAuthorized, setLoginUser, loginUser, newUser, isAuthorized } =
+  const {setAuthorized, setLoginUser, loginUser, newUser, isAuthorized} =
     useRootStore().authStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [showCaptcha, setShowCaptcha] = useState(false);
   const navigation = useNavigation();
 
-
-
   GoogleSignin.configure({
     webClientId:
       '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
   });
 
-
   const handleCloseCaptcha = () => {
     setShowCaptcha(false);
     setFailedAttempts(0);
   };
-
 
   const [users, setUsers] = useState([]);
 
@@ -56,12 +57,13 @@ const SignInScreen = () => {
     return () => unsubscribe();
   }, []);
 
-
-
   const signIn = async (email, password) => {
     if (email && password) {
       try {
-        const userCredential = await auth().signInWithEmailAndPassword(email, password);
+        const userCredential = await auth().signInWithEmailAndPassword(
+          email,
+          password,
+        );
         const user = userCredential.user;
         const token = await user.getIdToken();
 
@@ -106,7 +108,7 @@ const SignInScreen = () => {
     try {
       const has = await GoogleSignin.hasPlayServices();
 
-      const { idToken } = await GoogleSignin.signIn();
+      const {idToken} = await GoogleSignin.signIn();
       const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
       await AsyncStorage.setItem('token', idToken);
 
@@ -134,12 +136,11 @@ const SignInScreen = () => {
     setLoading(false);
   };
 
-
   return (
     <>
       <LinearContainer>
         <View style={styles.container}>
-        <LoadingScreen loading={loading} setLoading={setLoading} />
+          <LoadingScreen loading={loading} setLoading={setLoading} />
           <HeaderContent />
           <View style={styles.content}>
             <View style={styles.titleBox}>
@@ -152,6 +153,7 @@ const SignInScreen = () => {
                 placeholder="Enter your email"
                 onChangeText={text => setEmail(text)}
                 value={email}
+                bordered
               />
               <TextView style={styles.label} text="Password" />
               <Input
@@ -159,10 +161,14 @@ const SignInScreen = () => {
                 onChangeText={text => setPassword(text)}
                 value={password}
                 secureTextEntry
+                bordered
               />
             </View>
             <View style={styles.forgotBox}>
-              <TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)
+                }>
                 <TextView style={styles.forgot} text="Forgot Your Password?" />
               </TouchableOpacity>
             </View>
@@ -170,12 +176,16 @@ const SignInScreen = () => {
               <ButtonComp
                 title="Sign In"
                 onPress={() => signIn(email, password)}
+                icon={<GiveImage source={Images.Img.eye} />}
               />
             </View>
             <View style={styles.needAcc}>
               <TextView text="Need an Account?" />
-              <TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)}>
-                <TextView style={styles.signUpText} text="Sign Up" />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)
+                }>
+                <TextView color={themeState.yellow} text="Sign Up" />
               </TouchableOpacity>
             </View>
           </View>
@@ -233,8 +243,5 @@ const styles = StyleSheet.create({
     bottom: 10,
     gap: 10,
     left: 15,
-  },
-  signUpText: {
-    color: '#ECC271',
   },
 });

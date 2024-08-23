@@ -1,4 +1,4 @@
-import { Images } from '../assets';
+import {Images} from '../assets';
 import {APP_ROUTES} from '../navigation/routes';
 import {ImageSourcePropType} from 'react-native';
 
@@ -8,6 +8,7 @@ export type ToolsListType = {
   title: string;
   navigate: string;
   isbtn: boolean;
+  key: string;
 };
 
 export const ToolsList: ToolsListType[] = [
@@ -17,6 +18,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Pomodoro',
     navigate: APP_ROUTES.POMODORO,
     isbtn: false,
+    key: 'pomodoro',
   },
   {
     id: 2,
@@ -24,6 +26,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Alarm Clock',
     navigate: APP_ROUTES.ALARM_SCREEN,
     isbtn: false,
+    key: 'alarm',
   },
   {
     id: 3,
@@ -31,6 +34,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Metronom',
     navigate: APP_ROUTES.METRONOM,
     isbtn: false,
+    key: 'metronom',
   },
   {
     id: 4,
@@ -38,6 +42,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Time Together',
     navigate: APP_ROUTES.TIME_TOGETHER,
     isbtn: false,
+    key: 'timeTogether',
   },
   {
     id: 5,
@@ -45,6 +50,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'To-do timer',
     navigate: APP_ROUTES.TODOTIMER,
     isbtn: false,
+    key: 'todoTimer',
   },
   {
     id: 6,
@@ -52,6 +58,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Timers',
     navigate: APP_ROUTES.TIMER,
     isbtn: false,
+    key: 'timers',
   },
   {
     id: 7,
@@ -59,6 +66,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Project Timer',
     navigate: APP_ROUTES.PROJECT_TIMER,
     isbtn: false,
+    key: 'prTimer',
   },
   {
     id: 8,
@@ -66,6 +74,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'World Time',
     navigate: APP_ROUTES.WORLD_TIME,
     isbtn: false,
+    key: 'wrTime',
   },
   {
     id: 9,
@@ -73,6 +82,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Stop Watch',
     navigate: APP_ROUTES.STOP_WATCH,
     isbtn: false,
+    key: 'stWatch',
   },
   {
     id: 10,
@@ -80,6 +90,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Stress Test',
     navigate: APP_ROUTES.STRESS_TEST,
     isbtn: false,
+    key: 'stressTest',
   },
   {
     id: 11,
@@ -87,6 +98,7 @@ export const ToolsList: ToolsListType[] = [
     title: 'Calendar',
     navigate: APP_ROUTES.EVENTS_SCREEN,
     isbtn: false,
+    key: 'calendar',
   },
   {
     id: 12,
@@ -94,5 +106,6 @@ export const ToolsList: ToolsListType[] = [
     title: 'Bakkoura Watch',
     navigate: APP_ROUTES.BAKKOURA_WATCH,
     isbtn: false,
+    key: 'bakkouraWatch',
   },
 ];

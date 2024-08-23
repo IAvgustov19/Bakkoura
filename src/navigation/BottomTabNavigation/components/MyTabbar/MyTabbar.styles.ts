@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
-import { COLORS } from '../../../../utils/colors';
+import {StyleSheet} from 'react-native';
+import {COLORS} from '../../../../utils/colors';
 
 export const styles = StyleSheet.create({
   bottomSheet: {
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
   },
   container: {
     flexDirection: 'row',
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   bottomSheetScrollView: {
-    backgroundColor: COLORS.black,
+    // backgroundColor: COLORS.black,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
   },
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     height: '100%',
     width: '100%',
-    backgroundColor: '#0D0D0D',
+    // backgroundColor: '#0D0D0D',
   },
   buttonContainer: {
     alignItems: 'center',
@@ -52,6 +52,6 @@ export const styles = StyleSheet.create({
     top: -5,
     left: '50%',
     zIndex: 1,
-    transform: [{ translateX: -15 }],
+    transform: [{translateX: -15}],
   },
 });

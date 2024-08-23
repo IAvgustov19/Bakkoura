@@ -1,9 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
-import { Images } from '../../assets';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useState} from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
-import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import Line from '../../components/Line/Line';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -13,20 +11,18 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import SoundsContent from '../../components/SoundsContent/SoundsContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import { APP_ROUTES } from '../../navigation/routes';
-import { COLORS } from '../../utils/colors';
+import {APP_ROUTES} from '../../navigation/routes';
+import {COLORS} from '../../utils/colors';
 import SetAlarmClock from './components/SetAlarmClock';
 
 const NewAlarmScreen = () => {
   const navigation = useNavigation();
-  const [repeat, setRepeat] = useState(false);
   const [leter, setLeter] = useState(true);
   const [sound, setSound] = useState(false);
   const [vibration, setVibation] = useState(true);
 
   const {
     onSoundItemPress,
-    weekRepeatData,
     soundData,
     setNewAlarmState,
     alarmItemData,
@@ -34,7 +30,7 @@ const NewAlarmScreen = () => {
     selectedRepeat,
     createAlarm,
   } = useRootStore().alarmStore;
-  console.log('alarmItemData', alarmItemData);
+  const {themeState} = useRootStore().personalAreaStore;
 
   const onSetLeter = () => {
     setNewAlarmState('leter', leter);
@@ -59,7 +55,11 @@ const NewAlarmScreen = () => {
               <RN.View style={styles.setClock}>
                 <SetAlarmClock />
               </RN.View>
-              <RN.View style={styles.listsBox}>
+              <RN.View
+                style={[
+                  styles.listsBox,
+                  {backgroundColor: themeState.mainBack},
+                ]}>
                 <ListItemCont
                   title="Repeat"
                   value={
@@ -70,6 +70,7 @@ const NewAlarmScreen = () => {
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.REPEAT_TYPE_SCREEN as never)
                   }
+                  // backBlack
                 />
                 <Line />
                 <ListItemCont
@@ -78,10 +79,19 @@ const NewAlarmScreen = () => {
                   }
                   title="Name"
                   value={alarmItemData.name}
+                  // backBlack
                 />
               </RN.View>
-              <RN.View style={styles.listsBox}>
-                <RN.View style={styles.eventsTypeList}>
+              <RN.View
+                style={[
+                  styles.listsBox,
+                  {backgroundColor: themeState.mainBack},
+                ]}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <RN.View style={styles.listItem}>
                     <RN.Text style={styles.listItemText}>Reminder</RN.Text>
                     <SimpleSwitch active={leter} handlePress={onSetLeter} />
@@ -92,6 +102,7 @@ const NewAlarmScreen = () => {
                   onPress={() => setSound(e => !e)}
                   title="Sound"
                   value={selectedSound.title}
+                  // backBlack
                 />
               </RN.View>
             </RN.View>

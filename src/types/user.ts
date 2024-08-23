@@ -13,6 +13,7 @@ export type UserType = {
   emailVerified: boolean;
   isVerified: boolean;
   inActiveMenus: string[];
+  theme: string;
 };
 
 export const UserInitial: UserType = {
@@ -30,6 +31,7 @@ export const UserInitial: UserType = {
   emailVerified: false,
   isVerified: false,
   inActiveMenus: [],
+  theme: 'dark',
 };
 
 export type LoginStateType = {

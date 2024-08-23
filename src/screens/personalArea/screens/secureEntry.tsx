@@ -14,6 +14,8 @@ import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
 import {ActivityIndicator} from 'react-native';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+import Line from '../../../components/Line/Line';
 
 const SecureEntry = () => {
   const navigation = useNavigation();
@@ -24,6 +26,7 @@ const SecureEntry = () => {
     updateProfile,
     updateLoading,
     personalAreaData,
+    themeState,
   } = useRootStore().personalAreaStore;
 
   const updateSecure = () => {
@@ -32,7 +35,8 @@ const SecureEntry = () => {
 
   const renderItem = ({item, index}) => {
     return (
-      <RN.View style={styles.eventsTypeList}>
+      <RN.View
+        style={[styles.eventsTypeList, {backgroundColor: themeState.mainBack}]}>
         <ListItemCont
           rightItem={
             <RadioBtn
@@ -44,7 +48,7 @@ const SecureEntry = () => {
             <RN.Text
               color={
                 item.title === personalAreaData?.secureEntry
-                  ? '#fff'
+                  ? themeState.title
                   : '#7D7D7D'
               }>
               {item.title}
@@ -52,7 +56,6 @@ const SecureEntry = () => {
           }
           onPress={() => onSecureEntryItemPress(index) as never}
         />
-        <RN.View style={styles.line}></RN.View>
       </RN.View>
     );
   };
@@ -65,14 +68,7 @@ const SecureEntry = () => {
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View> */}
           <HeaderContent
-            leftItem={
-              <RN.TouchableOpacity
-                style={styles.back}
-                onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
-              </RN.TouchableOpacity>
-            }
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Secure Entry"
           />
           <RN.FlatList
@@ -119,7 +115,6 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
   },
   eventsTypeList: {
-    backgroundColor: '#0D0D0D',
     borderRadius: 3,
     paddingHorizontal: 5,
     marginTop: 5,

@@ -18,6 +18,9 @@ import useRootStore from '../../../hooks/useRootStore';
 import {PersonalMenuType} from '../../../types/personalArea';
 import {ActivityIndicator} from 'react-native';
 import {useMemo} from 'react';
+import Line from '../../../components/Line/Line';
+import ListFooter from '../../../components/ListFooter/ListFooter';
+import Cancel from '../../../components/Cancel/Cancel';
 
 const Menu = () => {
   const navigation = useNavigation();
@@ -30,6 +33,7 @@ const Menu = () => {
     updateLoading,
     currentInActiveMenus,
     initialRouteName,
+    themeState,
   } = useRootStore().personalAreaStore;
 
   const onPress = (item: PersonalMenuType, index: number) => {
@@ -39,7 +43,11 @@ const Menu = () => {
   const renderItem = useCallback(
     ({item, index}: {item: PersonalMenuType; index: number}) => {
       return (
-        <RN.View style={styles.eventsTypeList}>
+        <RN.View
+          style={[
+            styles.eventsTypeList,
+            {backgroundColor: themeState.mainBack},
+          ]}>
           <ListItemCont
             title={item.title}
             onPress={() => onPress(item, index)}
@@ -54,7 +62,7 @@ const Menu = () => {
               />
             }
           />
-          <RN.View style={styles.line}></RN.View>
+          <Line />
         </RN.View>
       );
     },
@@ -78,18 +86,9 @@ const Menu = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          {/* <RN.View style={styles.bgContainer}>
-                        <Images.Svg.bg style={styles.bg} />
-                    </RN.View> */}
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={
-              <RN.TouchableOpacity
-                style={styles.cancelBtn}
-                onPress={() => navigation.goBack()}>
-                <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-              </RN.TouchableOpacity>
-            }
+            rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title="Menu"
           />
           <RN.View style={styles.content}>
@@ -98,6 +97,7 @@ const Menu = () => {
               data={renderMenu}
               renderItem={renderItem}
               keyExtractor={item => item.key}
+              ListFooterComponent={<ListFooter />}
             />
             <RN.View style={styles.addBtn}>
               <StartBtn
@@ -130,36 +130,12 @@ const styles = RN.StyleSheet.create({
     height: '100%',
     paddingHorizontal: 15,
   },
-  bgContainer: {
-    width: '100%',
-    position: 'relative',
-    alignItems: 'center',
-  },
-  bg: {
-    position: 'absolute',
-  },
-  cancelBtn: {
-    paddingTop: 5,
-    paddingRight: 5,
-    paddingBottom: 5,
-  },
-  cancelTxt: {
-    color: COLORS.grey,
-    fontSize: 16,
-  },
-  scrollView: {},
   content: {
     paddingBottom: 110,
   },
   eventsTypeList: {
     borderRadius: 3,
     paddingHorizontal: 5,
-    backgroundColor: '#0D0D0D',
-  },
-  line: {
-    backgroundColor: '#131F28',
-    width: '100%',
-    height: 1,
   },
   back: {
     flexDirection: 'row',
