@@ -1,4 +1,4 @@
-import {db, firebase} from '../config/firebase';
+import { db, firebase } from '../config/firebase';
 import {
   PomodoroDataType,
   ProjectTimerDataType,
@@ -6,17 +6,17 @@ import {
   TodoTimerDataType,
   TogetherDataType,
 } from '../types/alarm';
-import {NewEventStateType} from '../types/calendar';
-import {SelectedCountriesType} from '../types/worldTime';
-import {AlarmListsItemType} from '../types/alarm';
-import { query, orderBy, limit } from "firebase/firestore"; 
+import { NewEventStateType } from '../types/calendar';
+import { SelectedCountriesType } from '../types/worldTime';
+import { AlarmListsItemType } from '../types/alarm';
+import { query, orderBy, limit } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 import RNFS from 'react-native-fs';
 
 import auth from '@react-native-firebase/auth';
-import {UserType} from '../types/user';
+import { UserType } from '../types/user';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Platform } from 'react-native';
+import { Alert, PermissionsAndroid, Platform } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -411,7 +411,7 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
     const userId = user.uid;
     const userEmail = user.email;
 
-    console.log('Current User:', {userId, userEmail});
+    console.log('Current User:', { userId, userEmail });
     console.log('Synchronized Email:', synchronizedEmail);
 
     // Fetch etaps where the current user is the owner
@@ -420,7 +420,7 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
       .where('uid', '==', userId)
       .get();
 
-    let invitedSnapshot = {docs: []};
+    let invitedSnapshot = { docs: [] };
 
     if (synchronizedEmail === null) {
       // Fetch etaps where synchronizedEmail is equal to userEmail
@@ -929,12 +929,76 @@ export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string):
 
 export const uploadAudioToStorage = async (uri, path) => {
   try {
-      const reference = storage().ref(path);
-      await reference.putFile(uri);
-      const url = await reference.getDownloadURL();
-      return url;
+    const reference = storage().ref(path);
+    await reference.putFile(uri);
+    const url = await reference.getDownloadURL();
+    return url;
   } catch (error) {
-      console.error('Error uploading file:', error);
-      throw error;
+    console.error('Error uploading file:', error);
+    throw error;
   }
 };
+async function requestStoragePermission(): Promise<boolean> {
+  if (Platform.OS === 'android') {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission',
+          message: 'App needs access to your storage to upload files.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  }
+  return true; // iOS handles permissions differently
+}
+
+// Function to resolve content URI to a file path
+async function getFilePathFromContentUri(contentUri: string): Promise<string | null> {
+  try {
+    // Convert content URI to local file path
+    // This example assumes that contentUri is valid and accessible
+    const filePath = `${RNFS.DocumentDirectoryPath}/tempfile.pdf`; // Placeholder path
+    await RNFS.copyFile(contentUri, filePath);
+    return filePath;
+  } catch (error) {
+    console.error('Error resolving content URI:', error);
+    return null;
+  }
+}
+
+// Function to upload file from content URI to Firebase Storage
+export async function uploadFileFromContentUri(contentUri: string) {
+  try {
+    const hasPermission = await requestStoragePermission();
+    if (!hasPermission) {
+      Alert.alert('Permission Denied', 'Storage permission is required to upload files.');
+      return;
+    }
+
+    const filePath = await getFilePathFromContentUri(contentUri);
+
+    if (filePath) {
+      const reference = storage().ref(`uploads/${new Date().toISOString()}.pdf`); // Create a unique path
+      await reference.putFile(filePath);
+
+      // Get the download URL (optional, if you need it)
+      const url = await reference.getDownloadURL();
+      console.log('File URL:', url);
+      Alert.alert('Upload Successful', `File URL: ${url}`);
+      return url;
+    } else {
+      Alert.alert('File Error', 'Could not resolve file path.');
+    }
+  } catch (error) {
+    console.error('Upload failed:', error);
+    Alert.alert('Upload Failed', 'Failed to upload the file.');
+  }
+}

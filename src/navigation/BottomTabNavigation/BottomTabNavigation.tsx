@@ -1,23 +1,23 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {observer} from 'mobx-react-lite';
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import useRootStore from '../../hooks/useRootStore';
-import {bottomTabBarOptions} from './BottomTabNavigation.constants';
+import { bottomTabBarOptions } from './BottomTabNavigation.constants';
 import MyTabbar from './components/MyTabbar';
-import {Alert} from 'react-native';
+import { Alert, AppState, AppStateStatus } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import * as Keychain from 'react-native-keychain';
-import {db} from '../../config/firebase';
+import { db } from '../../config/firebase';
 import RN from '../../components/RN';
 import PasswordPrompt from '../../screens/home/secureEntry/passwordAuth';
 import FingerprintAuth from '../../screens/home/secureEntry/fingerprintAuth';
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigation: FC = () => {
-  const {inActiveMenus, initialRouteName} = useRootStore().personalAreaStore;
-  const {setNotAuthorized} = useRootStore().authStore;
+  const { inActiveMenus, initialRouteName } = useRootStore().personalAreaStore;
+  const { setNotAuthorized } = useRootStore().authStore;
 
   const renderTabScreens = useCallback(() => {
     const initialRouteKey = initialRouteName.key;
@@ -40,70 +40,12 @@ const BottomTabNavigation: FC = () => {
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isPromptVisible, setPromptVisible] = useState(false);
-  const [authType, setAuthType] = useState('');
-  const [storedPassword, setStoredPassword] = useState('');
+  const [authType, setAuthType] = useState<string>('');
+  const [storedPassword, setStoredPassword] = useState<string>('');
 
-  useEffect(() => {
-    checkPasswordAuth();
-    setPromptVisible(true);
-  }, []);
-
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        const user = auth().currentUser;
-        if (!user) {
-          console.error('User not authenticated');
-          return;
-        }
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (!userDoc.exists) {
-          console.error('User document not found');
-          setNotAuthorized();
-          return;
-        }
-        const userData = userDoc.data();
-        if (!userData || !userData.secureEntry) {
-          console.error('Secure entry data not found');
-          return;
-        }
-        const authType = userData.secureEntry;
-
-        if (authType === 'Password') {
-          setAuthType('Password');
-        } else if (authType === 'Biometry') {
-          setAuthType('Biometry');
-        } else {
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-        Alert.alert(
-          'Error',
-          'An error occurred while checking authentication.',
-        );
-      }
-    };
-
-    checkAuthentication();
-  }, []);
-
-  const checkPasswordAuth = async () => {
-    try {
-      const storedCredentials = await Keychain.getGenericPassword();
-      if (storedCredentials) {
-        const password = storedCredentials.password;
-        setStoredPassword(password);
-      } else {
-        setPromptVisible(true);
-      }
-    } catch (error) {
-      console.error('Error retrieving stored password:', error);
-    }
-  };
-
+  // Memoized function to handle password submission
   const handleSubmitPassword = useCallback(
-    async inputPassword => {
+    async (inputPassword: string) => {
       if (!storedPassword) {
         try {
           await Keychain.setGenericPassword('user', inputPassword);
@@ -117,41 +59,145 @@ const BottomTabNavigation: FC = () => {
         setIsAuthenticated(true);
         setPromptVisible(false);
       } else {
-        console.log('Incorrect password');
         Alert.alert('Incorrect Password', 'Please enter the correct password.');
       }
     },
     [storedPassword],
   );
 
-  const handleAuthenticationSuccess = () => {
+  // Function to handle authentication success
+  const handleAuthenticationSuccess = useCallback(() => {
     setIsAuthenticated(true);
     setPromptVisible(false);
-  };
+  }, []);
 
+  // Effect to check the password authentication
+  useEffect(() => {
+    const checkPasswordAuth = async () => {
+      try {
+        const storedCredentials = await Keychain.getGenericPassword();
+        if (storedCredentials) {
+          const password = storedCredentials.password;
+          setStoredPassword(password);
+        } else {
+          setPromptVisible(true);
+        }
+      } catch (error) {
+        console.error('Error retrieving stored password:', error);
+      }
+    };
+
+    const checkAuthentication = async () => {
+      try {
+        const user = auth().currentUser;
+        if (!user) {
+          console.error('User not authenticated');
+          return;
+        }
+
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (!userDoc.exists) {
+          console.error('User document not found');
+          setNotAuthorized();
+          return;
+        }
+
+        const userData = userDoc.data();
+        if (!userData || !userData.secureEntry) {
+          console.error('Secure entry data not found');
+          return;
+        }
+
+        if (userData.secureEntry === 'Password') {
+          setAuthType('Password');
+          setPromptVisible(true); // Ensure prompt is shown only for Password
+        } else if (userData.secureEntry === 'Biometry') {
+          setAuthType('Biometry');
+          setPromptVisible(true); // Ensure prompt is shown only for Biometry
+        } else {
+          setIsAuthenticated(true); // No secure entry means auto-authenticated
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        Alert.alert(
+          'Error',
+          'An error occurred while checking authentication.',
+        );
+      }
+    };
+
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        setIsAuthenticated(false);
+        setPromptVisible(true);
+        checkAuthentication();
+      }
+    };
+
+    checkPasswordAuth();
+    checkAuthentication();
+
+    const appStateListener = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      appStateListener.remove();
+    };
+  }, [setNotAuthorized]);
+
+
+  // Render logic for authentication prompts
+  // const renderAuthenticationPrompt = () => {
+  //   if (!isAuthenticated) {
+  //     return (
+  //       <RN.View>
+  //         {authType === 'Password' && (
+  //           <PasswordPrompt
+  //             isVisible={isPromptVisible}
+  //             onSubmit={handleSubmitPassword}
+  //           />
+  //         )}
+  //         {authType === 'Biometry' && (
+  //           <FingerprintAuth
+  //             onAuthenticationSuccess={handleAuthenticationSuccess}
+  //           />
+  //         )}
+  //       </RN.View>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   return (
     <>
-    {!isAuthenticated ? (
-      <RN.View>
-        {authType == 'Password' && (
-          <PasswordPrompt
-          isVisible={isPromptVisible}
-            onSubmit={handleSubmitPassword}
-          />
-        )}
-        {authType == 'Biometry' && <FingerprintAuth onAuthenticationSuccess={handleAuthenticationSuccess} />}
-      </RN.View>
-    ) : (
-    <Tab.Navigator
-      initialRouteName={initialRouteName.routeName}
-      tabBar={props => <MyTabbar {...props} />}
-      screenOptions={bottomTabBarOptions.options}>
-      {renderTabScreens()}
-    </Tab.Navigator>
-     )}  
+
+      {!isAuthenticated && authType !== 'Free' ? (
+        <RN.View>
+          {authType === 'Password' && (
+            <PasswordPrompt
+              isVisible={isPromptVisible}
+              onSubmit={handleSubmitPassword}
+            />
+          )}
+          {authType === 'Biometry' && !isPromptVisible && (
+            <FingerprintAuth
+              onAuthenticationSuccess={handleAuthenticationSuccess}
+            />
+          )}
+        </RN.View>
+      ) : (
+        <Tab.Navigator
+          initialRouteName={initialRouteName.routeName}
+          tabBar={props => <MyTabbar {...props} />}
+          screenOptions={bottomTabBarOptions.options}>
+          {renderTabScreens()}
+        </Tab.Navigator>
+      )}
     </>
   );
 };
+
 
 export default observer(BottomTabNavigation);

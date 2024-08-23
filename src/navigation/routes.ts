@@ -57,6 +57,7 @@ export enum APP_ROUTES {
   MESSENGER = 'Messanger',
   SEARCH_CONTACT = 'SearchContact',
   DIALOG_SCREEN = 'DialogScreen',
+  PROFILE_PAGE = 'ProfilePage',
   TODOTIMER = 'ToDoTimerScreen',
   TIMER = 'TimerScreen',
   STRESS_TEST = 'StressTest',

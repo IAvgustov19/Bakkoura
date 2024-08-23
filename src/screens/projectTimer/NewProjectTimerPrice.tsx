@@ -1,28 +1,33 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import DateList, {ItemType} from '../../components/DataLists/DataLists';
-import {priceData, _getTimeData} from '../../helper/helper';
 import {observer} from 'mobx-react-lite';
-import dayjs from 'dayjs';
 import useRootStore from '../../hooks/useRootStore';
-import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
+import {Images} from '../../assets/index';
+import Input from '../../components/Input/Input';
 
 const NewProjectTimerPrice = () => {
-  const {setNewProjectTimeState, newProjectTimerState} =
-    useRootStore().projectTimer;
-  const firstSelectedValue = useRef<number>(0);
-
-  const selectPrice = () => {
-    const value = firstSelectedValue.current;
-    setNewProjectTimeState('price', `${value}`);
-  };
+  const {setNewProjectTimeState, newProjectTimerState} = useRootStore().projectTimer;
+  const [price, setPrice] = useState<string>(newProjectTimerState.price || '');
 
   const navigation = useNavigation();
+
+  const handlePriceChange = (text: string) => {
+    setPrice(text);
+  };
+
+  const handleSave = () => {
+    setNewProjectTimeState('price', price);
+    navigation.goBack();
+  };
+
+  useEffect(() => {
+    setPrice(newProjectTimerState.price || '');
+  }, [newProjectTimerState.price]);
 
   return (
     <LinearContainer
@@ -34,20 +39,15 @@ const NewProjectTimerPrice = () => {
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.priceBox}>
-              <DateList
-                data={priceData}
-                itemHeight={55}
-                onChange={selectPrice}
-                selectedValue={firstSelectedValue}
-                label="  $ / H"
-                labelLeft={'60%'}
-                initialScrollIndex={Number(newProjectTimerState.price)}
+              <Input
+                value={price}
+                onChangeText={handlePriceChange}
+                placeholder="Enter a price"
               />
-              <DataListLinearBack top={165} />
             </RN.View>
             <StartBtn
               text="Ok"
-              onPress={() => navigation.goBack()}
+              onPress={handleSave}
               primary
               subWidth={70}
               elWidth={55}

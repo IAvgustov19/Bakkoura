@@ -1,26 +1,26 @@
 export const MessageTypes = [
+    // {
+    //     id: 1,
+    //     title: 'Сhats',
+    // },
     {
         id: 1,
-        title: 'Сhats',
-    },
-    {
-        id: 2,
         title: 'Media',
     },
     {
-        id: 3,
-        title: 'Downloads',
+        id: 2,
+        title: 'Voices',
     },
     {
-        id: 4,
+        id: 3,
         title: 'Links',
     },
     {
-        id: 5,
+        id: 4,
         title: 'Files',
     },
     {
-        id: 6,
+        id: 5,
         title: 'Music',
     },
 

@@ -1,5 +1,6 @@
 export type UserType = {
   id: '';
+  phone?: '';
   name: string;
   username: string;
   email: string;
@@ -30,6 +31,7 @@ export const UserInitial: UserType = {
   emailVerified: false,
   isVerified: false,
   inActiveMenus: [],
+  phone: '',
 };
 
 export type LoginStateType = {

@@ -5,13 +5,15 @@
  * @format
  */
 
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
-import {scheduleNotifications} from './src/helper/scheduleNotifiaction';
+import { scheduleNotifications } from './src/helper/scheduleNotifiaction';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import {
+  Alert,
   AppState,
+  Linking,
   NativeModules,
   PermissionsAndroid,
   Platform,
@@ -25,9 +27,10 @@ import useRootStore from './src/hooks/useRootStore';
 import messaging from '@react-native-firebase/messaging';
 import 'react-native-reanimated';
 
+
 import SharedGroupPreferences from 'react-native-shared-group-preferences';
 import AwesomeButton from 'react-native-really-awesome-button';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const group = 'group.streak';
 
@@ -45,6 +48,7 @@ export const updateLastSeen = userId => {
 };
 import { db, firebase } from './src/config/firebase';
 import PushNotification from 'react-native-push-notification';
+import { openSettings, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 
 export const channelId = 'bts';
@@ -73,8 +77,8 @@ messaging().onMessage(async remoteMessage => {
   console.log(openChatWith.data().openChatWith);
   let openWith = openChatWith.data().openChatWith;
 
-  console.log(senderId,"senderIdsenderIdsenderId",openWith);
-  
+  console.log(senderId, "senderIdsenderIdsenderId", openWith);
+
 
   if (senderId !== openWith) {
     console.log('Message received from a different user in the foreground!', remoteMessage);
@@ -98,8 +102,8 @@ if (currentUser) {
 
 
 const App = () => {
-  const {alarmsListData, checkAlarms} = useRootStore().alarmStore;
-  const {cloneAllEventsData, checkEvent} = useRootStore().calendarStore;
+  const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
+  const { cloneAllEventsData, checkEvent } = useRootStore().calendarStore;
 
   // useEffect(() => {
   //   const currentUser = auth().currentUser;
@@ -166,8 +170,8 @@ const App = () => {
         {
           id: 'userAction',
           actions: [
-            {id: 'Stop', title: 'Stop', options: {foreground: true}},
-            {id: 'Later', title: 'Later', options: {foreground: true}},
+            { id: 'Stop', title: 'Stop', options: { foreground: true } },
+            { id: 'Later', title: 'Later', options: { foreground: true } },
           ],
         },
       ]);
@@ -213,55 +217,50 @@ const App = () => {
   //   syncUsersToFirestore();
   // }, [])
 
-
-
-  useEffect(() => {
-    const requestStoragePermissions = async () => {
-      if (RN.Platform.OS === 'android') {
+    useEffect(() => {
+      const requestStoragePermission = async () => {
         try {
-          const writeGranted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            {
-              title: 'Storage Permission',
-              message:
-                'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
-              buttonNeutral: 'Ask Me Later',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-
-          const readGranted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            {
-              title: 'Read Storage Permission',
-              message:
-                'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
-              buttonNeutral: 'Ask Me Later',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-
-          if (
-            writeGranted === PermissionsAndroid.RESULTS.GRANTED &&
-            readGranted === PermissionsAndroid.RESULTS.GRANTED
-          ) {
-            console.log('Permissions granted');
-          } else {
-            console.log('All required permissions not granted');
-
-            return;
+          const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+  
+          switch (result) {
+            case RESULTS.GRANTED:
+              console.log('Permission granted');
+              // Handle the case where permission is granted
+              break;
+            case RESULTS.DENIED:
+              console.log('Permission denied');
+              // Handle the case where permission is denied but not blocked
+              break;
+            case RESULTS.BLOCKED:
+              console.log('Permission blocked');
+              // Show an alert to guide the user to app settings
+              Alert.alert(
+                'Permission Required',
+                'The app needs access to storage to function properly. Please enable the permission manually in your device settings.',
+                [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel'
+                  },
+                  {
+                    text: 'Open Settings',
+                    onPress: () => openSettings()
+                  }
+                ]
+              );
+              break;
+            default:
+              console.log('Unknown status:', result);
+              break;
           }
-        } catch (err) {
-          console.warn(err);
-          return;
+        } catch (error) {
+          console.error('Error requesting permission:', error);
         }
-      }
-    };
-    requestStoragePermissions();
-  }, []);
+      };
+  
 
+    requestStoragePermission();
+  }, []);
   // useEffect(() => {
   //   let interval;
 
@@ -317,13 +316,81 @@ const App = () => {
       // iOS
       await SharedGroupPreferences.setItem('widgetKey', widgetData, group);
     } catch (error) {
-      console.log({error});
+      console.log({ error });
     }
     const value = `${text} days`;
     // Android
-    SharedStorage.set(JSON.stringify({text: value}));
+    SharedStorage.set(JSON.stringify({ text: value }));
     ToastAndroid.show('Change value successfully!', ToastAndroid.SHORT);
   };
+
+
+  // request permission
+
+  // async function requestStoragePermission() {
+  //   if (Platform.OS === 'android') {
+  //     try {
+  //       console.log('Platform is Android. Requesting storage permission...');
+
+  //       // Log before making the request
+  //       console.log('Calling PermissionsAndroid.request...');
+
+  //       const granted = await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  //         {
+  //           title: 'Storage Permission',
+  //           message: 'This app needs access to your storage to save files.',
+  //           buttonNeutral: 'Ask Me Later',
+  //           buttonNegative: 'Cancel',
+  //           buttonPositive: 'OK',
+  //         },
+  //       );
+
+  //       // Log the response from the permission request
+  //       console.log('PermissionsAndroid.request response:', granted);
+
+  //       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //         console.log('Storage permission granted');
+  //       } else {
+  //         console.log('Storage permission denied');
+  //       }
+  //     } catch (err) {
+  //       // Log the error
+  //       console.error('Error requesting permission:', err);
+  //     }
+  //   } else {
+  //     console.log('Platform is not Android. Skipping storage permission request.');
+  //   }
+  // }
+
+  const checkStoragePermission = async () => {
+    console.log(12111);
+
+    if (Platform.OS === 'android') {
+      try {
+        console.log(877987);
+
+        console.log('Checking current storage permission status...');
+
+        const permissionStatus = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+
+        console.log('Current storage permission status:', permissionStatus);
+      } catch (err) {
+        // Log the error
+        console.error('Error checking permission status:', err);
+      }
+    } else {
+      console.log('Platform is not Android. Skipping storage permission check.');
+    }
+  };
+
+  useEffect(() => {
+    console.log('useEffect called');
+    // checkStoragePermission();
+    // requestStoragePermission()
+  }, [])
 
   return (
     <>

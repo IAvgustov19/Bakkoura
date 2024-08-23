@@ -95,6 +95,7 @@ import StopWatch from '../screens/stopWatch/StopWatch';
 import StressTest from '../screens/stressTest/StressTest';
 import EventsScreen from '../screens/calendar/EventsScreen';
 import BakkouraWatch from '../screens/bakkouraWatch/BakkouraWatch';
+import ProfilePage from '../screens/messenger/ProfilePage';
 
 const Stack = createStackNavigator();
 
@@ -261,6 +262,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.DIALOG_SCREEN}
           component={DialogScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.PROFILE_PAGE}
+          component={ProfilePage}
           options={{
             headerTitleAlign: 'center',
           }}

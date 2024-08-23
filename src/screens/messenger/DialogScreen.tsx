@@ -1,5 +1,5 @@
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ActivityIndicator, Keyboard, PanResponder, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
 import RN from '../../components/RN';
 import { GiftedChat, MessageImage } from 'react-native-gifted-chat';
@@ -32,17 +32,21 @@ import { Timestamp } from "firebase/firestore";
 import MessageActionSheet from './components/MessageAction';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 import 'react-native-console-time-polyfill'
+import Image from './components/Image';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
+type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PROFILE_PAGE>;
 
 const DialogScreen = () => {
     const route = useRoute<DialogScreenRouteProp>();
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp>();
     const { id, name, avatar } = route.params;
     const currentUser = auth().currentUser;
     const groupId = `${id}-${currentUser?.uid}`;
     const [messages, setMessages] = useState([]);
+
     const [lastSeen, setLastSeen] = useState(null);
     const [loading, setLoading] = useState(true);
     const [loadingMessages, setLoadingMessages] = useState<{ [key: string]: boolean }>({});
@@ -50,6 +54,10 @@ const DialogScreen = () => {
     const [actionSheetVisible, setActionSheetVisible] = useState(false);
     const [chatOpenedAt, setChatOpenedAt] = useState(null);
 
+    const [editingMessage, setEditingMessage] = useState(null); // null means not editing
+    const [inputText, setInputText] = useState('');
+    const [selectedEditMessage, setSelectedEditMessage] = useState(null);
+    const [editing, setEditing] = useState<boolean>(false);
 
     useEffect(() => {
         const chatOpenedAt = new Date();
@@ -65,6 +73,8 @@ const DialogScreen = () => {
 
     const onSelect = async (action) => {
         setActionSheetVisible(false);
+        // setEditing(false);
+        // setEditingMessage('');
         if (!selectedMessage) return;
 
         switch (action) {
@@ -73,12 +83,26 @@ const DialogScreen = () => {
                     setMessages((previousMessages) =>
                         previousMessages.filter((message) => message._id !== selectedMessage._id)
                     );
-
                     await db.collection('Messages').doc(selectedMessage._id).delete();
 
                     console.log('Message deleted successfully!');
                 } catch (error) {
                     console.error('Error deleting message:', error);
+                }
+                break;
+            case 'edit':
+                try {
+                    const filteredMessages = messages.filter((message) => message._id === selectedMessage._id);
+                    if (filteredMessages.length > 0) {
+                        setSelectedEditMessage(filteredMessages?.[0])
+                        setEditingMessage(filteredMessages[0].text);
+                        setInputText(filteredMessages[0].text)
+                        setEditing(true);
+                    } else {
+                        console.warn('Message not found for editing');
+                    }
+                } catch (error) {
+                    console.error('Error setting editing message:', error);
                 }
                 break;
             case 'answer':
@@ -91,6 +115,11 @@ const DialogScreen = () => {
                 break;
         }
     };
+
+
+    useEffect(() => {
+        console.log('editing', editingMessage);
+    }, [editingMessage])
 
     const onReaction = (reaction) => {
         if (!selectedMessage) return;
@@ -109,9 +138,6 @@ const DialogScreen = () => {
             console.error('Error updating reaction:', error);
         });
     };
-
-
-
 
 
     useEffect(() => {
@@ -135,7 +161,7 @@ const DialogScreen = () => {
         const deviceToken = async () => {
             await messaging().registerDeviceForRemoteMessages();
             const token = await messaging().getToken();
-            console.log('tokentokentoken', token);
+            // console.log('tokentokentoken', token);
 
             const userDocRef = firestore().collection('users').doc(currentUser.uid);
             const userDoc = await userDocRef.get();
@@ -173,7 +199,7 @@ const DialogScreen = () => {
             const results = await Promise.all(sendPromises);
             results.forEach((result) => {
                 if (result.success) {
-                    console.log(`Notification sent successfully to token ${result.token}:`, result.result);
+                    // console.log(`Notification sent successfully to token ${result.token}:`, result.result);
                 } else {
                     console.error(`Error sending notification to token ${result.token}:`, result.error);
                 }
@@ -274,6 +300,7 @@ const DialogScreen = () => {
                             maindis: data.maindis,
                             audio: data.audio ? data.audio : null,
                             video: data.video ? data.video : null,
+                            images: data.image ? data.image : [],
                             createdAt: data?.createdAt ? moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss') : null,
                             senderId: data.senderId,
                             circle: data?.circle ?? data?.circle,
@@ -321,26 +348,37 @@ const DialogScreen = () => {
     }, [id, currentUser.uid]);
 
     const onSend = useCallback(async (messages = []) => {
+        setEditing(false);
+        setEditingMessage(null);
+        setInputText('');
         const senderId = currentUser?.uid;
         const receiverId = id;
         console.time('onSendMessagae')
 
-        // setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
 
         const {
             _id,
             text,
             audio,
             video,
+            image,
             maindis,
             fileName,
             circle,
         } = messages[0];
+        const imageUris = Array.isArray(image) ? image : [image];
+
+        console.log('messagemessagemessagemessage', messages[0]);
+        const message = messages[0] || {};
+
+
         let audioUrl = null;
         if (audio) {
             const audioFilePath = `audios/${Date.now()}.mp4`;
             try {
                 audioUrl = await uploadAudioToStorage(audio, audioFilePath);
+                console.log('blabla');
+
             } catch (error) {
                 console.error('Error uploading audio file:', error);
                 return;
@@ -353,6 +391,19 @@ const DialogScreen = () => {
                 videoUrl = await uploadAudioToStorage(video, videoFilePath);
             } catch (error) {
                 console.error('Error uploading video file:', error);
+            }
+        }
+
+        let imageUrls = [];
+        for (const imgUri of imageUris) {
+            if (imgUri) {
+                const imageFilePath = `images/${Date.now()}.png`;
+                try {
+                    const uploadedImageUrl = await uploadAudioToStorage(imgUri, imageFilePath);
+                    imageUrls.push(uploadedImageUrl);
+                } catch (error) {
+                    console.error('Error uploading image file:', error);
+                }
             }
         }
 
@@ -374,6 +425,7 @@ const DialogScreen = () => {
         } else {
             targetRoomId = roomQuerySnapshot.docs[0].id;
         }
+
         const messageDocRef = db.collection('Messages').doc();
         await messageDocRef.set({
             _id,
@@ -385,6 +437,7 @@ const DialogScreen = () => {
             ...(text && { text }),
             ...(audioUrl && { audio: audioUrl }),
             ...(videoUrl && { video: videoUrl }),
+            ...(imageUrls.length > 0 && { image: imageUrls }),
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             ...(maindis && { maindis }),
             ...(fileName && { fileName }),
@@ -396,7 +449,6 @@ const DialogScreen = () => {
 
 
         const recipientDoc = await firestore().collection('users').doc(receiverId).get();
-        console.log('recipientDocrecipientDocrecipientDoc', recipientDoc);
 
         const recipientData = recipientDoc.data();
         const recipientTokens = recipientData?.deviceTokens || [];
@@ -413,17 +465,63 @@ const DialogScreen = () => {
         console.log('Message successfully added to the Messages collection!');
     }, [id, currentUser]);
 
+    const onEditMessage = useCallback(async (editedMessage) => {
+        setEditing(false);
+        setEditingMessage(null);
+        setInputText('');
+        console.log('editMessageeditMessage', (selectedEditMessage?._id || selectedMessage?._id));
+
+
+        console.time('onEditMessage');
+
+        // Update local messages state
+        console.log(selectedMessage._id, 789798798, selectedEditMessage._id);
+        setMessages((previousMessages) =>
+            previousMessages.map((message) =>
+                message._id === selectedMessage._id
+                    ? { ...message, text: inputText }
+                    : message
+            )
+        );
+
+        const messageDocRef = await db.collection('Messages').doc(selectedEditMessage?._id || selectedMessage?._id);
+        try {
+            await messageDocRef.update({
+                text: inputText,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(), // Optional: Track when the message was edited
+            });
+            console.log('Message successfully updated in Firestore!');
+        } catch (error) {
+            console.error('Error updating message in Firestore:', error);
+        }
+
+        console.timeEnd('onEditMessage');
+    }, [id, currentUser, inputText, selectedEditMessage, selectedMessage]);
+
+    const handleInputChange = (text) => {
+        setInputText(text);
+        console.log("Input Text:", text);
+    };
+
+
     const renderMessageImage = props => {
         const { currentMessage } = props;
+
+
         return !currentMessage.file ? (
             <>
-                <MessageImage
-                    {...props}
+                {currentMessage?.images?.map((img, idx) => img && <MessageImage
+                    key={idx}
+                    currentMessage={{
+                        ...currentMessage,
+                        image: img
+                    }}
                     imageStyle={{ width: 74, height: 74, resizeMode: 'cover' }}
                 />
+                )}
                 <View style={styles.imageInfo}>
-                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
+                    {/* <Text style={styles.fileName}>{currentMessage.fileName}</Text> */}
+                    {/* <Text style={styles.fileSize}>{currentMessage.fileSize}</Text> */}
                     <Text style={styles.time}>{currentMessage.time}</Text>
                 </View>
             </>
@@ -443,6 +541,11 @@ const DialogScreen = () => {
         );
     };
 
+
+    const processedMessages = useMemo(() => {
+        return messages.map(message => ({ ...message, image: message?.images?.[0] ?? message.image }));
+    }, [messages]);
+
     return (
         <PlatfromView>
             <LinearGradient
@@ -451,7 +554,18 @@ const DialogScreen = () => {
             >
                 <HeaderContent
                     rightItem={
-                        <RN.View style={styles.imageContainer}>
+                        <RN.TouchableOpacity
+
+                            onPress={() =>
+                                navigation.navigate(APP_ROUTES.PROFILE_PAGE, {
+                                    lastSeen,
+                                    avatar,
+                                    name,
+                                })
+
+                            }
+                            style={styles.imageContainer}
+                        >
                             <Images.Svg.profileBackground width={49} height={49} />
                             {
                                 avatar ? <RN.Image
@@ -460,7 +574,7 @@ const DialogScreen = () => {
                                 /> :
                                     <Images.Svg.userIcon style={styles.profileImg} />
                             }
-                        </RN.View>
+                        </RN.TouchableOpacity>
                     }
                     title={
                         <RN.View>
@@ -469,7 +583,7 @@ const DialogScreen = () => {
                             <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : 'Yesterday, 07:04'}</RN.Text>
                         </RN.View>
                     }
-                    leftItem={<ArrowLeftBack onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never)} title='Chats' titleColor='#656E77' />}
+                    leftItem={<ArrowLeftBack onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never,)} title='Chats' titleColor='#656E77' />}
                 />
             </LinearGradient>
             <KeyboardAvoidingView
@@ -487,8 +601,10 @@ const DialogScreen = () => {
                         (
                             <RN.View style={{ flex: 1 }}>
                                 <GiftedChat
-                                    renderMessageImage={renderMessageImage}
-                                    messages={messages}
+                                    messages={processedMessages}
+                                    // messages={messages.map(message => ({...message, image: message?.images?.[0]??message.image}))}
+                                    // messages={messages}
+
                                     messagesContainerStyle={{ flexGrow: 1 }}
                                     onLongPress={onLongPressMessage}
                                     renderMessage={(props) => <CustomMessage {...props} />}
@@ -501,11 +617,22 @@ const DialogScreen = () => {
                                     keyboardShouldPersistTaps="handled"
                                     isKeyboardInternallyHandled={false}
                                     renderInputToolbar={(props) => (
-                                        <CustomActions {...props} />
+                                        <CustomActions
+                                            {...props}
+                                            isEditing={editing}
+                                            editingText={editingMessage}
+                                            text={inputText}
+                                            onEditMessage={onEditMessage}
+                                            textInputProps={{
+                                                value: inputText,
+                                                onChangeText: handleInputChange,
+                                            }}
+                                        />
                                     )}
                                     renderMessageAudio={props => <AudioPlayer {...props} />}
                                     renderMessageVideo={props => <VideoPlayer {...props} />}
-                                    // infiniteScroll={true}
+                                    renderMessageImage={renderMessageImage}
+                                    // imageProps={}
                                     scrollToBottom={true}
                                 />
                                 <MessageActionSheet
@@ -596,5 +723,10 @@ const styles = RN.StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: COLORS.darkGrey,
         borderRadius: 5,
+    },
+    imageStyle: {
+        width: 74,
+        height: 74,
+        resizeMode: 'cover',
     },
 });

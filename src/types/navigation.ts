@@ -5,4 +5,11 @@ export type RootStackParamList = {
         name: string;
         avatar: string;
     };
+    [APP_ROUTES.PROFILE_PAGE]: {
+        lastSeen: string;
+        avatar?: string;
+        name: string;
+    };
   };
+
+  

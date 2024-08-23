@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,14 +6,16 @@ import {
   Pressable,
   Platform,
   Alert,
+  Linking,
+  PermissionsAndroid,
 } from 'react-native';
-import {Composer} from 'react-native-gifted-chat';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { Composer } from 'react-native-gifted-chat';
+import { launchImageLibrary } from 'react-native-image-picker';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import {Images} from '../../../assets';
+import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 import DocumentPicker from 'react-native-document-picker';
-import {windowHeight, windowWidth} from '../../../utils/styles';
+import { windowHeight, windowWidth } from '../../../utils/styles';
 import Line from '../../../components/Line/Line';
 import {
   Camera,
@@ -21,16 +23,22 @@ import {
   getCameraFormat,
 } from 'react-native-vision-camera';
 import TextView from '../../../components/Text/Text';
-import {Swipeable} from 'react-native-gesture-handler';
+import { Swipeable } from 'react-native-gesture-handler';
 import useRootStore from '../../../hooks/useRootStore';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import RNFS from 'react-native-fs';
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { firebase } from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
+import { uploadFileFromContentUri } from '../../../services/firestoreService';
+
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 const CustomComposer = props => {
-  const {text, onTextChanged, composerHeight, onSend} = props;
+  const { text, onTextChanged, composerHeight, onSend, isEditing, editingText, editMessage, onEditMessage } = props;
   const [isModalVisible, setModalVisible] = useState(false);
+
   const {
     startRecordVideo,
     stopRecordVideo,
@@ -55,6 +63,44 @@ const CustomComposer = props => {
   const [onPressCheck, setOnPresCheck] = useState<boolean>(false);
   const [onPressCheck2, setOnPresCheck2] = useState<boolean>(false);
 
+  // const handlePickImage = () => {
+  //   launchImageLibrary(
+  //     {
+  //       mediaType: 'mixed',
+  //       selectionLimit: 0,
+  //       includeExtra: true,
+  //     },
+  //     response => {
+  //       if (response.didCancel || response.errorMessage) {
+  //         console.log('User cancelled image picker or there was an error');
+  //       } else {
+  //         const newMessage = response.assets.map(asset => ({
+  //           _id: Math.random().toString(36).substring(7),
+  //           createdAt: new Date(),
+  //           user: {
+  //             _id: 1,
+  //           },
+  //           image: asset.type.startsWith('image/') ? asset.uri : null,
+  //           video: asset.type.startsWith('video/') ? asset.uri : null,
+  //           fileName: asset.fileName,
+  //           fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
+  //         }));
+
+  //         // console.log('newMessages', newMessage);
+  //         onSend([newMessage]);
+  //       }
+  //     },
+  //   );
+  // };
+
+  // permissions
+
+  // Function to open app settings
+  function openSettings() {
+    Linking.openSettings().catch(() => {
+      Alert.alert('Unable to open settings');
+    });
+  }
   const handlePickImage = () => {
     launchImageLibrary(
       {
@@ -66,58 +112,98 @@ const CustomComposer = props => {
         if (response.didCancel || response.errorMessage) {
           console.log('User cancelled image picker or there was an error');
         } else {
-          const newMessage = response.assets.map(asset => ({
+          const newMessages = response.assets.map(asset => ({
             _id: Math.random().toString(36).substring(7),
             createdAt: new Date(),
             user: {
               _id: 1,
             },
-            image: asset.type.startsWith('image/') ? asset.uri : null,
+            image: asset.uri,
             video: asset.type.startsWith('video/') ? asset.uri : null,
             fileName: asset.fileName,
             fileSize: (asset.fileSize / (1024 * 1024)).toFixed(1) + ' MB',
           }));
 
-          console.log('newMessages', newMessage);
-          onSend([newMessage]);
+          const combinedMessage = {
+            ...newMessages[0],
+            image: newMessages.map(msg => msg.image),
+          };
+
+          onSend([combinedMessage]);
         }
       },
     );
   };
 
-  // );
-  // };
-  const handlePickDocument = async () => {
-    try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
-      });
-      if (result.length > 0) {
-        const file = result[0];
-        console.log('file', file);
+  const fileUri = 'content://com.android.providers.downloads.documents/document/msf%3A23';
+  const fileName = 'FInal_Խաղային_Հարթակ_Դիպլոմային_Մհեր_Մկրտչյան.pdf';
 
-        const newMessage = {
-          _id: Math.random().toString(36).substring(7),
-          text: '',
-          createdAt: new Date(),
-          user: {
-            _id: 1,
-          },
-          file: true,
-          image: file.uri,
-          fileName: file.name,
-          fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-        };
-        onSend([newMessage]);
-      }
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        console.log('User cancelled document picker');
-      } else {
-        throw err;
-      }
-    }
-  };
+  async function handlePickDocument() {
+    uploadFileFromContentUri(fileUri)
+  }
+  // async function handlePickDocument() {
+  //   try {
+  //     const res = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.allFiles],
+  //     });
+
+  //     if (res.length > 0) {
+  //       const file = res[0];
+  //       console.log('file', file);
+
+  //       const newMessage = {
+  //         _id: Math.random().toString(36).substring(7),
+  //         text: '',
+  //         createdAt: new Date(),
+  //         user: {
+  //           _id: 1,
+  //         },
+  //         file: true,
+  //         image: file.uri,
+  //         fileName: file.name,
+  //         fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+  //       };
+  //       onSend([newMessage]);
+  //     }
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       console.log('Canceled from document picker');
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // }
+  // const handlePickDocument = async () => {
+  //   try {
+  //     const result = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.pdf],
+  //     });
+  // if (result.length > 0) {
+  //   const file = result[0];
+  //   console.log('file', file);
+
+  //   const newMessage = {
+  //     _id: Math.random().toString(36).substring(7),
+  //     text: '',
+  //     createdAt: new Date(),
+  //     user: {
+  //       _id: 1,
+  //     },
+  //     file: true,
+  //     image: file.uri,
+  //     fileName: file.name,
+  //     fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+  //   };
+  //   onSend([newMessage]);
+  //     }
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       console.log('User cancelled document picker');
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // };
 
   const handlePickMediaOrDocument = () => {
     setModalVisible(true);
@@ -137,12 +223,13 @@ const CustomComposer = props => {
       onTextChanged('');
     }
   };
+
   const [hasPermission, setHasPermission] = useState(false);
   const devices = Camera.getAvailableCameraDevices();
   const device = getCameraDevice(devices, 'front');
   const format = getCameraFormat(device, [
-    {videoResolution: {width: 300, height: 300}},
-    {fps: 60},
+    { videoResolution: { width: 300, height: 300 } },
+    { fps: 60 },
   ]);
 
   useEffect(() => {
@@ -151,7 +238,7 @@ const CustomComposer = props => {
       const status1 = await Camera.requestMicrophonePermission();
       setHasPermission(
         status === ('authorized' as never) &&
-          status1 === ('authorized' as never),
+        status1 === ('authorized' as never),
       );
     })();
   }, []);
@@ -331,7 +418,7 @@ const CustomComposer = props => {
           ref={swipeableRefVideo}
           renderRightActions={() => {
             return (
-              <Pressable style={{opacity: 0}}>
+              <Pressable style={{ opacity: 0 }}>
                 <Images.Svg.deleteIcon />
               </Pressable>
             );
@@ -437,7 +524,7 @@ const CustomComposer = props => {
           ref={swipeableRefAudio}
           renderRightActions={() => {
             return (
-              <Pressable style={{opacity: 0}}>
+              <Pressable style={{ opacity: 0 }}>
                 <Images.Svg.deleteIcon />
               </Pressable>
             );
@@ -494,13 +581,13 @@ const CustomComposer = props => {
       <View style={styles.composerContainer}>
         <TouchableOpacity
           onPress={handlePickMediaOrDocument}
-          style={{paddingTop: 8}}>
+          style={{ paddingTop: 8 }}>
           <Images.Svg.imageMessage />
         </TouchableOpacity>
         <RN.View
           style={[
             styles.bottomModal,
-            {bottom: isModalVisible ? 0 : -windowHeight},
+            { bottom: isModalVisible ? 0 : -windowHeight },
           ]}>
           <View style={styles.modalContent}>
             <RN.View style={styles.category}>
@@ -530,6 +617,7 @@ const CustomComposer = props => {
         <View style={styles.composerWrapper}>
           <Composer
             {...props}
+            // text={editingText ? editingText : text}
             text={text}
             placeholder="Message"
             placeholderTextColor="#636366"
@@ -539,9 +627,23 @@ const CustomComposer = props => {
           />
         </View>
         {text.trim() ? (
-          <TouchableOpacity onPress={handleSendText} style={{paddingTop: 12}}>
-            <Images.Svg.sendMessage width={30} height={30} color={'red'} />
-          </TouchableOpacity>
+          <>
+            {isEditing && editingText ? (
+              <TouchableOpacity
+                onPress={onEditMessage}
+                style={{ paddingTop: 12 }}
+              >
+                <Images.Svg.checkMessage width={30} height={30} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={handleSendText}
+                style={{ paddingTop: 12 }}
+              >
+                <Images.Svg.sendMessage width={30} height={30} />
+              </TouchableOpacity>
+            )}
+          </>
         ) : (
           <>
             {renderRecordingAudio()}
@@ -616,7 +718,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 50,
     left: '50%',
-    transform: [{translateX: -50}],
+    transform: [{ translateX: -50 }],
     backgroundColor: 'red',
     borderRadius: 25,
     padding: 15,

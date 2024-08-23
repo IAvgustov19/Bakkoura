@@ -153,6 +153,13 @@ import sent from './svg/sent.svg';
 import read from './svg/read.svg';
 import podcastLeftArrow from './svg/podcastLeftArrow.svg';
 import podcastRightArrow from './svg/podcastRightArrow.svg';
+import checkMessage from './svg/checkMessage.svg';
+import profileBackgroundBig from './svg/profileBackgroundBig.svg';
+import musicIcon from './svg/musicIcon.svg';
+import blueArrow from './svg/blueArrow.svg';
+import fileIconMedia from './svg/fileIcon.svg';
+import linkIcon from './svg/linkIcon.svg';
+
 
 
 export const Images = {
@@ -314,7 +321,14 @@ export const Images = {
     sent,
     read,
     podcastLeftArrow,
-    podcastRightArrow
+    podcastRightArrow,
+    checkMessage,
+    profileBackgroundBig,
+    musicIcon,
+    blueArrow,
+    linkIcon,
+    fileIconMedia,
+
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -354,6 +368,7 @@ export const Images = {
     podcast2: require('./images/podcast2.png'),
     podcast3: require('./images/podcast3.png'),
     podcast4: require('./images/podcast4.png'),
+    editMessage: require('./images/editMessage.jpeg'),
   },
 };
 

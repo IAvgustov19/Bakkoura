@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { Images } from '../../../assets';
 import EmojiSelector, { Categories } from 'react-native-emoji-selector';
+import RN from '../../../components/RN';
 
 const MessageActionSheet = ({ visible, onClose, onSelect, onReact }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,7 +19,8 @@ const MessageActionSheet = ({ visible, onClose, onSelect, onReact }) => {
         // { text: 'Answer', action: 'answer', icon: <Images.Svg.answerArrow /> },
         // { text: 'Pin', action: 'pin', icon: <Images.Svg.pinIcon /> },
         // { text: 'Send', action: 'send', icon: <Images.Svg.sendArrow /> },
-        { text: 'Delete', action: 'delete', icon: <Images.Svg.deleteMessage /> }
+        { text: 'Delete', action: 'delete', icon: <Images.Svg.deleteMessage /> },
+        { text: 'Edit', action: 'edit', icon: <RN.Image source={Images.Img.editMessage} style={{width: 15, height: 15}}/> }
     ];
 
 
@@ -72,7 +74,7 @@ const MessageActionSheet = ({ visible, onClose, onSelect, onReact }) => {
                         {options.map((option) => (
                             <TouchableOpacity
                                 key={option.text}
-                                style={[styles.option, option.text !== 'Delete' && { borderBottomWidth: 0.4, }]}
+                                style={[styles.option, option.text == 'Delete' && { borderBottomWidth: 0.4, }]}
                                 onPress={() => onSelect(option.action)}
                             >
                                 <Text style={[styles.optionText, option.text === 'Delete' && { color: '#EB5545' }]}>{option.text}</Text>
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     },
     actionSheet: {
         width: '65%',
-        height: '28%',
+        height: '45%',
         backgroundColor: '#000000',
         borderRadius: 20,
         padding: 10,
