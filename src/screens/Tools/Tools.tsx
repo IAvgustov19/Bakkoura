@@ -17,47 +17,50 @@ const Tools = () => {
   const navigation = useNavigation();
   const {themeState} = useRootStore().personalAreaStore;
 
-  const renderItem = useCallback(({item}) => {
-    const renderIcon = () => {
-      switch (item.key) {
-        case 'pomodoro':
-          return <themeState.bottomSheetIcons.pomodoro />;
-        case 'alarm':
-          return <themeState.bottomSheetIcons.alarm />;
-        case 'metronom':
-          return <themeState.bottomSheetIcons.metoronom />;
-        case 'timeTogether':
-          return <themeState.bottomSheetIcons.timeTogether />;
-        case 'todoTimer':
-          return <themeState.bottomSheetIcons.todoTimer />;
-        case 'timers':
-          return <themeState.bottomSheetIcons.timers />;
-        case 'prTimer':
-          return <themeState.bottomSheetIcons.prTimers />;
-        case 'wrTime':
-          return <themeState.bottomSheetIcons.wrTime />;
-        case 'stWatch':
-          return <themeState.bottomSheetIcons.stWatch />;
-        case 'stressTest':
-          return <themeState.bottomSheetIcons.stressTest />;
-        case 'calendar':
-          return <themeState.bottomSheetIcons.calendar />;
-        case 'bakkouraWatch':
-          return <themeState.bottomSheetIcons.bakkouraWatch />;
-        default:
-          return <themeState.bottomSheetIcons.home />;
-      }
-    };
-    return (
-      <TimeClinicListItem
-        icon={renderIcon()}
-        title={item.title}
-        text={item.info}
-        isBtn={item.isbtn}
-        onPressItem={() => navigation.navigate(item.navigate as never)}
-      />
-    );
-  }, []);
+  const renderItem = useCallback(
+    ({item}) => {
+      const renderIcon = () => {
+        switch (item.key) {
+          case 'pomodoro':
+            return <themeState.bottomSheetIcons.pomodoro />;
+          case 'alarm':
+            return <themeState.bottomSheetIcons.alarm />;
+          case 'metronom':
+            return <themeState.bottomSheetIcons.metoronom />;
+          case 'timeTogether':
+            return <themeState.bottomSheetIcons.timeTogether />;
+          case 'todoTimer':
+            return <themeState.bottomSheetIcons.todoTimer />;
+          case 'timers':
+            return <themeState.bottomSheetIcons.timers />;
+          case 'prTimer':
+            return <themeState.bottomSheetIcons.prTimers />;
+          case 'wrTime':
+            return <themeState.bottomSheetIcons.wrTime />;
+          case 'stWatch':
+            return <themeState.bottomSheetIcons.stWatch />;
+          case 'stressTest':
+            return <themeState.bottomSheetIcons.stressTest />;
+          case 'calendar':
+            return <themeState.bottomSheetIcons.calendar />;
+          case 'bakkouraWatch':
+            return <themeState.bottomSheetIcons.bakkouraWatch />;
+          default:
+            return <themeState.bottomSheetIcons.home />;
+        }
+      };
+      return (
+        <TimeClinicListItem
+          icon={renderIcon()}
+          title={item.title}
+          text={item.info}
+          isBtn={item.isbtn}
+          onPressItem={() => navigation.navigate(item.navigate as never)}
+        />
+      );
+    },
+    [themeState],
+  );
 
   return (
     <LinearContainer

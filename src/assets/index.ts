@@ -488,6 +488,15 @@ export const Images = {
     podcast2: require('./images/podcast2.png'),
     podcast3: require('./images/podcast3.png'),
     podcast4: require('./images/podcast4.png'),
+    recommendations1: require('./images/structure_your_affairs.jpg'),
+    recommendations2: require('./images/Time_doesnt_like_to_be_squandered.jpg'),
+    recommendations3: require('./images/Those_who_know_how_to_rest_know_how_to_work.jpg'),
+    recommendations4: require('./images/Time_is_different_for_everyone.jpg'),
+    recommendations5: require('./images/The_journey_is_also_about_filling_time.jpg'),
+    recommendations6: require('./images/Chronophages.jpg'),
+    recommendations7: require('./images/Priorities_a_guide_in_the_ocean_of_time_0.jpg'),
+    recommendations8: require('./images/structure_your_affairs.jpg'),
+    recommendations9: require('./images/important_to_give_work_and_breaks.jpg'),
   },
 };
 

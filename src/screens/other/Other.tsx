@@ -10,20 +10,25 @@ import TimeClinicListItem from '../timeClinic/components/TimeClinicListItem';
 import {TimeBioticList} from '../../constants/timeBiotic';
 import {OtherList} from '../../constants/other';
 import ListFooter from '../../components/ListFooter/ListFooter';
+import useRootStore from '../../hooks/useRootStore';
 
 const Other = () => {
   const navigation = useNavigation();
+  const {themeState} = useRootStore().personalAreaStore;
 
-  const renderItem = useCallback(({item}) => {
-    return (
-      <TimeClinicListItem
-        title={item.title}
-        text={item.info}
-        isBtn={item.isbtn}
-        onPressItem={() => navigation.navigate(item.navigate as never)}
-      />
-    );
-  }, []);
+  const renderItem = useCallback(
+    ({item}) => {
+      return (
+        <TimeClinicListItem
+          title={item.title}
+          text={item.info}
+          isBtn={item.isbtn}
+          onPressItem={() => navigation.navigate(item.navigate as never)}
+        />
+      );
+    },
+    [themeState],
+  );
 
   return (
     <LinearContainer
