@@ -217,50 +217,50 @@ const App = () => {
   //   syncUsersToFirestore();
   // }, [])
 
-    useEffect(() => {
-      const requestStoragePermission = async () => {
-        try {
-          const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+  //   useEffect(() => {
+  //     const requestStoragePermission = async () => {
+  //       try {
+  //         const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
   
-          switch (result) {
-            case RESULTS.GRANTED:
-              console.log('Permission granted');
-              // Handle the case where permission is granted
-              break;
-            case RESULTS.DENIED:
-              console.log('Permission denied');
-              // Handle the case where permission is denied but not blocked
-              break;
-            case RESULTS.BLOCKED:
-              console.log('Permission blocked');
-              // Show an alert to guide the user to app settings
-              Alert.alert(
-                'Permission Required',
-                'The app needs access to storage to function properly. Please enable the permission manually in your device settings.',
-                [
-                  {
-                    text: 'Cancel',
-                    style: 'cancel'
-                  },
-                  {
-                    text: 'Open Settings',
-                    onPress: () => openSettings()
-                  }
-                ]
-              );
-              break;
-            default:
-              console.log('Unknown status:', result);
-              break;
-          }
-        } catch (error) {
-          console.error('Error requesting permission:', error);
-        }
-      };
+  //         switch (result) {
+  //           case RESULTS.GRANTED:
+  //             console.log('Permission granted');
+  //             // Handle the case where permission is granted
+  //             break;
+  //           case RESULTS.DENIED:
+  //             console.log('Permission denied');
+  //             // Handle the case where permission is denied but not blocked
+  //             break;
+  //           case RESULTS.BLOCKED:
+  //             console.log('Permission blocked');
+  //             // Show an alert to guide the user to app settings
+  //             Alert.alert(
+  //               'Permission Required',
+  //               'The app needs access to storage to function properly. Please enable the permission manually in your device settings.',
+  //               [
+  //                 {
+  //                   text: 'Cancel',
+  //                   style: 'cancel'
+  //                 },
+  //                 {
+  //                   text: 'Open Settings',
+  //                   onPress: () => openSettings()
+  //                 }
+  //               ]
+  //             );
+  //             break;
+  //           default:
+  //             console.log('Unknown status:', result);
+  //             break;
+  //         }
+  //       } catch (error) {
+  //         console.error('Error requesting permission:', error);
+  //       }
+  //     };
   
 
-    requestStoragePermission();
-  }, []);
+  //   requestStoragePermission();
+  // }, []);
   // useEffect(() => {
   //   let interval;
 

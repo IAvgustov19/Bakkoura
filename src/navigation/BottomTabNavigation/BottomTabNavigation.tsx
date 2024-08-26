@@ -170,6 +170,10 @@ const BottomTabNavigation: FC = () => {
   //   return null;
   // };
 
+
+  // console.log(!isAuthenticated);
+  
+
   return (
     <>
 

@@ -16,7 +16,7 @@ import RNFS from 'react-native-fs';
 import auth from '@react-native-firebase/auth';
 import { UserType } from '../types/user';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Alert, PermissionsAndroid, Platform } from 'react-native';
+import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -938,26 +938,42 @@ export const uploadAudioToStorage = async (uri, path) => {
     throw error;
   }
 };
+
 async function requestStoragePermission(): Promise<boolean> {
   if (Platform.OS === 'android') {
     try {
-      const granted = await PermissionsAndroid.request(
+      const granted = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Storage Permission',
-          message: 'App needs access to your storage to upload files.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      ]);
+
+      const readGranted = granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED;
+      const writeGranted = granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED;
+
+      if (readGranted && writeGranted) {
+        return true;
+      } else if (granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
+                 granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+        Alert.alert(
+          'Permission Required',
+          'Storage access is required to upload files. You have denied this permission and chosen "Don\'t ask again". Please enable it manually in the app settings.',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Open Settings', onPress: () => Linking.openSettings() },
+          ],
+        );
+        return false;
+      } else {
+        console.warn('Storage permission denied');
+        return false;
+      }
     } catch (err) {
       console.warn(err);
       return false;
     }
   }
-  return true; // iOS handles permissions differently
+
+  return true; // iOS handles permissions 
 }
 
 // Function to resolve content URI to a file path
@@ -1000,5 +1016,25 @@ export async function uploadFileFromContentUri(contentUri: string) {
   } catch (error) {
     console.error('Upload failed:', error);
     Alert.alert('Upload Failed', 'Failed to upload the file.');
+  }
+}
+
+export async function uploadDocumentToStorage(fileUri) {
+  try {
+    // Create a unique file name based on timestamp
+    const fileName = `documents/${new Date().getTime()}_${fileUri.split('/').pop()}`;
+    const reference = storage().ref(fileName);
+    
+    // Upload file
+    await reference.putFile(fileUri);
+
+    // Get download URL
+    const url = await reference.getDownloadURL();
+
+    console.log('File available at:', url);
+    return url;
+  } catch (error) {
+    Alert.alert('errrrror', error)
+    console.error('Error uploading document:', error);
   }
 }

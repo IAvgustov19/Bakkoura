@@ -138,9 +138,9 @@ const CustomComposer = props => {
   const fileUri = 'content://com.android.providers.downloads.documents/document/msf%3A23';
   const fileName = 'FInal_Խաղային_Հարթակ_Դիպլոմային_Մհեր_Մկրտչյան.pdf';
 
-  async function handlePickDocument() {
-    uploadFileFromContentUri(fileUri)
-  }
+  // async function handlePickDocument() {
+  //   uploadFileFromContentUri(fileUri)
+  // }
   // async function handlePickDocument() {
   //   try {
   //     const res = await DocumentPicker.pick({
@@ -173,37 +173,37 @@ const CustomComposer = props => {
   //     }
   //   }
   // }
-  // const handlePickDocument = async () => {
-  //   try {
-  //     const result = await DocumentPicker.pick({
-  //       type: [DocumentPicker.types.pdf],
-  //     });
-  // if (result.length > 0) {
-  //   const file = result[0];
-  //   console.log('file', file);
+  const handlePickDocument = async () => {
+    try {
+      const result = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+  if (result.length > 0) {
+    const file = result[0];
+    console.log('file', file);
 
-  //   const newMessage = {
-  //     _id: Math.random().toString(36).substring(7),
-  //     text: '',
-  //     createdAt: new Date(),
-  //     user: {
-  //       _id: 1,
-  //     },
-  //     file: true,
-  //     image: file.uri,
-  //     fileName: file.name,
-  //     fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-  //   };
-  //   onSend([newMessage]);
-  //     }
-  //   } catch (err) {
-  //     if (DocumentPicker.isCancel(err)) {
-  //       console.log('User cancelled document picker');
-  //     } else {
-  //       throw err;
-  //     }
-  //   }
-  // };
+    const newMessage = {
+      _id: Math.random().toString(36).substring(7),
+      text: '',
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+      },
+      file: true,
+      uri: file.uri,
+      fileName: file.name,
+      fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+    };
+    onSend([newMessage]);
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('User cancelled document picker');
+      } else {
+        throw err;
+      }
+    }
+  };
 
   const handlePickMediaOrDocument = () => {
     setModalVisible(true);

@@ -24,7 +24,7 @@ import FileViewer from 'react-native-file-viewer';
 import { windowWidth } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
 import VideoPlayer from './components/VideoPlayer';
-import { uploadAudioToStorage } from '../../services/firestoreService';
+import { uploadAudioToStorage, uploadDocumentToStorage } from '../../services/firestoreService';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid } from 'react-native';
 import functions from '@react-native-firebase/functions';
@@ -58,6 +58,7 @@ const DialogScreen = () => {
     const [inputText, setInputText] = useState('');
     const [selectedEditMessage, setSelectedEditMessage] = useState(null);
     const [editing, setEditing] = useState<boolean>(false);
+    const [roomId, setRoomId] = useState(null);
 
     useEffect(() => {
         const chatOpenedAt = new Date();
@@ -267,6 +268,7 @@ const DialogScreen = () => {
             const roomDoc = await roomQuery.get();
             if (!roomDoc.empty) {
                 const roomId = roomDoc.docs[0].id;
+                setRoomId(roomId);
                 await db.collection('Rooms').doc(roomId).update({
                     [`chatOpenedAt.${senderId}`]: currentTime,
                 });
@@ -301,6 +303,7 @@ const DialogScreen = () => {
                             audio: data.audio ? data.audio : null,
                             video: data.video ? data.video : null,
                             images: data.image ? data.image : [],
+                            fileUri: data.fileUri ? data?.fileUri : null,
                             createdAt: data?.createdAt ? moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss') : null,
                             senderId: data.senderId,
                             circle: data?.circle ?? data?.circle,
@@ -363,10 +366,16 @@ const DialogScreen = () => {
             video,
             image,
             maindis,
+            file,
+            uri,
             fileName,
             circle,
         } = messages[0];
         const imageUris = Array.isArray(image) ? image : [image];
+
+        const documentFileUri = uri;
+        console.log('documentFileUridocumentFileUridocumentFileUri', documentFileUri);
+
 
         console.log('messagemessagemessagemessage', messages[0]);
         const message = messages[0] || {};
@@ -407,6 +416,27 @@ const DialogScreen = () => {
             }
         }
 
+        let documentUrl = null;
+        if (documentFileUri) {
+            const documentFilePath = `documents/${Date.now()}.pdf`;
+            try {
+                documentUrl = await uploadDocumentToStorage(documentFileUri);
+            } catch (error) {
+                console.error('Error uploading document file:', error);
+            }
+        }
+
+        let messageType = 'text';
+        if (audioUrl) {
+            messageType = 'audio';
+        } else if (videoUrl) {
+            messageType = 'video';
+        } else if (imageUrls.length > 0) {
+            messageType = 'image';
+        } else if (documentUrl) {
+            messageType = 'document';
+        }
+
         let roomDocRef = db.collection('Rooms')
             .where('senderId', 'in', [senderId, receiverId])
             .where('receiverId', 'in', [senderId, receiverId])
@@ -436,11 +466,13 @@ const DialogScreen = () => {
             },
             ...(text && { text }),
             ...(audioUrl && { audio: audioUrl }),
+            ...(documentUrl && { fileUri: documentUrl }),
             ...(videoUrl && { video: videoUrl }),
             ...(imageUrls.length > 0 && { image: imageUrls }),
+            type: messageType,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             ...(maindis && { maindis }),
-            ...(fileName && { fileName }),
+            // ...(fileName && { fileName }),
             ...(circle && { circle }),
             senderId,
             receiverId,
@@ -505,7 +537,11 @@ const DialogScreen = () => {
 
 
     const renderMessageImage = props => {
+        console.log('currentMessagecurrentMessage');
         const { currentMessage } = props;
+        console.log(!currentMessage.file,"!currentMessage.file!currentMessage.file");
+        
+
 
 
         return !currentMessage.file ? (
@@ -520,14 +556,14 @@ const DialogScreen = () => {
                 />
                 )}
                 <View style={styles.imageInfo}>
-                    {/* <Text style={styles.fileName}>{currentMessage.fileName}</Text> */}
-                    {/* <Text style={styles.fileSize}>{currentMessage.fileSize}</Text> */}
+                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
+                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
                     <Text style={styles.time}>{currentMessage.time}</Text>
                 </View>
             </>
         ) : (
             <RN.Pressable
-                onPress={() => FileViewer.open(currentMessage.image)}
+                onPress={() => FileViewer.open(currentMessage.fileUri)}
                 style={styles.fileBox}>
                 <RN.View style={styles.fileBoxFile}>
                     <Images.Svg.fileIcon />
@@ -535,16 +571,17 @@ const DialogScreen = () => {
                 <View style={styles.imageInfo}>
                     <Text style={styles.fileName}>{currentMessage.fileName}</Text>
                     <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-                    <Text style={styles.time}>{currentMessage.time}</Text>
+                    <Text style={styles.time}>{currentMessage.createdAt}</Text>
                 </View>
             </RN.Pressable>
         );
     };
 
-
+    
     const processedMessages = useMemo(() => {
-        return messages.map(message => ({ ...message, image: message?.images?.[0] ?? message.image }));
+        return messages.map(message => ({ ...message, image: !!message?.images?.[0] ? message?.images?.[0] :'null', file: message.fileUri }));
     }, [messages]);
+
 
     return (
         <PlatfromView>
@@ -555,13 +592,14 @@ const DialogScreen = () => {
                 <HeaderContent
                     rightItem={
                         <RN.TouchableOpacity
-
-                            onPress={() =>
-                                navigation.navigate(APP_ROUTES.PROFILE_PAGE, {
-                                    lastSeen,
-                                    avatar,
-                                    name,
-                                })
+                            onPress={
+                                () =>
+                                    navigation.navigate(APP_ROUTES.PROFILE_PAGE, {
+                                        lastSeen,
+                                        avatar,
+                                        name,
+                                        roomId,
+                                    })
 
                             }
                             style={styles.imageContainer}
@@ -602,9 +640,6 @@ const DialogScreen = () => {
                             <RN.View style={{ flex: 1 }}>
                                 <GiftedChat
                                     messages={processedMessages}
-                                    // messages={messages.map(message => ({...message, image: message?.images?.[0]??message.image}))}
-                                    // messages={messages}
-
                                     messagesContainerStyle={{ flexGrow: 1 }}
                                     onLongPress={onLongPressMessage}
                                     renderMessage={(props) => <CustomMessage {...props} />}

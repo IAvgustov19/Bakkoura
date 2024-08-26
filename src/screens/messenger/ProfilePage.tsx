@@ -1,4 +1,4 @@
-import { ProfilerOnRenderCallback, useState } from "react";
+import { ProfilerOnRenderCallback, useEffect, useState } from "react";
 import useRootStore from "../../hooks/useRootStore";
 import LinearContainer from "../../components/LinearContainer/LinearContainer";
 import RN from "../../components/RN";
@@ -13,13 +13,17 @@ import ArrowLeftBack from "../../components/ArrowLeftBack/ArrowLeftBack";
 import { MessageTypes } from "../../utils/messenger";
 import { RootStackParamList } from "../../types/navigation";
 import { APP_ROUTES } from "../../navigation/routes";
+import { db } from "../../config/firebase";
 
 type RrofileScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.PROFILE_PAGE>;
 const ProfilePage = () => {
     const route = useRoute<RrofileScreenRouteProp>();
     const navigation = useNavigation();
-    const { lastSeen, name, avatar } = route.params;
-    console.log(lastSeen, name, avatar);
+    const { lastSeen, name, avatar, roomId } = route.params;
+    console.log(lastSeen, name, avatar, roomId);
+    const [messages, setMessages] = useState<any[]>([]);
+    const [groupedMessages, setGroupedMessages] = useState<{ [key: string]: any[] }>({});
+
 
 
     const {
@@ -29,6 +33,37 @@ const ProfilePage = () => {
     const [avatarLoading, setAvatarLoading] = useState(true);
     const [active, setActive] = useState(0);
 
+    const fetchMessagesByRoomId = async (roomId: string) => {
+        const messagesQuery = db.collection('Messages')
+            .where('roomId', '==', roomId)
+            .orderBy('createdAt', 'desc');
+        const snapshot = await messagesQuery.get();
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    };
+
+    const groupMessagesByType = (messages: any[]) => {
+        return messages.reduce((groups, message) => {
+            const { type } = message;
+            if (!groups[type]) {
+                groups[type] = [];
+            }
+            groups[type].push(message);
+            return groups;
+        }, {} as { [key: string]: any[] });
+    };
+
+
+    useEffect(() => {
+        if (roomId) {
+            fetchMessagesByRoomId(roomId).then(data => {
+                setMessages(data);
+                setGroupedMessages(groupMessagesByType(data));
+            });
+        }
+    }, [roomId]);
+
+    console.log('groupMessagesByTypegroupMessagesByType', messages);
+    
     const imageData = [
         { id: 1, uri: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' }, // Unsplash example
         { id: 2, uri: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef' }, // Unsplash example
@@ -135,7 +170,7 @@ const ProfilePage = () => {
                         <RN.View key={item.id} style={styles.voiceContainer}>
                             <Images.Svg.linkIcon width={40} height={40} />
                             <RN.View style={styles.voiceInfo}>
-                                <RN.Text style={[styles.voiceTitle, {color: '#007AFF'}]}>{item.title}</RN.Text>
+                                <RN.Text style={[styles.voiceTitle, { color: '#007AFF' }]}>{item.title}</RN.Text>
                                 <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
                             </RN.View>
                         </RN.View>
@@ -158,7 +193,7 @@ const ProfilePage = () => {
                         <RN.View key={item.id} style={styles.voiceContainer}>
                             <Images.Svg.fileIconMedia width={40} height={40} />
                             <RN.View style={styles.voiceInfo}>
-                                <RN.View style={{flexDirection: 'row', gap: 10}}>
+                                <RN.View style={{ flexDirection: 'row', gap: 10 }}>
                                     <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
                                     <Images.Svg.blueArrow width={16} height={12} />
                                 </RN.View>

@@ -9,6 +9,7 @@ export type RootStackParamList = {
         lastSeen: string;
         avatar?: string;
         name: string;
+        roomId?: string;
     };
   };
 
