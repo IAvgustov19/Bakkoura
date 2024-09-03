@@ -1,6 +1,6 @@
-import {observer} from 'mobx-react-lite';
-import React, {useEffect, useMemo, useState} from 'react';
-import {Images} from '../../assets';
+import { observer } from 'mobx-react-lite';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -9,14 +9,15 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import SwitchBtn from '../../components/SwitchBtn/SwitchBtn';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import useRootStore from '../../hooks/useRootStore';
-import {HITSLOP} from '../../utils/styles';
+import { HITSLOP } from '../../utils/styles';
 import FirstTimer from './components/FirstTimer';
 import FirstTimerDuring from './components/FirstTimerDuring';
 import SecondTimer from './components/SecondTimer';
 import SecondTimerDuring from './components/SecondTimerDuring';
-import {styles} from './TimerScreenStyles';
+import { styles } from './TimerScreenStyles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 
 const TimerScreen = () => {
   const navigation = useNavigation();
@@ -82,7 +83,11 @@ const TimerScreen = () => {
           <HeaderContent
             title="Timer"
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TIMER_SLIDER as never)}>
+                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+              </RN.TouchableOpacity>
+            }
           />
           {timerStatus.reset ? null : (
             <RN.View style={styles.switchHours}>
@@ -97,7 +102,7 @@ const TimerScreen = () => {
                   onPress={timerChange}
                   style={[
                     styles.changeBtn,
-                    {backgroundColor: timerStatus.isFirst ? '#ECC271' : '#000'},
+                    { backgroundColor: timerStatus.isFirst ? '#ECC271' : '#000' },
                   ]}></RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   onPress={timerChange}
@@ -130,8 +135,8 @@ const TimerScreen = () => {
                 timerStatus.start
                   ? 'Stop'
                   : timerStatus.pausa
-                  ? 'Start'
-                  : 'Start'
+                    ? 'Start'
+                    : 'Start'
               }
               primary={timerStatus.reset ? true : false}
               onPress={StartTimer}

@@ -9,6 +9,8 @@ import {APP_ROUTES} from '../../navigation/routes';
 import LanguageScreen from '../LanguageScreen/LanguageScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import PersonStartScreen from './screens/personStartScreen';
+import PasswordPrompt from '../home/secureEntry/passwordAuth';
+import PasswordScreen from './screens/PasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +36,13 @@ const PersonalStack = () => {
       <Stack.Screen
         name={APP_ROUTES.SECURE_ENTRY}
         component={SecureEntry}
+        options={{
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name={APP_ROUTES.PASSWORD}
+        component={PasswordScreen}
         options={{
           headerTitleAlign: 'center',
         }}

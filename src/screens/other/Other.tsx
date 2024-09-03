@@ -62,9 +62,8 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     gap: 5,
-    paddingBottom: 40,
   },
   flatlist: {
-    height: windowHeight - windowHeight / 6,
+    height: '85%',
   },
 });

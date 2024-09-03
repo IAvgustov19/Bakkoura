@@ -322,7 +322,7 @@ const CustomComposer = props => {
                 _id: 1, // Update with the actual user ID
               },
               audio: result,
-              fileName: result.substring(result.lastIndexOf('/') + 1),
+              fileName: `${Date.now()}.mp3`,
               maindis: maindis, // Ensure `maindis` is correctly set
             };
 
@@ -582,7 +582,7 @@ const CustomComposer = props => {
         <TouchableOpacity
           onPress={handlePickMediaOrDocument}
           style={{ paddingTop: 8 }}>
-          <Images.Svg.imageMessage />
+          <Images.Svg.imageMessage height={26} width={26}/>
         </TouchableOpacity>
         <RN.View
           style={[
@@ -633,7 +633,7 @@ const CustomComposer = props => {
                 onPress={onEditMessage}
                 style={{ paddingTop: 12 }}
               >
-                <Images.Svg.checkMessage width={30} height={30} />
+                <Images.Svg.checkMessage width={25} height={25} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Platform, Linking, Alert } from 'react-native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
+import RN from '../../../components/RN';
+import LinearGradient from 'react-native-linear-gradient';
 
 const FingerprintAuth = ({ onAuthenticationSuccess }) => {
     const [isVisible, setIsVisible] = useState<boolean>(true);
@@ -22,33 +24,68 @@ const FingerprintAuth = ({ onAuthenticationSuccess }) => {
                 description: 'Authenticate using your fingerprint',
                 cancelButton: null,
             });
-            setIsVisible(false); 
+            setIsVisible(false);
             onAuthenticationSuccess();
             console.log('Fingerprint authentication successful.');
         } catch (error) {
             console.error('Error authenticating with fingerprint:', error);
-            setShowWrongMessage(true); 
-            authenticateWithFingerprint(); 
+            setShowWrongMessage(true);
+            authenticateWithFingerprint();
         }
     };
 
     const handleFallbackPress = () => {
-        setShowWrongMessage(false); 
-        FingerprintScanner.release(); 
-        setIsVisible(false); 
-        authenticateWithFingerprint(); 
+        setShowWrongMessage(false);
+        FingerprintScanner.release();
+        setIsVisible(false);
+        authenticateWithFingerprint();
     };
+
+
+    useEffect(() => {
+        showWrongMessage && 
+        Alert.alert(
+            'Biometry not set up',
+            'You have not set up any biometric data. Please add your fingerprint in settings.',
+            [
+                {
+                    text: 'Go to Settings',
+                    onPress: () => {
+                        if (Platform.OS === 'android') {
+                            Linking.openSettings();
+                        } else {
+                            Alert.alert(
+                                'Unsupported',
+                                'This feature is only supported on Android.',
+                            );
+                        }
+                    },
+                },
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+            ],
+        );
+    }, [])
+
+
 
     return (
         <>
             {isVisible && (
-                <View style={{ backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
-                    {showWrongMessage ? <Text>Wrong</Text> : null}
-                    {showWrongMessage ? <Button title="Retry" onPress={handleFallbackPress} /> : null}
-                </View>
+                <LinearGradient colors={['#485661', '#090A0A']} style={styles.container}>
+                </LinearGradient>
             )}
         </>
     );
 };
+
+const styles = RN.StyleSheet.create({
+    container: {
+        width: '100%',
+        height: '100%',
+    }
+});
 
 export default FingerprintAuth;

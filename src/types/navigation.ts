@@ -11,6 +11,8 @@ export type RootStackParamList = {
         name: string;
         roomId?: string;
     };
-  };
+    [APP_ROUTES.PASSWORD]: {
+        visible?: boolean;
+    };
+};
 
-  

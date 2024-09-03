@@ -19,6 +19,7 @@ import useRootStore from '../hooks/useRootStore';
 import LanguageScreen from '../screens/LanguageScreen/LanguageScreen';
 import StressTestDuring from '../screens/stressTest/StressTestDuring/StressTestDuring';
 import NewAlarmScreen from '../screens/alarm/NewAlarm';
+import AlarmScreen from '../screens/alarm/AlarmScreen';
 import NameAlarm from '../screens/alarm/NameAlarm';
 import CitesScreen from '../screens/worldTime/CitesScreen';
 import NewProjectTimer from '../screens/projectTimer/NewProjectTimer';
@@ -96,6 +97,13 @@ import StressTest from '../screens/stressTest/StressTest';
 import EventsScreen from '../screens/calendar/EventsScreen';
 import BakkouraWatch from '../screens/bakkouraWatch/BakkouraWatch';
 import ProfilePage from '../screens/messenger/ProfilePage';
+import PasswordScreen from '../screens/personalArea/screens/PasswordScreen';
+import PomodoroSlider from '../screens/pomodoro/PomodoroSlider';
+import AlarmSlider from '../screens/alarm/AlarmSlider';
+import MetronomSlider from '../screens/metronom/MetronomSlider';
+import TimeTogetherSlider from '../screens/timeTogether/TimeTogetherSlider';
+import ToDoTimerSlider from '../screens/todoTimer/ToDoTimerSlider';
+import TimerSlider from '../screens/timers/TimerSlider';
 
 const Stack = createStackNavigator();
 
@@ -295,6 +303,20 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.ALARM_SCREEN}
+          component={AlarmScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ALARM_SLIDER}
+          component={AlarmSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.NAME_ALARM}
           component={NameAlarm}
           options={{
@@ -337,15 +359,22 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
-          name={APP_ROUTES.ALARM_SCREEN}
-          component={AlarmClock}
+          name={APP_ROUTES.METRONOM}
+          component={Metronom}
           options={{
             headerTitleAlign: 'center',
           }}
         />
         <Stack.Screen
-          name={APP_ROUTES.METRONOM}
-          component={Metronom}
+          name={APP_ROUTES.METRONOM_SLIDER}
+          component={MetronomSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.PASSWORD}
+          component={PasswordScreen}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -358,6 +387,13 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.TIME_TOGETHER_SLIDER}
+          component={TimeTogetherSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.POMODORO}
           component={Pomodoro}
           options={{
@@ -365,8 +401,29 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.POMODORO_SLIDER}
+          component={PomodoroSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.TODOTIMER}
           component={ToDoTimer}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TIMER_SLIDER}
+          component={TimerSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.TODOTIMER_SLIDER}
+          component={ToDoTimerSlider}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -413,42 +470,42 @@ const AppNavigator = () => {
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.WORLD_TIME}
           component={WorldTime}
           options={{
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.STOP_WATCH}
           component={StopWatch}
           options={{
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.STRESS_TEST}
           component={StressTest}
           options={{
             headerTitleAlign: 'center',
           }}
         />
-           <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.EVENTS_SCREEN}
           component={EventsScreen}
           options={{
             headerTitleAlign: 'center',
           }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={APP_ROUTES.BAKKOURA_WATCH}
           component={BakkouraWatch}
           options={{
             headerTitleAlign: 'center',
           }}
         />
-        
+
         <Stack.Screen
           name={APP_ROUTES.DELETE_ETAP}
           component={DeleteEtap}

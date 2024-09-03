@@ -1,22 +1,22 @@
-import React, {useCallback, useEffect} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import RN from '../../components/RN';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets';
+import { Images } from '../../assets';
 import ToDoTimerItem from './components/ToDoTimerItem';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import {windowHeight} from '../../utils/styles';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
-import {formatDateTime, secondsToHMS} from '../../helper/helper';
-import {COLORS} from '../../utils/colors';
+import { windowHeight } from '../../utils/styles';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
+import { formatDateTime, secondsToHMS } from '../../helper/helper';
+import { COLORS } from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const ToDoTimer = () => {
-  const {getOneTask, tasksList, playProject, fetchTasks, tasksListClone} =
+  const { getOneTask, tasksList, playProject, fetchTasks, tasksListClone } =
     useRootStore().todoTimer;
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -62,9 +62,16 @@ const ToDoTimer = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="To do Timer"
             rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TODOTIMER_SLIDER as never)}>
+                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+              </RN.TouchableOpacity>
+            }
+          />
+          <RN.View style={styles.content}>
+            <RN.View style={styles.switch}>
               <ButtonComp
                 width={90}
                 title="History"
@@ -73,9 +80,7 @@ const ToDoTimer = () => {
                 }
                 paddingVertical={8}
               />
-            }
-          />
-          <RN.View style={styles.content}>
+            </RN.View>
             <RN.View style={styles.flatList}>
               <RN.ScrollView
                 showsHorizontalScrollIndicator={false}
@@ -124,4 +129,7 @@ const styles = RN.StyleSheet.create({
     width: '100%',
     paddingHorizontal: 15,
   },
+  switch: {
+    paddingVertical: 10, width: '100%', alignItems: 'center'
+  }
 });

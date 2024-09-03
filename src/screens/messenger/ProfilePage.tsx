@@ -1,120 +1,148 @@
-import { ProfilerOnRenderCallback, useEffect, useState } from "react";
-import useRootStore from "../../hooks/useRootStore";
 import LinearContainer from "../../components/LinearContainer/LinearContainer";
-import RN from "../../components/RN";
-import HeaderContent from "../../components/HeaderContent/HeaderContent";
-import { Images } from "../../assets";
-import { ActivityIndicator } from "react-native";
-import { COLORS } from "../../utils/colors";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { observer } from "mobx-react-lite";
-import { windowHeight } from "../../utils/styles";
+import HeaderContent from "../../components/HeaderContent/HeaderContent";
 import ArrowLeftBack from "../../components/ArrowLeftBack/ArrowLeftBack";
-import { MessageTypes } from "../../utils/messenger";
+import { ProfilerOnRenderCallback, useEffect, useState } from "react";
 import { RootStackParamList } from "../../types/navigation";
+import { ActivityIndicator, Linking, Modal } from "react-native";
+import { fileData, MessageTypes } from "../../utils/messenger";
 import { APP_ROUTES } from "../../navigation/routes";
+import useRootStore from "../../hooks/useRootStore";
+import { windowHeight } from "../../utils/styles";
+import EmptyState from "./components/EmptyState";
+import Voice from "./components/VoicePlayer";
+import { COLORS } from "../../utils/colors";
+import { observer } from "mobx-react-lite";
 import { db } from "../../config/firebase";
+import { Images } from "../../assets";
+import RN from "../../components/RN";
+import { formatDate } from "../../helper/formatTimeMessage";
+import { fetchMessagesByRoomId, getUserNameById } from "../../services/firestoreService";
 
 type RrofileScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.PROFILE_PAGE>;
 const ProfilePage = () => {
     const route = useRoute<RrofileScreenRouteProp>();
     const navigation = useNavigation();
     const { lastSeen, name, avatar, roomId } = route.params;
-    console.log(lastSeen, name, avatar, roomId);
     const [messages, setMessages] = useState<any[]>([]);
-    const [groupedMessages, setGroupedMessages] = useState<{ [key: string]: any[] }>({});
-
-
-
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [voiceData, setVoiceData] = useState<any[]>([]);
+    const [links, setLinks] = useState<any[]>([]);
+    const [linkData, setLinkData] = useState<any[]>([]);
+    const [avatarLoading, setAvatarLoading] = useState(true);
+    const [active, setActive] = useState(0);
+    const [playingId, setPlayingId] = useState<string | null>(null);
     const {
         personalAreaData,
         updateLoading,
     } = useRootStore().personalAreaStore;
-    const [avatarLoading, setAvatarLoading] = useState(true);
-    const [active, setActive] = useState(0);
 
-    const fetchMessagesByRoomId = async (roomId: string) => {
-        const messagesQuery = db.collection('Messages')
-            .where('roomId', '==', roomId)
-            .orderBy('createdAt', 'desc');
-        const snapshot = await messagesQuery.get();
-        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const handleImageClick = (uri: string) => {
+        setSelectedImage(uri);
+        setIsModalVisible(true);
     };
-
-    const groupMessagesByType = (messages: any[]) => {
-        return messages.reduce((groups, message) => {
-            const { type } = message;
-            if (!groups[type]) {
-                groups[type] = [];
-            }
-            groups[type].push(message);
-            return groups;
-        }, {} as { [key: string]: any[] });
-    };
-
 
     useEffect(() => {
         if (roomId) {
             fetchMessagesByRoomId(roomId).then(data => {
                 setMessages(data);
-                setGroupedMessages(groupMessagesByType(data));
             });
         }
     }, [roomId]);
 
-    console.log('groupMessagesByTypegroupMessagesByType', messages);
-    
-    const imageData = [
-        { id: 1, uri: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' }, // Unsplash example
-        { id: 2, uri: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef' }, // Unsplash example
-        { id: 3, uri: 'https://images.unsplash.com/photo-1521747116042-5a810fda9664' }, // Unsplash example
-        { id: 4, uri: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d' }, // Unsplash example
-        { id: 5, uri: 'https://images.unsplash.com/photo-1485796826113-174aa68fd81b' }, // Unsplash example
-        { id: 6, uri: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce' }, // Unsplash example
-        { id: 7, uri: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef' }, // Unsplash example
-        { id: 8, uri: 'https://images.unsplash.com/photo-1521747116042-5a810fda9664' }, // Unsplash example
-        { id: 9, uri: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d' }, // Unsplash example
-        { id: 10, uri: 'https://images.unsplash.com/photo-1485796826113-174aa68fd81b' }, // Unsplash example
-    ];
+    useEffect(() => {
+        setLinks(messages.filter(message => message.type === 'text'));
+    }, [messages]);
 
+    useEffect(() => {
+        const fetchLinkData = async () => {
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
 
-    const voiceData = [
-        { id: 1, title: 'Audio Clip 1', subtitle: '17.11.23 - 09:12 - 1.2Mb - Tatyana Yanchuk' },
-        { id: 2, title: 'Audio Clip 2', subtitle: '17.11.23 - 10:05 - 1.5Mb - John Doe' },
-        { id: 3, title: 'Audio Clip 3', subtitle: '17.11.23 - 11:30 - 2.1Mb - Alice Johnson' },
-        { id: 4, title: 'Audio Clip 4', subtitle: '17.11.23 - 12:45 - 1.8Mb - Michael Smith' },
-        { id: 5, title: 'Audio Clip 5', subtitle: '17.11.23 - 13:20 - 2.3Mb - Sarah Lee' },
-        { id: 6, title: 'Audio Clip 6', subtitle: '17.11.23 - 14:10 - 1.7Mb - David Brown' },
-        { id: 7, title: 'Audio Clip 7', subtitle: '17.11.23 - 15:00 - 2.0Mb - Laura Wilson' },
-        { id: 8, title: 'Audio Clip 8', subtitle: '17.11.23 - 15:50 - 1.4Mb - James Clark' },
-        { id: 9, title: 'Audio Clip 9', subtitle: '17.11.23 - 16:35 - 1.6Mb - Emma Davis' },
-        { id: 10, title: 'Audio Clip 10', subtitle: '17.11.23 - 17:15 - 1.9Mb - Daniel Martinez' },
-    ];
+            const getDomainFromUrl = (url) => {
+                // More comprehensive domain extraction
+                const domainRegex = /^(?:https?:\/\/)?(?:www\.)?([^\/\s]+)/i;
+                const match = url.match(domainRegex);
+                if (match && match[1]) {
+                    const domainParts = match[1].split('.').slice(-2).join('.');
+                    return domainParts;
+                }
+                return 'Unknown';
+            };
 
-    const fileData = [
-        { id: 1, title: 'presentation.pdf', subtitle: '17.11.23 - 09:12 - 1.2Mb - Tatyana Yanchuk' },
-        { id: 2, title: 'poster.psd', subtitle: '17.11.23 - 10:05 - 1.5Mb - John Doe' },
-        { id: 3, title: 'presentation.pdf', subtitle: '17.11.23 - 11:30 - 2.1Mb - Alice Johnson' },
-        { id: 4, title: 'businesscard.psd', subtitle: '17.11.23 - 12:45 - 1.8Mb - Michael Smith' },
-        { id: 5, title: 'Book Antiqua.ttf', subtitle: '17.11.23 - 13:20 - 2.3Mb - Sarah Lee' },
-        { id: 6, title: 'Banner.psd', subtitle: '17.11.23 - 14:10 - 1.7Mb - David Brown' },
-    ];
+            console.log('Fetching messages for link data:', links);
 
+            try {
+                const data = await Promise.all(links
+                    .filter(message => typeof message.text === 'string' && urlRegex.test(message.text))
+                    .map(async (message) => {
+                        const urls = message.text.match(urlRegex) || [];
+                        if (urls.length === 0) {
+                            console.log('No URLs found in message:', message.text);
+                            return null;
+                        }
+                        const url = urls[0];
+                        const domain = getDomainFromUrl(url);
 
-    const linkData = [
-        { id: 1, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 2, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 3, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 4, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 5, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 6, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 7, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-        { id: 8, title: 'www.youtube.com/live/ehifuheiufinwidfiwufw', subtitle: '07:08 - YouTube.com' },
-    ];
+                        console.log('Extracted URL:', url);
+                        console.log('Extracted Domain:', domain);
 
+                        return {
+                            id: message._id,
+                            title: url,
+                            subtitle: `${formatDate(message.createdAt)}, ${domain}`,
+                            uri: url,
+                        };
+                    })
+                );
 
+                const filteredData = data.filter(item => item !== null);
+
+                console.log('Processed link data:', filteredData);
+                setLinkData(filteredData);
+            } catch (error) {
+                console.error('Error fetching link data:', error);
+            }
+        };
+
+        fetchLinkData();
+    }, [links]);
+
+    const voiceMessage = messages.filter(message => message.type === 'audio');
+    useEffect(() => {
+        const fetchVoiceData = async () => {
+            const data = await Promise.all(voiceMessage.map(async (message, idx) => {
+                const userName = await getUserNameById(message.senderId);
+                return {
+                    id: message._id,
+                    title: `Audio Clip ${idx + 1}`,
+                    subtitle: `${userName} ${formatDate(message.createdAt)}`,
+                    uri: message.audio,
+                };
+            }));
+
+            setVoiceData(data);
+        };
+
+        fetchVoiceData();
+    }, [voiceData]);
+
+    const imageMessages = messages.filter(message => message.type === 'image');
+
+    const imageData = imageMessages
+        .flatMap(message =>
+            message.image.map((uri, index) => ({
+                id: `${message._id}-${index}`,
+                uri
+            }))
+        );
 
     const renderGridImages = () => {
+        if (imageData.length === 0) {
+            return (
+                <EmptyState title="No images" />
+            );
+        }
         return (
             <RN.ScrollView
                 style={styles.gridScroll}
@@ -123,42 +151,60 @@ const ProfilePage = () => {
             >
                 <RN.View style={styles.gridContainer}>
                     {imageData.map((item) => (
-                        <RN.Image
+                        <RN.TouchableOpacity
                             key={item.id}
-                            source={{ uri: item.uri }}
-                            style={styles.gridImage}
-                            resizeMode="cover"
-                        />
+                            onPress={() => handleImageClick(item.uri)}
+                            style={styles.imageWrapper}
+                        >
+                            <RN.Image
+                                source={{ uri: item?.uri }}
+                                style={styles.gridImage}
+                                resizeMode="cover"
+                                onError={(e) => console.log('Image loading error:', e)}
+                            />
+                        </RN.TouchableOpacity>
                     ))}
                 </RN.View>
             </RN.ScrollView>
         );
     };
-
-
+    const onPlayPress = (id: string) => {
+        if (playingId === id) {
+            setPlayingId(null);
+        } else {
+            setPlayingId(id);
+        }
+    };
     const renderVoices = () => {
+        if (voiceData.length === 0) {
+            return (
+                <EmptyState title="No audios" />
+            );
+        }
         return (
-            <RN.ScrollView
-                style={styles.gridScroll}
+            <RN.FlatList
+                data={voiceData}
+                keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.gridContentContainer}
-            >
-                <RN.View style={{ gap: 5 }}>
-                    {voiceData.map((item) => (
-                        <RN.View key={item.id} style={styles.voiceContainer}>
-                            <Images.Svg.musicIcon width={40} height={40} />
-                            <RN.View style={styles.voiceInfo}>
-                                <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
-                                <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
-                            </RN.View>
-                        </RN.View>
-                    ))}
-                </RN.View>
-            </RN.ScrollView>
+                contentContainerStyle={styles.gridScroll}
+                renderItem={({ item }) => (
+                    <Voice
+                        id={item.id}
+                        soundSource={item.uri}
+                        isPlaying={playingId === item.id}
+                        onPlayPress={onPlayPress}
+                        title={item.title}
+                        subtitle={item.subtitle} />
+                )}
+            />
         );
     };
-
     const renderLinks = () => {
+        if (linkData.length === 0) {
+            return (
+                <EmptyState title="No links" />
+            );
+        }
         return (
             <RN.ScrollView
                 style={styles.gridScroll}
@@ -170,7 +216,9 @@ const ProfilePage = () => {
                         <RN.View key={item.id} style={styles.voiceContainer}>
                             <Images.Svg.linkIcon width={40} height={40} />
                             <RN.View style={styles.voiceInfo}>
-                                <RN.Text style={[styles.voiceTitle, { color: '#007AFF' }]}>{item.title}</RN.Text>
+                                <RN.TouchableOpacity onPress={() => Linking.openURL(item.uri)}>
+                                    <RN.Text style={[styles.voiceTitle, { color: '#007AFF' }]}>{item.title}</RN.Text>
+                                </RN.TouchableOpacity>
                                 <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
                             </RN.View>
                         </RN.View>
@@ -180,8 +228,12 @@ const ProfilePage = () => {
         );
     };
 
-
     const renderFiles = () => {
+        if (fileData.length === 0) {
+            return (
+                <EmptyState title="No files" />
+            );
+        }
         return (
             <RN.ScrollView
                 style={styles.gridScroll}
@@ -206,8 +258,6 @@ const ProfilePage = () => {
         );
     };
 
-
-
     const renderTypes = () => {
         return MessageTypes.map((item, index) => (
             <RN.Text
@@ -220,6 +270,49 @@ const ProfilePage = () => {
         ));
     };
 
+    const musicData = [];
+
+    const renderMusic = () => {
+        if (musicData.length === 0) {
+            return (
+                <EmptyState title="No music" />
+            );
+        }
+        return (
+            <RN.ScrollView
+                style={styles.gridScroll}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.gridContentContainer}
+            >
+                <RN.View style={{ gap: 5 }}>
+                    {musicData.map((item) => (
+                        <RN.View key={item.id} style={styles.voiceContainer}>
+                            <Images.Svg.fileIconMedia width={40} height={40} />
+                            <RN.View style={styles.voiceInfo}>
+                                <RN.View style={{ flexDirection: 'row', gap: 10 }}>
+                                    <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
+                                    <Images.Svg.blueArrow width={16} height={12} />
+                                </RN.View>
+                                <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
+                            </RN.View>
+                        </RN.View>
+                    ))}
+                </RN.View>
+            </RN.ScrollView>
+        );
+    };
+
+    const renderContent = () => {
+        const renderFunctions = [
+            renderGridImages,
+            renderVoices,
+            renderLinks,
+            renderFiles,
+            renderMusic,
+        ];
+
+        return renderFunctions[active]();
+    };
     return (
         <LinearContainer
             children={
@@ -260,11 +353,29 @@ const ProfilePage = () => {
                         <RN.View style={styles.types}>
                             {renderTypes()}
                         </RN.View>
-                        {active === 0 && renderGridImages()}
-                        {active === 1 && renderVoices()}
-                        {active === 2 && renderLinks()}
-                        {active === 3 && renderFiles()}
+                        {renderContent()}
                     </RN.View>
+                    <Modal
+                        visible={isModalVisible}
+                        transparent={true}
+                        animationType="fade"
+                        onRequestClose={() => setIsModalVisible(false)}
+                    >
+                        <RN.TouchableOpacity
+                            style={styles.modalBackdrop}
+                            onPress={() => setIsModalVisible(false)}
+                        >
+                            <RN.View style={styles.modalContent}>
+                                {selectedImage && (
+                                    <RN.Image
+                                        source={{ uri: selectedImage }}
+                                        style={styles.modalImage}
+                                        resizeMode="contain"
+                                    />
+                                )}
+                            </RN.View>
+                        </RN.TouchableOpacity>
+                    </Modal>
                 </RN.View>
             }
         />
@@ -272,7 +383,6 @@ const ProfilePage = () => {
 };
 
 export default observer(ProfilePage);
-
 const styles = RN.StyleSheet.create({
     container: {
         height: windowHeight,
@@ -320,7 +430,6 @@ const styles = RN.StyleSheet.create({
     },
     scrollView: {},
     content: {
-        // justifyContent: 'space-between',
         height: windowHeight - windowHeight / 6,
     },
     eventsTypeList: {
@@ -365,10 +474,10 @@ const styles = RN.StyleSheet.create({
         color: '#AAAAAA',
     },
     gridScroll: {
-        paddingBottom: 160,
+        paddingBottom: 200,
     },
     gridContentContainer: {
-        paddingBottom: 180,
+        paddingBottom: 250,
     },
     gridContainer: {
         flexWrap: 'wrap',
@@ -376,12 +485,13 @@ const styles = RN.StyleSheet.create({
         justifyContent: 'flex-start',
         gap: 5,
     },
-    gridImage: {
+    imageWrapper: {
         width: '32%',
-        height: 160,
-        marginBottom: 3,
     },
-
+    gridImage: {
+        width: '100%',
+        aspectRatio: 1,
+    },
     voiceContainer: {
         width: '100%',
         gap: 14,
@@ -413,5 +523,23 @@ const styles = RN.StyleSheet.create({
 
     voiceInfo: {
         gap: 3
-    }
+    },
+    modalBackdrop: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    modalContent: {
+        padding: 20,
+        borderRadius: 10,
+        width: '90%',
+        height: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalImage: {
+        width: '100%',
+        height: '100%',
+    },
 });

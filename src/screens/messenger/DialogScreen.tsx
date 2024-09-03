@@ -1,6 +1,6 @@
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { ActivityIndicator, Keyboard, PanResponder, Platform, Text, TouchableWithoutFeedback, View } from 'react-native'
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { ActivityIndicator, Linking, Platform } from 'react-native'
 import RN from '../../components/RN';
 import { GiftedChat, MessageImage } from 'react-native-gifted-chat';
 import { RootStackParamList } from '../../types/navigation';
@@ -24,7 +24,7 @@ import FileViewer from 'react-native-file-viewer';
 import { windowWidth } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
 import VideoPlayer from './components/VideoPlayer';
-import { uploadAudioToStorage, uploadDocumentToStorage } from '../../services/firestoreService';
+import { uploadAudioToStorage, uploadDocumentToStorage, uploadMediaToStorage } from '../../services/firestoreService';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid } from 'react-native';
 import functions from '@react-native-firebase/functions';
@@ -34,6 +34,7 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 import 'react-native-console-time-polyfill'
 import Image from './components/Image';
 import { StackNavigationProp } from '@react-navigation/stack';
+import useKeepScrollPosition from './components/hook';
 
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
@@ -44,21 +45,26 @@ const DialogScreen = () => {
     const navigation = useNavigation<NavigationProp>();
     const { id, name, avatar } = route.params;
     const currentUser = auth().currentUser;
-    const groupId = `${id}-${currentUser?.uid}`;
     const [messages, setMessages] = useState([]);
 
     const [lastSeen, setLastSeen] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [newMessages, setNewMessages] = useState([]);
     const [loadingMessages, setLoadingMessages] = useState<{ [key: string]: boolean }>({});
     const [selectedMessage, setSelectedMessage] = useState(null);
     const [actionSheetVisible, setActionSheetVisible] = useState(false);
     const [chatOpenedAt, setChatOpenedAt] = useState(null);
-
-    const [editingMessage, setEditingMessage] = useState(null); // null means not editing
+    const [editingMessage, setEditingMessage] = useState(null);
     const [inputText, setInputText] = useState('');
     const [selectedEditMessage, setSelectedEditMessage] = useState(null);
     const [editing, setEditing] = useState<boolean>(false);
     const [roomId, setRoomId] = useState(null);
+    const [lastVisibleMessage, setLastVisibleMessage] = useState(null);
+    const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
+    const [allMessagesFetched, setAllMessagesFetched] = useState(false);
+    const { containerRef } = useKeepScrollPosition([messages]);
+    // const containerRef = useRef(null);
+
 
     useEffect(() => {
         const chatOpenedAt = new Date();
@@ -67,6 +73,8 @@ const DialogScreen = () => {
 
 
     const onLongPressMessage = (context, message) => {
+        console.log('tadaaa', context);
+
         setSelectedMessage(message);
         setActionSheetVisible(true);
         console.log('Long pressed message:', message);
@@ -74,8 +82,6 @@ const DialogScreen = () => {
 
     const onSelect = async (action) => {
         setActionSheetVisible(false);
-        // setEditing(false);
-        // setEditingMessage('');
         if (!selectedMessage) return;
 
         switch (action) {
@@ -253,6 +259,201 @@ const DialogScreen = () => {
         return () => unsubscribe();
     }, [id]);
 
+
+    // const fetchMessages = useCallback(async (roomId, startAfterDoc?) => {
+    //     setLoading(true);
+
+    //     let messagesQuery = db.collection('Messages')
+    //         .where('roomId', '==', roomId)
+    //         .orderBy('createdAt', 'desc')
+    //         .limit(20);
+
+    //     if (startAfterDoc) {
+    //         messagesQuery = messagesQuery.startAfter(startAfterDoc);
+    //     }
+
+    //     try {
+    //         const messagesSnapshot = await messagesQuery.get();
+
+    //         if (!messagesSnapshot.empty) {
+    //             const messagesArray = messagesSnapshot.docs.map(doc => {
+    //                 const data = doc.data();
+    //                 return {
+    //                     _id: doc.id,
+    //                     user: {
+    //                         _id: data.senderId,
+    //                         name: data.user?.name || 'Unknown',
+    //                     },
+    //                     text: data.text,
+    //                     maindis: data.maindis,
+    //                     audio: data.audio || null,
+    //                     video: data.video || null,
+    //                     images: data.image || [],
+    //                     fileUri: data.fileUri || null,
+    //                     createdAt: data.createdAt ? moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss') : null,
+    //                     senderId: data.senderId,
+    //                     circle: data.circle || null,
+    //                     fileName: data.fileName || null,
+    //                     receiverId: data.receiverId,
+    //                     roomId: data.roomId,
+    //                     reaction: data.reaction || null,
+    //                     read: data.read || false,
+    //                 };
+    //             });
+
+    //             // Update the last visible document
+    //             const lastVisible = messagesSnapshot.docs[messagesSnapshot.docs.length - 1];
+    //             setLastVisibleMessage(lastVisible);
+    //             setNewMessages(messagesArray)
+    //             // Update messages state
+    //             // setMessages(prevMessages => startAfterDoc ? [...prevMessages, ...messagesArray] : messagesArray);
+    //             setMessages(prevMessages => startAfterDoc ? GiftedChat.prepend(prevMessages, messagesArray) : messagesArray);
+
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching messages:', error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }, []);
+
+
+    const fetchMessages = useCallback(async (roomId, startAfterDoc?) => {
+        if (allMessagesFetched) return;
+        setLoading(true);
+
+        let messagesQuery = db.collection('Messages')
+            .where('roomId', '==', roomId)
+            .orderBy('createdAt', 'desc')
+            .limit(20);
+
+        if (startAfterDoc) {
+            messagesQuery = messagesQuery.startAfter(startAfterDoc);
+        }
+
+        try {
+            const messagesSnapshot = await messagesQuery.get();
+
+            if (messagesSnapshot.empty) {
+                setAllMessagesFetched(true);
+                return;
+            }
+
+            if (!messagesSnapshot.empty) {
+                const roomDoc = await db.collection('Rooms').doc(roomId).get();
+                const chatOpenedAtForCurrentUser = roomDoc.data()?.chatOpenedAt[currentUser?.uid];
+
+                const messagesArray = messagesSnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const messageCreatedAt = moment(data.createdAt.toDate()).format('YYYY-MM-DD HH:mm:ss');
+
+                    // Update the read status if necessary
+                    if (data.receiverId === currentUser?.uid && chatOpenedAtForCurrentUser && messageCreatedAt <= chatOpenedAtForCurrentUser) {
+                        db.collection('Messages').doc(doc.id).update({ read: true });
+                    }
+
+                    return {
+                        _id: doc.id,
+                        user: {
+                            _id: data.senderId,
+                            name: data.user?.name || 'Unknown',
+                        },
+                        text: data.text,
+                        maindis: data.maindis,
+                        audio: data.audio || null,
+                        video: data.video || null,
+                        images: data.image || [],
+                        fileUri: data.fileUri || null,
+                        createdAt: data.createdAt ? moment.utc(data.createdAt.toDate()).local().format('YYYY-MM-DD HH:mm:ss') : null,
+                        senderId: data.senderId,
+                        circle: data.circle || null,
+                        fileName: data.fileName || null,
+                        receiverId: data.receiverId,
+                        roomId: data.roomId,
+                        reaction: data.reaction || null,
+                        read: data.read || false,
+                        type: data?.type,
+                    };
+                });
+
+                // Update the last visible document
+                const lastVisible = messagesSnapshot.docs[messagesSnapshot.docs.length - 1];
+                setLastVisibleMessage(lastVisible);
+                setNewMessages(messagesArray);
+                setMessages(prevMessages => startAfterDoc ? GiftedChat.prepend(prevMessages, messagesArray) : messagesArray);
+            }
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [currentUser?.uid, allMessagesFetched]);
+
+
+
+    useLayoutEffect(() => {
+        setLoading(true);
+        const senderId = currentUser?.uid;
+        const receiverId = id;
+
+        const roomQuery = db.collection('Rooms')
+            .where('senderId', 'in', [senderId, receiverId])
+            .where('receiverId', 'in', [senderId, receiverId])
+            .limit(1);
+
+        const updateChatOpenedAt = async () => {
+            const currentTime = new Date();
+            try {
+                const roomDoc = await roomQuery.get();
+                if (!roomDoc.empty) {
+                    const roomId = roomDoc.docs[0].id;
+                    setRoomId(roomId);
+                    await db.collection('Rooms').doc(roomId).update({
+                        [`chatOpenedAt.${senderId}`]: currentTime,
+                    });
+                    // Fetch initial messages
+                    fetchMessages(roomId);
+                }
+            } catch (error) {
+                console.error('Error updating chat opened time:', error);
+            }
+        };
+
+        updateChatOpenedAt();
+
+        const unsubscribe = roomQuery.onSnapshot(async (roomQuerySnapshot) => {
+            if (!roomQuerySnapshot.empty) {
+                const roomDoc = roomQuerySnapshot.docs[0];
+                const roomId = roomDoc.id;
+                // Fetch messages if the room exists
+                fetchMessages(roomId);
+            } else {
+                console.log('No existing room found for the given sender and receiver.');
+                setMessages([]);
+                setLoading(false);
+            }
+        }, (error) => {
+            console.error('Error fetching room:', error);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [id, currentUser.uid]);
+
+
+
+
+    const handleLoadMoreMessages = () => {
+        console.log('blablaabkakabakka', lastVisibleMessage);
+
+        setIsFetchingMore(true);
+        if (lastVisibleMessage && !loading) {
+            fetchMessages(roomId, lastVisibleMessage);
+        }
+
+    };
+
+
     useLayoutEffect(() => {
         setLoading(true);
         const senderId = currentUser?.uid;
@@ -284,7 +485,8 @@ const DialogScreen = () => {
 
                 const messagesQuery = db.collection('Messages')
                     .where('roomId', '==', roomId)
-                    .orderBy('createdAt', 'desc');
+                    .orderBy('createdAt', 'desc')
+                    .limit(10);
 
                 messagesQuery.onSnapshot((messagesSnapshot) => {
                     const messagesArray = messagesSnapshot.docs.map((doc) => {
@@ -372,14 +574,10 @@ const DialogScreen = () => {
             circle,
         } = messages[0];
         const imageUris = Array.isArray(image) ? image : [image];
-
         const documentFileUri = uri;
-        console.log('documentFileUridocumentFileUridocumentFileUri', documentFileUri);
-
-
-        console.log('messagemessagemessagemessage', messages[0]);
+        console.log('audioaudio', audio);
+        
         const message = messages[0] || {};
-
 
         let audioUrl = null;
         if (audio) {
@@ -397,7 +595,7 @@ const DialogScreen = () => {
         if (video) {
             const videoFilePath = `videos/${Date.now()}.mp4`;
             try {
-                videoUrl = await uploadAudioToStorage(video, videoFilePath);
+                videoUrl = await uploadMediaToStorage(video, videoFilePath, 'video');
             } catch (error) {
                 console.error('Error uploading video file:', error);
             }
@@ -406,9 +604,9 @@ const DialogScreen = () => {
         let imageUrls = [];
         for (const imgUri of imageUris) {
             if (imgUri) {
-                const imageFilePath = `images/${Date.now()}.png`;
+                const imageFilePath = `images/${Date.now()}.webp`;
                 try {
-                    const uploadedImageUrl = await uploadAudioToStorage(imgUri, imageFilePath);
+                    const uploadedImageUrl = await uploadMediaToStorage(imgUri, imageFilePath, 'image');
                     imageUrls.push(uploadedImageUrl);
                 } catch (error) {
                     console.error('Error uploading image file:', error);
@@ -472,19 +670,17 @@ const DialogScreen = () => {
             type: messageType,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             ...(maindis && { maindis }),
-            // ...(fileName && { fileName }),
+            ...(fileName && { fileName }),
             ...(circle && { circle }),
             senderId,
             receiverId,
             read: false,
         });
 
-
         const recipientDoc = await firestore().collection('users').doc(receiverId).get();
 
         const recipientData = recipientDoc.data();
         const recipientTokens = recipientData?.deviceTokens || [];
-
 
         if (recipientTokens.length > 0) {
             sendNotification(recipientTokens, currentUser?.displayName || 'Me', text || 'Sent a message', senderId, targetRoomId);
@@ -506,7 +702,6 @@ const DialogScreen = () => {
 
         console.time('onEditMessage');
 
-        // Update local messages state
         console.log(selectedMessage._id, 789798798, selectedEditMessage._id);
         setMessages((previousMessages) =>
             previousMessages.map((message) =>
@@ -537,14 +732,8 @@ const DialogScreen = () => {
 
 
     const renderMessageImage = props => {
-        console.log('currentMessagecurrentMessage');
         const { currentMessage } = props;
-        console.log(!currentMessage.file,"!currentMessage.file!currentMessage.file");
-        
-
-
-
-        return !currentMessage.file ? (
+        return !currentMessage.file && currentMessage.image !== "none" ? (
             <>
                 {currentMessage?.images?.map((img, idx) => img && <MessageImage
                     key={idx}
@@ -555,32 +744,54 @@ const DialogScreen = () => {
                     imageStyle={{ width: 74, height: 74, resizeMode: 'cover' }}
                 />
                 )}
-                <View style={styles.imageInfo}>
-                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-                    <Text style={styles.time}>{currentMessage.time}</Text>
-                </View>
+                <RN.View style={styles.imageInfo}>
+                    <RN.Text style={styles.fileName}>{currentMessage.fileName}</RN.Text>
+                    <RN.Text style={styles.fileSize}>{currentMessage.fileSize}</RN.Text>
+                    <RN.Text style={styles.time}>{currentMessage.time}</RN.Text>
+                </RN.View>
             </>
-        ) : (
+        ) : currentMessage.image !== "none" && (
             <RN.Pressable
-                onPress={() => FileViewer.open(currentMessage.fileUri)}
+                onPress={() => Linking.openURL(currentMessage.file)}
                 style={styles.fileBox}>
                 <RN.View style={styles.fileBoxFile}>
-                    <Images.Svg.fileIcon />
+                    <Images.Svg.fileIcon width={74} height={74} />
                 </RN.View>
-                <View style={styles.imageInfo}>
-                    <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-                    <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-                    <Text style={styles.time}>{currentMessage.createdAt}</Text>
-                </View>
+                <RN.View style={styles.imageInfo}>
+                    <RN.Text style={styles.fileName}>{currentMessage.fileName}</RN.Text>
+                    <RN.Text style={styles.fileSize}>{currentMessage.fileSize}</RN.Text>
+                    <RN.Text style={styles.time}>{currentMessage.createdAt}</RN.Text>
+                </RN.View>
             </RN.Pressable>
         );
     };
 
-    
+
     const processedMessages = useMemo(() => {
-        return messages.map(message => ({ ...message, image: !!message?.images?.[0] ? message?.images?.[0] :'null', file: message.fileUri }));
+        return messages.map(message => ({ ...message, image: !!message?.images?.[0] ? message?.images?.[0] : message.fileUri, file: message.fileUri }));
     }, [messages]);
+
+
+
+    useEffect(() => {
+        if (containerRef.current) {
+            // console.log("GiftedChat containerRef.current:", containerRef.current);
+        }
+    }, [containerRef.current]);
+
+
+    useEffect(() => {
+        if (containerRef.current) {
+            const scrollableNode = containerRef.current._listRef._scrollRef; 
+            if (scrollableNode) {
+                scrollableNode.scrollTo({ y: 250, animated: false }); 
+            }
+
+        } else {
+            console.warn('No FlatList reference found');
+        }
+    }, [])
+
 
 
     return (
@@ -617,7 +828,7 @@ const DialogScreen = () => {
                     title={
                         <RN.View>
                             <RN.Text style={styles.name}>{name}</RN.Text>
-                            <RN.Text style={styles.lastSeen}>Last seen</RN.Text>
+                            {lastSeen !== 'Online' && <RN.Text style={styles.lastSeen}>Last seen</RN.Text>}
                             <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : 'Yesterday, 07:04'}</RN.Text>
                         </RN.View>
                     }
@@ -633,12 +844,20 @@ const DialogScreen = () => {
                     style={styles.container}
                 >
                     {loading ? (
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <RN.View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <ActivityIndicator size="large" color={COLORS.white} />
-                        </View>) :
+                        </RN.View>) :
                         (
                             <RN.View style={{ flex: 1 }}>
                                 <GiftedChat
+                                    messageContainerRef={containerRef}
+                                    inverted={true}
+                                    listViewProps={{
+                                        ref: containerRef,
+                                        onEndReachedThreshold: 0.4,
+                                        onEndReached: handleLoadMoreMessages
+                                    }}
+                                    loadEarlier={false}
                                     messages={processedMessages}
                                     messagesContainerStyle={{ flexGrow: 1 }}
                                     onLongPress={onLongPressMessage}
@@ -649,6 +868,8 @@ const DialogScreen = () => {
                                         name: auth().currentUser.displayName,
                                         avatar: auth().currentUser.photoURL
                                     }}
+                                    infiniteScroll={true}
+                                    isLoadingEarlier={loading}
                                     keyboardShouldPersistTaps="handled"
                                     isKeyboardInternallyHandled={false}
                                     renderInputToolbar={(props) => (
@@ -667,15 +888,16 @@ const DialogScreen = () => {
                                     renderMessageAudio={props => <AudioPlayer {...props} />}
                                     renderMessageVideo={props => <VideoPlayer {...props} />}
                                     renderMessageImage={renderMessageImage}
-                                    // imageProps={}
-                                    scrollToBottom={true}
+                                    scrollToBottom={false}
+                                    scrollToBottomStyle={{ backgroundColor: 'none' }}
+                                    scrollToBottomComponent={() => <Images.Svg.scrollSmiles />}
                                 />
                                 <MessageActionSheet
                                     visible={actionSheetVisible}
                                     onClose={() => setActionSheetVisible(false)}
                                     onSelect={onSelect}
-                                    onReact={onReaction}
-                                />
+                                    onReact={onReaction} 
+                                    messageType={selectedMessage?.type}                                />
                             </RN.View>
                         )
                     }

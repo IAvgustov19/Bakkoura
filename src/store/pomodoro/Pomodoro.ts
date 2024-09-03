@@ -5,6 +5,8 @@ import { BreakData } from '../../utils/repeat';
 import { addPomodoroTaskToFirestore, deletePomodoroTaskFromFirestore, getPomodoroTasksFromFirestore, updatePomodoroTaskInFirestore } from '../../services/firestoreService';
 import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import PushNotification from 'react-native-push-notification';
+import { channelId } from '../../../App';
 
 export class PomodoroStore {
   constructor() {
@@ -24,9 +26,13 @@ export class PomodoroStore {
   isRunCurrent = false;
   isCurrentPomodoro = true;
   completedCycles: number = 0;
-  totalCycles: number = 8;
+  totalCycles: number = 4;
   isLongBreakSet = false;
   estimatedPomodoros = 0;
+
+  shortBreakCount = 0;
+  maxShortBreaks = 5;
+
 
   isUpdate = false;
 
@@ -121,7 +127,7 @@ export class PomodoroStore {
 
   setCurrentBreakTime = (id: number) => {
     runInAction(() => {
-      this.stopCurrentPomodoro(id);
+      this.stopCurrent(id);
       const selectedBreak = BreakData.find(i => i.id === id);
       if (selectedBreak) {
         this.currentBreakTime = selectedBreak;
@@ -152,7 +158,6 @@ export class PomodoroStore {
   };
 
   startCurrentPomodoro = (id: number) => {
-    clearInterval(this.currentSecondInterval);
     if (this.isStartCurrent) {
       this.isStartCurrent = false;
     } else {
@@ -164,27 +169,41 @@ export class PomodoroStore {
             this.currentTime = secondsToMS(this.currentSecond);
             if (this.currentSecond === 0) {
               this.stopCurrentPomodoro(id);
-              if (this.currentBreakTime.id === 1) {
-                if (this.completedCycles < this.newTaskState.minut - 1) {
-                  // Switch between id1 and id2 until completedCycles === minut - 1
-                  this.setCurrentBreakTime(
-                    this.currentBreakTime.id === 1 ? 2 : 1,
-                  );
-                  this.completedCycles++;
-                  // this.estimatedPomodoros++;
-                  return;
+              console.log(`Break Time ID: ${this.currentBreakTime.id}`);
+              console.log(`Completed Cycles Before Transition: ${this.completedCycles}`);
+  
+              if (this.currentBreakTime.id === 1) { // Pomodoro period
+                this.completedCycles++;
+                console.log(`Pomodoro completed: Updated Completed Cycles to ${this.completedCycles}`);
+  
+                if (this.completedCycles >= 5) {
+                  // After 4 Pomodoro periods, switch to long break
+                  this.completedCycles = 0; // Reset completed cycles
+                  this.setCurrentBreakTime(3); // Switch to long break
+                } else {
+                  this.setCurrentBreakTime(2); // Switch to short break
                 }
-                if (this.estimatedPomodoros === this.newTaskState.minut - 1) {
-                  // If completedCycles === minut - 1, switch to id3
-                  this.estimatedPomodoros++;
-                  this.setCurrentBreakTime(3);
-                  return;
+  
+              } else if (this.currentBreakTime.id === 2) { // Short Break
+                this.shortBreakCount++;
+                console.log(`Short Break completed: Updated Short Break Count to ${this.shortBreakCount}`);
+  
+                if (this.shortBreakCount >= 5) {
+                  // After 4 short breaks, switch to Pomodoro period and reset
+                  this.shortBreakCount = 0; // Reset short break count
+                  this.completedCycles = 0; // Reset completed cycles
+                  this.setCurrentBreakTime(1); // Switch back to Pomodoro period
+                } else {
+                  this.setCurrentBreakTime(1); // Switch back to Pomodoro period
                 }
+  
+              } else if (this.currentBreakTime.id === 3) { // Long Break
+                // After long break, reset the entire cycle
+                this.setCurrentBreakTime(1); // Switch back to Pomodoro period
               }
-            }
-            if (this.currentBreakTime.id === 2 && this.currentSecond === 0) {
-              this.estimatedPomodoros++;
-              this.setCurrentBreakTime(1);
+  
+              console.log(`New Break Time ID: ${this.currentBreakTime.id}`);
+              console.log(`Updated Completed Cycles: ${this.completedCycles}`);
             }
           });
         }, 1000);
@@ -194,11 +213,13 @@ export class PomodoroStore {
       }
     }
   };
+  
 
-  stopCurrentPomodoro = (id: number) => {
+  stopCurrent = (id: number) => {
+
     clearInterval(this.currentSecondInterval);
 
-    if(id === 0) {
+    if (id === 0) {
       id = 1;
     }
 
@@ -217,8 +238,54 @@ export class PomodoroStore {
 
     this.isStartCurrent = false;
     this.isRunCurrent = false;
-    this.completedCycles = 0;
     this.isLongBreakSet = false;
+
+   
+
+
+  };
+  stopCurrentPomodoro = (id: number) => {
+
+    clearInterval(this.currentSecondInterval);
+
+    if (id === 0) {
+      id = 1;
+    }
+
+    if (id == 1) {
+      this.currentSecond = 1500; // 25 minutes
+      this.currentTime = '25:00';
+    }
+    if (id == 2) {
+      this.currentSecond = 300; // 5 minutes
+      this.currentTime = '05:00';
+    }
+    if (id == 3) {
+      this.currentSecond = 900; // 15 minutes
+      this.currentTime = '15:00';
+    }
+
+    this.isStartCurrent = false;
+    this.isRunCurrent = false;
+    this.isLongBreakSet = false;
+
+    PushNotification.localNotification({
+      channelId: channelId, // This is optional, and you may need to create a channel for Android
+      title: "Pomodoro Timer",
+      message: `Pomodoro session has ended. ${this.currentBreakTime.id === 3 && this.shortBreakCount < 4
+          ? "Back to Pomodoro!"
+          : this.currentBreakTime.id === 2
+            ? "Back to Pomodoro!"
+            : this.currentBreakTime.id === 1
+              ? this.shortBreakCount < 3
+                ? "Take a short break!"
+                : "Time for a long break!"
+              : `Unknown state: ID ${this.currentBreakTime.id}` // Print the actual ID for debugging
+        }`,
+      playSound: true,
+      soundName: 'default',
+      // Other notification options
+    });
 
     // clearInterval(this.currentSecondInterval);
     // if (this.currentBreakTime.id === 1) {

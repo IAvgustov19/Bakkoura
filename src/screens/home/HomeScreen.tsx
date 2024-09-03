@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Images} from '../../assets';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -9,28 +9,44 @@ import HomeWatch24 from './components/HomeWatch24';
 import HomeWatch30 from './components/HomeWatch30';
 import HomeWatch30h24h from './components/HomeWatch30and24';
 import useRootStore from '../../hooks/useRootStore';
-import {db} from '../../config/firebase';
-import {observer} from 'mobx-react-lite';
-import {windowHeight} from '../../utils/styles';
-import {useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
+import { db } from '../../config/firebase';
+import { observer } from 'mobx-react-lite';
+import { windowHeight } from '../../utils/styles';
+import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 import TodayEvent from './components/TodayEvent';
 
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {ActivityIndicator, Text} from 'react-native';
-import {COLORS} from '../../utils/colors';
+import { ActivityIndicator, Text } from 'react-native';
+import { COLORS } from '../../utils/colors';
 import TextView from '../../components/Text/Text';
 
 const HomeScreen = () => {
-  const {whichWatch, homeCurrentTime} = useRootStore().homeClockStore;
-  const {getPersonalState} = useRootStore().personalAreaStore;
-  const {nearDay, filterNearDay, allEventsData} = useRootStore().calendarStore;
+  const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
+  const { getPersonalState } = useRootStore().personalAreaStore;
+  const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
   const navigation = useNavigation();
-  const {personalAreaData, updateLoading} = useRootStore().personalAreaStore;
+  const { personalAreaData, updateLoading } = useRootStore().personalAreaStore;
   const [userData, setUserData] = useState(null);
+  const [activity, setActivity] = useState(false);
+
+  const {
+    userData: messageData,
+  } = useRootStore().messangerStore;
+
+
+  useEffect(() => {
+    const checkUnreadMessages = () => {
+      const hasUnread = messageData.some(user => user.unreadMessages > 0);
+      setActivity(hasUnread);
+    };
+
+    checkUnreadMessages();
+  }, [messageData]);
+
 
   const fetchUserData = async uid => {
     try {
@@ -103,9 +119,10 @@ const HomeScreen = () => {
                     navigation.navigate(APP_ROUTES.MESSENGER as never)
                   }>
                   <Images.Svg.messageIcon />
+                  {activity && <RN.View style={styles.activity} />}
                 </RN.TouchableOpacity>
                 <RN.TouchableOpacity
-                  style={{alignItems: 'center'}}
+                  style={{ alignItems: 'center' }}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.PERSONAL_STACK as never)
                   }>
@@ -113,7 +130,7 @@ const HomeScreen = () => {
                     <RN.View style={styles.imageContainer}>
                       <Images.Svg.profileBackground width={55} height={55} />
                       <RN.Image
-                        source={{uri: personalAreaData.avatar}}
+                        source={{ uri: personalAreaData.avatar }}
                         style={styles.profileImg}
                         onLoadEnd={() => setAvatarLoading(false)}
                       />
@@ -121,7 +138,7 @@ const HomeScreen = () => {
                         <RN.View style={styles.loadingBox}>
                           <ActivityIndicator
                             color={COLORS.black}
-                            style={{marginTop: 3}}
+                            style={{ marginTop: 3 }}
                           />
                         </RN.View>
                       ) : null}
@@ -136,12 +153,12 @@ const HomeScreen = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.watchBox}>
               <TextView
-                style={[styles.title, {marginTop: -15}]}
+                style={[styles.title, { marginTop: -15 }]}
                 text={`${personalAreaData.name}, Message to You!`}
               />
               <TextView
                 fonWeight="300"
-                style={[styles.title, {marginTop: 5}]}
+                style={[styles.title, { marginTop: 5 }]}
                 title={'Today is your day! Do something good!'}
               />
               <RN.View style={styles.renderWatchs}>{renderWatchs()}</RN.View>
@@ -224,4 +241,13 @@ const styles = RN.StyleSheet.create({
   renderWatchs: {
     marginTop: 9,
   },
+  activity: {
+    height: 9,
+    width: 9,
+    right: 7,
+    top: 8,
+    borderRadius: 50,
+    position: 'absolute',
+    backgroundColor: 'red',
+  }
 });

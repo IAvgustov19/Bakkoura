@@ -1,28 +1,17 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { Images } from '../../../assets';
-import EmojiSelector, { Categories } from 'react-native-emoji-selector';
 import RN from '../../../components/RN';
+import { smileyEmojis } from '../../../utils/messenger';
 
-const MessageActionSheet = ({ visible, onClose, onSelect, onReact }) => {
+const MessageActionSheet = ({ visible, onClose, onSelect, onReact, messageType }) => {
+    
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedEmoji, setSelectedEmoji] = useState(null);
     const emojiFlatListRef = useRef(null);
-
-    const smileyEmojis = [
-        '😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😇', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚',
-        '😇', '🥳', '🤩', '🤗', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '😮', '😯', '😲', '😳', '🥺', '😵', '😠',
-        '😡', '😤', '😥', '😓', '😪', '😴', '😵', '🤯', '🤠', '🥳', '😷', '🤒', '🤕', '🤢', '🤧', '😇', '🤠', '🥳', '🥺', '😎'
-    ];
-
     const options = [
-        // { text: 'Answer', action: 'answer', icon: <Images.Svg.answerArrow /> },
-        // { text: 'Pin', action: 'pin', icon: <Images.Svg.pinIcon /> },
-        // { text: 'Send', action: 'send', icon: <Images.Svg.sendArrow /> },
+        { text: 'Edit', action: 'edit', icon: <RN.Image source={Images.Img.editMessage} style={{ width: 17, height: 17 }} /> },
         { text: 'Delete', action: 'delete', icon: <Images.Svg.deleteMessage /> },
-        { text: 'Edit', action: 'edit', icon: <RN.Image source={Images.Img.editMessage} style={{width: 15, height: 15}}/> }
     ];
-
 
     const handleSelect = useCallback((emoji) => {
         if (onReact) {
@@ -70,17 +59,19 @@ const MessageActionSheet = ({ visible, onClose, onSelect, onReact }) => {
                         />
                         <Images.Svg.scrollSmiles style={styles.scrollIcon} onPress={loadMoreEmojis} />
                     </View>
-                    <View style={styles.actionSheet}>
-                        {options.map((option) => (
-                            <TouchableOpacity
-                                key={option.text}
-                                style={[styles.option, option.text == 'Delete' && { borderBottomWidth: 0.4, }]}
-                                onPress={() => onSelect(option.action)}
-                            >
-                                <Text style={[styles.optionText, option.text === 'Delete' && { color: '#EB5545' }]}>{option.text}</Text>
-                                {option.icon}
-                            </TouchableOpacity>
-                        ))}
+                    <View style={[styles.actionSheet, messageType !== 'text' && {height: '26%'}]}>
+                        {options
+                            .filter(option => !(option.text === 'Edit' && messageType !== 'text')) // Exclude "Edit" if messageType is not 'text'
+                            .map((option) => (
+                                <TouchableOpacity
+                                    key={option.text}
+                                    style={[styles.option, option.text === 'Delete' && { borderBottomWidth: messageType == 'text' ? 0.4 : 0}]}
+                                    onPress={() => onSelect(option.action)}
+                                >
+                                    <Text style={[styles.optionText, option.text === 'Delete' && { color: '#EB5545' }]}>{option.text}</Text>
+                                    {option.icon}
+                                </TouchableOpacity>
+                            ))}
                     </View>
                 </View>
             </TouchableOpacity>

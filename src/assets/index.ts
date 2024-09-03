@@ -159,8 +159,8 @@ import musicIcon from './svg/musicIcon.svg';
 import blueArrow from './svg/blueArrow.svg';
 import fileIconMedia from './svg/fileIcon.svg';
 import linkIcon from './svg/linkIcon.svg';
-
-
+import noData from './svg/noData.svg';
+import question from './svg/question.svg';
 
 export const Images = {
   Svg: {
@@ -328,7 +328,8 @@ export const Images = {
     blueArrow,
     linkIcon,
     fileIconMedia,
-
+    noData,
+    question,
   },
   Img: {
     pandaTimer: require('./images/pandaTimer.png'),
@@ -368,7 +369,20 @@ export const Images = {
     podcast2: require('./images/podcast2.png'),
     podcast3: require('./images/podcast3.png'),
     podcast4: require('./images/podcast4.png'),
-    editMessage: require('./images/editMessage.jpeg'),
+    editMessage: require('./images/editMessage.png'),
+    questionMark: require('./images/question.png'),
+    pomodoroSlide: require('./images/pomodoroSlide.jpeg'),
+    alarmSlide1: require('./images/alarmSlider1.jpeg'),
+    alarmSlide2: require('./images/alarmSlider2.jpeg'),
+    metronomSlide1: require('./images/metronomSlide1.jpeg'),
+    metronomSlide2: require('./images/metronomSlide2.jpeg'),
+    metronomSlide3: require('./images/metronomSlide3.jpeg'),
+    togetherSlide1: require('./images/timeTogetherSlider1.jpg'),
+    togetherSlide2: require('./images/timeTogetherSlider2.jpeg'),
+    togetherSlide3: require('./images/timeTogetherSlider3.jpg'),
+    todoSlider1: require('./images/todoSlider1.jpeg'),
+    timerSlider1: require('./images/timerSlider1.jpeg'),
+    timerSlider2: require('./images/timerSlider2.jpeg'),
   },
 };
 

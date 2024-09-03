@@ -1,8 +1,8 @@
-import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
-import {Images} from '../../assets';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -10,14 +10,15 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
-import {COLORS} from '../../utils/colors';
-import {etapCountData} from '../../utils/repeat';
-import {windowHeight, windowWidth} from '../../utils/styles';
+import { COLORS } from '../../utils/colors';
+import { etapCountData } from '../../utils/repeat';
+import { windowHeight, windowWidth } from '../../utils/styles';
 import EllipseBotton from './components/EllipseBotton';
 import FirstMetronom from './components/FirstMetronom';
 import SecondMetronom from './components/SecondMetronom';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 
 const Metronom = () => {
   const navigation = useNavigation();
@@ -56,12 +57,12 @@ const Metronom = () => {
 
   const AddEtap = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({x: windowWidth / 2.4, animated: true});
+      scrollViewRef.current.scrollTo({ x: windowWidth / 2.4, animated: true });
     }
   };
   const RemoveEtap = () => {
     if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({x: 0, animated: true});
+      scrollViewRef.current.scrollTo({ x: 0, animated: true });
     }
   };
 
@@ -93,8 +94,11 @@ const Metronom = () => {
           <HeaderContent
             title="Metronom"
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={<Images.Svg.timerLogo />}
-          />
+            rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.METRONOM_SLIDER as never)}>
+                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+              </RN.TouchableOpacity>
+            } />
           <RN.View style={styles.content}>
             <RN.ScrollView>
               <RN.View>
@@ -102,7 +106,7 @@ const Metronom = () => {
                   <RN.TouchableOpacity
                     style={[
                       styles.changeBtn,
-                      {backgroundColor: one ? '#ECC271' : '#000'},
+                      { backgroundColor: one ? '#ECC271' : '#000' },
                     ]}></RN.TouchableOpacity>
                   <RN.TouchableOpacity
                     style={[

@@ -209,15 +209,20 @@ const TimeTogether = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Couple Time"
             rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TIME_TOGETHER_SLIDER as never)}>
+                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+              </RN.TouchableOpacity>
+            }
+          />
+          <RN.View style={styles.content}>
+            <RN.View style={styles.switch}>
               <SwitchContain
                 title={getTimeFormat()} // Display the current time format
                 _title={getTimeFormat() ? '30h' : '24h'} // Toggle label based on current format
                 back={back}
                 handlePress={() => { handleToggleFormat(); setBack(e => !e) }} // Call the toggle handler
               />
-            }
-          />
-          <RN.View style={styles.content}>
+            </RN.View>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
                 {!(etapList.length == 0) ? lottie :
@@ -345,4 +350,7 @@ const styles = RN.StyleSheet.create({
     fontSize: 16,
     color: COLORS.white,
   },
+  switch: {
+    paddingVertical: 10, width: '100%', alignItems: 'center'
+  }
 });

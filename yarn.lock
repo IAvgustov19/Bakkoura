@@ -9072,6 +9072,11 @@ react-native-communications@2.2.1:
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
   integrity sha512-5+C0X9mopI0+qxyQHzOPEi5v5rxNBQjxydPPiKMQSlX1RBIcJ8uTcqUPssQ9Mo8p6c1IKIWJUSqCj4jAmD0qVQ==
 
+react-native-compressor@^1.8.25:
+  version "1.8.25"
+  resolved "https://registry.yarnpkg.com/react-native-compressor/-/react-native-compressor-1.8.25.tgz#11fb31b9883f9249f59196a146667f2be3610dd3"
+  integrity sha512-ldQvBEFJpGa9FlBF6ijBoOGg5e/vRYJOZ97ElEERwC9tO9qmt87Nj80LAuASaY0JDFfYDJi8mFSWM/uUaXaMsA==
+
 react-native-confirmation-code-field@^7.3.2:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/react-native-confirmation-code-field/-/react-native-confirmation-code-field-7.4.0.tgz#58cc2d5adad59882d1805bf164cd6099d432d21e"
@@ -9152,7 +9157,7 @@ react-native-google-recaptcha-v2@^1.1.0:
   resolved "https://registry.yarnpkg.com/react-native-google-recaptcha-v2/-/react-native-google-recaptcha-v2-1.1.0.tgz#9dc129c71ffa61c06470d5c95c6ea165bfdf4100"
   integrity sha512-J8bGXcNqfx3obiDn9wptElO5OzqO55QUUVTZJEIqjZ0GcTx6cPnttGkO96cbTHvG+k6FMLRSm2GeUXmk7otj+Q==
 
-react-native-image-crop-picker@^0.41.1:
+react-native-image-crop-picker@^0.41.2:
   version "0.41.2"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.41.2.tgz#824fa8fee8391fbb3e0b5ae2973221a2dff0cafb"
   integrity sha512-GcDu/adXU/1y/MrxsbOfqcGRGWC2pTttt5VGy/jyRJ6GXfoC29fTQf8SG5kGtc5schSR6K+mKYO4uW6eJPljlQ==
@@ -9161,6 +9166,11 @@ react-native-image-picker@^7.1.2:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-7.1.2.tgz#383849d1953caf4578874a1f5e5dd11c737bd5cd"
   integrity sha512-b5y5nP60RIPxlAXlptn2QwlIuZWCUDWa/YPUVjgHc0Ih60mRiOg1PSzf0IjHSLeOZShCpirpvSPGnDExIpTRUg==
+
+react-native-image-resizer@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/react-native-image-resizer/-/react-native-image-resizer-1.4.5.tgz#5a520aa8baa07638b1894a1d87d4d9a0945c8d58"
+  integrity sha512-33EgL3C9pyvjKpullAB6fWyD5QhoYEpNNB9rxNvUsrpAnL2mHBW7PTrUCCZudJeB6Weg7nbweKrSw1nnto5aqg==
 
 react-native-iphone-x-helper@1.3.1, react-native-iphone-x-helper@^1.0.3:
   version "1.3.1"

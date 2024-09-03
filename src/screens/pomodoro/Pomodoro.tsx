@@ -137,12 +137,16 @@ const Pomodoro = () => {
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Pomodoro"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.POMODORO_SLIDER as never)}>
+                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+              </RN.TouchableOpacity>
+            }
           />
           {/* <RN.ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>  */}
-          <RN.View style={styles.content}>
+          < RN.View style={styles.content}>
             <RN.View style={styles.pomodoro}>
               <RN.View style={styles.breakTimeBox}>
                 {BreakData.map((item, index) => {
@@ -235,7 +239,7 @@ const Pomodoro = () => {
             )}
           </RN.View>
           {/* </RN.ScrollView> */}
-        </RN.View>
+        </RN.View >
       }
     />
   );

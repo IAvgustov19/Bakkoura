@@ -19,6 +19,8 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import RNFetchBlob from 'rn-fetch-blob';
+import { Audio, Image, Video } from 'react-native-compressor';
+import ImageResizer from 'react-native-image-resizer';
 
 // calendar events
 export const addEventToFirestore = async event => {
@@ -927,10 +929,24 @@ export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string):
   }
 };
 
+
 export const uploadAudioToStorage = async (uri, path) => {
   try {
+    // Compress the audio file
+    const compressedUri = await Audio.compress(uri, {
+      quality: 'medium', // or use bitrate, samplerate, channels as needed
+      // bitrate: 64000, // for bitrate-based compression
+      // samplerate: 44100, // for sample rate adjustment
+      // channels: 1 // for mono audio
+    });
+
+    // Create a reference to Firebase Storage
     const reference = storage().ref(path);
-    await reference.putFile(uri);
+
+    // Upload the compressed audio file
+    await reference.putFile(compressedUri);
+
+    // Get the download URL
     const url = await reference.getDownloadURL();
     return url;
   } catch (error) {
@@ -938,7 +954,78 @@ export const uploadAudioToStorage = async (uri, path) => {
     throw error;
   }
 };
+// export const uploadMediaToStorage = async (uri, path, mediaType) => {
+//   try {
+//     let compressedUri = uri;
 
+//     // Compress based on media type
+//     if (mediaType === 'image') {
+//       compressedUri = await Image.compress(uri, {
+//         compressionMethod: 'auto', // Can be 'jpeg', 'png', etc.
+//       });
+//     } else if (mediaType === 'video') {
+//       compressedUri = await Video.compress(uri, {
+//         compressionMethod: 'auto', // Can be adjusted based on your needs
+//       });
+//     }
+
+//     // Create a reference to Firebase Storage
+//     const reference = storage().ref(path);
+
+//     // Upload the (compressed) media file
+//     await reference.putFile(compressedUri);
+
+//     // Get the download URL
+//     const url = await reference.getDownloadURL();
+//     return url;
+//   } catch (error) {
+//     console.error('Error uploading file:', error);
+//     throw error;
+//   }
+// };
+
+export const uploadMediaToStorage = async (uri, path, mediaType) => {
+  try {
+    let compressedUri = uri;
+
+    // Compress based on media type
+    if (mediaType === 'image') {
+      // Apply existing image compression logic
+      compressedUri = await Image.compress(uri, {
+        compressionMethod: 'auto', // Can be 'jpeg', 'png', etc.
+      });
+
+      // Convert the image to WebP format
+      const resizedImage = await ImageResizer.createResizedImage(
+        compressedUri, // URI of the already compressed image
+        800, // new width (adjust as needed)
+        600, // new height (adjust as needed)
+        'WEBP', // format
+        80, // quality (0 to 100)
+      );
+
+      compressedUri = resizedImage.uri;
+    } else if (mediaType === 'video') {
+      // Compress the video
+      compressedUri = await Video.compress(uri, {
+        compressionMethod: 'auto', // Can be adjusted based on your needs
+      });
+    }
+
+    // Create a reference to Firebase Storage
+    const reference = storage().ref(path);
+
+    // Upload the (compressed) media file
+    await reference.putFile(compressedUri);
+
+    // Get the download URL
+    const url = await reference.getDownloadURL();
+    return url;
+  } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
+  }
+};
 async function requestStoragePermission(): Promise<boolean> {
   if (Platform.OS === 'android') {
     try {
@@ -953,7 +1040,7 @@ async function requestStoragePermission(): Promise<boolean> {
       if (readGranted && writeGranted) {
         return true;
       } else if (granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
-                 granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+        granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
         Alert.alert(
           'Permission Required',
           'Storage access is required to upload files. You have denied this permission and chosen "Don\'t ask again". Please enable it manually in the app settings.',
@@ -1004,8 +1091,6 @@ export async function uploadFileFromContentUri(contentUri: string) {
     if (filePath) {
       const reference = storage().ref(`uploads/${new Date().toISOString()}.pdf`); // Create a unique path
       await reference.putFile(filePath);
-
-      // Get the download URL (optional, if you need it)
       const url = await reference.getDownloadURL();
       console.log('File URL:', url);
       Alert.alert('Upload Successful', `File URL: ${url}`);
@@ -1021,14 +1106,9 @@ export async function uploadFileFromContentUri(contentUri: string) {
 
 export async function uploadDocumentToStorage(fileUri) {
   try {
-    // Create a unique file name based on timestamp
     const fileName = `documents/${new Date().getTime()}_${fileUri.split('/').pop()}`;
     const reference = storage().ref(fileName);
-    
-    // Upload file
     await reference.putFile(fileUri);
-
-    // Get download URL
     const url = await reference.getDownloadURL();
 
     console.log('File available at:', url);
@@ -1038,3 +1118,48 @@ export async function uploadDocumentToStorage(fileUri) {
     console.error('Error uploading document:', error);
   }
 }
+
+
+export const getUserNameById = async (senderId) => {
+  try {
+    const userRef = db.collection('users').doc(senderId);
+    const doc = await userRef.get();
+    if (doc.exists) {
+      const userData = doc.data();
+      return userData.name || "Unknown Sender";
+    } else {
+      return "Unknown Sender";
+    }
+  } catch (error) {
+    console.error("Error fetching user name: ", error);
+    return "Error Fetching Name";
+  }
+};
+
+export const fetchMessagesByRoomId = async (roomId: string) => {
+  const messagesQuery = db.collection('Messages')
+    .where('roomId', '==', roomId)
+    .orderBy('createdAt', 'desc');
+  const snapshot = await messagesQuery.get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
+
+export const fetchllMessages = async (userId: string) => {
+  try {
+      const messagesRef = db.collection('Messages');
+      const sentMessagesSnapshot = await messagesRef
+          .where('senderId', '==', userId)
+          .get();
+      const receivedMessagesSnapshot = await messagesRef
+          .where('receiverId', '==', userId)
+          .get();
+      const messages = [
+          ...sentMessagesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+          ...receivedMessagesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+      ];
+      return messages;
+  } catch (error) {
+      console.error('Error fetching messages: ', error);
+      return [];
+  }
+};

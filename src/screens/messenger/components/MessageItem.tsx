@@ -39,9 +39,9 @@ const MessageItem: React.FC<Props> = ({
                     </RN.View>
                     <RN.View style={styles.timerInfo}>
                         <RN.Text style={styles.whiteText}>
-                            {name.length > 25 ? name.slice(0, 22) + '...' : name}
+                            {name?.length > 25 ? name.slice(0, 22) + '...' : name}
                         </RN.Text>
-                        <RN.Text style={styles.darkGreyText}>{description}</RN.Text>
+                        <RN.Text style={styles.darkGreyText}>{description?.length > 30 ? `${description?.slice(0, 30)}...` : description}</RN.Text>
                     </RN.View>
                 </RN.View>
                 <RN.View style={styles.rightBox}>

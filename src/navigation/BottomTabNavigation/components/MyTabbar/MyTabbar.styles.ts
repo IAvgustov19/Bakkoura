@@ -7,10 +7,8 @@ export const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    // height: '100%',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
-    paddingBottom: 50,
   },
   bottomSheetScrollView: {
     backgroundColor: COLORS.black,
@@ -19,16 +17,11 @@ export const styles = StyleSheet.create({
   },
   renderTabBarsContainer: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
     paddingHorizontal: 3,
   },
   borderContainer: {
-    // borderTopWidth: 2,
-    // borderLeftWidth: 2,
-    // borderRightWidth: 2,
-    // borderColor: '#43371F',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
     overflow: 'hidden',

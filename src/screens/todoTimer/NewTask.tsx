@@ -76,7 +76,7 @@ const NewTask = () => {
               <ListItemCont
                 title="Task name"
                 value={
-                  taskState.name.length > 20
+                  taskState.name?.length > 20
                     ? taskState.name.slice(0, 17) + '...'
                     : taskState.name
                 }

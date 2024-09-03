@@ -63,8 +63,8 @@ const styles = RN.StyleSheet.create({
     },
     content: {
         gap: 5,
-        paddingBottom: 170,
     },
     flatlist: {
+        height: '85%',
     },
 });

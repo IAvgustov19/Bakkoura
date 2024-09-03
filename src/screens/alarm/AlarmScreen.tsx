@@ -1,8 +1,8 @@
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
-import {Images} from '../../assets';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { FlatList } from 'react-native-gesture-handler';
+import { Images } from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
@@ -10,16 +10,17 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
-import {APP_ROUTES} from '../../navigation/routes';
-import {COLORS} from '../../utils/colors';
-import {RectButton} from 'react-native-gesture-handler';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
+import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import LinearGradient from 'react-native-linear-gradient';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import AlarmClock from './components/AlarmClock';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import ListFooter from '../../components/ListFooter/ListFooter';
-import {windowHeight} from '../../utils/styles';
+import { windowHeight } from '../../utils/styles';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const AlarmScreen = () => {
   const {
@@ -50,15 +51,15 @@ const AlarmScreen = () => {
     );
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <Swipeable
         key={index}
         renderRightActions={() => renderLeftActions(item.id)}
         onSwipeableWillOpen={() => handleDeleteAlarm(item.id)}>
         <LinearGradient
-          start={{x: 0, y: 0.5}}
-          end={{x: 1, y: 0.5}}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
           colors={
             item.isActive
               ? ['#0D0D0D', '#051222', '#00448E']
@@ -69,7 +70,7 @@ const AlarmScreen = () => {
             <RN.Text
               style={[
                 styles.time,
-                {color: item.isActive ? COLORS.green : COLORS.white},
+                { color: item.isActive ? COLORS.green : COLORS.white },
               ]}>
               {item.time}
             </RN.Text>
@@ -128,24 +129,31 @@ const AlarmScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<Images.Svg.btsRightLinear />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Alarm clock"
             rightItem={
-              isClock ? (
-                <SwitchContain
-                  title="24h"
-                  _title="30h"
-                  back={is24h}
-                  handlePress={() => setIs24h(e => !e)}
-                />
-              ) : (
-                <Images.Svg.timerLogo />
-              )
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.ALARM_SLIDER as never)}>
+                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+              </RN.TouchableOpacity>
             }
           />
           {/* <RN.TouchableOpacity onPress={() => setClock(e => !e)}>
             <Images.Svg.dotOpenBar />
           </RN.TouchableOpacity> */}
+
+          <RN.View style={styles.switch}>
+            {isClock ? (
+              <SwitchContain
+                title="24h"
+                _title="30h"
+                back={is24h}
+                handlePress={() => setIs24h(e => !e)}
+              />
+            ) : (
+              <Images.Svg.timerLogo />
+            )}
+          </RN.View>
+
           {renderClock()}
         </RN.View>
       }
@@ -203,4 +211,7 @@ const styles = RN.StyleSheet.create({
     width: '100%',
     bottom: 110,
   },
+  switch: {
+    paddingVertical: 10, width: '100%', alignItems: 'center'
+  }
 });

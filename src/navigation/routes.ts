@@ -18,7 +18,7 @@ export enum APP_ROUTES {
 
   // two step auth
   FINGERPRINT = 'FingerprintAuth',
-  PASSWORD = 'PasswordPrompt',
+  PASSWORD = 'PasswordScreen',
   TWO_STEP = 'TwoStepAuth',
 
   //private
@@ -59,16 +59,22 @@ export enum APP_ROUTES {
   DIALOG_SCREEN = 'DialogScreen',
   PROFILE_PAGE = 'ProfilePage',
   TODOTIMER = 'ToDoTimerScreen',
+  TODOTIMER_SLIDER = 'ToDoTimerSlider',
+  TIMER_SLIDER = 'TimerSlider',
   TIMER = 'TimerScreen',
   STRESS_TEST = 'StressTest',
   PROJECT_TIMER = 'ProjectTimer',
   WORLD_TIME = 'WorldTime',
   STOP_WATCH = 'StopWatch',
   ALARM_SCREEN = 'AlarmScreen',
+  ALARM_SLIDER = 'AlarmSlider',
   EVENTS_SCREEN = 'EventScreen',
   METRONOM = 'MetronomScreen',
+  METRONOM_SLIDER = 'MetronomSlider',
   POMODORO = 'Pomodoro',
+  POMODORO_SLIDER = 'PomodoroSlider',
   TIME_TOGETHER = 'TimeTogether',
+  TIME_TOGETHER_SLIDER = 'TimeTogetherSlider',
   JIHAD_BAKKOURA = 'JihadBakkura',
   WATCH_CONSTRUCTOR = 'WatchConstructor',
   FAMILY_TREE = 'FamilyTree',

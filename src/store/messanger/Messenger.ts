@@ -29,7 +29,7 @@ export class MessengerStore {
         try {
             const uid = auth()?.currentUser?.uid;
             console.log("Fetching users with lastDocId:", this.lastDocId);
-            const users = await getAllUsersFromFirestore(uid, this.lastDocId);
+            const users = await getAllUsersFromFirestore(uid);
             runInAction(() => {
                 if (users.length > 0) {
                     this.allUsers = [...this.allUsers, ...users];

@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Images} from '../../../assets';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
@@ -8,49 +8,120 @@ import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
 import ListItemCont from '../../../components/ListItemCont/ListItemCont';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
-
-import {SecureEntries} from '../../../utils/secureEntries';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import useRootStore from '../../../hooks/useRootStore';
-import {COLORS} from '../../../utils/colors';
-import {ActivityIndicator} from 'react-native';
+import { COLORS } from '../../../utils/colors';
+import { ActivityIndicator, Alert, Linking, Platform } from 'react-native';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
+import { APP_ROUTES } from '../../../navigation/routes';
+import { RootStackParamList } from '../../../types/navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PASSWORD>;
 const SecureEntry = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
+
 
   const {
-    secureEntries,
     onSecureEntryItemPress,
     updateProfile,
+    secureEntries,
     updateLoading,
     personalAreaData,
   } = useRootStore().personalAreaStore;
 
-  const updateSecure = () => {
-    updateProfile(() => navigation.goBack());
+  const [localSecureEntries, setLocalSecureEntries] = useState(secureEntries);
+
+  useEffect(() => {
+    setLocalSecureEntries(secureEntries);
+  }, [secureEntries]);
+
+  const updateSecure = async () => {
+    try {
+
+      const selected = localSecureEntries.find(entry => entry.active);
+
+      const isBiometricSelected = selected && selected.title === 'Biometry';
+
+      const biometryOptions = await FingerprintScanner.isSensorAvailable()
+        .then(() => true)
+        .catch(() => false);
+
+
+      if (!biometryOptions && isBiometricSelected) {
+        Alert.alert(
+          'Biometry not set up',
+          'You have not set up any biometric data. Please add your fingerprint in settings.',
+          [
+            {
+              text: 'Go to Settings',
+              onPress: () => {
+                if (Platform.OS === 'android') {
+                  Linking.openSettings();
+                } else {
+                  Alert.alert(
+                    'Unsupported',
+                    'This feature is only supported on Android.',
+                  );
+                }
+              },
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ],
+        );
+      } else {
+        updateProfile(() => navigation.goBack());
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to check biometry.');
+    }
   };
 
-  const renderItem = ({item, index}) => {
+  const handleItemPress = async (index: number) => {
+    const biometryOptions = await FingerprintScanner.isSensorAvailable()
+      .then(() => true)
+      .catch(() => false);
+    if (index === 1 && !biometryOptions) {
+      const newData = localSecureEntries.map((item, i) => ({
+        ...item,
+        active: i === index ? !item.active : false,
+      }));
+      setLocalSecureEntries(newData);
+    } else {
+      if (index == 0) {
+        navigation.navigate(APP_ROUTES.PASSWORD as never);
+      }
+      onSecureEntryItemPress(index);
+    }
+  };
+
+
+  const renderItem = ({ item, index }) => {
+    const isActive = localSecureEntries[index]?.active ?? false;
+    console.log('isActiveisActive', isActive);
+
     return (
       <RN.View style={styles.eventsTypeList}>
         <ListItemCont
           rightItem={
             <RadioBtn
-              active={item.title === personalAreaData?.secureEntry}
-              onPress={() => onSecureEntryItemPress(index) as never}
+              active={isActive}
+              onPress={() => handleItemPress(index) as never}
             />
           }
           title={
             <RN.Text
-              color={
-                item.title === personalAreaData?.secureEntry
-                  ? '#fff'
-                  : '#7D7D7D'
+              color={isActive
+                ? '#fff'
+                : '#7D7D7D'
               }>
               {item.title}
             </RN.Text>
           }
-          onPress={() => onSecureEntryItemPress(index) as never}
+          onPress={() => handleItemPress(index)}
         />
         <RN.View style={styles.line}></RN.View>
       </RN.View>
@@ -89,7 +160,7 @@ const SecureEntry = () => {
                 updateLoading ? (
                   <ActivityIndicator
                     color={COLORS.black}
-                    style={{marginTop: 3}}
+                    style={{ marginTop: 3 }}
                   />
                 ) : null
               }
