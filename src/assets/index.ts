@@ -383,6 +383,17 @@ export const Images = {
     todoSlider1: require('./images/todoSlider1.jpeg'),
     timerSlider1: require('./images/timerSlider1.jpeg'),
     timerSlider2: require('./images/timerSlider2.jpeg'),
+    projectTimerSlider1: require('./images/projectTimerSlider1.jpeg'),
+    projectTimerSlider2: require('./images/projectTimerSlider2.jpeg'),
+    stopWatchSlider1: require('./images/stopWatchSlider1.jpeg'),
+    calendarSlider1: require('./images/calendarSlider1.jpeg'),
+    calendarSlider2: require('./images/calendarSlider2.jpeg'),
+    calendarSlider3: require('./images/calendarSlider3.jpeg'),
+    calendarSlider4: require('./images/calendarSlider4.jpeg'),
+    bakkouraSlider1: require('./images/bakkouraSlider1.jpeg'),
+    worldTimeSlider1: require('./images/worldTimeSlider1.jpeg'),
+    otherSlider1: require('./images/otherSlider1.jpeg'),
+    messengerSlider1: require('./images/messengerSlider1.jpeg'),
   },
 };
 

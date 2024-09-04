@@ -22,7 +22,7 @@ const ToDoTimerSlider = () => {
                         title="To do Timer"
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
-                    <CustomSwiper data={ToDoData} height={width / 1.5} width={'100%'} marginTop={110}/>
+                    <CustomSwiper data={ToDoData} height={width / 1.5} width={'100%'} marginTop={40}/>
                 </>
             }
         />

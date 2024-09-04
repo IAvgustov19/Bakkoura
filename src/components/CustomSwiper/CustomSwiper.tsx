@@ -1,9 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import RN from '../RN';
-
-const { width } = Dimensions.get('window');
 
 interface IProps {
     data: any;
@@ -14,6 +12,23 @@ interface IProps {
 }
 
 const CustomSwiper: React.FC<IProps> = ({ data, height, width, marginTop = 60, paddingTop = 150 }) => {
+    const [imageDimensions, setImageDimensions] = useState<Array<{ width: number, height: number }>>([]);
+
+    useEffect(() => {
+        const calculateImageDimensions = () => {
+            const dimensions = data.map((item) => {
+                const imageSource = Image.resolveAssetSource(item.image);
+                let imageWidth = imageSource.width;
+                let imageHeight = imageSource.height;
+                return { width: imageWidth, height: imageHeight };
+            });
+
+            setImageDimensions(dimensions);
+        };
+
+        calculateImageDimensions();
+    }, [data]);
+
     return (
         <Swiper
             loop={false}
@@ -21,15 +36,17 @@ const CustomSwiper: React.FC<IProps> = ({ data, height, width, marginTop = 60, p
             autoplay
             activeDotColor={'#ECC271'}>
             {data.map((e, index) => {
+                const imageHeight = imageDimensions[index] ? imageDimensions[index].height : 200;
+                const imageWidth = imageDimensions[index] ? imageDimensions[index].width : 200;
                 return (
-                    <View style={[styles.slide, {paddingTop: paddingTop}]} key={index}>
-                        <RN.View style={styles.image}>
-                            <RN.Image
-                                style={[styles.image, { height: height, width: width }]}
-                                source={e.image}
-                                resizeMode="contain"
-                            />
-                        </RN.View>
+                    <View style={[styles.slide, { paddingTop: paddingTop }]} key={index}>
+                        <RN.Image
+                            height={imageHeight}
+                            width={imageWidth}
+                            style={[styles.image, { height: imageHeight / 3, width: width }]}
+                            source={e.image}
+                            resizeMode="contain"
+                        />
                         <Text style={[styles.text, { marginTop: marginTop }]}>{e.text}</Text>
                     </View>
                 );
@@ -48,17 +65,15 @@ const styles = StyleSheet.create({
     },
     imageWrapper: {
         width: '100%',
-        height: width,
         borderRadius: 25,
         overflow: 'hidden',
+        backgroundColor: 'blue',
     },
     image: {
-        width: '100%',
-        height: width / 2.3,
         borderRadius: 25,
     },
     text: {
-        fontWeight: '500',
+        fontWeight: '300',
         fontSize: 16,
         color: 'white',
         textAlign: 'center',

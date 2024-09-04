@@ -1,19 +1,19 @@
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import RN from '../../components/RN';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets/index';
+import { Images } from '../../assets/index';
 import TextView from '../../components/Text/Text';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
-import {observer} from 'mobx-react-lite';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
+import { observer } from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
-import {FlatList, RectButton, Swipeable} from 'react-native-gesture-handler';
-import {COLORS} from '../../utils/colors';
+import { FlatList, RectButton, Swipeable } from 'react-native-gesture-handler';
+import { COLORS } from '../../utils/colors';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
-import {windowHeight} from '../../utils/styles';
+import { windowHeight } from '../../utils/styles';
 import ButtonComp from '../../components/Button/Button';
 import RenderProjectTimer from './components/RenderProjectTimer';
 import ListFooter from '../../components/ListFooter/ListFooter';
@@ -61,7 +61,7 @@ const ProjectTimer = () => {
     handleDeleteProjectTimer(id);
   };
 
-  const RenderProjects = memo(({item, index}: {item: any; index: number}) => {
+  const RenderProjects = memo(({ item, index }: { item: any; index: number }) => {
     return (
       <Swipeable
         key={index}
@@ -91,15 +91,20 @@ const ProjectTimer = () => {
             title="Project Timer"
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.PROJECT_TIMER_SLIDER as never)}>
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
+            }
+          />
+          <RN.View style={styles.content}>
+            <RN.View style={styles.switch}>
               <ButtonComp
                 width={90}
                 title="Calculate"
                 onPress={onCalculate}
                 paddingVertical={8}
               />
-            }
-          />
-          <RN.View style={styles.content}>
+            </RN.View>
             <RN.View style={styles.projects}>
               <RN.View style={styles.totalTime}>
                 <TextView text="On this week" />
@@ -112,7 +117,7 @@ const ProjectTimer = () => {
                     <ListEmptyComp title="No project timer yet" />
                   }
                   data={projectTimerList}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <RenderProjects item={item} index={index} />
                   )}
                 />
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
   },
   projects: {
     gap: 10,
-    height: '85%',
+    // height: '85%',
   },
   rightAction: {
     backgroundColor: COLORS.darkRed,
@@ -173,4 +178,7 @@ const styles = StyleSheet.create({
     bottom: 120,
     width: '100%',
   },
+  switch: {
+    paddingVertical: 10, width: '100%', alignItems: 'center'
+  }
 });

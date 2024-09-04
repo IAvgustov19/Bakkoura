@@ -1,14 +1,14 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
-import {Images} from '../../assets';
+import { Images } from '../../assets';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
-import {Switch} from '@rneui/base';
-import {useNavigation} from '@react-navigation/native';
-import {APP_ROUTES} from '../../navigation/routes';
+import { Switch } from '@rneui/base';
+import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 import useRootStore from '../../hooks/useRootStore';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import Events from './components/Events';
 import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
@@ -55,14 +55,17 @@ const EventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
-              <RN.Text style={styles.currentTime}>
-                {calendarCurrentTime}
-              </RN.Text>
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.EVENTS_SLIDER as never)}>
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
             }
             title={title}
           />
+          <RN.Text style={styles.currentTime}>
+            {calendarCurrentTime}
+          </RN.Text>
           <RN.View style={styles.calendarBox}>{renderCalendar()}</RN.View>
           <RN.View style={styles.bottomMenu}>
             <SimpleSwitch
@@ -115,7 +118,7 @@ const styles = RN.StyleSheet.create({
     paddingRight: 5,
   },
   currentTime: {
-    marginTop: 2,
+    marginBottom: 14,
     color: '#fff',
     fontSize: 14,
     width: 70,

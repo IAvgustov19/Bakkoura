@@ -35,18 +35,23 @@ const BakkouraWatch = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Bakkoura Watch"
             rightItem={
-              <SwitchContain
-                title="24h"
-                _title="30h"
-                back={is24h}
-                handlePress={() => setIs24h(e => !e)}
-              />
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.BAKKOURA_SLIDER as never)}>
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
             }
           />
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
+              <RN.View style={styles.switch}>
+                <SwitchContain
+                  title="24h"
+                  _title="30h"
+                  back={is24h}
+                  handlePress={() => setIs24h(e => !e)}
+                />
+              </RN.View>
               <Vertices
                 data={listSelects}
                 watchBack={Images.Img.watchBack}
@@ -107,4 +112,7 @@ const styles = RN.StyleSheet.create({
   sectorItem: {
     marginRight: 15,
   },
+  switch: {
+    paddingVertical: 10, width: '100%', alignItems: 'center'
+  }
 });

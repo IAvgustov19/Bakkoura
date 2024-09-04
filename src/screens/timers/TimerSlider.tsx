@@ -17,12 +17,13 @@ const TimerSlider = () => {
         <LinearContainer
             children={
                 <>
+
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
                         title="Timer"
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
-                    <CustomSwiper data={TimerData} height={width / 1.1} width={'100%'} marginTop={200} paddingTop={60}/>
+                    <CustomSwiper data={TimerData} height={width / 1.1} width={'100%'} marginTop={40} />
                 </>
             }
         />

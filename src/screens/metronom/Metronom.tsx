@@ -96,7 +96,7 @@ const Metronom = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.METRONOM_SLIDER as never)}>
-                <RN.Image source={Images.Img.questionMark} style={{ width: 24, height: 24 }} />
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
               </RN.TouchableOpacity>
             } />
           <RN.View style={styles.content}>

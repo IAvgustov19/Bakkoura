@@ -9,6 +9,7 @@ import { windowHeight } from '../../utils/styles';
 import TimeClinicListItem from '../timeClinic/components/TimeClinicListItem';
 import { TimeBioticList } from '../../constants/timeBiotic';
 import { OtherList } from '../../constants/other';
+import { APP_ROUTES } from '../../navigation/routes';
 
 const Other = () => {
   const navigation = useNavigation();
@@ -31,6 +32,11 @@ const Other = () => {
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
             title="Other"
+            rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.OTHER_SLIDER as never)}>
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
+            }
           />
           <RN.View style={styles.content}>
             <RN.FlatList

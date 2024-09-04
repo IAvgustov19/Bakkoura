@@ -57,21 +57,26 @@ const WorldTime = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="World Time"
             rightItem={
-              <SwitchContain
-                title="24h"
-                _title="30h"
-                back={is24h}
-                handlePress={() => setIs24h(e => !e)}
-              />
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.WORLD_SLIDER as never)}>
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
             }
           />
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
+              <RN.View style={styles.switch}>
+                <SwitchContain
+                  title="24h"
+                  _title="30h"
+                  back={is24h}
+                  handlePress={() => setIs24h(e => !e)}
+                />
+              </RN.View>
               <RN.View>{renderClock()}</RN.View>
             </RN.View>
           </RN.ScrollView>
@@ -111,4 +116,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  switch: {
+    paddingVertical: 10, width: '100%', alignItems: 'center'
+  }
 });

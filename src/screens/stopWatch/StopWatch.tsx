@@ -1,21 +1,22 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import RN from '../../components/RN';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import StopwatchComp from './components/Stopwatch/Stopwatch';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
-import {Images} from '../../assets';
+import { Images } from '../../assets';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import SwiperFlatList from 'react-native-swiper-flatlist';
-import {COLORS} from '../../utils/colors';
-import {HITSLOP, windowWidth} from '../../utils/styles';
+import { COLORS } from '../../utils/colors';
+import { HITSLOP, windowWidth } from '../../utils/styles';
 import useRootStore from '../../hooks/useRootStore';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import Line from '../../components/Line/Line';
-import {moderateScale} from '../../utils/dimensions';
+import { moderateScale } from '../../utils/dimensions';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
+import { APP_ROUTES } from '../../navigation/routes';
 
 const StopWatch = () => {
   const [isWatch, setIsWatch] = useState(true);
@@ -62,14 +63,18 @@ const StopWatch = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Stop Watch"
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.STOP_WATCH_SLIDER as never)}>
+                <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
+            }
           />
           <RN.View
             style={[
               styles.content,
-              {height: RN.Platform.OS === 'ios' ? '82%' : '80%'},
+              { height: RN.Platform.OS === 'ios' ? '82%' : '80%' },
             ]}>
             <RN.View style={styles.switchBox}>
               <SwitchContain
@@ -84,11 +89,11 @@ const StopWatch = () => {
                   hitSlop={HITSLOP}
                   style={[
                     styles.changeBtn,
-                    {backgroundColor: isWatch ? '#ECC271' : '#000'},
+                    { backgroundColor: isWatch ? '#ECC271' : '#000' },
                   ]}></RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   onPress={handleIndexChange}
-                  hitSlop={{left: 3, right: 3, bottom: 3, top: 3}}
+                  hitSlop={{ left: 3, right: 3, bottom: 3, top: 3 }}
                   style={[
                     styles.changeBtn,
                     {

@@ -104,6 +104,13 @@ import MetronomSlider from '../screens/metronom/MetronomSlider';
 import TimeTogetherSlider from '../screens/timeTogether/TimeTogetherSlider';
 import ToDoTimerSlider from '../screens/todoTimer/ToDoTimerSlider';
 import TimerSlider from '../screens/timers/TimerSlider';
+import ProjectTimerSlider from '../screens/projectTimer/ProjectTimerSlider';
+import StopWatchSlider from '../screens/stopWatch/StopWatchSlider';
+import EventSlider from '../screens/calendar/EventsSlider';
+import BakkouraSlider from '../screens/bakkouraWatch/BakkouraSlider';
+import WorldSlider from '../screens/worldTime/WorldSlider';
+import OtherSlider from '../screens/other/OtherSlider';
+import MessengerSlider from '../screens/messenger/MessengerSlider';
 
 const Stack = createStackNavigator();
 
@@ -256,6 +263,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.MESSENGER}
           component={MessengerScreen}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.MESSENGER_SLIDER}
+          component={MessengerSlider}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -471,6 +485,13 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.PROJECT_TIMER_SLIDER}
+          component={ProjectTimerSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.WORLD_TIME}
           component={WorldTime}
           options={{
@@ -478,8 +499,22 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.WORLD_SLIDER}
+          component={WorldSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.STOP_WATCH}
           component={StopWatch}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.STOP_WATCH_SLIDER}
+          component={StopWatchSlider}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -499,8 +534,22 @@ const AppNavigator = () => {
           }}
         />
         <Stack.Screen
+          name={APP_ROUTES.EVENTS_SLIDER}
+          component={EventSlider}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
           name={APP_ROUTES.BAKKOURA_WATCH}
           component={BakkouraWatch}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.BAKKOURA_SLIDER}
+          component={BakkouraSlider}
           options={{
             headerTitleAlign: 'center',
           }}
@@ -797,6 +846,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.OTHER}
           component={Other}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.OTHER_SLIDER}
+          component={OtherSlider}
           options={{
             headerTitleAlign: 'center',
           }}

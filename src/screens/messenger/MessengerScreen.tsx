@@ -15,6 +15,7 @@ import MessageItem from './components/MessageItem';
 import { windowWidth } from '../../utils/styles';
 import { Images } from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import RN from '../../components/RN';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
@@ -99,7 +100,12 @@ const MessengerScreen = () => {
         <HeaderContent
           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           rightItem={
-            <Images.Svg.searchButton width={39} height={39} onPress={() => navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)} />
+            <RN.View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <Images.Svg.searchButton width={39} height={39} onPress={() => navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)} />
+              <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.MESSENGER_SLIDER as never)}>
+              <Images.Svg.question fill={'gray'} width={24} height={24} />
+              </RN.TouchableOpacity>
+            </RN.View>
           }
           title="Messenger"
         />

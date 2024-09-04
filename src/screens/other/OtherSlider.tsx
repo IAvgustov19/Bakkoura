@@ -6,10 +6,11 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
-import { MetronomData } from '../../utils/metronom';
+import { WorldData } from '../../utils/worldTime';
+import { OtherData } from '../../utils/other';
 
 
-const MetronomSlider = () => {
+const OtherSlider = () => {
     const navigation = useNavigation();
     const { width } = Dimensions.get('window');
     return (
@@ -17,12 +18,13 @@ const MetronomSlider = () => {
         <LinearContainer
             children={
                 <>
+
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Metronom"
+                        title="Other"
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
-                    <CustomSwiper data={MetronomData} height={width / 1.5} width={'100%'} marginTop={50} />
+                    <CustomSwiper data={OtherData} height={width / 1.9} width={'100%'} marginTop={70} />
                 </>
             }
         />
@@ -30,4 +32,4 @@ const MetronomSlider = () => {
 };
 
 
-export default MetronomSlider;
+export default OtherSlider;
