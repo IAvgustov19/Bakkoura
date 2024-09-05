@@ -780,17 +780,17 @@ const DialogScreen = () => {
     }, [containerRef.current]);
 
 
-    useEffect(() => {
-        if (containerRef.current) {
-            const scrollableNode = containerRef.current._listRef._scrollRef; 
-            if (scrollableNode) {
-                scrollableNode.scrollTo({ y: 250, animated: false }); 
-            }
+    // useEffect(() => {
+    //     if (containerRef.current) {
+    //         const scrollableNode = containerRef.current._listRef._scrollRef; 
+    //         if (scrollableNode) {
+    //             scrollableNode.scrollTo({ y: 250, animated: false }); 
+    //         }
 
-        } else {
-            console.warn('No FlatList reference found');
-        }
-    }, [])
+    //     } else {
+    //         console.warn('No FlatList reference found');
+    //     }
+    // }, [])
 
 
 
@@ -850,10 +850,10 @@ const DialogScreen = () => {
                         (
                             <RN.View style={{ flex: 1 }}>
                                 <GiftedChat
-                                    messageContainerRef={containerRef}
+                                    // messageContainerRef={containerRef}
                                     inverted={true}
                                     listViewProps={{
-                                        ref: containerRef,
+                                        // ref: containerRef,
                                         onEndReachedThreshold: 0.4,
                                         onEndReached: handleLoadMoreMessages
                                     }}

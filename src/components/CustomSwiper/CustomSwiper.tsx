@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import RN from '../RN';
+import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 
 interface IProps {
     data: any;
@@ -36,12 +37,12 @@ const CustomSwiper: React.FC<IProps> = ({ data, height, width, marginTop = 60, p
             autoplay
             activeDotColor={'#ECC271'}>
             {data.map((e, index) => {
-                const imageHeight = imageDimensions[index] ? imageDimensions[index].height : 200;
-                const imageWidth = imageDimensions[index] ? imageDimensions[index].width : 200;
+                const imageHeight = imageDimensions[index] ? imageDimensions[index].height - 8 : 200;
+                const imageWidth = imageDimensions[index] ? imageDimensions[index].width : 300;
                 return (
                     <View style={[styles.slide, { paddingTop: paddingTop }]} key={index}>
                         <RN.Image
-                            height={imageHeight}
+                            height={imageHeight + 2}
                             width={imageWidth}
                             style={[styles.image, { height: imageHeight / 3, width: width }]}
                             source={e.image}
@@ -65,12 +66,14 @@ const styles = StyleSheet.create({
     },
     imageWrapper: {
         width: '100%',
-        borderRadius: 25,
+        borderRadius: 32,
         overflow: 'hidden',
         backgroundColor: 'blue',
     },
     image: {
-        borderRadius: 25,
+        objectFit: 'fill',
+        borderRadius: 35,
+        // backgroundColor: 'red',
     },
     text: {
         fontWeight: '300',
