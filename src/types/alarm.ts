@@ -95,7 +95,7 @@ export type PomodoroDataType = {
 export const PomodoroDataInitial: PomodoroDataType = {
   uid: '',
   id: 0,
-  name: '',
+  name: null,
   description: '',
   finishTime: '00:00',
   second: 0,
