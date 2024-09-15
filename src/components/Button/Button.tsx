@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     textAlign: 'center',
-    fontWeight: '700',
+    fontWeight: '100',
     lineHeight: 24,
     color: COLORS.black,
     fontFamily: 'RedHatDisplay-SemiBold',

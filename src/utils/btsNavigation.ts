@@ -1,7 +1,7 @@
 import { Images } from "../assets";
 
 
-export const BtsNavigationItems = [
+export const BtsNavigationItems_en = [
     {
         image: Images.Svg.homeIcon,
         label: 'Home',
@@ -89,11 +89,11 @@ export const BtsNavigationItems = [
         label: 'Time Clinic',
         text: 'Find here useful and timely tips on how to manage your life. Or ask for advice from experts.',
     },
-    //  {
-    //     image: Images.Svg.podcastIcon,
-    //     label: 'Podcasts',
-    //     text: ' Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm  clock.',
-    // },
+      {
+         image: Images.Svg.podcastIcon,
+         label: 'Podcasts',
+         text: ' Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm  clock.',
+     },
     {
         image: Images.Svg.h30Icon,
         label: '30h Legend',
@@ -153,14 +153,120 @@ export const BtsNavigationItems = [
         label: 'BTS Navigation',
         text: 'Video instruction on each feature provided by the Bakkoura Time System application.',
     },
-    // {
-    //     image: Images.Svg.recommendationsIcon,
-    //     label: 'Recommendations',
-    //     text: ' Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm  clock.',
-    // },
+     {
+         image: Images.Svg.recommendationsIcon,
+         label: 'Recommendations',
+         text: ' Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm  clock.',
+     },
     {
         image: Images.Svg.timeWealthIcon,
         label: 'Time Wealth',
         text: 'Jihad Bakkura reflects on time, life and success. ',
     },
 ]
+
+export const BtsNavigationItems_ar = [
+    {
+        image: Images.Svg.homeIcon,
+        label: 'الصفحة الرئيسية', 
+        text: 'الصفحة الرئيسية. هناك دائمًا فرصة للبدء من جديد.', 
+    },
+    {
+        image: Images.Svg.marketIcon,
+        label: 'السوق', 
+        text: 'اختر مفهومًا وساعة تعكس شخصيتك وتروي قصتك للعالم. واشترها.', 
+    },
+    {
+        image: Images.Svg.messengerIcon,
+        label: 'المراسلة', 
+        text: 'اتصل بمن يفهمون ويقدرون الوقت بقدر ما تفعل.', 
+    },
+    {
+        image: Images.Svg.todoIcon,
+        label: 'عداد المهام', 
+        text: 'عداد سيشيرك إلى المهام التي يجب إنجازها ويحسب مقدار الوقت الذي تقضيه في الخير وكم تفقد.', 
+    },
+    {
+        image: Images.Svg.timerIcon,
+        label: 'العدادات', 
+        text: 'كل العدادات الضرورية والمفيدة لحياة فعالة.', 
+    },
+    {
+        image: Images.Svg.projectTimerIcon,
+        label: 'عداد المشروع', 
+        text: 'اتخذ القرار الصحيح. كم ساعة يوميًا يستغرق مشروع معين وكم من المال يجلب لك من حيث الساعة.', 
+    }, {
+        image: Images.Svg.worldTimeIcon,
+        label: 'التوقيت العالمي', 
+        text: 'التوقيت الحالي في أي مكان في العالم. قم بإعداد المدن ذات الأولوية لتكون دائمًا في الوقت المحدد.', 
+    },
+    {
+        image: Images.Svg.stopWatchIcon,
+        label: 'ساعة الإيقاف', 
+        text: 'ساعة إيقاف كلاسيكية.', 
+    },
+    {
+        image: Images.Svg.metronomIcon,
+        label: 'الميترونوم', 
+        text: 'يشير هذا العدّاد إلى فترات زمنية قصيرة بضربات منتظمة. للموسيقيين والرياضيين والباحثين.', 
+    }, {
+        image: Images.Svg.stressTest,
+        label: 'اختبار التوتر', 
+        text: '"دقيقة ذاتية". طريقة بسيطة وفعالة لقياس مستوى التوتر والقلق.', 
+    },
+    {
+        image: Images.Svg.pomodoroIcon,
+        label: 'بومودورو', 
+        text: 'طريقة لإدارة الوقت يمكن استخدامها لحل أي مهمة. يساعد على التركيز قدر الإمكان: 25 دقيقة عمل - 5 راحة على العدّاد.', 
+    },
+    {
+        image: Images.Svg.alarmIcon,
+        label: 'منبه', 
+        text: 'ما الذي لا يستطيع الشخص الفعال العيش بدونه؟ منبه.', 
+    }, {
+        image: Images.Svg.calendarIcon,
+        label: 'الجدول', 
+        text: 'احتفظ بسجل لحياتك: خطط واحلم. سجل كل شيء مهم في جدولنا.', 
+    },
+    {
+        image: Images.Svg.timeTogetherIcon,
+        label: 'الوقت معًا', 
+        text: 'بناءً على مجموعة Bakkoura الأكثر رومانسية - الثقة. قدر كل دقيقة معًا - سنحسبها لك ونحفظها.', 
+    },
+    {
+        image: Images.Svg.jihadBakkuraIcon,
+        label: 'جهاد بكورة', 
+        text: 'قصة عن مبتكر وعبقري مشروع سلالة Bakkoura.', 
+    }, 
+    {
+        image: Images.Svg.bakkuraWatchIcon,
+        label: 'ساعة Bakkoura', 
+        text: 'كل المجموعات من Bakkoura. اقرأ قصتنا واختر ساعة تعكس شخصيتك.', 
+    },
+    {
+        image: Images.Svg.timeClinicIcon,
+        label: 'عيادة الوقت', 
+        text: 'ابحث هنا عن نصائح مفيدة وفي الوقت المناسب حول كيفية إدارة حياتك. أو اطلب المشورة من الخبراء.', 
+    },
+      {
+         image: Images.Svg.podcastIcon,
+         label: 'البودكاست', 
+         text: 'مفهوم caliber FVn81 مع لف يدوي، احتياطي طاقة 43 ساعة، مجهز بتوربيون ومنبه.', 
+     },
+    {
+        image: Images.Svg.h30Icon,
+        label: 'أسطورة 30 ساعة', 
+        text: 'اقرأ قصة مجموعة 30 ساعة الأسطورية. المفهوم الثوري من سلالة Bakkoura.', 
+    },
+    {
+        image: Images.Svg.assessmentWatchIcon,
+        label: 'تقييم الساعة', 
+        text: 'أرسل لنا ساعتك وسنقيم قيمتها و/أو أصالتها.', 
+    }, 
+    {
+        // cant download from figma
+        image: Images.Svg.bakkuraWatchIcon,
+        label: 'منشئ الساعة', 
+        text: 'أداة لا غنى عنها لصانعي الساعات المحترفين، اختر مكونات ساعتك من خلالها.',
+    },
+];

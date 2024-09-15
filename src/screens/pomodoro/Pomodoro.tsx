@@ -18,6 +18,7 @@ import LottieContent from '../../components/LottieContent/LottieContent';
 import { Lotties } from '../../lotties/lottie';
 import { windowHeight, windowWidth } from '../../utils/styles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import Text from 'react-native'
 
 const Pomodoro = () => {
   const {
@@ -64,11 +65,11 @@ const Pomodoro = () => {
     const now = new Date();
     let minutes;
     if (breackType === 'Pomodoro') {
-      minutes = 25;
+      minutes = 0.05;
     } else if (breackType === 'ShortBreak') {
-      minutes = 5;
+      minutes = 0.05;
     } else if (breackType === 'LongBreak') {
-      minutes = 15;
+      minutes = 0.05;
     }
     const finishTime = new Date(now.getTime() + minutes * 60000);
 
@@ -94,7 +95,7 @@ const Pomodoro = () => {
             <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
               <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
             </RN.View>
-            {hasDescription && <TextView text={item.description} />}
+            {hasDescription && <TextView text={item.description}/>}
           </RN.View>
           <RN.View style={styles.spaceBetween}>
             <RN.Text style={styles.tasksText}>{`${0}`}/{`${item.minut}`}</RN.Text>
@@ -168,8 +169,8 @@ const Pomodoro = () => {
               </RN.View>
               <RN.View style={styles.pomodoroBox}>
                 <RN.View style={styles.breakTime}>
-                  <TextView text={newTaskState.name} />
-                  <RN.Text style={styles.breakTimeText}>{newTaskState ? newTaskState.breackType : 'Pomodoro'}</RN.Text>
+                  <TextView text={newTaskState.name}/>
+                  <RN.Text style={styles.breakTimeText}>{newTaskState ? newTaskState.breackType : 'Pomadoro'}</RN.Text>
                 </RN.View>
                 {pomodoroLottie}
                 <RN.View style={styles.pomodoroTime}>
@@ -277,7 +278,7 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroTime: {
     position: 'absolute',
-    top: '45%',
+    top: '40%',
   },
   time: {
     fontSize: 70,
@@ -335,9 +336,11 @@ const styles = RN.StyleSheet.create({
   tasksText: {
     fontSize: 16,
     color: COLORS.white,
+    width: windowWidth/1.4
   },
   renderTask: {
-    height: 105,
+   height:250
+
   },
   addTaskBtn: {
     marginTop: 20,

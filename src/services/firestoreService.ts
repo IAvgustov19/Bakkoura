@@ -1114,7 +1114,7 @@ export async function uploadDocumentToStorage(fileUri) {
     console.log('File available at:', url);
     return url;
   } catch (error) {
-    Alert.alert('errrrror', error)
+    Alert.alert('Error uploading document')
     console.error('Error uploading document:', error);
   }
 }

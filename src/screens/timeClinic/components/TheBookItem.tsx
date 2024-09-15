@@ -26,13 +26,9 @@ const TheBookitem: React.FC<Props> = ({title, page = 1, texts}) => {
 
   return (
     <RN.View style={styles.container}>
-      {page === 1 ? (
         <TextView title={title} textAlign="left" />
-      ) : (
-        <TextView text={title} textAlign="left" />
-      )}
       <RN.View>{renderText()}</RN.View>
-      <TextView text={page} style={styles.pageNumber} />
+      {/*<TextView text={page} style={styles.pageNumber} />*/}
     </RN.View>
   );
 };
@@ -43,10 +39,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.black,
     paddingHorizontal: 25,
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
     alignItems: 'flex-start',
     gap: 15,
     marginVertical: 4,
+    borderRadius: 20
   },
   pageNumber: {
     position: 'absolute',

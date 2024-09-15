@@ -49,7 +49,7 @@ const RecoverPasswordScreen = () => {
     } else {
       try {
         await authh().sendPasswordResetEmail(email);
-        Alert.alert('check your email to change your password', 'press ok to get sign in page', [
+        Alert.alert('Check your email to change your password', 'Press ok to get sign in page', [
           { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
         ])
       } catch (err) {

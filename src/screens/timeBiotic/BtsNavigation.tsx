@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
-import { BtsNavigationItems } from '../../utils/btsNavigation';
+import { BtsNavigationItems_en } from '../../utils/btsNavigation';
 import TextView from '../../components/Text/Text';
 import { windowHeight } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
@@ -40,7 +40,7 @@ const BtsNavigation = () => {
                     />
                     <RN.View style={styles.content}>
                         <RN.FlatList
-                            data={BtsNavigationItems}
+                            data={BtsNavigationItems_en}
                             renderItem={renderItem}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={(item, index) => index.toString()}
