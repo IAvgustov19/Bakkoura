@@ -92,14 +92,14 @@ const Pomodoro = () => {
           onPress={() => { setData(item); setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro')); }}
         >
           <RN.View>
-            <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
-              <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
+            <RN.View style={styles.spaceBetween}>
+              <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
+                <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
+              </RN.View>
+              <RN.Text style={styles.tasksTime}>{`${0}`}/{`${item.minut}`}</RN.Text>
+              <Images.Svg.dots onPress={() => onHandleTask(item)} />
             </RN.View>
-            {hasDescription && <TextView text={item.description}/>}
-          </RN.View>
-          <RN.View style={styles.spaceBetween}>
-            <RN.Text style={styles.tasksText}>{`${0}`}/{`${item.minut}`}</RN.Text>
-            <Images.Svg.dots onPress={() => onHandleTask(item)} />
+            {hasDescription && <TextView text={item.description} />}
           </RN.View>
         </RN.Pressable>
       );
@@ -169,14 +169,14 @@ const Pomodoro = () => {
               </RN.View>
               <RN.View style={styles.pomodoroBox}>
                 <RN.View style={styles.breakTime}>
-                  <TextView text={newTaskState.name}/>
-                  <RN.Text style={styles.breakTimeText}>{newTaskState ? newTaskState.breackType : 'Pomadoro'}</RN.Text>
+                  <TextView text={newTaskState?.name?.length > 12 ? `${newTaskState.name.slice(0, 12)}...` : newTaskState.name} />
+                  {/* <RN.Text style={styles.breakTimeText}>{newTaskState ? newTaskState.breackType : 'Pomodoro'}</RN.Text> */}
                 </RN.View>
                 {pomodoroLottie}
                 <RN.View style={styles.pomodoroTime}>
                   <RN.Text style={styles.time}>{currentTime}</RN.Text>
                 </RN.View>
-                {isCurrentPomodoro && (
+                {isCurrentPomodoro && newTaskState?.name && (
                   <RN.View style={styles.pomodoroInfoBox}>
                     <RN.Text style={styles.pomodoroInfoName}>
                       Pomos: {`${estimatedPomodoros} / ${newTaskState.minut}`}
@@ -264,7 +264,7 @@ const styles = RN.StyleSheet.create({
   breakTime: {
     position: 'absolute',
     top: '30%',
-    right: '20%',
+    right: '25%',
     zIndex: 1,
   },
   breakTimeText: {
@@ -311,6 +311,7 @@ const styles = RN.StyleSheet.create({
   },
   taskListBox: {
     bottom: 50,
+    width: '100%',
   },
   taskTitleContainer: {
     flexDirection: 'row',
@@ -325,6 +326,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginBottom: 5,
+    width: '100%',
   },
   taskLists: {
     flexDirection: 'row',
@@ -334,6 +336,16 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 2,
   },
   tasksText: {
+    fontSize: 16,
+    width: '80%',
+    color: COLORS.white,
+  },
+  tasksTime: {
+    fontSize: 16,
+    width: '80%',
+    color: COLORS.white,
+  },
+  tasksTime: {
     fontSize: 16,
     color: COLORS.white,
     width: windowWidth/1.4
@@ -347,7 +359,7 @@ const styles = RN.StyleSheet.create({
   },
   spaceBetween: {
     gap: 18,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexDirection: 'row',
   },
 });

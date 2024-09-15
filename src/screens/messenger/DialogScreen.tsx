@@ -151,7 +151,7 @@ const DialogScreen = () => {
         console.time('userRef');
 
         if (id && currentUser?.uid) {
-            const userRef = db.collection('users').doc(currentUser.uid);
+            const userRef = db.collection('users').doc(currentUser?.uid);
             userRef.update({ openChatWith: id });
 
             return () => {
@@ -516,23 +516,29 @@ const DialogScreen = () => {
                             read: data?.read ? data?.read : false,
                         };
                     });
-                    const updatedMessages = messagesArray.map(msg => {
-                        const chatOpenedAtForCurrentUser = roomDoc.data().chatOpenedAt[senderId];
 
+                    const updatedMessages = messagesArray.map(msg => {
+                        if (!msg || !msg.user) {
+                            console.warn('Message or user object is undefined', msg); // Log warning for easier debugging
+                            return msg; // Skip this message if it's undefined or doesn't have a user
+                        }
+                    
+                        const chatOpenedAtForCurrentUser = roomDoc?.data()?.chatOpenedAt?.[senderId]; // Check for existence
+                    
                         if (msg.receiverId === currentUser?.uid && chatOpenedAtForCurrentUser && msg.createdAt <= moment(chatOpenedAtForCurrentUser.toDate()).format('YYYY-MM-DD HH:mm:ss')) {
                             db.collection('Messages').doc(msg._id).update({ read: true });
                         }
+                    
                         return {
                             ...msg,
                             user: {
                                 ...msg.user,
                                 _id: msg.senderId === senderId ? senderId : msg.user._id,
                                 name: msg.senderId === senderId ? 'Me' : msg.user.name,
-                                reaction: msg.reaction || null,
+                                reaction: msg.reaction || null, // Use `msg.reaction || null` to handle undefined reactions
                             },
                         };
                     });
-
                     setMessages(updatedMessages);
                     setLoading(false);
                 }, (error) => {

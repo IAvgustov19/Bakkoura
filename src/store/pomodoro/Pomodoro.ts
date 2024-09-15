@@ -159,7 +159,9 @@ export class PomodoroStore {
 
   startCurrentPomodoro = (id: number) => {
     if (this.isStartCurrent) {
+      this.isRunCurrent = false;
       this.isStartCurrent = false;
+      clearInterval(this.currentSecondInterval);
     } else {
       this.isRunCurrent = true;
       if (this.currentSecond > 0) {
@@ -171,11 +173,11 @@ export class PomodoroStore {
               this.stopCurrentPomodoro(id);
               console.log(`Break Time ID: ${this.currentBreakTime.id}`);
               console.log(`Completed Cycles Before Transition: ${this.completedCycles}`);
-  
+
               if (this.currentBreakTime.id === 1) { // Pomodoro period
                 this.completedCycles++;
                 console.log(`Pomodoro completed: Updated Completed Cycles to ${this.completedCycles}`);
-  
+
                 if (this.completedCycles >= 5) {
                   // After 4 Pomodoro periods, switch to long break
                   this.completedCycles = 0; // Reset completed cycles
@@ -183,11 +185,11 @@ export class PomodoroStore {
                 } else {
                   this.setCurrentBreakTime(2); // Switch to short break
                 }
-  
+
               } else if (this.currentBreakTime.id === 2) { // Short Break
                 this.shortBreakCount++;
                 console.log(`Short Break completed: Updated Short Break Count to ${this.shortBreakCount}`);
-  
+
                 if (this.shortBreakCount >= 5) {
                   // After 4 short breaks, switch to Pomodoro period and reset
                   this.shortBreakCount = 0; // Reset short break count
@@ -196,12 +198,12 @@ export class PomodoroStore {
                 } else {
                   this.setCurrentBreakTime(1); // Switch back to Pomodoro period
                 }
-  
+
               } else if (this.currentBreakTime.id === 3) { // Long Break
                 // After long break, reset the entire cycle
                 this.setCurrentBreakTime(1); // Switch back to Pomodoro period
               }
-  
+
               console.log(`New Break Time ID: ${this.currentBreakTime.id}`);
               console.log(`Updated Completed Cycles: ${this.completedCycles}`);
             }
@@ -213,7 +215,7 @@ export class PomodoroStore {
       }
     }
   };
-  
+
 
   stopCurrent = (id: number) => {
 
@@ -236,11 +238,11 @@ export class PomodoroStore {
       this.currentTime = '15:00';
     }
 
-    this.isStartCurrent = false;
+    // this.isStartCurrent = false;
     this.isRunCurrent = false;
     this.isLongBreakSet = false;
 
-   
+
 
 
   };
@@ -273,14 +275,14 @@ export class PomodoroStore {
       channelId: channelId, // This is optional, and you may need to create a channel for Android
       title: "Pomodoro Timer",
       message: `Pomodoro session has ended. ${this.currentBreakTime.id === 3 && this.shortBreakCount < 4
+        ? "Back to Pomodoro!"
+        : this.currentBreakTime.id === 2
           ? "Back to Pomodoro!"
-          : this.currentBreakTime.id === 2
-            ? "Back to Pomodoro!"
-            : this.currentBreakTime.id === 1
-              ? this.shortBreakCount < 3
-                ? "Take a short break!"
-                : "Time for a long break!"
-              : `Unknown state: ID ${this.currentBreakTime.id}` // Print the actual ID for debugging
+          : this.currentBreakTime.id === 1
+            ? this.shortBreakCount < 3
+              ? "Take a short break!"
+              : "Time for a long break!"
+            : `Unknown state: ID ${this.currentBreakTime.id}` // Print the actual ID for debugging
         }`,
       playSound: true,
       soundName: 'default',
