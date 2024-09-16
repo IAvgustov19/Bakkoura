@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, Text } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import TextView from '../../components/Text/Text';
+import { t } from '../../i18n';
 
 const HomeScreen = () => {
   const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
@@ -154,7 +155,7 @@ const HomeScreen = () => {
             <RN.View style={styles.watchBox}>
               <TextView
                 style={[styles.title, { marginTop: -15 }]}
-                text={`${personalAreaData.name}, Message to You!`}
+                text={`${personalAreaData.name}, ${t("messageToYou")}`}
               />
               <TextView
                 fonWeight="300"

@@ -165,7 +165,7 @@ const PersonalArea = () => {
                     }
                   />
                 </RN.View> */}
-                {/* <RN.View style={styles.eventsTypeList}>
+                <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
                     title="Language"
                     value={
@@ -175,7 +175,7 @@ const PersonalArea = () => {
                       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                     }
                   />
-                </RN.View> */}
+                </RN.View>
                 {/* <RN.View style={styles.eventsTypeList}>
                   <ListItemCont title="Important Dates" onPress={() => {}} />
                   <RN.View style={styles.line}></RN.View>

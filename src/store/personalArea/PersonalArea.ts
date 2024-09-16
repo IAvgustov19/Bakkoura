@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import {MenuItems} from '../../utils/menuItems';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import I18n from '../../i18n';
 
 export class PersonalAreaStore {
   private readonly root: RootStore;
@@ -36,6 +37,13 @@ export class PersonalAreaStore {
   currentPerson = null;
   initialRouteName: InitialRouteNameType = InitialRouteNameInitial;
   initialRouteNameChanged: InitialRouteNameType = InitialRouteNameInitial;
+
+  language = 'en';
+
+  setLanguage(newLanguage) {
+    this.language = newLanguage;
+    I18n.locale = newLanguage;
+  }
 
   setPersonStartScreen = (value: InitialRouteNameType) => {
     runInAction(() => {
@@ -229,6 +237,8 @@ export class PersonalAreaStore {
         active: i === index ? !item.active : false,
       };
     });
+    console.log('newDatanewDatanewData', newData);
+    
     this.languages = newData;
   };
 }

@@ -1,35 +1,47 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {Images} from '../../assets';
+import { Images } from '../../assets';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import useRootStore from '../../hooks/useRootStore';
 import TextView from '../../components/Text/Text';
-import {COLORS} from '../../utils/colors';
-import {observer} from 'mobx-react-lite';
+import { COLORS } from '../../utils/colors';
+import { observer } from 'mobx-react-lite';
 import RN from '../../components/RN';
-import {ActivityIndicator} from 'react-native';
-import {windowWidth} from '../../utils/styles';
+import { ActivityIndicator } from 'react-native';
+import { windowWidth } from '../../utils/styles';
+
+import I18n from 'react-native-i18n';
+import { t } from '../../i18n';
 
 const LanguageScreen = () => {
   const navigation = useNavigation();
 
   const {
     languages,
-    onLanguageItemPress,
+    onLanguageItemPress: onLanguageItemPressStore,
     updateLoading,
     updateProfile,
     personalAreaData,
+    setLanguage,
   } = useRootStore().personalAreaStore;
-  const {newUser} = useRootStore().authStore;
+  const { newUser } = useRootStore().authStore;
 
   const update = () => {
     updateProfile(() => navigation.goBack());
   };
 
-  const renderItem = ({item, index}) => {
+  const onLanguageItemPress = (index) => {
+    const selectedLanguage = languages[index].key;
+    I18n.locale = selectedLanguage;
+    setLanguage(selectedLanguage);
+
+    onLanguageItemPressStore(index);
+  };
+
+  const renderItem = ({ item, index }) => {
     return (
       <RN.TouchableOpacity
         style={styles.languagesBox}
@@ -60,10 +72,10 @@ const LanguageScreen = () => {
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
                 <Images.Svg.arrowLeft />
-                <TextView text="Back" />
+                <TextView text={t("Back")} />
               </RN.TouchableOpacity>
             }
-            title="Languages"
+            title={t("Languages")}
           />
           <RN.FlatList
             data={languages}
@@ -80,7 +92,7 @@ const LanguageScreen = () => {
                 updateLoading ? (
                   <ActivityIndicator
                     color={COLORS.black}
-                    style={{marginTop: 3}}
+                    style={{ marginTop: 3 }}
                   />
                 ) : null
               }

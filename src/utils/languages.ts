@@ -3,13 +3,13 @@ export const Languages = [
     id: 1,
     title: 'English',
     active: true,
-    key: 'EN',
+    key: 'en',
   },
   {
     id: 2,
     title: 'عرب',
     active: false,
-    key: 'BA',
+    key: 'ar',
   },
 ];
 
