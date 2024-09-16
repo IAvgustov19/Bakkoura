@@ -45,7 +45,7 @@ const EventScreen = () => {
     if (switchCalendar) {
       t = 'Calendar';
     } else {
-      t = 'Events';
+      t = 'Calendar';
     }
     return t;
   }, [switchCalendar]);
@@ -63,9 +63,6 @@ const EventScreen = () => {
             }
             title={title}
           />
-          <RN.Text style={styles.currentTime}>
-            {calendarCurrentTime}
-          </RN.Text>
           <RN.View style={styles.calendarBox}>{renderCalendar()}</RN.View>
           <RN.View style={styles.bottomMenu}>
             <SimpleSwitch
@@ -114,7 +111,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    bottom: '13%',
+    bottom: '0%',
     paddingRight: 5,
   },
   currentTime: {

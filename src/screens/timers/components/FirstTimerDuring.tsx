@@ -15,16 +15,16 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
   const {firstTimerValue, currentTime, firstTimerTime, timerStatus} =
     useRootStore().timerStore;
 
-  // const timeLottie = React.useMemo(() => {
-  //   return (
-  //     <LottieContent
-  //       autoPlay={!timerStatus.stop || !timerStatus.finished}
-  //       source={Lotties.timer}
-  //       width={windowWidth - 10}
-  //       speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
-  //     />
-  //   );
-  // }, [timerStatus.stop, timerStatus.finished]);
+   const timeLottie = React.useMemo(() => {
+     return (
+       <LottieContent
+         autoPlay={!timerStatus.stop || !timerStatus.finished}
+         source={Lotties.timer}
+         width={windowWidth - 10}
+         speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
+       />
+     );
+   }, [timerStatus.stop, timerStatus.finished]);
 
   return (
     <RN.View style={styles.container}>
@@ -50,7 +50,7 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
             </>
           )}
         </RN.View>
-        {stop ? <RN.Text style={styles.pausa}>pause</RN.Text> : null}
+        {stop ? <RN.Text style={styles.pausa}>Pause</RN.Text> : null}
         {timerStatus.finished ? (
           <RN.Text style={styles.pausa}>Time is over</RN.Text>
         ) : null}

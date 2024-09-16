@@ -19,7 +19,7 @@ const TimeTogetherSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Couple Time"
+                        title="Time Together"
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={TogetherData} height={width / 3} width={'100%'}/>

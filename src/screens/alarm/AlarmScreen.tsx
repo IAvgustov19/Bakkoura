@@ -209,7 +209,7 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     width: '100%',
-    bottom: 110,
+    bottom: 10,
   },
   switch: {
     paddingVertical: 10, width: '100%', alignItems: 'center'

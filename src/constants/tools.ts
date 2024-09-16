@@ -49,7 +49,7 @@ export const ToolsList: ToolsListType[] = [
   {
     id: 6,
     image: Images.Svg.timerIcon,
-    title: 'Timers',
+    title: 'Timer',
     navigate: APP_ROUTES.TIMER,
     isbtn: false,
   },
