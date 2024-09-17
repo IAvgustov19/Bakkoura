@@ -63,7 +63,7 @@ const ToDoTimer = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="To do Timer"
+            title="To-do Timer"
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TODOTIMER_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

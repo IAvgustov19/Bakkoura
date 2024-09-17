@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop:20
   },
   renderCount: {
     flexDirection: 'row',

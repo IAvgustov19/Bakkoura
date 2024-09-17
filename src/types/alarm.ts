@@ -134,7 +134,7 @@ export const TogetherDataInitial = {
   fromDateFormat: '0',
   reminder: false,
   control: 'Start',
-  repeat: 'never',
+  repeat: 'Never',
   synchronized: false,
   synchronizedEmail: '',
   time: '0',

@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import {MenuItems} from '../../utils/menuItems';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import I18n from '../../i18n';
+//import I18n from '../../i18n';
 
 export class PersonalAreaStore {
   private readonly root: RootStore;
@@ -42,7 +42,7 @@ export class PersonalAreaStore {
 
   setLanguage(newLanguage) {
     this.language = newLanguage;
-    I18n.locale = newLanguage;
+    //I18n.locale = newLanguage;
   }
 
   setPersonStartScreen = (value: InitialRouteNameType) => {

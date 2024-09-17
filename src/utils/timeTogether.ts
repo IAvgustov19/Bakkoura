@@ -4,7 +4,7 @@ export const TogetherData = [
     {
         id: 1,
         image: Images.Img.togetherSlide1,
-        text: 'Вверху экрана с помощью тумблера вы можете изменять часовой формат будильника - 24ч или 30ч \nAt the top of the screen, you can use the toggle switch to change the alarm clock format - 24h or 30h'
+        text: 'The created etaps will be displayed in the list below, where you can change them by clicking on the 3 dots on the right, synchronize the clock with another user by clicking on the yellow sync button, or select the necessary stage to show information about it'
     },
     // {
     //     id: 2,

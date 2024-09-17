@@ -15,6 +15,7 @@ import { APP_ROUTES } from '../../navigation/routes';
 import { windowHeight } from '../../utils/styles';
 import { db } from '../../config/firebase';
 import auth from '@react-native-firebase/auth';
+import { COLORS } from '../../utils/colors';
 
 const AddEtap = () => {
   const navigation = useNavigation();
@@ -245,7 +246,7 @@ const styles = RN.StyleSheet.create({
     width: '100%',
   },
   listItemText: {
-    color: '#7D7D7D',
+    color: COLORS.grey,
     fontSize: 16,
   },
   listItemTextInput: {

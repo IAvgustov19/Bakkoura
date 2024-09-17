@@ -14,7 +14,6 @@ import { ActivityIndicator } from 'react-native';
 import { windowWidth } from '../../utils/styles';
 
 import I18n from 'react-native-i18n';
-import { t } from '../../i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LanguageScreen = () => {
@@ -60,7 +59,7 @@ const LanguageScreen = () => {
 
   const onLanguageItemPress = async (index) => {
     const selectedLanguage = languages[index].key;
-    I18n.locale = selectedLanguage;
+    //I18n.locale = selectedLanguage;
     setLanguage(selectedLanguage);
     await saveLanguagePreference(selectedLanguage);
     onLanguageItemPressStore(index);
@@ -94,10 +93,10 @@ const LanguageScreen = () => {
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
                 <Images.Svg.arrowLeft />
-                <TextView text={t("Back")} />
+                <TextView text="Back" />
               </RN.TouchableOpacity>
             }
-            title={t("Languages")}
+            title="Languages"
           />
           <RN.FlatList
             data={languages}

@@ -90,7 +90,7 @@ const Input: React.FC<Props> = ({
               {
                 height: height,
                 paddingTop: paddingTop,
-                width: '100%',
+                width: '95%',
               },
             ]}
             onChangeText={onChangeText}
@@ -138,7 +138,9 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     width: '80%',
   },
-  iconBox: {},
+  iconBox: {
+
+  },
   title: {
     marginLeft: 15,
     marginBottom: 5,
