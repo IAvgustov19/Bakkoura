@@ -49,6 +49,8 @@ export const updateLastSeen = userId => {
 import { db, firebase } from './src/config/firebase';
 import PushNotification from 'react-native-push-notification';
 import { openSettings, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { NavigationContainer } from '@react-navigation/native';
+import LanguageProvider from './src/i18n/i18nContext';
 
 
 export const channelId = 'bts';
@@ -221,7 +223,7 @@ const App = () => {
   //     const requestStoragePermission = async () => {
   //       try {
   //         const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-  
+
   //         switch (result) {
   //           case RESULTS.GRANTED:
   //             console.log('Permission granted');
@@ -257,7 +259,7 @@ const App = () => {
   //         console.error('Error requesting permission:', error);
   //       }
   //     };
-  
+
 
   //   requestStoragePermission();
   // }, []);
@@ -393,57 +395,10 @@ const App = () => {
   }, [])
 
   return (
-    <>
-      <RN.StatusBar
-        translucent={true}
-        backgroundColor={'transparent'}
-        barStyle="light-content"
-      />
+    <LanguageProvider>
+      <RN.StatusBar translucent={true} backgroundColor={'transparent'} barStyle="light-content" />
       <AppNavigator />
-      {/* <SafeAreaView style={styles.safeAreaContainer}>
-        <KeyboardAwareScrollView
-          enableOnAndroid
-          extraScrollHeight={100}
-          keyboardShouldPersistTaps="handled">
-          <RN.View style={styles.container}>
-            <RN.Text style={styles.heading}>Change Widget Value</RN.Text>
-            <RN.View style={styles.bodyContainer}>
-              <RN.View style={styles.instructionContainer}>
-                <RN.View style={styles.thoughtContainer}>
-                  <RN.Text style={styles.thoughtTitle}>
-                    Enter the value that you want to display on your home widget
-                  </RN.Text>
-                </RN.View>
-                <RN.View style={styles.thoughtPointer}></RN.View>
-                <RN.Image
-                  source={Images.Img.homeWatch24and30}
-                  style={styles.avatarImg}
-                />
-              </RN.View>
-
-              <RN.TextInput
-                style={styles.input}
-                onChangeText={newText => setText(newText)}
-                value={text}
-                keyboardType="decimal-pad"
-                placeholder="Enter the text to display..."
-              />
-
-              <AwesomeButton
-                backgroundColor={'#33b8f6'}
-                height={50}
-                width={windowWidth - 80}
-                backgroundDarker={'#eeefef'}
-                backgroundShadow={'#f1f1f0'}
-                style={styles.actionButton}
-                onPress={handleSubmit}>
-                Submit
-              </AwesomeButton>
-            </RN.View>
-          </RN.View>
-        </KeyboardAwareScrollView>
-      </SafeAreaView> */}
-    </>
+    </LanguageProvider>
   );
 };
 

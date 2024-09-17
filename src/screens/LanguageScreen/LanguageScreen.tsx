@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Images } from '../../assets';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -15,6 +15,7 @@ import { windowWidth } from '../../utils/styles';
 
 import I18n from 'react-native-i18n';
 import { t } from '../../i18n';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LanguageScreen = () => {
   const navigation = useNavigation();
@@ -29,15 +30,39 @@ const LanguageScreen = () => {
   } = useRootStore().personalAreaStore;
   const { newUser } = useRootStore().authStore;
 
+  const saveLanguagePreference = async (language) => {
+    try {
+      await AsyncStorage.setItem('selectedLanguage', language);
+    } catch (error) {
+      console.error('Failed to save language', error);
+    }
+  };
+
+  const loadLanguagePreference = async () => {
+    try {
+      const language = await AsyncStorage.getItem('selectedLanguage');
+      if (language) {
+        I18n.locale = language;
+        setLanguage(language);
+      }
+    } catch (error) {
+      console.error('Failed to load language', error);
+    }
+  };
+
+  useEffect(() => {
+    loadLanguagePreference();
+  }, []);
+
   const update = () => {
     updateProfile(() => navigation.goBack());
   };
 
-  const onLanguageItemPress = (index) => {
+  const onLanguageItemPress = async (index) => {
     const selectedLanguage = languages[index].key;
     I18n.locale = selectedLanguage;
     setLanguage(selectedLanguage);
-
+    await saveLanguagePreference(selectedLanguage);
     onLanguageItemPressStore(index);
   };
 
@@ -63,9 +88,6 @@ const LanguageScreen = () => {
     <LinearContainer
       children={
         <RN.View style={styles.container}>
-          {/* <RN.View style={styles.bgContainer}>
-            <Images.Svg.bg style={styles.bg} />
-          </RN.View> */}
           <HeaderContent
             leftItem={
               <RN.TouchableOpacity
