@@ -13,7 +13,7 @@ import RN from '../../components/RN';
 import { ActivityIndicator } from 'react-native';
 import { windowWidth } from '../../utils/styles';
 
-import I18n from 'react-native-i18n';
+//import I18n from 'react-native-i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LanguageScreen = () => {
@@ -41,7 +41,7 @@ const LanguageScreen = () => {
     try {
       const language = await AsyncStorage.getItem('selectedLanguage');
       if (language) {
-        I18n.locale = language;
+       // I18n.locale = language;
         setLanguage(language);
       }
     } catch (error) {
