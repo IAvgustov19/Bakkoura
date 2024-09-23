@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
@@ -69,6 +69,8 @@ const ToDoTimerHistory = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.breakTimeBox}>
               {HistoryData.map((item, index) => {
+                console.log('blablabla', item.key, filterType);
+                
                 return (
                   <OutlineBtn
                     key={index}

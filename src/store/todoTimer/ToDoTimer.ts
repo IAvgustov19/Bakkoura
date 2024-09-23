@@ -88,6 +88,7 @@ export class TodoTimerStore {
       case 'lastMonth':
         filterDateStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
         filterDateEnd = new Date(today.getFullYear(), today.getMonth(), 0); 
+        this.filterType = 'lastMonth';
         break;
       case 'lastWeek':
         filterDateStart = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
