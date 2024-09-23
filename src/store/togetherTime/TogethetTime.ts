@@ -71,7 +71,7 @@ export class TogetherTimeStore {
     });
   };
 
-  createNewEtap = async (synchronizedEmail:string, synchronized: boolean, callback: () => void) => {
+  createNewEtap = async (synchronizedEmail: string, synchronized: boolean, callback: () => void) => {
     const userId = auth().currentUser?.uid;
     if (this.addEtapState.fromDate !== '0' && this.addEtapState.type) {
       this.setAddEtapState('id', this.etapList.length + 1);
@@ -117,69 +117,77 @@ export class TogetherTimeStore {
       this.isUpdate = false;
     });
   };
-  
 
-SelectOneEtap = (id: number | string) => {
-  this.selcetedEtap = this.etapList.find(item => item.id === id) ?? TogetherDataInitial;
-  if (this.selcetedEtap.timeStamp > 0) {
-    if (this.selcetedEtap.control === 'Stopped') {
-      this.stopTimer();
-    } else {
-      this.startTimer();
-    }
-  }
-};
 
-handleDeleteEtap = (id: number | string) => {
-  setTimeout(() => {
-    runInAction(async () => {
-      this.etapList = this.etapList.filter(item => item.id !== id);
-      this.clearState();
-      await deleteEtapFromFirestore(id);
-    });
-  }, 200);
-};
-
-startTimer = () => {
-  if (this.selectedInterval) {
-    clearInterval(this.selectedInterval);
-  }
-  this.selectedInterval = setInterval(() => {
-    runInAction(() => {
-      const currentTime = Date.now();
-      const elapsed = currentTime - this.selcetedEtap.timeStamp;
-
-      let days, hours, minutes, seconds;
-
-      if (this.is30hFormat) {
-        const totalMinutes = Math.floor(elapsed / (1000 * 60));
-        days = Math.floor(totalMinutes / (48 * 30));
-        const remainingMinutes = totalMinutes % (48 * 30);
-        hours = Math.floor(remainingMinutes / 48);
-        minutes = remainingMinutes % 48;
-        seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+  SelectOneEtap = (id: number | string) => {
+    this.selcetedEtap = this.etapList.find(item => item.id === id) ?? TogetherDataInitial;
+    if (this.selcetedEtap.timeStamp > 0) {
+      if (this.selcetedEtap.control === 'Stopped') {
+        this.stopTimer();
       } else {
-        days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
-        const remainingHours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        hours = remainingHours;
-        const remainingMinutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
-        minutes = remainingMinutes;
-        seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+        this.startTimer();
       }
+    }
+  };
 
-      this.selcetedEtap.days = days.toString() as never;
-      this.selcetedEtap.time = this.formattedTime(hours, minutes, seconds, this.is30hFormat);
-    });
-  }, 1000);
-};
 
-stopTimer = () => {
-  if (this.selectedInterval) {
-    
-    clearInterval(this.selectedInterval);
-    this.selectedInterval = null;
-  }
-};
+
+  handleDeleteEtap = (id: number | string) => {
+    setTimeout(() => {
+      runInAction(async () => {
+        this.etapList = this.etapList.filter(item => item.id !== id);
+
+        if (this.selcetedEtap.id === id) {
+          this.selcetedEtap = TogetherDataInitial;
+        }
+
+        this.clearState();
+        this.stopTimer();
+        await deleteEtapFromFirestore(id);
+      });
+    }, 200);
+  };
+
+  startTimer = () => {
+    if (this.selectedInterval) {
+      clearInterval(this.selectedInterval);
+    }
+    this.selectedInterval = setInterval(() => {
+      runInAction(() => {
+        const currentTime = Date.now();
+        const elapsed = currentTime - this.selcetedEtap.timeStamp;
+
+        let days, hours, minutes, seconds;
+
+        if (this.is30hFormat) {
+          const totalMinutes = Math.floor(elapsed / (1000 * 60));
+          days = Math.floor(totalMinutes / (48 * 30));
+          const remainingMinutes = totalMinutes % (48 * 30);
+          hours = Math.floor(remainingMinutes / 48);
+          minutes = remainingMinutes % 48;
+          seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+        } else {
+          days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+          const remainingHours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          hours = remainingHours;
+          const remainingMinutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+          minutes = remainingMinutes;
+          seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+        }
+
+        this.selcetedEtap.days = days.toString() as never;
+        this.selcetedEtap.time = this.formattedTime(hours, minutes, seconds, this.is30hFormat);
+      });
+    }, 1000);   
+  };
+
+  stopTimer = () => {
+    if (this.selectedInterval) {
+
+      clearInterval(this.selectedInterval);
+      this.selectedInterval = null;
+    }
+  };
 
 
   calculateTimeDifferences = () => {
@@ -289,19 +297,19 @@ stopTimer = () => {
     let formattedMinutes = minutes;
 
     if (is30hFormat) {
-        // Convert hours and minutes to total minutes
-        const totalMinutes = hours * 48 + minutes;
+      // Convert hours and minutes to total minutes
+      const totalMinutes = hours * 48 + minutes;
 
-        // Calculate equivalent hours and minutes in 30-hour format
-        formattedHours = Math.floor(totalMinutes / 48);
-        formattedMinutes = totalMinutes % 48;
+      // Calculate equivalent hours and minutes in 30-hour format
+      formattedHours = Math.floor(totalMinutes / 48);
+      formattedMinutes = totalMinutes % 48;
 
-        // Calculate seconds
-        seconds = Math.floor((seconds * 48) / 60); // Adjust seconds for 48-minute scale
+      // Calculate seconds
+      seconds = Math.floor((seconds * 48) / 60); // Adjust seconds for 48-minute scale
     }
 
     return `${formattedHours.toString().padStart(2, '0')}:${formattedMinutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
+  }
 
 
 

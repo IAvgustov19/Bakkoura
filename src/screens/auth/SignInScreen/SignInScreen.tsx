@@ -14,6 +14,10 @@ import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from '../Loading/LoadingScreen';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+import RN from '../../../components/RN';
+import { Images } from '../../../assets';
+import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
 const SignInScreen = () => {
 
@@ -139,9 +143,20 @@ const SignInScreen = () => {
     <>
       <LinearContainer>
         <View style={styles.container}>
-        <LoadingScreen loading={loading} setLoading={setLoading} />
-          <HeaderContent />
+          <LoadingScreen loading={loading} setLoading={setLoading} />
+          <HeaderContent
+            leftItem={<Images.Svg.btsRightLinear />}
+            rightItem={
+              <LanguageBtn
+                value={newUser?.language}
+                onPress={() =>
+                  navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+                }
+              />
+            }
+          />
           <View style={styles.content}>
+            <RN.Image source={Images.Img.authLight} style={styles.light} />
             <View style={styles.titleBox}>
               <TextView title="Hello Friend!" />
               <TextView text="Start tracking and improving Your Life!" />
@@ -196,8 +211,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   content: {
+    paddingBottom: 130,
     justifyContent: 'center',
-    height: '80%',
+    height: '70%',
   },
   titleBox: {
     marginTop: 50,
@@ -237,4 +253,11 @@ const styles = StyleSheet.create({
   signUpText: {
     color: '#ECC271',
   },
+  localize: {
+    marginBottom: -10,
+  },
+  light: {
+    top: -130,
+    position: 'absolute',
+  }
 });

@@ -1,4 +1,4 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Images } from '../../assets';
@@ -56,6 +56,8 @@ const TimeTogether = () => {
   };
 
 
+  console.log(selcetedEtap);
+  
 
   useEffect(() => {
     const synched = async () => {
@@ -225,7 +227,7 @@ const TimeTogether = () => {
             </RN.View>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
-                {!(etapList.length == 0) ? lottie :
+                {(selcetedEtap?.uid && etapList?.length) ? lottie :
                   <Images.Svg.heartIcon width={windowWidth - 40} />
                 }
               </RN.View>
@@ -233,21 +235,21 @@ const TimeTogether = () => {
                 <TextView
                   style={styles.coupleTimeText}
                   title={
-                    selcetedEtap.timeStamp
-                      ? `${selcetedEtap.type} ${selcetedEtap.uid !== auth().currentUser.uid ? '' : `with ${selcetedEtap.name ? selcetedEtap.name : 'no Name'
+                    selcetedEtap?.timeStamp
+                      ? `${selcetedEtap?.type} ${selcetedEtap?.uid !== auth().currentUser.uid ? '' : `with ${selcetedEtap.name ? selcetedEtap.name : 'no Name'
                         }`}`
                       : 'Time'
                   }
                 />
                 <RN.Text style={styles.coupleTime}>
-                  {selcetedEtap.time != '0' ? selcetedEtap.time : '00:00:00'}
+                  {selcetedEtap?.time != '0' ? selcetedEtap?.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} days
+                  {+calculateDaysDifference(selcetedEtap?.fromDate) > 0 ? calculateDaysDifference(selcetedEtap?.fromDate) : 0} days
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
-                  {selcetedEtap.fromDate != '0'
-                    ? selcetedEtap.fromDate
+                  {selcetedEtap?.fromDate != '0'
+                    ? selcetedEtap?.fromDate
                     : '00/00/0000'}
                 </RN.Text>
               </RN.View>

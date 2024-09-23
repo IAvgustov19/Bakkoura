@@ -18,7 +18,6 @@ import LottieContent from '../../components/LottieContent/LottieContent';
 import { Lotties } from '../../lotties/lottie';
 import { windowHeight, windowWidth } from '../../utils/styles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
-import Text from 'react-native'
 
 const Pomodoro = () => {
   const {
@@ -65,11 +64,11 @@ const Pomodoro = () => {
     const now = new Date();
     let minutes;
     if (breackType === 'Pomodoro') {
-      minutes = 0.05;
+      minutes = 25;
     } else if (breackType === 'ShortBreak') {
-      minutes = 0.05;
+      minutes = 5;
     } else if (breackType === 'LongBreak') {
-      minutes = 0.05;
+      minutes = 15;
     }
     const finishTime = new Date(now.getTime() + minutes * 60000);
 
@@ -83,6 +82,7 @@ const Pomodoro = () => {
 
 
   const renderTasks = useCallback(() => {
+    const maxLength = 100;
     return taskList.map((item, index) => {
       const hasDescription = !!item.description;
       return (
@@ -91,15 +91,15 @@ const Pomodoro = () => {
           key={index}
           onPress={() => { setData(item); setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro')); }}
         >
-          <RN.View>
+          <RN.View style={{gap: 10}}>
             <RN.View style={styles.spaceBetween}>
               <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
-                <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
+                <RN.Text style={styles.tasksText}>{item.name.length > 100 ? `${item.name.slice(0, maxLength)}...` : item.name}</RN.Text>
               </RN.View>
               <RN.Text style={styles.tasksTime}>{`${0}`}/{`${item.minut}`}</RN.Text>
               <Images.Svg.dots onPress={() => onHandleTask(item)} />
             </RN.View>
-            {hasDescription && <TextView text={item.description} />}
+            {hasDescription && <TextView text={item.description.length > maxLength ? `${item.description.slice(0, maxLength)}...` : item.description} />}
           </RN.View>
         </RN.Pressable>
       );
@@ -127,7 +127,6 @@ const Pomodoro = () => {
     setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro'));
 
   }, [newTaskState.breackType])
-
 
 
 
@@ -278,7 +277,7 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroTime: {
     position: 'absolute',
-    top: '40%',
+    top: '45%',
   },
   time: {
     fontSize: 70,
@@ -337,22 +336,15 @@ const styles = RN.StyleSheet.create({
   },
   tasksText: {
     fontSize: 16,
-    width: '80%',
-    color: COLORS.white,
-  },
-  tasksTime: {
-    fontSize: 16,
-    width: '80%',
+    width: '85%',
     color: COLORS.white,
   },
   tasksTime: {
     fontSize: 16,
     color: COLORS.white,
-    width: windowWidth/1.4
   },
   renderTask: {
-   height:250
-
+    height: 105,
   },
   addTaskBtn: {
     marginTop: 20,

@@ -50,7 +50,7 @@ export class TodoTimerStore {
       const userId = auth().currentUser?.uid;
       this.setNewTaskState('uid', userId);
       this.setNewTaskState('date', date);
-      this.setNewTaskState('dailyUsage', []); // Ensure dailyUsage is initialized
+      this.setNewTaskState('dailyUsage', []); 
       if (this.taskState.name) {
         await addTaskToFirestore(this.taskState);
         runInAction(() => {
@@ -76,43 +76,96 @@ export class TodoTimerStore {
   };
 
   filterItemsByTime = (timeFilter: string) => {
-    let today = new Date();
+    console.log('timeFilter', timeFilter);
+  
+    const today = new Date();
+    const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     let filterDateStart;
     let filterDateEnd = today;
+  
 
-    if (timeFilter) {
-      switch (timeFilter) {
-        case 'lastMonth':
-          filterDateStart = new Date(today.getFullYear(), today.getMonth(), 1);
-          this.filterType = 'lastMonth';
-          break;
-        case 'lastWeek':
-          filterDateStart = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-          this.filterType = 'lastWeek';
-          break;
-        case 'lastDay':
-          filterDateStart = new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-          );
-          this.filterType = 'lastDay';
-          break;
-        default:
-          filterDateStart = new Date(0);
-          break;
-      }
+    switch (timeFilter) {
+      case 'lastMonth':
+        filterDateStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        filterDateEnd = new Date(today.getFullYear(), today.getMonth(), 0); 
+        break;
+      case 'lastWeek':
+        filterDateStart = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        this.filterType = 'lastWeek';
+        break;
+      case 'lastDay':
+        filterDateStart = todayStart;
+        this.filterType = 'lastDay';
+        break;
+      default:
+        filterDateStart = new Date(0); 
+        filterDateEnd = today;
+        this.filterType = 'all'; 
+        break;
     }
-
+  
     runInAction(() => {
-      this.tasksList = this.tasksListClone.filter(item =>
-        item.dailyUsage?.some(usage => {
-          let usageDate = new Date(usage.date);
-          return usageDate >= filterDateStart && usageDate <= filterDateEnd;
-        }),
-      );
+      this.tasksList = this.tasksListClone.filter(item => {
+        const hasTodayUsage = item.dailyUsage?.some(usage => {
+          const usageDate = new Date(usage.date);
+          return usageDate.toDateString() === todayStart.toDateString();
+        });
+  
+        return item.dailyUsage?.some(usage => {
+          const usageDate = new Date(usage.date);
+          if (this.filterType === 'lastWeek' && hasTodayUsage) {
+            return usageDate >= filterDateStart && usageDate < todayStart;
+          } else if (this.filterType === 'lastMonth' && hasTodayUsage) {
+            return usageDate >= filterDateStart && usageDate <= filterDateEnd && usageDate.toDateString() !== todayStart.toDateString();
+          } else {
+            return usageDate >= filterDateStart && usageDate <= filterDateEnd;
+          }
+        });
+      });
     });
   };
+  
+
+  // filterItemsByTime = (timeFilter: string) => {
+  //   console.log('timeFiltertimeFilter', timeFilter);
+    
+  //   let today = new Date();
+  //   let filterDateStart;
+  //   let filterDateEnd = today;
+
+  //   if (timeFilter) {
+  //     switch (timeFilter) {
+  //       case 'lastMonth':
+  //         filterDateStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  //         this.filterType = 'lastMonth';
+  //         break;
+  //       case 'lastWeek':
+  //         filterDateStart = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  //         this.filterType = 'lastWeek';
+  //         break;
+  //       case 'lastDay':
+  //         filterDateStart = new Date(
+  //           today.getFullYear(),
+  //           today.getMonth(),
+  //           today.getDate(),
+  //         );
+  //         this.filterType = 'lastDay';
+  //         break;
+  //       default:
+  //         filterDateStart = new Date(0);
+  //         break;
+  //     }
+  //   }
+
+  //   runInAction(() => {
+  //     this.tasksList = this.tasksListClone.filter(item =>
+  //       item.dailyUsage?.some(usage => {
+  //         let usageDate = new Date(usage.date);
+  //         return usageDate >= filterDateStart && usageDate <= filterDateEnd;
+  //       }),
+  //     );
+  //   });
+  // };
 
   increaseSeconds() {
     const data = this.tasksList;

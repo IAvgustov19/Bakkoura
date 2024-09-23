@@ -394,6 +394,7 @@ export const Images = {
     worldTimeSlider1: require('./images/worldTimeSlider1.jpeg'),
     otherSlider1: require('./images/otherSlider1.jpeg'),
     messengerSlider1: require('./images/messengerSlider1.jpeg'),
+    authLight:  require('./images/authLight.png'),
   },
 };
 

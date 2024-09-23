@@ -4,6 +4,7 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import { Images } from '../../assets';
 import ToDoTimerItem from './components/ToDoTimerItem';
+
 import { observer } from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
@@ -34,6 +35,9 @@ const ToDoTimer = () => {
   useEffect(() => {
     fetchTasks();
   }, [isFocused, fetchTasks]);
+
+  console.log('tasksListtasksList', JSON.stringify(tasksList, null, 2));
+
 
   const renderItems = useCallback(() => {
     return tasksList.map((item, index) => {
