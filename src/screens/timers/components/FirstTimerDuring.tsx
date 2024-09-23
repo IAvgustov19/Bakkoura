@@ -50,7 +50,7 @@ const FirstTimerDuring: React.FC<Props> = ({ stop, finished }) => {
             </>
           )}
         </RN.View>
-        {stop ? <RN.Text style={styles.pausa}>pause</RN.Text> : null}
+        {stop ? <RN.Text style={styles.pausa}>Pause</RN.Text> : null}
         {timerStatus.finished ? (
           <RN.Text style={styles.pausa}>Time is over</RN.Text>
         ) : null}

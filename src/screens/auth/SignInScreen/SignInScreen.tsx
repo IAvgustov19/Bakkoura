@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
   },
   signUp: {
     marginTop: 30,
+    paddingTop: 40
   },
   needAcc: {
     position: 'absolute',
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 10,
     gap: 10,
-    left: 15,
+    left: 5,
   },
   signUpText: {
     color: '#ECC271',

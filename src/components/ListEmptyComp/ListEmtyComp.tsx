@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
+import { windowHeight } from '../../utils/styles';
 
 type Props = {
   title?: string;
@@ -20,6 +21,7 @@ export default ListEmptyComp;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginTop:windowHeight/3
   },
   title: {
     fontSize: 20,

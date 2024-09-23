@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   btnBox: {
     alignItems: 'center',
     position: 'absolute',
-    bottom: 120,
+    bottom: 20,
     width: '100%',
   },
   switch: {

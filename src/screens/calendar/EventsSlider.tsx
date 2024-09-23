@@ -20,7 +20,7 @@ const EventSlider = () => {
 
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Events"
+                        title="Calendar"
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={EventsData} height={width / 1.1} width={'100%'} marginTop={30} />

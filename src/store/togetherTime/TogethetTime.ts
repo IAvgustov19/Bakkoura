@@ -18,7 +18,7 @@ export class TogetherTimeStore {
   selcetedEtap: TogetherDataType = TogetherDataInitial;
   selectedInterval: NodeJS.Timeout | null = null;
   is30hFormat: boolean = false;
-  selectedRepeat: RepeatDataType = RepeatData[2];
+  selectedRepeat: RepeatDataType = RepeatData[3];
   isUpdate = false;
 
 

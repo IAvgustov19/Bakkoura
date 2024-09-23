@@ -12,7 +12,7 @@ type Props = {
 const SelectItem: React.FC<Props> = ({isActive, title, onPress}) => {
   return (
     <RN.Pressable onPress={onPress} style={styles.container}>
-      <RN.Text
+      <RN.Text 
         style={[styles.title, {color: isActive ? COLORS.white : COLORS.grey}]}>
         {title}
       </RN.Text>
@@ -34,5 +34,6 @@ const styles = RN.StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    width:230
   },
 });

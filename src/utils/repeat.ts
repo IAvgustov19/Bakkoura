@@ -71,12 +71,12 @@ export const ControlData = [
   {
     id: 1,
     title: 'Start',
-    active: false,
+    active: true,
   },
   {
     id: 2,
     title: 'Stopped',
-    active: true,
+    active: false,
   },
 ];
 

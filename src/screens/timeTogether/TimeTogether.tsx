@@ -209,7 +209,7 @@ const TimeTogether = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Couple Time"
+            title="Time Together"
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TIME_TOGETHER_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
@@ -335,7 +335,7 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 10,
   },
   etapScrollView: {
-    height: windowHeight / 4,
+    height: windowHeight / 3,
   },
   etapList: {
     flexDirection: 'row',

@@ -159,6 +159,8 @@ const styles = StyleSheet.create({
   },
   stopwatch: {
     height: '85%',
+    justifyContent:'center',
+    alignItems:'center'
   },
   child: {
     width: windowWidth - 40,

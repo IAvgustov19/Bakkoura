@@ -56,11 +56,11 @@ const styles = RN.StyleSheet.create({
   extraTime: {
     color: COLORS.yellow,
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 14,
   },
   time: {
     color: COLORS.white,
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Rationale-Regular',
     textAlign: 'center',
   },

@@ -146,7 +146,7 @@ const styles = RN.StyleSheet.create({
   modalView: {
     width: '100%',
     height: '100%',
-    paddingHorizontal: 20,
+    paddingHorizontal: 5,
   },
   listsBox: {
     width: '100%',
