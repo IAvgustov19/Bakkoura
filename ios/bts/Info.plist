@@ -48,12 +48,12 @@
 	<string>Access is necessary to receive notifications and the correct operation of the application</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Access is necessary for a more secure and convenient login to the application</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) Access is required to record audio and then send it to the chat</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Access is necessary for a more secure and convenient login to the application</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service</string>
 	<key>RNPermissions.requestNotifications</key>
 	<string>To send notifications that the time on the clock is up, a certain event has occurred, or just to remind you of an anniversary</string>
 	<key>UIAppFonts</key>
@@ -73,6 +73,10 @@
 		<string>RedHatDisplay-SemiBold.ttf</string>
 		<string>RedHatDisplay-SemiBoldItalic.ttf</string>
 		<string>Rationale-Regular.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

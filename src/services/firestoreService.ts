@@ -9,14 +9,14 @@ import {
 import {NewEventStateType} from '../types/calendar';
 import {SelectedCountriesType} from '../types/worldTime';
 import {AlarmListsItemType} from '../types/alarm';
-import { query, orderBy, limit } from "firebase/firestore"; 
-import { v4 as uuidv4 } from 'uuid';
+import {query, orderBy, limit} from 'firebase/firestore';
+import {v4 as uuidv4} from 'uuid';
 import RNFS from 'react-native-fs';
 
 import auth from '@react-native-firebase/auth';
 import {UserType} from '../types/user';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { Platform } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Platform} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -493,10 +493,13 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
   }
 };
 
-export const updateEtapsInFirestore = async (id: any, updatedEtap: Partial<TogetherDataType>) => {
+export const updateEtapsInFirestore = async (
+  id: any,
+  updatedEtap: Partial<TogetherDataType>,
+) => {
   try {
     const filteredEtap = Object.fromEntries(
-      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined)
+      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined),
     );
 
     await db.collection('etaps').doc(id).update(filteredEtap);
@@ -798,6 +801,7 @@ export const getAlarmsFromFirestore = async () => {
         leter: data.leter,
         laterHours: data.laterHours,
         laterMinutes: data.laterMinutes,
+        vibration: data.vibration,
       };
     });
     return alarms;
@@ -895,11 +899,12 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
     console.error('Error deleting project timer:', error);
   }
 };
-export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string): Promise<UserType[]> => {
+export const getAllUsersFromFirestore = async (
+  uid: string,
+  lastDocId?: string,
+): Promise<UserType[]> => {
   try {
-    let query = db.collection('users')
-      .where('id', '!=', uid)
-      .orderBy('id');
+    let query = db.collection('users').where('id', '!=', uid).orderBy('id');
 
     if (lastDocId) {
       const lastDoc = await db.collection('users').doc(lastDocId).get();
@@ -929,12 +934,12 @@ export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string):
 
 export const uploadAudioToStorage = async (uri, path) => {
   try {
-      const reference = storage().ref(path);
-      await reference.putFile(uri);
-      const url = await reference.getDownloadURL();
-      return url;
+    const reference = storage().ref(path);
+    await reference.putFile(uri);
+    const url = await reference.getDownloadURL();
+    return url;
   } catch (error) {
-      console.error('Error uploading file:', error);
-      throw error;
+    console.error('Error uploading file:', error);
+    throw error;
   }
 };

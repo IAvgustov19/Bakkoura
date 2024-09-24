@@ -14,6 +14,9 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import SetAlarmClock from './components/SetAlarmClock';
+import DocumentPicker from 'react-native-document-picker';
+import {Sounds} from '../../assets';
+import storage from '@react-native-firebase/storage';
 
 const NewAlarmScreen = () => {
   const navigation = useNavigation();
@@ -29,9 +32,42 @@ const NewAlarmScreen = () => {
     selectedSound,
     selectedRepeat,
     createAlarm,
+    onSelectSoundFronDevice,
   } = useRootStore().alarmStore;
   const {themeState} = useRootStore().personalAreaStore;
+  // console.log('newAlarmState', alarmItemData);
 
+  const selectMusicFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      });
+
+      // const fileUri = decodeURIComponent(res[0].uri);
+      const fileUri = decodeURIComponent(res[0].uri);
+      const fileName = res[0].name;
+
+      // Step 2: Upload the file to Firebase Storage
+      const storageRef = storage().ref(`alarm_sounds/${fileName}`);
+      const uploadTask = await storageRef.putFile(fileUri);
+
+      // Step 3: Get the download URL
+      const downloadURL = await storageRef.getDownloadURL();
+      const data = {
+        id: 0,
+        title: res[0].name,
+        url: downloadURL,
+        active: true,
+      };
+      onSelectSoundFronDevice(data);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('Cancel choosing');
+      } else {
+        throw err;
+      }
+    }
+  };
   const onSetLeter = () => {
     setNewAlarmState('leter', leter);
     setLeter(e => !e);
@@ -101,7 +137,11 @@ const NewAlarmScreen = () => {
                 <ListItemCont
                   onPress={() => setSound(e => !e)}
                   title="Sound"
-                  value={selectedSound.title}
+                  value={
+                    selectedSound.title.length > 20
+                      ? selectedSound.title.slice(0, 17) + '...'
+                      : selectedSound.title
+                  }
                   // backBlack
                 />
               </RN.View>
@@ -130,6 +170,14 @@ const NewAlarmScreen = () => {
             okBtn
             okBtnText="Ok"
             onPressBtn={() => setSound(e => !e)}
+            onSelectMyMusic={selectMusicFile}
+            myMusicValue={
+              selectedSound.id === 0
+                ? selectedSound.title.length > 20
+                  ? selectedSound.title.slice(0, 17) + '...'
+                  : selectedSound.title
+                : ''
+            }
           />
         </RN.View>
       }

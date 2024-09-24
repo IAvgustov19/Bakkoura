@@ -7,16 +7,24 @@ import {
 import auth from '@react-native-firebase/auth';
 import {makeAutoObservable, runInAction} from 'mobx';
 import {getCurrentTime30and24} from '../../helper/helper';
-import {AlarmListsItemInitial, AlarmListsItemType} from '../../types/alarm';
+import {
+  AlarmListsItemInitial,
+  AlarmListsItemType,
+  SoundType,
+} from '../../types/alarm';
 import {WeekRepeatData} from '../../utils/repeat';
 import {SoundsData} from '../../utils/sounds';
 import {RootStore} from '../rootStore';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import RN from '../../components/RN';
-import {Platform} from 'react-native';
+import {Platform, Vibration} from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Sound from 'react-native-sound';
+import {Sounds} from '../../assets';
+
+Sound.setCategory('Playback');
 
 export class AlarmStore {
   private readonly root: RootStore;
@@ -62,6 +70,7 @@ export class AlarmStore {
 
   alarmCurrentTime24 = '00:00';
   alarmCurrentTime30 = '00:00';
+  alarmSound: Sound | null = null;
 
   updateAlarmCurrentTime = () => {
     setInterval(() => {
@@ -150,10 +159,11 @@ export class AlarmStore {
     runInAction(() => {
       this.alarmItemData = AlarmListsItemInitial;
       this.selectedRepeat = [...this.alarmItemData.repeat];
+      this.selectedSound = SoundsData[2];
     });
   };
 
-  selectedSound = SoundsData[2];
+  selectedSound: SoundType = SoundsData[2];
   soundData = SoundsData;
 
   selectedRepeat = [...this.alarmItemData.repeat];
@@ -186,6 +196,20 @@ export class AlarmStore {
   onRepeatCancelPress = () => {
     runInAction(() => {
       this.setNewAlarmState('repeat', this.alarmItemData.repeat);
+    });
+  };
+
+  onSelectSoundFronDevice = (data: SoundType) => {
+    runInAction(() => {
+      this.selectedSound = data;
+      this.setNewAlarmState('sound', this.selectedSound);
+      const newData = this.soundData.map(item => {
+        return {
+          ...item,
+          active: data.id === 0 && false,
+        };
+      });
+      this.soundData = newData;
     });
   };
 
@@ -230,6 +254,18 @@ export class AlarmStore {
     }
   };
 
+  playSelectedMusic = async (fileUri?: string) => {
+    console.log('sounddddd', fileUri);
+    this.alarmSound = new Sound(fileUri, null, error => {
+      if (error) {
+        console.log('failed to load the sound', JSON.stringify(error, null, 2));
+        return;
+      } else {
+        console.log('loaded the sound', fileUri);
+      }
+    });
+  };
+
   checkAlarms = (alarmsListData: AlarmListsItemType[]) => {
     this.alarmState = alarmsListData;
     const now = new Date();
@@ -258,6 +294,7 @@ export class AlarmStore {
 
       // Save activeAlarm to AsyncStorage
       try {
+        await this.playSelectedMusic(alarm.sound.url);
         await AsyncStorage.setItem('activeAlarm', JSON.stringify(alarm));
       } catch (error) {
         console.error('Error saving activeAlarm to AsyncStorage:', error);
@@ -267,14 +304,20 @@ export class AlarmStore {
         {
           channelId: alarmChannelid,
           channelName: 'Alarm Channel',
-          playSound: true,
+          playSound: alarm.sound.id !== 0,
           soundName: alarm.sound.url,
           importance: Importance.HIGH,
           vibrate: alarm.vibration,
         },
         () => {},
       );
-
+      this.alarmSound.play(success => {
+        if (success) {
+          console.log('successfully finished playing');
+        } else {
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
       if (RN.Platform.OS === 'ios') {
         PushNotificationIOS.addNotificationRequest({
           id: alarmChannelid,
@@ -288,13 +331,18 @@ export class AlarmStore {
           channelId: alarmChannelid,
           title: 'BTS',
           message: alarm.name,
-          playSound: true,
+          playSound: alarm.sound.id !== 0,
           soundName: alarm.sound.url,
           actions: ['Stop', 'Later'],
           userInfo: {id: alarm.id},
           autoCancel: false,
           vibrate: alarm.vibration,
         });
+      }
+      console.log('alarm.vibration', alarm);
+
+      if (alarm.vibration) {
+        Vibration.vibrate([2000], true);
       }
 
       if (alarm.repeat.includes('Never')) {
@@ -306,6 +354,7 @@ export class AlarmStore {
 
       this.timeout = BackgroundTimer.setTimeout(() => {
         this.handleLaterAction(alarm);
+        Vibration.cancel();
       }, this.ALARM_RING_DURATION);
     }
   };
@@ -320,13 +369,11 @@ export class AlarmStore {
     if (Platform.OS === 'ios') {
       PushNotificationIOS.removeAllDeliveredNotifications();
     }
-    if (alarm.repeat.includes('Never')) {
-      this.handleInactiveAlarm(alarm.id);
-    }
     const updatedAlarm = {
       ...alarm,
       laterHours: this.activeAlarm?.hours,
       laterMinutes: this.activeAlarm?.minutes,
+      isActive: alarm.repeat.includes('Never') ? false : true,
     };
 
     await updateAlarmInFirestore(this.activeAlarm.id, updatedAlarm);
@@ -341,6 +388,8 @@ export class AlarmStore {
     } catch (error) {
       console.error('Error removing activeAlarm from AsyncStorage:', error);
     }
+    this.alarmSound.stop();
+    Vibration.cancel();
   };
 
   handleLaterAction = async (alarm: AlarmListsItemType) => {
@@ -378,5 +427,7 @@ export class AlarmStore {
     this.laterTimeout = BackgroundTimer.setTimeout(() => {
       this.triggerNotification(updatedAlarm);
     }, this.LATER_DURATION);
+    this.alarmSound.stop();
+    Vibration.cancel();
   };
 }

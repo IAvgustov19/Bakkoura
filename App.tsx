@@ -261,6 +261,31 @@ const App = () => {
         }
       }
     };
+
+    const requestVibrationPermission = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.VIBRATE,
+            {
+              title: 'Vibration Permission',
+              message: 'This app needs access to vibrate your device.',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Vibration permission granted');
+          } else {
+            console.log('Vibration permission denied');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+    };
+    requestVibrationPermission();
     requestStoragePermissions();
   }, []);
 
@@ -335,49 +360,6 @@ const App = () => {
         barStyle="light-content"
       />
       <AppNavigator />
-      {/* <SafeAreaView style={styles.safeAreaContainer}>
-        <KeyboardAwareScrollView
-          enableOnAndroid
-          extraScrollHeight={100}
-          keyboardShouldPersistTaps="handled">
-          <RN.View style={styles.container}>
-            <RN.Text style={styles.heading}>Change Widget Value</RN.Text>
-            <RN.View style={styles.bodyContainer}>
-              <RN.View style={styles.instructionContainer}>
-                <RN.View style={styles.thoughtContainer}>
-                  <RN.Text style={styles.thoughtTitle}>
-                    Enter the value that you want to display on your home widget
-                  </RN.Text>
-                </RN.View>
-                <RN.View style={styles.thoughtPointer}></RN.View>
-                <RN.Image
-                  source={Images.Img.homeWatch24and30}
-                  style={styles.avatarImg}
-                />
-              </RN.View>
-
-              <RN.TextInput
-                style={styles.input}
-                onChangeText={newText => setText(newText)}
-                value={text}
-                keyboardType="decimal-pad"
-                placeholder="Enter the text to display..."
-              />
-
-              <AwesomeButton
-                backgroundColor={'#33b8f6'}
-                height={50}
-                width={windowWidth - 80}
-                backgroundDarker={'#eeefef'}
-                backgroundShadow={'#f1f1f0'}
-                style={styles.actionButton}
-                onPress={handleSubmit}>
-                Submit
-              </AwesomeButton>
-            </RN.View>
-          </RN.View>
-        </KeyboardAwareScrollView>
-      </SafeAreaView> */}
     </>
   );
 };

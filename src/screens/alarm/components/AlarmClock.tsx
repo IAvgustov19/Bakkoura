@@ -16,6 +16,7 @@ import LinearContainer from '../../../components/LinearContainer/LinearContainer
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   is24h?: boolean;
