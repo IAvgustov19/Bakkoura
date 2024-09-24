@@ -79,8 +79,8 @@ export const Themes = {
     yellowPanda: Images.Svg.lightYellowPanda,
     betweenLine: Images.Svg.lightBetweenLine,
     outlineSubtrack: Images.Svg.lightOutlineSubtrack,
-    alarmFront24: Images.Svg.lightAlarmFront24,
-    alarmFront30: Images.Svg.lightAlarmFront30,
+    alarmFront24: Images.Img.alarmFront24,
+    alarmFront30: Images.Img.alarmFront30,
     lotties: {
       clock: Lotties.whiteClock,
       tomato: Lotties.whiteTomato,
@@ -302,8 +302,8 @@ export const Themes = {
     calendarText: COLORS.white,
     betweenLine: Images.Svg.betweenTimesLine,
     outlineSubtrack: Images.Svg.outlineSubstrack,
-    alarmFront24: Images.Svg.alarmClockFront24,
-    alarmFront30: Images.Svg.alarmClockFront30,
+    alarmFront24: Images.Img.darkAlarmFront24,
+    alarmFront30: Images.Img.darkAlarmFront30,
     lotties: {
       clock: Lotties.clock,
       tomato: Lotties.pomodoro,

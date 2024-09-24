@@ -33,6 +33,7 @@ type Props = {
   okBtn?: boolean;
   okBtnText?: string;
   onPressBtn?: () => void;
+  onSelectMyMusic?: () => void;
 };
 
 const Item = ({data, title, active, index, onPress}) => {
@@ -69,6 +70,8 @@ const SoundsContent: React.FC<Props> = ({
   okBtn,
   onPressBtn,
   okBtnText,
+  onSelectMyMusic,
+  myMusicValue,
 }) => {
   const {themeState} = useRootStore().personalAreaStore;
   return (
@@ -120,7 +123,12 @@ const SoundsContent: React.FC<Props> = ({
                   </RN.View>
                 ) : null}
                 {myMusic ? (
-                  <ListItemCont title="My music" value="Tiesto" backBlack />
+                  <ListItemCont
+                    title="My music"
+                    value={myMusicValue}
+                    backBlack
+                    onPress={onSelectMyMusic}
+                  />
                 ) : null}
               </RN.View>
             </RN.View>

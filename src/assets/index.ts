@@ -444,6 +444,10 @@ export const Images = {
     lightEventAndTime,
   },
   Img: {
+    darkAlarmFront30: require('./images/alarmFront30.png'),
+    darkAlarmFront24: require('./images/alarmFront24.png'),
+    alarmFront24: require('./images/lightAlarmFront24.png'),
+    alarmFront30: require('./images/lightAlarmFront30.png'),
     pandaTimer: require('./images/pandaTimer.png'),
     stopwatchBg: require('./images/stopwatchBg.png'),
     lightStopwatchBg: require('./images/lightStopWatchBg.png'),

@@ -22,6 +22,7 @@ import ListFooter from '../../components/ListFooter/ListFooter';
 import {windowHeight} from '../../utils/styles';
 import AlarmListItem from './components/AlarmListItem';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import {Vibration} from 'react-native';
 
 const AlarmScreen = () => {
   const {
@@ -31,7 +32,6 @@ const AlarmScreen = () => {
     fetchAlarmsData,
     activeAlarm,
   } = useRootStore().alarmStore;
-  const [isClock, setClock] = useState(true);
   const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -97,7 +97,7 @@ const AlarmScreen = () => {
         </RN.View>
       );
     }
-  }, [isClock, is24h, alarmsListData, activeAlarm]);
+  }, [is24h, alarmsListData, activeAlarm]);
 
   return (
     <LinearContainer
@@ -107,7 +107,7 @@ const AlarmScreen = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title="Alarm clock"
             rightItem={
-              isClock ? (
+              activeAlarm ? (
                 <SwitchContain
                   title="24h"
                   _title="30h"
