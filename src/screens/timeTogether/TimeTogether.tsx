@@ -254,7 +254,7 @@ const TimeTogether = () => {
               <RN.View style={styles.heartBox}>
                 {(selcetedEtap?.uid && etapList?.length) ? lottie :
                   <Images.Svg.heartIcon width={windowWidth - 40} />
-                )}
+                }
               </RN.View>
               <RN.View style={styles.coupleInfo}>
                 <TextView
@@ -270,7 +270,7 @@ const TimeTogether = () => {
                   {selcetedEtap?.time != '0' ? selcetedEtap?.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} ${t("days")}
+                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} days
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
                   {selcetedEtap?.fromDate != '0'

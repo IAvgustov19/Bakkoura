@@ -17,7 +17,6 @@ import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
 import { t } from '../../../i18n';
-import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {

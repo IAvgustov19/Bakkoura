@@ -97,7 +97,6 @@ import StopWatch from '../screens/stopWatch/StopWatch';
 import StressTest from '../screens/stressTest/StressTest';
 import EventsScreen from '../screens/calendar/EventsScreen';
 import BakkouraWatch from '../screens/bakkouraWatch/BakkouraWatch';
-import AlarmScreen from '../screens/alarm/AlarmScreen';
 import ProfilePage from '../screens/messenger/ProfilePage';
 import PasswordScreen from '../screens/personalArea/screens/PasswordScreen';
 import PomodoroSlider from '../screens/pomodoro/PomodoroSlider';

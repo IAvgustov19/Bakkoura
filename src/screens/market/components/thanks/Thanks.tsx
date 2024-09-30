@@ -33,12 +33,6 @@ const OrderThanks: React.FC<Props> = ({}) => {
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
-            leftItem={
-              <RN.TouchableOpacity
-                style={styles.back}
-                onPress={() => navigation.goBack()}>
-              </RN.TouchableOpacity>
-            }
           />
           {/* <HeaderContent leftItem={<Images.Svg.btsGreyLogo /> */}
           <RN.View style={styles.content}>

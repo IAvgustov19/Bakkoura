@@ -16,7 +16,6 @@ import SecondTimer from './components/SecondTimer';
 import SecondTimerDuring from './components/SecondTimerDuring';
 import { styles } from './TimerScreenStyles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
-import { useNavigation } from '@react-navigation/native';
 import { APP_ROUTES } from '../../navigation/routes';
 
 import {t} from '../../i18n'

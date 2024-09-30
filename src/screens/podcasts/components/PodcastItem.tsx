@@ -9,6 +9,9 @@ import RN from "../../../components/RN";
 import Sound from "react-native-sound";
 
 import {t} from '../../../i18n'
+import useRootStore from '../../../hooks/useRootStore';
+import { observer } from 'mobx-react-lite';
+import { normalizeHeight } from '../../../utils/dimensions';
 
 interface PodcastItemProps {
   id: string;

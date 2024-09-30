@@ -124,13 +124,7 @@ const SoundsContent: React.FC<Props> = ({
                   </RN.View>
                 ) : null}
                 {myMusic ? (
-                  <ListItemCont title={`${t("My music")}`} value={`${t("Not selected")}`} backBlack />
-                  <ListItemCont
-                    title="My music"
-                    value={myMusicValue}
-                    backBlack
-                    onPress={onSelectMyMusic}
-                  />
+                  <ListItemCont title={`${t("My music")}`} value={`${t("Not selected")}`} backBlack onPress={onSelectMyMusic}/>
                 ) : null}
               </RN.View>
             </RN.View>

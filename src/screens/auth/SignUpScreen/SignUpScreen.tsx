@@ -42,7 +42,6 @@ type ISelect = {label: string; value: string};
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const { setAuthorized } = useRootStore().authStore;
-  const {setAuthorized} = useRootStore().authStore;
   const {themeState} = useRootStore().personalAreaStore;
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');

@@ -18,7 +18,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from '../Loading/LoadingScreen';
 import GiveImage from '../../../components/GiveImage/GiveImage';
-import {Images} from '../../../assets';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import RN from '../../../components/RN';
 import { Images } from '../../../assets';
