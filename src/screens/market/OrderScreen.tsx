@@ -27,6 +27,7 @@ const OrderScreen = () => {
   const {setOrderState, orderState} = useRootStore().marketStore;
   const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
   const {onHandleWebVIew} = useRootStore().marketStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -140,6 +141,6 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
   },
   privacyLink: {
-    color: '#ECC271',
+    color: COLORS.inActiveYellow,
   },
 });

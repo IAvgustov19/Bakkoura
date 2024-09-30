@@ -12,10 +12,11 @@ type Props = {};
 
 const AlarmClockFront30: React.FC<Props> = ({}) => {
   const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <RN.View style={[styles.alarmFront, {top: windowWidth / 4.2}]}>
-      <Images.Svg.alarmClockFront30 width={windowWidth - 100} />
+      <RN.Image style={styles.alarm} source={themeState.alarmFront30} />
       <LinearGradient
         style={[
           styles.lineMinut,
@@ -53,6 +54,10 @@ const styles = StyleSheet.create({
     paddingRight: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  alarm: {
+    width: windowWidth - 100,
+    objectFit: 'contain',
   },
   lineMinut: {
     width: 1,

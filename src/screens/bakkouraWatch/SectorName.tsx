@@ -18,6 +18,7 @@ const SectorName = () => {
   const navigation = useNavigation();
   const {setNewSelectState, clearName, newSelectState} =
     useRootStore().bakkouraWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <LinearContainer

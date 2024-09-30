@@ -113,37 +113,37 @@ struct SimpleEntry: TimelineEntry {
 // Widget View
 struct bakkourabtsEntryView: View {
     var entry: SimpleEntry
-    @Environment(\.widgetFamily) var widgetFamily
 
     var body: some View {
         let time24 = formatTime24(from: entry.date)
         let extraTime = calculateExtraTime(from: entry.date)
         let time30 = formatTime30(from: entry.date)
-
+      
         ZStack {
-          Color.clear
-          
-            Image("clock") // Replace with actual image
+            Color.clear
+
+            Image("clock")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .offset(y: 5)
+                .frame(width: 160, height: 160)
 
             VStack(spacing: 2) {
-              Text(time24)
-                    .font(widgetFont(size: 14))
+                Text(time24)
+                    .font(.system(size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
                     
                 Text(extraTime)
-                    .font(widgetFont(size: 12))
+                    .font(.system(size: 12))
                     .foregroundColor(.yellow)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
 
-              Text(time30)
-                    .font(widgetFont(size: 14))
+                Text(time30)
+                    .font(.system(size: 14))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
@@ -151,20 +151,12 @@ struct bakkourabtsEntryView: View {
             .zIndex(1)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .widgetURL(URL(string: "widget://open")) // Optional: handle widget taps
+        .widgetURL(URL(string: "widget://open"))
     }
 
-    private func widgetFont(size: CGFloat) -> Font {
-        switch widgetFamily {
-        case .systemLarge:
-            return .system(size: size * 2) // Larger font size for large widgets
-        case .systemMedium:
-            return .system(size: size * 1.5) // Slightly larger font size for medium widgets
-        default:
-            return .system(size: size) // Default size
-        }
-    }
+    
 }
+
 
 // Widget Configuration
 struct bakkourabts: Widget {
@@ -173,11 +165,12 @@ struct bakkourabts: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
           bakkourabtsEntryView(entry: entry)
-                .environment(\.widgetFamily, .systemSmall) // Pass the default widget family here
+            .environment(\.widgetFamily, .systemSmall)// Pass the default widget family here
                 .containerBackground(Color(hex: "1C242A").gradient, for: .widget)
         }
         .configurationDisplayName("Bts Widget")
         .description("This is a time widget.")
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 

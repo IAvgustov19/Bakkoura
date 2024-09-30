@@ -1,15 +1,15 @@
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import * as React from 'react';
-import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import {useMemo} from 'react';
+import {StyleSheet} from 'react-native';
 import LottieContent from '../../../components/LottieContent/LottieContent';
 import RN from '../../../components/RN';
 import StartBtn from '../../../components/StopStartBtn/StopStartBtn';
-import { formattedTimeHourMinut } from '../../../helper/helper';
+import {formattedTimeHourMinut} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
-import { Lotties } from '../../../lotties/lottie';
-import { COLORS } from '../../../utils/colors';
-import { windowHeight, windowWidth } from '../../../utils/styles';
+import {Lotties} from '../../../lotties/lottie';
+import {COLORS} from '../../../utils/colors';
+import {windowHeight, windowWidth} from '../../../utils/styles';
 import AlarmClockFront24 from './AlarmClockFront24';
 import AlarmClockFront30 from './AlarmClockFront30';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
@@ -17,15 +17,18 @@ import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
 import { t } from '../../../i18n';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   is24h?: boolean;
 };
 
-const AlarmClock: React.FC<Props> = ({ is24h }) => {
+const AlarmClock: React.FC<Props> = ({is24h}) => {
   const navigation = useNavigation();
-  const { homeCurrentTime } = useRootStore().homeClockStore;
-  const { isRing, handleLaterAction, handleStopAction, activeAlarm } =
+  const {homeCurrentTime} = useRootStore().homeClockStore;
+  const {themeState} = useRootStore().personalAreaStore;
+  const {isRing, handleLaterAction, handleStopAction, activeAlarm} =
     useRootStore().alarmStore;
 
   const renderClock = useMemo(() => {
@@ -40,7 +43,7 @@ const AlarmClock: React.FC<Props> = ({ is24h }) => {
     return (
       <LottieContent
         width={windowWidth + 20}
-        source={Lotties.clock}
+        source={themeState.lotties.clock}
         speed={isRing ? 1 : 0}
         loop={isRing ? true : false}
         autoPlay={isRing ? true : false}
@@ -53,9 +56,9 @@ const AlarmClock: React.FC<Props> = ({ is24h }) => {
       <RN.Text style={styles.time}>
         {is24h
           ? formattedTimeHourMinut(
-            Number(activeAlarm?.laterHours),
-            Number(activeAlarm?.laterMinutes),
-          )
+              Number(activeAlarm?.laterHours),
+              Number(activeAlarm?.laterMinutes),
+            )
           : homeCurrentTime.time30.slice(0, 5)}
         {/* <RN.Text style={styles.pmAm}>pm</RN.Text> */}
       </RN.Text>

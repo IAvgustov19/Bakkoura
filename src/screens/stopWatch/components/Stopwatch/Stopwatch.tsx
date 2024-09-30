@@ -13,10 +13,11 @@ type Props = {
 
 const StopwatchComp: React.FC<Props> = ({time, display}) => {
   const {is24h} = useRootStore().stopWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.stopwatch}>
-        <RN.Image style={styles.watchBg} source={Images.Img.stopwatchBg} />
+        <RN.Image style={styles.watchBg} source={themeState.stopWatchBg} />
         {is24h ? (
           <RN.Image style={styles.watch24} source={Images.Img.stopwatch24} />
         ) : (

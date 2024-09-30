@@ -16,6 +16,8 @@ import auth from '@react-native-firebase/auth';
 import {MenuItems} from '../../utils/menuItems';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import I18n from '../../i18n';
+import {Themes} from '../../utils/themes';
+import {Appearance} from 'react-native';
 
 export class PersonalAreaStore {
   private readonly root: RootStore;
@@ -23,6 +25,7 @@ export class PersonalAreaStore {
     makeAutoObservable(this);
     this.root = root;
     this.getPersonalState();
+    this.setInitialTheme();
   }
 
   personalAreaData: UserType = UserInitial as never;
@@ -44,6 +47,62 @@ export class PersonalAreaStore {
     this.language = newLanguage;
     I18n.locale = newLanguage;
   }
+  themeState = Themes.dark;
+  currentTheme = '';
+  colorScheme = Appearance.getColorScheme();
+
+  setInitialTheme = async () => {
+    const theme = await AsyncStorage.getItem('theme');
+    console.log('theme', theme);
+
+    if (theme == 'light') {
+      runInAction(() => {
+        this.themeState = Themes.light;
+        this.currentTheme = 'light';
+        this.root.watchConstructor.currentWatch = {
+          ...this.root.watchConstructor.currentWatch,
+          bodyTypes: Themes.light.watchConstrctorData.bodyTypes[0],
+        };
+      });
+    } else if (theme == 'dark') {
+      this.themeState = Themes.dark;
+      this.currentTheme = 'dark';
+      this.root.watchConstructor.currentWatch = {
+        ...this.root.watchConstructor.currentWatch,
+        bodyTypes: Themes.dark.watchConstrctorData.bodyTypes[0],
+      };
+    } else {
+      this.themeState = Themes[this.colorScheme];
+      this.currentTheme = this.colorScheme;
+      this.root.watchConstructor.currentWatch = {
+        ...this.root.watchConstructor.currentWatch,
+        bodyTypes: Themes[this.currentTheme].watchConstrctorData.bodyTypes[0],
+      };
+    }
+  };
+
+  setUpdateTheme = (theme: string) => {
+    console.log('theme', theme);
+    runInAction(() => {
+      if (theme == 'light') {
+        this.currentTheme = 'light';
+        this.themeState = Themes.light;
+      } else if (theme == 'dark') {
+        this.currentTheme = 'dark';
+        this.themeState = Themes.dark;
+      } else {
+        this.currentTheme = this.colorScheme;
+        this.themeState = Themes[this.colorScheme];
+      }
+    });
+  };
+
+  setUpdateCurrentTheme = (theme: string) => {
+    runInAction(() => {
+      this.currentTheme = theme;
+      this.setPersonalAreaState('theme', theme as never);
+    });
+  };
 
   setPersonStartScreen = (value: InitialRouteNameType) => {
     runInAction(() => {
@@ -108,11 +167,11 @@ export class PersonalAreaStore {
               this.personalAreaData = querySnapshot.docs[0].data() as never;
               this.personalAreaDataClone =
                 querySnapshot.docs[0].data() as never;
+              AsyncStorage.setItem('theme', this.personalAreaData.theme);
               this.currentUserPassword = this.personalAreaData.password;
               if (this.personalAreaData.initialRouteName) {
                 this.initialRouteName = MenuItems.find(
-                  item =>
-                    item.routeName === 'HomeScreen',
+                  item => item.routeName === 'HomeScreen',
                 );
                 this.initialRouteNameChanged = this.initialRouteName;
               }
@@ -156,6 +215,8 @@ export class PersonalAreaStore {
           runInAction(() => {
             this.updateLoading = false;
             this.personalAreaDataClone = this.personalAreaData;
+            this.setUpdateTheme(this.personalAreaData.theme);
+            AsyncStorage.setItem('theme', this.personalAreaData.theme);
           });
           callback ? callback() : null;
         })

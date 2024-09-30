@@ -17,6 +17,7 @@ import TodoGoalTime from './components/TodoGoalTime';
 const TodoGoal = () => {
   const navigation = useNavigation();
   const {setNewTaskState, taskState} = useRootStore().todoTimer;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const onHandleOk = () => {
     navigation.navigate(APP_ROUTES.NEW_TASK as never);
@@ -41,9 +42,11 @@ const TodoGoal = () => {
                     <OutlineBtn
                       key={index}
                       text={item.title}
-                      textColor={item.title === taskState.goal && COLORS.yellow}
+                      textColor={
+                        item.title === taskState.goal && themeState.selectYellow
+                      }
                       borderColor={
-                        item.title === taskState.goal && COLORS.yellow
+                        item.title === taskState.goal && themeState.selectYellow
                       }
                       onPress={() => setNewTaskState('goal', item.title)}
                       Width={'30%'}

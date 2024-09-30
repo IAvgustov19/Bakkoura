@@ -496,10 +496,13 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
   }
 };
 
-export const updateEtapsInFirestore = async (id: any, updatedEtap: Partial<TogetherDataType>) => {
+export const updateEtapsInFirestore = async (
+  id: any,
+  updatedEtap: Partial<TogetherDataType>,
+) => {
   try {
     const filteredEtap = Object.fromEntries(
-      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined)
+      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined),
     );
 
     await db.collection('etaps').doc(id).update(filteredEtap);
@@ -801,6 +804,7 @@ export const getAlarmsFromFirestore = async () => {
         leter: data.leter,
         laterHours: data.laterHours,
         laterMinutes: data.laterMinutes,
+        vibration: data.vibration,
       };
     });
     return alarms;
@@ -898,11 +902,12 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
     console.error('Error deleting project timer:', error);
   }
 };
-export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string): Promise<UserType[]> => {
+export const getAllUsersFromFirestore = async (
+  uid: string,
+  lastDocId?: string,
+): Promise<UserType[]> => {
   try {
-    let query = db.collection('users')
-      .where('id', '!=', uid)
-      .orderBy('id');
+    let query = db.collection('users').where('id', '!=', uid).orderBy('id');
 
     if (lastDocId) {
       const lastDoc = await db.collection('users').doc(lastDocId).get();
@@ -951,6 +956,8 @@ export const uploadAudioToStorage = async (uri, path) => {
     const url = await reference.getDownloadURL();
     return url;
   } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
     console.error('Error uploading file:', error);
     throw error;
   }

@@ -46,7 +46,7 @@ export const updateLastSeen = userId => {
       console.error('Error updating lastSeen field:', error);
     });
 };
-import { db, firebase } from './src/config/firebase';
+import {db, firebase} from './src/config/firebase';
 import PushNotification from 'react-native-push-notification';
 import { openSettings, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { NavigationContainer } from '@react-navigation/native';
@@ -64,16 +64,16 @@ PushNotification.createChannel(
     importance: 4,
     vibrate: true,
   },
-  (created) => console.log(`createChannel returned '${created}'`)
+  created => console.log(`createChannel returned '${created}'`),
 );
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
 messaging().onMessage(async remoteMessage => {
-  const { title, body } = remoteMessage.notification;
-  const { senderId, chatId } = remoteMessage.data;
+  const {title, body} = remoteMessage.notification;
+  const {senderId, chatId} = remoteMessage.data;
   const uid = auth().currentUser.uid;
   const openChatWith = await db.collection('users').doc(uid).get();
   console.log(openChatWith.data().openChatWith);
@@ -83,7 +83,10 @@ messaging().onMessage(async remoteMessage => {
 
 
   if (senderId !== openWith) {
-    console.log('Message received from a different user in the foreground!', remoteMessage);
+    console.log(
+      'Message received from a different user in the foreground!',
+      remoteMessage,
+    );
 
     PushNotification.localNotification({
       channelId: channelId,
@@ -99,9 +102,6 @@ const currentUser = auth().currentUser;
 if (currentUser) {
   scheduleNotifications(currentUser.uid);
 }
-
-
-
 
 const App = () => {
   const { alarmsListData, checkAlarms } = useRootStore().alarmStore;
@@ -120,7 +120,7 @@ const App = () => {
   //   };
 
   //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; 
+  //   return subscriber;
   // }, []);
 
   const requestNotificationPermission = async () => {
@@ -219,50 +219,84 @@ const App = () => {
   //   syncUsersToFirestore();
   // }, [])
 
-  //   useEffect(() => {
-  //     const requestStoragePermission = async () => {
-  //       try {
-  //         const result = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+  const {ForegroundService} = NativeModules;
 
-  //         switch (result) {
-  //           case RESULTS.GRANTED:
-  //             console.log('Permission granted');
-  //             // Handle the case where permission is granted
-  //             break;
-  //           case RESULTS.DENIED:
-  //             console.log('Permission denied');
-  //             // Handle the case where permission is denied but not blocked
-  //             break;
-  //           case RESULTS.BLOCKED:
-  //             console.log('Permission blocked');
-  //             // Show an alert to guide the user to app settings
-  //             Alert.alert(
-  //               'Permission Required',
-  //               'The app needs access to storage to function properly. Please enable the permission manually in your device settings.',
-  //               [
-  //                 {
-  //                   text: 'Cancel',
-  //                   style: 'cancel'
-  //                 },
-  //                 {
-  //                   text: 'Open Settings',
-  //                   onPress: () => openSettings()
-  //                 }
-  //               ]
-  //             );
-  //             break;
-  //           default:
-  //             console.log('Unknown status:', result);
-  //             break;
-  //         }
-  //       } catch (error) {
-  //         console.error('Error requesting permission:', error);
-  //       }
-  //     };
+  const startService = () => {
+    ForegroundService.startService();
+  };
 
+  useEffect(() => {
+    const requestStoragePermissions = async () => {
+      if (RN.Platform.OS === 'android') {
+        try {
+          const writeGranted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: 'Storage Permission',
+              message:
+                'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
 
-  //   requestStoragePermission();
-  // }, []);
+          const readGranted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            {
+              title: 'Read Storage Permission',
+              message:
+                'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+
+          if (
+            writeGranted === PermissionsAndroid.RESULTS.GRANTED &&
+            readGranted === PermissionsAndroid.RESULTS.GRANTED
+          ) {
+            console.log('Permissions granted');
+          } else {
+            console.log('All required permissions not granted');
+
+            return;
+          }
+        } catch (err) {
+          console.warn(err);
+          return;
+        }
+      }
+    };
+
+    const requestVibrationPermission = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.VIBRATE,
+            {
+              title: 'Vibration Permission',
+              message: 'This app needs access to vibrate your device.',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Vibration permission granted');
+          } else {
+            console.log('Vibration permission denied');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+    };
+    requestVibrationPermission();
+    requestStoragePermissions();
+  }, []);
+
   // useEffect(() => {
   //   let interval;
 

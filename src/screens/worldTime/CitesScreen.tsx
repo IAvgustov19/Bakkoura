@@ -22,6 +22,7 @@ const CitesScreen = () => {
     selectedCountries,
     getAllCountries,
   } = useRootStore().worldTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   useEffect(() => {
     getAllCountries();
@@ -31,13 +32,14 @@ const CitesScreen = () => {
     return worldData.length > 0
       ? worldData.map((e, index) => {
           return (
-            <RN.View key={index} style={styles.countryBox}>
+            <RN.View key={index} style={[styles.countryBox]}>
               <RN.TouchableOpacity
                 onPress={() => setCountry(e, () => navigation.goBack())}>
                 <RN.Text
-                  style={
-                    styles.country
-                  }>{`${e.capital}, ${e.name.common}`}</RN.Text>
+                  style={[
+                    styles.country,
+                    {color: themeState.title},
+                  ]}>{`${e.capital}, ${e.name.common}`}</RN.Text>
               </RN.TouchableOpacity>
               <Line />
             </RN.View>
@@ -46,7 +48,7 @@ const CitesScreen = () => {
       : null;
   }, [worldData, selectedCountries]);
 
-    console.log(worldData)
+  console.log(worldData);
 
   return (
     <LinearContainer
@@ -64,7 +66,11 @@ const CitesScreen = () => {
               icon={<Images.Svg.searchIcon />}
             />
           </RN.View>
-          <RN.ScrollView style={styles.countryList}>
+          <RN.ScrollView
+            style={[
+              styles.countryList,
+              {backgroundColor: themeState.mainBack},
+            ]}>
             {countries()}
           </RN.ScrollView>
         </RN.View>

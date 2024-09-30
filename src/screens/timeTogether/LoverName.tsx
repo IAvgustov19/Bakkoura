@@ -18,6 +18,7 @@ const LoverName = () => {
   const navigation = useNavigation();
   const {addEtapState, setAddEtapState, clearLoverName} =
     useRootStore().togetherTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <LinearContainer
@@ -31,7 +32,7 @@ const LoverName = () => {
             <RN.View style={styles.nameBox}>
               <Input
                 placeholder={`${t("name")}`}
-                icon={<Images.Svg.deleteIcon />}
+                icon={<themeState.delete />}
                 value={addEtapState.name}
                 iconPress={clearLoverName}
                 onChangeText={e => setAddEtapState('name', e)}

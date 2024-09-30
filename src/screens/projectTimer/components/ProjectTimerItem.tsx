@@ -27,27 +27,38 @@ const ProjectTimerItem: React.FC<Props> = ({
   onEnter,
 }) => {
   const {projectTimerList} = useRootStore().projectTimer;
+  const {themeState} = useRootStore().personalAreaStore;
   const renderWorkTime = useCallback(() => {
     return (
       <RN.Text
-        style={[styles.whiteText, {color: play ? COLORS.blue : COLORS.white}]}>
+        style={[
+          styles.whiteText,
+          {color: play ? COLORS.blue : themeState.title},
+        ]}>
         {workTime}
       </RN.Text>
     );
   }, [projectTimerList]);
 
   return (
-    <RN.Pressable onPress={onEnter} style={styles.container}>
-      <RN.View style={styles.header}>
+    <RN.Pressable
+      onPress={onEnter}
+      style={[styles.container, {backgroundColor: themeState.mainBack}]}>
+      <RN.View
+        style={[styles.header, {backgroundColor: themeState.inputBaack}]}>
         <RN.Text style={styles.darkGreyText}>{day}</RN.Text>
         <RN.Text style={styles.darkGreyText}>{time}</RN.Text>
       </RN.View>
       <RN.View style={styles.itemContent}>
         <RN.View style={styles.leftBox}>
-          <Images.Svg.circleDollar />
+          <themeState.dollar />
           <RN.View style={styles.timerInfo}>
-            <RN.Text style={styles.whiteText}>{name}</RN.Text>
-            <RN.Text style={styles.description}>{description}</RN.Text>
+            <RN.Text style={[styles.whiteText, {color: themeState.title}]}>
+              {name}
+            </RN.Text>
+            <RN.Text style={[styles.description, {color: themeState.gray}]}>
+              {description}
+            </RN.Text>
           </RN.View>
         </RN.View>
         <RN.View style={styles.rightBox}>

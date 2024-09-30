@@ -9,20 +9,24 @@ import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import TextView from '../../components/Text/Text';
-import { formatDateTime } from '../../helper/helper';
+import {formatDateTime} from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
-import { APP_ROUTES } from '../../navigation/routes';
-import { COLORS } from '../../utils/colors';
-import { windowHeight, windowWidth } from '../../utils/styles';
-import { db } from '../../config/firebase';
-import { Alert } from 'react-native';
+import {APP_ROUTES} from '../../navigation/routes';
+import {COLORS} from '../../utils/colors';
+import {windowHeight, windowWidth} from '../../utils/styles';
+import {db} from '../../config/firebase';
+import {Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { updateEtapsMailInFirestore, updateEtapsSynchronizedInFirestore } from '../../services/firestoreService';
+import {
+  updateEtapsMailInFirestore,
+  updateEtapsSynchronizedInFirestore,
+} from '../../services/firestoreService';
 import LottieContent from '../../components/LottieContent/LottieContent';
-import { Lotties } from '../../lotties/lottie';
+import {Lotties} from '../../lotties/lottie';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 import {t} from '../../i18n'
+import {normalizeHeight} from '../../utils/dimensions';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
@@ -42,14 +46,12 @@ const TimeTogether = () => {
     clearState,
     setData,
     getOneTask,
-  } =
-    useRootStore().togetherTimeStore;
+  } = useRootStore().togetherTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   // const onLongHandle = () => {
   //   navigation.navigate(APP_ROUTES.DELETE_ETAP as never);
   // };
-
-
 
   const onHandleTask = (data: any) => {
     clearState();
@@ -63,22 +65,28 @@ const TimeTogether = () => {
 
   useEffect(() => {
     const synched = async () => {
-      const snapshot = await db.collection('etaps').where('synchronizedEmail', '==', userEmail).get();
+      const snapshot = await db
+        .collection('etaps')
+        .where('synchronizedEmail', '==', userEmail)
+        .get();
       // @ts-ignore
       setSynchronized(snapshot?._docs?.some(doc => doc._data.synchronized));
-    }
+    };
     synched();
-
-  }, [])
+  }, []);
 
   useEffect(() => {
     getAllEtapsFromFirestore();
-  }, [isFocused, synchronized])
+  }, [isFocused, synchronized]);
 
   useEffect(() => {
     const getAllEtapsWithSyncedEmail = async () => {
       try {
-        const snapshot = await db.collection('etaps').where('synchronizedEmail', '==', userEmail).where('synchronized', '==', false).get();
+        const snapshot = await db
+          .collection('etaps')
+          .where('synchronizedEmail', '==', userEmail)
+          .where('synchronized', '==', false)
+          .get();
         if (!snapshot.empty) {
           let alertShown = false;
           const promises = [];
@@ -124,12 +132,14 @@ const TimeTogether = () => {
                     },
                   },
                 ],
-                { cancelable: false }
+                {cancelable: false},
               );
             }
           });
         } else {
-          console.log('No etaps found with synchronized email for the current user.');
+          console.log(
+            'No etaps found with synchronized email for the current user.',
+          );
         }
       } catch (error) {
         console.error('Error fetching etaps: ', error);
@@ -162,9 +172,9 @@ const TimeTogether = () => {
           text: `${t("No")}`,
         },
       ],
-      { cancelable: false }
-    )
-  }
+      {cancelable: false},
+    );
+  };
 
   const handleToggleFormat = () => {
     toggleTimeFormat();
@@ -176,11 +186,20 @@ const TimeTogether = () => {
         <RN.View key={index}>
           <Line />
           <RN.Pressable
-            onPress={() => { SelectOneEtap(item.id); setData(item); }}
+            onPress={() => {
+              SelectOneEtap(item.id);
+              setData(item);
+            }}
             style={styles.etapList}>
-            <RN.Text style={styles.etapType}>{item.type}</RN.Text>
+            <RN.Text style={[styles.etapType, {color: themeState.title}]}>
+              {item.type}
+            </RN.Text>
             <TextView text={item.fromDate} />
-            <RN.Text style={styles.etapDays}>{`${+calculateDaysDifference(item.fromDate) > 0 ? calculateDaysDifference(item.fromDate) : 0} days`}</RN.Text>
+            <RN.Text style={[styles.etapDays, {color: themeState.title}]}>{`${
+              +calculateDaysDifference(item.fromDate) > 0
+                ? calculateDaysDifference(item.fromDate)
+                : 0
+            } days`}</RN.Text>
             <Images.Svg.dots onPress={() => onHandleTask(item)} />
           </RN.Pressable>
           <Line />
@@ -191,19 +210,20 @@ const TimeTogether = () => {
 
   useEffect(() => {
     console.log(getTimeFormat());
-  }, [getTimeFormat])
-
+  }, [getTimeFormat]);
 
   const lottie = useMemo(() => {
     return (
       <LottieContent
-        source={Lotties.timeTogether}
+        source={
+          synchronized ? themeState.lotties.heart : themeState.lotties.goldHeart
+        }
         width={windowWidth - 40}
         autoPlay={true}
         speed={1}
       />
     );
-  }, []);
+  }, [synchronized]);
 
   return (
     <LinearContainer
@@ -224,14 +244,17 @@ const TimeTogether = () => {
                 title={getTimeFormat()} // Display the current time format
                 _title={getTimeFormat() ? '30h' : '24h'} // Toggle label based on current format
                 back={back}
-                handlePress={() => { handleToggleFormat(); setBack(e => !e) }} // Call the toggle handler
+                handlePress={() => {
+                  handleToggleFormat();
+                  setBack(e => !e);
+                }} // Call the toggle handler
               />
             </RN.View>
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
                 {(selcetedEtap?.uid && etapList?.length) ? lottie :
                   <Images.Svg.heartIcon width={windowWidth - 40} />
-                }
+                )}
               </RN.View>
               <RN.View style={styles.coupleInfo}>
                 <TextView
@@ -270,8 +293,9 @@ const TimeTogether = () => {
                 width={'45%'}
                 title={synchronized ? `${t("Synchronized")}` : `${t("Synchronize")}`}
                 onPress={() => {
-                  synchronized ? deleteSync() :
-                    navigation.navigate(APP_ROUTES.SYNCHRONYZE as never)
+                  synchronized
+                    ? deleteSync()
+                    : navigation.navigate(APP_ROUTES.SYNCHRONYZE as never);
                 }}
               />
             </RN.View>
@@ -314,21 +338,23 @@ const styles = RN.StyleSheet.create({
   },
   coupleTimeText: {
     marginTop: 10,
+    color: COLORS.white,
+    fontSize: normalizeHeight(76),
   },
   coupleTime: {
     color: COLORS.white,
-    fontSize: 46,
+    fontSize: normalizeHeight(126),
     fontWeight: '300',
   },
   coupleDays: {
     color: COLORS.white,
-    fontSize: 20,
+    fontSize: normalizeHeight(66),
     fontWeight: '200',
     lineHeight: 25,
   },
   coupleDate: {
     color: COLORS.yellow,
-    fontSize: 16,
+    fontSize: normalizeHeight(50),
     marginTop: 15,
   },
   btns: {
@@ -347,11 +373,11 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 12,
   },
   etapType: {
-    fontSize: 18,
+    fontSize: normalizeHeight(56),
     color: COLORS.white,
   },
   etapDays: {
-    fontSize: 16,
+    fontSize: normalizeHeight(50),
     color: COLORS.white,
   },
   switch: {

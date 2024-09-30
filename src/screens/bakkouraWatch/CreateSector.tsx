@@ -22,6 +22,7 @@ const CreateSector = () => {
   const navigation = useNavigation();
   const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
     useRootStore().bakkouraWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const CreateSector = () => {
     addNewSelect(() => navigation.navigate(APP_ROUTES.BAKKOURA_WATCH as never));
@@ -45,13 +46,7 @@ const CreateSector = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
-              <Vertices
-                data={listSelects.map(value => ({
-                  color: value.color,
-                  start: value.start,
-                  end: value.end,
-                }))}
-              />
+              <Vertices data={listSelects} />
               <RN.View style={styles.bottomBox}>
                 <RN.View style={styles.btnBox}>
                   <StartBtn
@@ -74,7 +69,11 @@ const CreateSector = () => {
                     textSize={14}
                   />
                 </RN.View>
-                <RN.View style={styles.bottom}>
+                <RN.View
+                  style={[
+                    styles.bottom,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
                     title={t("name")}
                     value={newSelectState.name}

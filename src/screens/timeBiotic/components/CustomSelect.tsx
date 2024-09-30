@@ -6,10 +6,12 @@ import { COLORS } from '../../../utils/colors';
 import Input from '../../../components/Input/Input';
 import {verticalScale} from '../../../utils/dimensions';
 import {observer} from 'mobx-react-lite';
+import useRootStore from '../../../hooks/useRootStore';
 
 import {t} from '../../../i18n'
 
 const CustomDropdownInput = ({ options, onSelect, black }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -35,13 +37,22 @@ const CustomDropdownInput = ({ options, onSelect, black }) => {
         />
       </RN.TouchableOpacity>
       {isOpen && (
-        <RN.View style={styles.dropdownOptions}>
+        <RN.View
+          style={[
+            styles.dropdownOptions,
+            {
+              backgroundColor: themeState.mainBack,
+              borderColor: themeState.inputBorder,
+            },
+          ]}>
           {options.map(option => (
             <RN.TouchableOpacity
               key={option.value}
               onPress={() => handleSelect(option)}
               style={styles.optionItem}>
-              <RN.Text style={styles.optionText}>{option.label}</RN.Text>
+              <RN.Text style={[styles.optionText, {color: themeState.title}]}>
+                {option.label}
+              </RN.Text>
             </RN.TouchableOpacity>
           ))}
         </RN.View>
@@ -53,12 +64,13 @@ const CustomDropdownInput = ({ options, onSelect, black }) => {
 const styles = RN.StyleSheet.create({
   container: {
     width: '100%',
+    position: 'relative',
   },
   dropdownOptions: {
     left: 0,
     right: 0,
-    zIndex: 1,
-    top: '100%',
+    zIndex: 10,
+    // top: '100%',
     borderRadius: 20,
     borderWidth: 1,
     position: 'absolute',
@@ -69,7 +81,6 @@ const styles = RN.StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color: COLORS.white,
   },
   select: {
     width: '100%',

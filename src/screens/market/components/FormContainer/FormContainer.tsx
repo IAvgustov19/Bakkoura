@@ -43,6 +43,7 @@ const FormContainer: React.FC<Props> = ({
   withSelect = false,
 }) => {
   const {setOrderState, orderState, deleteFile} = useRootStore().marketStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const {setIsEmail} = useRootStore().timeBiotic;
   const [fileLoading, setFileLoading] = React.useState(false);
   const [emailErr, setEmailErr] = React.useState(null);
@@ -126,6 +127,7 @@ const FormContainer: React.FC<Props> = ({
         backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => setOrderState('name', e)}
+        bordered
       />
       <Input
         value={orderState.phone}
@@ -160,12 +162,13 @@ const FormContainer: React.FC<Props> = ({
           width="100%"
           multiLine={true}
           textAlignVertical="top"
-          backColor={black ? COLORS.black : COLORS.c3}
           onChangeText={e => setOrderState('message', e)}
           onPressIn={bottomInputPress}
         />
       ) : (
-        <CustomDropdown options={options} onSelect={onSelect} black={true} />
+        <RN.View style={{height: 100, width: '100%'}}>
+          <CustomDropdown options={options} onSelect={onSelect} black={true} />
+        </RN.View>
       )}
       {!uploadAtTop ? (
         <>
@@ -187,7 +190,7 @@ const FormContainer: React.FC<Props> = ({
                   />
                 </RN.View>
                 <RN.TouchableOpacity hitSlop={HITSLOP} onPress={deleteFile}>
-                  <Images.Svg.cancelGrey />
+                  <themeState.delete />
                 </RN.TouchableOpacity>
               </>
             ) : null}

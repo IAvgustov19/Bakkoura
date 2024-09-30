@@ -3,6 +3,9 @@ import {
   AboutTimeData,
   AboutTimeInitial,
   AboutTimeType,
+  RecommendationsData,
+  TimeWealthDataInitial,
+  TimeWealthDataType,
 } from '../../constants/timeClinic';
 import { AboutTimeData_ar } from '../../constants/timeClinic_ar';
 
@@ -15,6 +18,8 @@ export class TimeClinicStore {
 
   aboutTimeInfo: AboutTimeType = AboutTimeInitial;
 
+  recommendationData: TimeWealthDataType = TimeWealthDataInitial;
+
   setAboutTimeInfo = (id: number) => {
     runInAction(() => {
       if (l.locale === 'ar'){
@@ -23,6 +28,14 @@ export class TimeClinicStore {
       else{
         this.aboutTimeInfo = AboutTimeData.find(item => item.id === id);
       }
+    });
+  };
+
+  setRecommendation = (id: number) => {
+    runInAction(() => {
+      this.recommendationData = RecommendationsData.find(
+        item => item.id === id,
+      );
     });
   };
 }

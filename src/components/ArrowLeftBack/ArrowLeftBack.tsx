@@ -7,6 +7,8 @@ import RN from '../RN';
 import TextView from '../Text/Text';
 
 import {t} from '../../i18n'
+import {observer} from 'mobx-react-lite';
+import useRootStore from '../../hooks/useRootStore';
 
 type Props = {
   onPress?: () => void;
@@ -21,6 +23,7 @@ const ArrowLeftBack: React.FC<Props> = ({
   icon,
   titleColor = COLORS.grey,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.TouchableOpacity
       style={styles.container}
@@ -32,7 +35,7 @@ const ArrowLeftBack: React.FC<Props> = ({
   );
 };
 
-export default ArrowLeftBack;
+export default observer(ArrowLeftBack);
 
 const styles = StyleSheet.create({
   container: {

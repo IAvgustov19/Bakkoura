@@ -20,6 +20,7 @@ import {windowHeight} from '../../utils/styles';
 const NewTask = () => {
   const navigation = useNavigation();
   const {visible, show} = useRootStore().visibleStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const {taskState, isHas, createNewTask, clearState} =
     useRootStore().todoTimer;
 
@@ -72,7 +73,8 @@ const NewTask = () => {
             leftItem={isHas ? <ArrowLeftBack onPress={onHandleBack} /> : null}
           />
           <RN.View style={styles.content}>
-            <RN.View style={styles.box}>
+            <RN.View
+              style={[styles.box, {backgroundColor: themeState.mainBack}]}>
               <ListItemCont
                 title="Task name"
                 value={
@@ -103,14 +105,24 @@ const NewTask = () => {
               {!isHas ? null : (
                 <RN.View style={styles.taskTexts}>
                   <RN.View style={styles.recomend}>
-                    <Images.Svg.timerLogo fill={COLORS.yellow} />
-                    <RN.Text style={styles.recomendedText}>Recomended</RN.Text>
-                    <RN.Text style={styles.recomendedInfo}>
+                    <Images.Svg.timerLogo fill={themeState.yellow} />
+                    <RN.Text
+                      style={[
+                        styles.recomendedText,
+                        {color: themeState.yellow},
+                      ]}>
+                      Recomended
+                    </RN.Text>
+                    <RN.Text
+                      style={[
+                        styles.recomendedInfo,
+                        {color: themeState.darkGrayText},
+                      ]}>
                       {renderRecomended()}
                     </RN.Text>
                   </RN.View>
                   <RN.View style={styles.taskBack}>
-                    <Images.Svg.todoTaskBack />
+                    <themeState.todoTimerBack />
                   </RN.View>
                 </RN.View>
               )}
@@ -162,7 +174,6 @@ const styles = RN.StyleSheet.create({
   },
   recomendedText: {
     fontSize: 18,
-    color: COLORS.yellow,
     textAlign: 'center',
   },
   recomendedInfo: {

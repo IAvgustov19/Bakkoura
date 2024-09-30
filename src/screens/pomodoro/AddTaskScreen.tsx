@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
-import { Images } from '../../assets';
+import {useNavigation} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useEffect, useState} from 'react';
+import {Images} from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -29,6 +29,7 @@ const AddTaskScreen = () => {
     updateTask,
     handleDeleteTask,
   } = useRootStore().pomodoroStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const [minut, setMinut] = useState(newTaskState.minut ?? 1);
   const addMinut = () => {
@@ -45,7 +46,7 @@ const AddTaskScreen = () => {
       setNewTaskState('minut', minut - 1);
       setNewTaskState('totalCycle', newTaskState.minut);
     } else {
-      return
+      return;
     }
     calculateTime();
   };
@@ -66,10 +67,6 @@ const AddTaskScreen = () => {
   };
 
   const handleTextChange = (key, value) => {
-    if (value.length >= 101) {
-      Alert.alert('Input Limit', 'You cannot write more than 100 characters.');
-      return;
-    }
     setNewTaskState(key, value);
   };
 
@@ -88,12 +85,14 @@ const AddTaskScreen = () => {
           <RN.ScrollView style={styles.scrollView}>
             <RN.View style={styles.content}>
               <RN.View style={styles.fomrBox}>
-                <RN.View style={styles.form}>
+                <RN.View
+                  style={[styles.form, {backgroundColor: themeState.mainBack}]}>
                   <Input
                     placeholder={`${t("name")}`}
                     maxLenght={101}
                     value={newTaskState.name}
                     onChangeText={e => setNewTaskState('name', e)}
+                    backColor={themeState.mainBack}
                   />
                   <Line />
                   <Input
@@ -105,16 +104,29 @@ const AddTaskScreen = () => {
                     value={newTaskState.description}
                     textAlignVertical={'top'}
                     onChangeText={e => setNewTaskState('description', e)}
+                    backColor={themeState.mainBack}
                   />
                 </RN.View>
-                <RN.View style={styles.timeSelect}>
+                <RN.View style={[
+                    styles.timeSelect,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <RN.Text style={styles.estPom}>{`${t("Est Pomodoros")}`}</RN.Text>
-                  <RN.View style={styles.timeSelectBox}>
+                  <RN.View style={[
+                      styles.timeSelectBox,
+                      {backgroundColor: themeState.mainBack},
+                    ]}>
                     <RN.TouchableOpacity onPress={subMinut}>
                       <Images.Svg.minusDelete />
                     </RN.TouchableOpacity>
                     <RN.TextInput
-                      style={styles.timeInput}
+                      style={[
+                        styles.timeInput,
+                        {
+                          backgroundColor: themeState.input2,
+                          color: themeState.title,
+                        },
+                      ]}
                       placeholder="0"
                       placeholderTextColor={COLORS.grey}
                       value={`${newTaskState.minut}`}

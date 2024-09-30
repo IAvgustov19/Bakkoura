@@ -8,6 +8,9 @@ import {windowWidth} from '../../../utils/styles';
 
 const Constructor = () => {
   const {currentWatch} = useRootStore().watchConstructor;
+  const {themeState} = useRootStore().personalAreaStore;
+  console.log('ccurrentWatch', currentWatch);
+  console.log('themeState', themeState);
 
   return (
     <RN.View style={styles.container}>

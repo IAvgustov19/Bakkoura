@@ -13,6 +13,21 @@ import bodyType11 from './body/bodyType11.svg';
 import bodyType12 from './body/bodyType12.svg';
 import bodyType13 from './body/bodyType13.svg';
 
+//light body
+
+import lightBodyType1 from './body/lightBodyType1.svg';
+import lightBodyType2 from './body/lightBodyType2.svg';
+import lightBodyType3 from './body/lightBodyType3.svg';
+import lightBodyType4 from './body/lightBodyType4.svg';
+import lightBodyType5 from './body/lightBodyType5.svg';
+import lightBodyType6 from './body/lightBodyType6.svg';
+import lightBodyType7 from './body/lightBodyType7.svg';
+import lightBodyType8 from './body/lightBodyType8.svg';
+import lightBodyType9 from './body/lightBodyType9.svg';
+import lightBodyType10 from './body/lightBodyType10.svg';
+import lightBodyType11 from './body/lightBodyType11.svg';
+import lightBodyType12 from './body/lightBodyType12.svg';
+
 //back style
 import backStyle1 from './back/backStyle1.svg';
 import backStyle2 from './back/backStyle2.svg';
@@ -26,6 +41,21 @@ import backStyle9 from './back/backStyle9.svg';
 import backStyle10 from './back/backStyle10.svg';
 import backStyle11 from './back/backStyle11.svg';
 import backStyle12 from './back/backStyle12.svg';
+
+import lightBackStyle1 from './back/lightBack1.svg';
+import lightBackStyle2 from './back/lightBack2.svg';
+import lightBackStyle3 from './back/lightBack3.svg';
+import lightBackStyle4 from './back/lightBack4.svg';
+import lightBackStyle5 from './back/lightBack5.svg';
+import lightBackStyle6 from './back/lightBack6.svg';
+import lightBackStyle7 from './back/lightBack7.svg';
+import lightBackStyle8 from './back/lightBack8.svg';
+import lightBackStyle9 from './back/lightBack9.svg';
+import lightBackStyle10 from './back/lightBack10.svg';
+import lightBackStyle11 from './back/lightBack11.svg';
+import lightBackStyle12 from './back/lightBack12.svg';
+import lightBackStyle13 from './back/lightBack13.svg';
+import lightBackStyle14 from './back/lightBack14.svg';
 
 //arrows
 import arrows1 from './arrows/arrows1.svg';
@@ -70,19 +100,8 @@ import number10 from './number/number10.svg';
 import number11 from './number/number11.svg';
 import number12 from './number/number12.svg';
 
-//options
-import option1 from './options/option1.svg';
-import option2 from './options/option2.svg';
-import option3 from './options/option3.svg';
-import option4 from './options/option4.svg';
-import option5 from './options/option5.svg';
-import option6 from './options/option6.svg';
-import option7 from './options/option7.svg';
-import option8 from './options/option8.svg';
-import option9 from './options/option9.svg';
-import option10 from './options/option10.svg';
-import option11 from './options/option11.svg';
-import option12 from './options/option12.svg';
+import faceBack from './face/faceBack.svg';
+import lightFaceBack from './face/lightFaceBack.svg';
 
 export const ConstructorSvgs = {
   //body type
@@ -100,6 +119,19 @@ export const ConstructorSvgs = {
   bodyType12,
   bodyType13,
 
+  lightBodyType1,
+  lightBodyType2,
+  lightBodyType3,
+  lightBodyType4,
+  lightBodyType5,
+  lightBodyType6,
+  lightBodyType7,
+  lightBodyType8,
+  lightBodyType9,
+  lightBodyType10,
+  lightBodyType11,
+  lightBodyType12,
+
   //back style,
   backStyle1,
   backStyle2,
@@ -113,6 +145,21 @@ export const ConstructorSvgs = {
   backStyle10,
   backStyle11,
   backStyle12,
+
+  lightBackStyle1,
+  lightBackStyle2,
+  lightBackStyle3,
+  lightBackStyle4,
+  lightBackStyle5,
+  lightBackStyle6,
+  lightBackStyle7,
+  lightBackStyle8,
+  lightBackStyle9,
+  lightBackStyle10,
+  lightBackStyle11,
+  lightBackStyle12,
+  lightBackStyle13,
+  lightBackStyle14,
 
   //arrows
   arrows1,
@@ -142,6 +189,8 @@ export const ConstructorSvgs = {
   face10,
   face11,
   face12,
+  faceBack,
+  lightFaceBack,
 
   //numbers
   number1,

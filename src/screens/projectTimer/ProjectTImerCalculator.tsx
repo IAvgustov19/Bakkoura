@@ -24,6 +24,7 @@ import {HITSLOP, windowHeight} from '../../utils/styles';
 const ProjectTimerCalculator = () => {
   const navigation = useNavigation();
   const [projectsVisible, setProjectsVisible] = useState(false);
+  const {themeState} = useRootStore().personalAreaStore;
   const {
     onProjectsItemPress,
     projectTimerList,
@@ -111,16 +112,26 @@ const ProjectTimerCalculator = () => {
             <RN.View style={styles.timePrice}>
               <RN.View style={styles.timeBox}>
                 <TextView text="Time" style={styles.label} />
-                <RN.View style={styles.itemBox}>
-                  <RN.Text style={styles.itemTitle}>
+                <RN.View
+                  style={[
+                    styles.itemBox,
+                    {backgroundColor: themeState.inputBaack},
+                  ]}>
+                  <RN.Text
+                    style={[styles.itemTitle, {color: themeState.title}]}>
                     {selectedProject.workTime}
                   </RN.Text>
                 </RN.View>
               </RN.View>
               <RN.View style={styles.priceBox}>
                 <TextView text="Price $" style={styles.label} />
-                <RN.View style={styles.itemBox}>
-                  <RN.Text style={styles.itemTitle}>
+                <RN.View
+                  style={[
+                    styles.itemBox,
+                    {backgroundColor: themeState.inputBaack},
+                  ]}>
+                  <RN.Text
+                    style={[styles.itemTitle, {color: themeState.title}]}>
                     {selectedProject.price}
                   </RN.Text>
                 </RN.View>
@@ -136,8 +147,13 @@ const ProjectTimerCalculator = () => {
                 end={{x: 0.8, y: 1}}
                 colors={[COLORS.green, COLORS.darkGreyText, '#007AFF54']}
                 style={styles.amounLinear}>
-                <RN.View style={[styles.itemBox]}>
-                  <RN.Text style={styles.itemTitle}>
+                <RN.View
+                  style={[
+                    styles.itemBox,
+                    {backgroundColor: themeState.inputBaack},
+                  ]}>
+                  <RN.Text
+                    style={[styles.itemTitle, {color: themeState.title}]}>
                     {selectedProject.totalPrice}
                   </RN.Text>
                 </RN.View>
@@ -155,7 +171,7 @@ const ProjectTimerCalculator = () => {
                       ? recentlyCalculated.totalPrice
                       : 0
                   }$`}
-                  icon={<Images.Svg.deleteIcon />}
+                  icon={<themeState.delete />}
                   iconPress={deleteRecentlyCalculated}
                 />
               </RN.View>
@@ -207,13 +223,11 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'center',
     width: '100%',
-    backgroundColor: COLORS.black,
     borderRadius: 30,
     height: 60,
     paddingHorizontal: 20,
   },
   itemTitle: {
-    color: COLORS.white,
     fontSize: 20,
   },
   amounLinear: {
@@ -231,7 +245,6 @@ const styles = RN.StyleSheet.create({
     paddingBottom: 110,
   },
   projectList: {
-    backgroundColor: COLORS.black,
     borderRadius: 3,
   },
   okBtn: {

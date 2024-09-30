@@ -1,6 +1,9 @@
+import {observer} from 'mobx-react-lite';
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
+import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
+import {normalizeHeight} from '../../utils/dimensions';
 
 type Props = {
   title?: string;
@@ -9,6 +12,7 @@ type Props = {
   style?: any;
   fontFamily?: string;
   fonWeight?: string;
+  color?: string;
 };
 
 const TextView: React.FC<Props> = ({
@@ -18,7 +22,9 @@ const TextView: React.FC<Props> = ({
   textAlign,
   fontFamily,
   fonWeight,
+  color,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <Text
       style={[
@@ -27,23 +33,24 @@ const TextView: React.FC<Props> = ({
         {fontWeight: fonWeight},
         {textAlign: textAlign ? textAlign : 'center'},
         {fontFamily: fontFamily ? fontFamily : 'RedHatDisplay-Regular'},
+        {color: color ? color : title ? themeState.title : COLORS.grey},
       ]}>
       {title || text}
     </Text>
   );
 };
 
-export default TextView;
+export default observer(TextView);
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: normalizeHeight(66),
     color: '#fff',
     // fontWeight: '400',
     textAlign: 'center',
   },
   text: {
-    fontSize: 14,
+    fontSize: normalizeHeight(46),
     color: COLORS.grey,
     // fontWeight: '400',
   },

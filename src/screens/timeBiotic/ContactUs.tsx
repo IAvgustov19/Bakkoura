@@ -1,33 +1,33 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useRef, useState} from 'react';
 import useRootStore from '../../hooks/useRootStore';
-import { windowHeight } from '../../utils/styles';
+import {windowHeight} from '../../utils/styles';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import { Images } from '../../assets';
+import {Images} from '../../assets';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import Cancel from '../../components/Cancel/Cancel';
 import TextView from '../../components/Text/Text';
 import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import FormContainer from '../market/components/FormContainer/FormContainer';
 import RadioBtn from '../../components/RadioBtn/RadioBtn';
-import { COLORS } from '../../utils/colors';
+import {COLORS} from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
 import GiveImage from '../../components/GiveImage/GiveImage';
-import { observer } from 'mobx-react-lite';
-import { ActivityIndicator, Alert } from 'react-native';
-import { APP_ROUTES } from '../../navigation/routes';
+import {observer} from 'mobx-react-lite';
+import {ActivityIndicator, Alert} from 'react-native';
+import {APP_ROUTES} from '../../navigation/routes';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 import {t} from '../../i18n'
 
 const ContactUs = () => {
   const navigation = useNavigation();
-
+  const {themeState} = useRootStore().personalAreaStore;
   const [accept, setAccept] = useState(false);
-  const { setOrderState, orderState } = useRootStore().marketStore;
-  const { onSubmitEmail, sendEmailLoading } = useRootStore().timeBiotic;
-  const { onHandleWebVIew } = useRootStore().marketStore;
+  const {setOrderState, orderState} = useRootStore().marketStore;
+  const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
+  const {onHandleWebVIew} = useRootStore().marketStore;
 
   const AcceptPrivacy = () => {
     setOrderState('isAccept', !accept);
@@ -82,6 +82,7 @@ const ContactUs = () => {
                 <TextView
                   style={styles.headerText}
                   text={`${t("Select who you would like to contact")}`}
+                  color={themeState.darkGrayText}
                 />
                 <OutlineBtn
                   text={`${t("General Director")}`}
@@ -119,21 +120,28 @@ const ContactUs = () => {
                   textColor={COLORS.lightGrey}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'Technical Support')}
+                  paddingVertical={15}
                 />
                 <TextView
                   style={styles.text}
+                  color={themeState.darkGrayText}
                   text={`${t("Contact_text")}`}
-                />
+                /> 
               </RN.View>
               <FormContainer bottomInputPress={Scroll} black />
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
+                <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {color: themeState.darkGrayText},
+                    ]}>
                   `${t('your_data_safe')}`
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>`${t('I_accept')}`</RN.Text>
+                  <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>`${t('I_accept')}`</RN.Text>
     </RN.Pressable>
                 </RN.View>
               </RN.View>
@@ -143,7 +151,7 @@ const ContactUs = () => {
                   sendEmailLoading ? (
                     <ActivityIndicator
                       color={COLORS.black}
-                      style={{ marginTop: 3 }}
+                      style={{marginTop: 3}}
                     />
                   ) : (
                     <GiveImage source={Images.Img.eye} />

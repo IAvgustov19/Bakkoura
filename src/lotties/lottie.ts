@@ -7,4 +7,10 @@ export const Lotties = {
   stressTest: require('./AnimLinear-3.json'),
   timeTogether: require('./AnimLinear-4.json'),
   clock: require('./CLOCK.json'),
+  goldHeart: require('./gold-heart-2.json'),
+  whiteClock: require('./whiteClock.json'),
+  whiteHeart: require('./whiteHeart.json'),
+  whitePanda: require('./whitePanda.json'),
+  whiteTomato: require('./whiteTomato.json'),
+  whiteShape: require('./whiteShape.json'),
 };

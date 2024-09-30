@@ -12,18 +12,22 @@ import {
 import {COLORS} from '../../utils/colors';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
+import {normalizeHeight} from '../../utils/dimensions';
 
 const RecommendationView = () => {
   const navigation = useNavigation();
+  const {recommendationData} = useRootStore().timeClinicStore;
 
   const renderTexts = useCallback(() => {
     return (
       <ConceptItem
-        title={RecommendationViewData.title}
-        texts={RecommendationViewData.texts}
+        title={recommendationData.title}
+        texts={recommendationData.texts}
       />
     );
-  }, [RecommendationViewData]);
+  }, [recommendationData]);
 
   return (
     <LinearContainer
@@ -38,10 +42,13 @@ const RecommendationView = () => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <RN.View style={styles.francLogoBox}>
-                <RN.Image source={RecommendationViewData.image} />
+                <RN.Image
+                  style={styles.image}
+                  source={recommendationData.imageUrl}
+                />
               </RN.View>
               <RN.View>{renderTexts()}</RN.View>
-              <RN.Text style={styles.date}>07:08.2023 - Jihad Bakkoura</RN.Text>
+              {/* <RN.Text style={styles.date}>07:08.2023 - Jihad Bakkoura</RN.Text> */}
             </RN.View>
           </RN.ScrollView>
         </RN.View>
@@ -50,7 +57,7 @@ const RecommendationView = () => {
   );
 };
 
-export default RecommendationView;
+export default observer(RecommendationView);
 
 const styles = RN.StyleSheet.create({
   container: {
@@ -61,12 +68,16 @@ const styles = RN.StyleSheet.create({
     gap: 15,
   },
   francLogoBox: {
-    width: '100%',
     alignItems: 'center',
-    paddingVertical: 10,
+    width: '100%',
+    height: 250,
   },
   date: {
     color: COLORS.grey,
     fontSize: 12,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });

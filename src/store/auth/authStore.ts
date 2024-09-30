@@ -77,6 +77,7 @@ export class AuthStore {
 
   getUserMe = async () => {
     const currentUser = auth().currentUser;
+    // auth().signOut();
     const userData = await AsyncStorage.getItem('userData');
     const userState = await AsyncStorage.getItem('userState');
     const uid = await AsyncStorage.getItem('userUid');

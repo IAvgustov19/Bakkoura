@@ -19,8 +19,13 @@ import {t} from '../../../i18n'
 const PersonalDetails = () => {
   const navigation = useNavigation();
 
-  const {personalAreaData, setPersonalAreaState, updateProfile, updateLoading} =
-    useRootStore().personalAreaStore;
+  const {
+    personalAreaData,
+    setPersonalAreaState,
+    updateProfile,
+    updateLoading,
+    themeState,
+  } = useRootStore().personalAreaStore;
 
   const updateName = () => {
     updateProfile(() => navigation.goBack());
@@ -50,12 +55,9 @@ const PersonalDetails = () => {
                   placeholder={`${t("name")}`}
                   value={personalAreaData ? personalAreaData?.name : 'User'}
                   onChangeText={text => setPersonalAreaState('name', text)}
+                  icon={<themeState.delete />}
+                  iconPress={() => setPersonalAreaState('name', ' ' as never)}
                 />
-                <RN.TouchableOpacity
-                  style={styles.deleteBox}
-                  onPress={() => setPersonalAreaState('name', ' ' as never)}>
-                  <Images.Svg.deleteIcon />
-                </RN.TouchableOpacity>
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn

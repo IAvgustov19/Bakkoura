@@ -7,6 +7,7 @@ export type OtherListType = {
   info: string;
   navigate: string;
   isbtn: boolean;
+  key?: string;
 };
 
 export const OtherList: OtherListType[] = [
@@ -16,6 +17,7 @@ export const OtherList: OtherListType[] = [
     info: `${t('time_clinic_desc')}`,
     navigate: APP_ROUTES.TIME_CLINIC,
     isbtn: false,
+    key: 'timeClinic',
   },
   {
     id: 2,
@@ -23,6 +25,7 @@ export const OtherList: OtherListType[] = [
     info: `${t('Constructor_desc')}`,
     navigate: APP_ROUTES.WATCH_CONSTRUCTOR,
     isbtn: false,
+    key: 'watchConstructor',
   },
   {
     id: 3,
@@ -30,6 +33,7 @@ export const OtherList: OtherListType[] = [
     info: `${t('wallpaper_desc')}`,
     navigate: APP_ROUTES.WALLPAPERS,
     isbtn: false,
+    key: 'wallpapers',
   },
   {
     id: 4,
@@ -37,6 +41,7 @@ export const OtherList: OtherListType[] = [
     info: `${t('Description of each section of the application')}`,
     navigate: APP_ROUTES.BTS_NAVIGATION,
     isbtn: false,
+    key: 'btsNav',
   },
   {
     id: 5,
@@ -44,6 +49,7 @@ export const OtherList: OtherListType[] = [
     info: `${t('details_about')}`,
     navigate: APP_ROUTES.CONCEPT_30H,
     isbtn: false,
+    key: 'concepts30h',
   },
   {
     id: 6,
@@ -51,6 +57,7 @@ export const OtherList: OtherListType[] = [
     info: `${t('Learn more about the company, the founder')}`,
     navigate: APP_ROUTES.JIHAD_BAKKOURA,
     isbtn: false,
+    key: 'about',
   },
   {
     id: 7,
@@ -58,5 +65,6 @@ export const OtherList: OtherListType[] = [
     info: `${t('Here you can contact technical support, send your idea and more')}`,
     navigate: APP_ROUTES.CONTACT_STACK,
     isbtn: false,
+    key: 'contact',
   },
 ];

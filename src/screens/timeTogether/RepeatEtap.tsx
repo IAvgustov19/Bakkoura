@@ -12,6 +12,7 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {RepeatData} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
+import Line from '../../components/Line/Line';
 
 import {t} from '../../i18n'
 
@@ -24,6 +25,7 @@ const RepeatEtap = () => {
     onSelectRepeat,
     onCancelRepeat,
   } = useRootStore().togetherTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const onCancel = () => {
     navigation.goBack();
@@ -37,17 +39,19 @@ const RepeatEtap = () => {
   const renderRepeat = useCallback(() => {
     return RepeatData.map((item, index) => {
       return (
-        <ListItemCont
-          key={index}
-          title={item.title}
-          rightItem={
-            <RadioBtn
-              active={item.id === selectedRepeat.id}
-              onPress={() => onRepeatItemPress(index)}
-            />
-          }
-          onPress={() => onRepeatItemPress(index)}
-        />
+        <RN.View key={index}>
+          <ListItemCont
+            title={item.title}
+            rightItem={
+              <RadioBtn
+                active={item.id === selectedRepeat?.id}
+                onPress={() => onRepeatItemPress(index)}
+              />
+            }
+            onPress={() => onRepeatItemPress(index)}
+          />
+          <Line />
+        </RN.View>
       );
     });
   }, [selectedRepeat, addEtapState]);
@@ -60,7 +64,13 @@ const RepeatEtap = () => {
             title={`${t("repeat")}`}
             rightItem={<Cancel onClose={onCancel} />}
           />
-          <RN.View style={styles.eventsTypeList}>{renderRepeat()}</RN.View>
+          <RN.View
+            style={[
+              styles.eventsTypeList,
+              {backgroundColor: themeState.mainBack},
+            ]}>
+            {renderRepeat()}
+          </RN.View>
           <RN.View style={styles.btnBox}>
             <StartBtn
               primary

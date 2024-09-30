@@ -13,6 +13,9 @@ import RN from '../RN';
 import SimpleSwitch from '../SimpleSwitch/SimpleSwitch';
 import StartBtn from '../StopStartBtn/StopStartBtn';
 import { t } from '../../i18n';
+import Line from '../Line/Line';
+import RadioBtn from '../RadioBtn/RadioBtn';
+import {COLORS} from '../../utils/colors';
 
 type Props = {
   modalVisible?: boolean;
@@ -31,34 +34,27 @@ type Props = {
   okBtn?: boolean;
   okBtnText?: string;
   onPressBtn?: () => void;
+  onSelectMyMusic?: () => void;
 };
 
-const Item = ({ data, title, active, index, onPress }) => (
-  <RN.TouchableOpacity
-    style={[
-      styles.item,
-      { borderBottomWidth: index === data.length - 1 ? 0 : 1 },
-    ]}
-    onPress={() => onPress(index)}>
-    <RN.Text style={[styles.title, { color: active ? '#fff' : '#7D7D7D' }]}>
-      {title}
-    </RN.Text>
-    <RN.TouchableOpacity style={styles.radioBtn} onPress={() => {
-      if (!active) {
-        onPress(index);
-      }
-    }
-    }>
-      {active ? (
-        <Images.Svg.ellipseSmall
-          style={styles.activeRadio}
-          width={15}
-          height={15}
-        />
-      ) : null}
-    </RN.TouchableOpacity>
-  </RN.TouchableOpacity>
-);
+const Item = ({data, title, active, index, onPress}) => {
+  const {themeState} = useRootStore().personalAreaStore;
+  return (
+    <>
+      <RN.TouchableOpacity style={[styles.item]} onPress={() => onPress(index)}>
+        <RN.Text
+          style={[
+            styles.title,
+            {color: active ? themeState.title : COLORS.grey},
+          ]}>
+          {title}
+        </RN.Text>
+        <RadioBtn active={active} onPress={() => onPress(index)} />
+      </RN.TouchableOpacity>
+      {index === data.length - 1 ? null : <Line />}
+    </>
+  );
+};
 
 const SoundsContent: React.FC<Props> = ({
   modalVisible,
@@ -75,7 +71,10 @@ const SoundsContent: React.FC<Props> = ({
   okBtn,
   onPressBtn,
   okBtnText,
+  onSelectMyMusic,
+  myMusicValue,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.Modal
       animationType="fade"
@@ -88,7 +87,11 @@ const SoundsContent: React.FC<Props> = ({
           <RN.View style={styles.centeredView}>
             <RN.View style={styles.modalView}>
               <HeaderContent title={headerTitle} leftItem={headerLeftItem} />
-              <RN.View style={styles.listsBox}>
+              <RN.View
+                style={[
+                  styles.listsBox,
+                  {backgroundColor: themeState.mainBack},
+                ]}>
                 <RN.FlatList
                   data={data}
                   renderItem={({ item, index }) => (
@@ -104,7 +107,11 @@ const SoundsContent: React.FC<Props> = ({
               </RN.View>
               <RN.View style={styles.more}>
                 {vibral ? (
-                  <RN.View style={styles.eventsTypeList}>
+                  <RN.View
+                    style={[
+                      styles.eventsTypeList,
+                      {backgroundColor: themeState.mainBack},
+                    ]}>
                     <RN.View style={styles.listItem}>
                       <RN.Text style={styles.listItemText}>
                       {t("Vibro signal")}
@@ -118,6 +125,12 @@ const SoundsContent: React.FC<Props> = ({
                 ) : null}
                 {myMusic ? (
                   <ListItemCont title={`${t("My music")}`} value={`${t("Not selected")}`} backBlack />
+                  <ListItemCont
+                    title="My music"
+                    value={myMusicValue}
+                    backBlack
+                    onPress={onSelectMyMusic}
+                  />
                 ) : null}
               </RN.View>
             </RN.View>
@@ -162,16 +175,6 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderColor: '#131F28',
-  },
-  radioBtn: {
-    width: 30,
-    height: 30,
-    borderRadius: 50,
-    backgroundColor: '#141414',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     color: '#7D7D7D',
@@ -184,7 +187,6 @@ const styles = RN.StyleSheet.create({
   },
 
   eventsTypeList: {
-    backgroundColor: '#0D0D0D',
     borderRadius: 3,
     paddingHorizontal: 5,
     marginTop: 5,

@@ -256,3 +256,17 @@ export const TimerValueInitial: TimerValueType = {
   totalSeconds: 0,
   sound: {name: '', url: ''},
 };
+
+export type SoundType = {
+  id: number;
+  title: string;
+  url: string;
+  active: boolean;
+};
+
+export const SoundInitial: SoundType = {
+  id: 0,
+  title: '',
+  url: '',
+  active: false,
+};

@@ -16,15 +16,10 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { t } from '../../i18n';
 
 const EventScreen = () => {
-  const {
-    calendarCurrentTime,
-    setSwitchCalendar,
-    switchCalendar,
-    setAllEvents,
-    allEventsData,
-  } = useRootStore().calendarStore;
+  const {calendarCurrentTime, setSwitchCalendar, switchCalendar, setAllEvents} =
+    useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const navigation = useNavigation();
-  // console.log('allEventsData', allEventsData);
 
   const toggleSwitch = () => {
     setTimeout(() => {
@@ -56,7 +51,7 @@ const EventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.EVENTS_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

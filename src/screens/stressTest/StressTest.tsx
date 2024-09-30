@@ -17,6 +17,7 @@ import {t} from '../../i18n'
 const StressTest = () => {
   const navigation = useNavigation();
   const {stressTestStatus, resetStressTimer} = useRootStore().stressTestStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const NewStressTest = () => {
     if (stressTestStatus.finished) {
@@ -35,8 +36,9 @@ const StressTest = () => {
           <Images.Svg.yellowPanda1 />
           <RN.View style={styles.textInfo}>
             <TextView
+              color={themeState.darkGrayText}
               text={`${t("stress_text")}`}
-            />
+             />
           </RN.View>
         </>
       );
@@ -50,7 +52,7 @@ const StressTest = () => {
           <HeaderContent
            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title={t("Stress Test")}
-            rightItem={<Images.Svg.timerLogo />}
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View style={styles.content}>
             {renderComponent}

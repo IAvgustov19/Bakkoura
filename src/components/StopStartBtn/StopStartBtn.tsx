@@ -2,6 +2,8 @@ import * as React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Images} from '../../assets/index';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type componentNameProps = {
   text?: any;
@@ -15,6 +17,8 @@ type componentNameProps = {
 };
 
 const StartBtn = (props: componentNameProps) => {
+  const {themeState} = useRootStore().personalAreaStore;
+
   return (
     <TouchableOpacity style={[styles.container]} onPress={props.onPress}>
       {props.primary ? (
@@ -30,11 +34,11 @@ const StartBtn = (props: componentNameProps) => {
         </>
       ) : (
         <>
-          <Images.Svg.subtrackOut
+          <themeState.substrack
             style={styles.subtrack}
             width={props.subWidth ? props.subWidth : 90}
           />
-          <Images.Svg.ellipseOut
+          <themeState.ellipse
             style={styles.ellipse}
             width={props.elWidth ? props.elWidth : 75}
           />
@@ -48,7 +52,11 @@ const StartBtn = (props: componentNameProps) => {
           props.primary ? styles.primaryText : styles.outlineText,
           {
             fontSize: props.textSize ? props.textSize : 18,
-            color: props.color ? props.color : props.primary ? '#000' : '#fff',
+            color: props.color
+              ? props.color
+              : props.primary
+              ? '#000'
+              : themeState.title,
           },
         ]}>
         {props.text}
@@ -57,7 +65,7 @@ const StartBtn = (props: componentNameProps) => {
   );
 };
 
-export default StartBtn;
+export default observer(StartBtn);
 
 const styles = StyleSheet.create({
   container: {

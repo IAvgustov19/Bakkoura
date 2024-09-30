@@ -24,6 +24,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         width="100%"
         onChangeText={e => setOrderState('name', e)}
         black={true}
+        bordered
       />
       <Input
         value={orderState.phone}
@@ -35,6 +36,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         onChangeText={e => setOrderState('phone', e)}
         black={true}
         keyBoardType="numeric"
+        bordered
       />
       <Input
         value={orderState.message}
@@ -48,6 +50,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         onChangeText={e => setOrderState('message', e)}
         onPressIn={bottomInputPress}
         black={true}
+        bordered
       />
     </RN.View>
   );

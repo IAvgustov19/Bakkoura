@@ -23,6 +23,7 @@ const RepeatScreen = () => {
     onSelectRepeat,
     onCancelRepeat,
   } = useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const onCancel = () => {
     navigation.goBack();
@@ -59,7 +60,13 @@ const RepeatScreen = () => {
             title={`${t("repeat")}`}
             rightItem={<Cancel onClose={onCancel} />}
           />
-          <RN.View style={styles.eventsTypeList}>{renderRepeat()}</RN.View>
+          <RN.View
+            style={[
+              styles.eventsTypeList,
+              {backgroundColor: themeState.mainBack},
+            ]}>
+            {renderRepeat()}
+          </RN.View>
           <RN.View style={styles.btnBox}>
             <StartBtn
               primary

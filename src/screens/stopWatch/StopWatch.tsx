@@ -36,6 +36,7 @@ const StopWatch = () => {
     is24h,
     sethours,
   } = useRootStore().stopWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const handleIndexChange = () => {
     setIsWatch(e => !e);
@@ -49,8 +50,12 @@ const StopWatch = () => {
           {laps.map((item, index) => {
             return (
               <RN.View style={styles.laps} key={index}>
-                <RN.Text style={styles.lap}>{t("circle")} {item.id}</RN.Text>
-                <RN.Text style={styles.lap}>{item.lap}</RN.Text>
+                <RN.Text style={[styles.lap, {color: themeState.title}]}>
+                {t("circle")} {item.id}
+                </RN.Text>
+                <RN.Text style={[styles.lap, {color: themeState.gray}]}>
+                  {item.lap}
+                </RN.Text>
               </RN.View>
             );
           })}
@@ -70,6 +75,7 @@ const StopWatch = () => {
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.STOP_WATCH_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
+                <themeState.timeLogo />
               </RN.TouchableOpacity>
             }
           />
@@ -91,7 +97,12 @@ const StopWatch = () => {
                   hitSlop={HITSLOP}
                   style={[
                     styles.changeBtn,
-                    { backgroundColor: isWatch ? '#ECC271' : '#000' },
+                    {
+                      backgroundColor: isWatch
+                        ? themeState.yellow
+                        : themeState.inputBaack,
+                      borderColor: isWatch ? '#ECC271' : themeState.inputBaack,
+                    },
                   ]}></RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   onPress={handleIndexChange}
@@ -99,7 +110,12 @@ const StopWatch = () => {
                   style={[
                     styles.changeBtn,
                     {
-                      backgroundColor: !isWatch ? '#ECC271' : '#000',
+                      backgroundColor: !isWatch
+                        ? themeState.yellow
+                        : themeState.inputBaack,
+                      borderColor: !isWatch
+                        ? '#ECC271'
+                        : themeState.inputBorder,
                     },
                   ]}></RN.TouchableOpacity>
               </RN.View>
@@ -111,7 +127,9 @@ const StopWatch = () => {
                 </RN.View>
               ) : (
                 <RN.View style={[styles.child, styles.childTwo]}>
-                  <RN.Text style={styles.text}>{maindis}</RN.Text>
+                  <RN.Text style={[styles.text, {color: themeState.stopWatch}]}>
+                    {maindis}
+                  </RN.Text>
                   {stop ? <RN.Text style={styles.pausa}>{t("Pause")}</RN.Text> : null}
                 </RN.View>
               )}
@@ -173,7 +191,6 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   text: {
-    color: COLORS.white,
     fontSize: moderateScale(50),
     fontWeight: '100',
     width: '100%',
@@ -181,9 +198,11 @@ const styles = StyleSheet.create({
   },
 
   changeBtn: {
-    width: 10,
-    height: 10,
-    borderRadius: 50,
+    width: 15,
+    height: 15,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderBottomWidth: 0,
   },
   activeBtn: {
     flexDirection: 'row',

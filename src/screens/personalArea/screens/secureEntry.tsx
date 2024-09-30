@@ -21,6 +21,8 @@ import {t} from '../../../i18n'
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PASSWORD>;
+import Line from '../../../components/Line/Line';
+
 const SecureEntry = () => {
   const navigation = useNavigation<NavigationProp>();
 
@@ -31,6 +33,7 @@ const SecureEntry = () => {
     secureEntries,
     updateLoading,
     personalAreaData,
+    themeState,
   } = useRootStore().personalAreaStore;
 
   const [localSecureEntries, setLocalSecureEntries] = useState(secureEntries);
@@ -107,7 +110,8 @@ const SecureEntry = () => {
     console.log('isActiveisActive', isActive);
 
     return (
-      <RN.View style={styles.eventsTypeList}>
+      <RN.View
+        style={[styles.eventsTypeList, {backgroundColor: themeState.mainBack}]}>
         <ListItemCont
           rightItem={
             <RadioBtn
@@ -117,16 +121,16 @@ const SecureEntry = () => {
           }
           title={
             <RN.Text
-              color={isActive
-                ? '#fff'
-                : '#7D7D7D'
+              color={
+                item.title === personalAreaData?.secureEntry
+                  ? themeState.title
+                  : '#7D7D7D'
               }>
               {item.title}
             </RN.Text>
           }
           onPress={() => handleItemPress(index)}
         />
-        <RN.View style={styles.line}></RN.View>
       </RN.View>
     );
   };
@@ -192,7 +196,6 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
   },
   eventsTypeList: {
-    backgroundColor: '#0D0D0D',
     borderRadius: 3,
     paddingHorizontal: 5,
     marginTop: 5,

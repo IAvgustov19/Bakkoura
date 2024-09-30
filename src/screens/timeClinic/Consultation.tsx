@@ -26,6 +26,7 @@ type Props = {};
 const Consultation: React.FC<Props> = ({}) => {
   const [accept, setAccept] = React.useState(false);
   const navigation = useNavigation();
+  const {themeState} = useRootStore().personalAreaStore;
   const {setOrderState, orderState} = useRootStore().marketStore;
   const {onSubmitEmail, sendEmailLoading} = useRootStore().timeBiotic;
   const {onHandleWebVIew} = useRootStore().marketStore;
@@ -71,6 +72,7 @@ const Consultation: React.FC<Props> = ({}) => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <TextView
+                color={themeState.darkGrayText}
                 text={
                   `${t("Consultation_text")}`
                 }
@@ -79,11 +81,16 @@ const Consultation: React.FC<Props> = ({}) => {
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
+                <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {color: themeState.darkGrayText},
+                    ]}>
                     {`${t("your_data_safe")}`}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-                    <RN.Text style={styles.privacyLink}>{t("I_accept")}</RN.Text>
+                  <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>{t("I_accept")}</RN.Text>
                   </RN.Pressable>
                 </RN.View>
               </RN.View>

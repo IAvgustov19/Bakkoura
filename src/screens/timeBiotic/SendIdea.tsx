@@ -25,7 +25,7 @@ import {t} from '../../i18n'
 const SendIdea = () => {
   const navigation = useNavigation();
   const {onHandleWebVIew} = useRootStore().marketStore;
-
+  const {themeState} = useRootStore().personalAreaStore;
   const [accept, setAccept] = useState(false);
   const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
@@ -65,7 +65,7 @@ const SendIdea = () => {
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View> */}
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title={`${t("Your idea")}`}
           />
@@ -78,6 +78,7 @@ const SendIdea = () => {
               <RN.View style={styles.ideaInfo}>
                 <TextView
                   style={styles.text}
+                  color={themeState.darkGrayText}
                   text= {`${t("Idea_text")}`}
                   />
               </RN.View>
@@ -85,11 +86,16 @@ const SendIdea = () => {
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
+                <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {color: themeState.darkGrayText},
+                    ]}>
                   `${t('your_data_safe')}`
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>`${t('I_accept')}`</RN.Text>
+                  <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>`${t('I_accept')}`</RN.Text>
     </RN.Pressable>
                 </RN.View>
               </RN.View>

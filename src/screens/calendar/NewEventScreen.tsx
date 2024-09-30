@@ -20,6 +20,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {HITSLOP, windowHeight} from '../../utils/styles';
+import Line from '../../components/Line/Line';
 import { t } from '../../i18n';
 
 const NewEventScreen = () => {
@@ -36,6 +37,7 @@ const NewEventScreen = () => {
   } = useRootStore().calendarStore;
   const {onSoundItemPress, soundsData, selectedSound} =
     useRootStore().timerStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const onSetAllDay = () => {
     setTimeout(() => {
@@ -85,21 +87,28 @@ const NewEventScreen = () => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <RN.View style={styles.listItem}>
                     <TextInput
                       multiline={true}
                       onChangeText={e => setNewEventState('name', e as never)}
                       style={[
                         styles.listItemTextInput,
-                        {paddingTop: RN.Platform.OS === 'ios' ? 18 : 10},
+                        {
+                          paddingTop: RN.Platform.OS === 'ios' ? 18 : 10,
+                          color: themeState.title,
+                        },
                       ]}
                       placeholderTextColor={COLORS.grey}
                       placeholder={`${t("name")}`}
                       value={newEventData.name}
                     />
                   </RN.View>
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
                     title={`${t("date")}`}
                     value={
@@ -117,7 +126,7 @@ const NewEventScreen = () => {
                   />
                   {!newEventData.allDay ? (
                     <>
-                      <RN.View style={styles.line}></RN.View>
+                      <Line />
                       <ListItemCont
                         title={`${t("Time")}`}
                         value={formattedTime(
@@ -132,7 +141,11 @@ const NewEventScreen = () => {
                     </>
                   ) : null}
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
                     title={`${t("all day")}`}
                     rightVertical={5}
@@ -143,7 +156,7 @@ const NewEventScreen = () => {
                       />
                     }
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
                     title={`${t("repeat")}`}
                     value={newEventData.repeat}
@@ -152,7 +165,11 @@ const NewEventScreen = () => {
                     }
                   />
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
                     title={`${t("reminder")}`}
                     rightVertical={5}
@@ -168,14 +185,18 @@ const NewEventScreen = () => {
                       />
                     }
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
                     title={`${t("sound")}`}
                     value={selectedSound.title}
                     onPress={() => setSound(true)}
                   />
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <RN.View style={styles.listItem}>
                     <TextInput
                       multiline={true}
@@ -184,7 +205,10 @@ const NewEventScreen = () => {
                       }
                       style={[
                         styles.listItemTextInput,
-                        {paddingTop: RN.Platform.OS === 'ios' ? 16 : 0},
+                        {
+                          paddingTop: RN.Platform.OS === 'ios' ? 16 : 0,
+                          color: themeState.title,
+                        },
                       ]}
                       placeholderTextColor={COLORS.grey}
                       placeholder={`${t("comment")}`}

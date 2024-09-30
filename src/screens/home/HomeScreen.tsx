@@ -30,7 +30,8 @@ const HomeScreen = () => {
   const { getPersonalState } = useRootStore().personalAreaStore;
   const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
   const navigation = useNavigation();
-  const { personalAreaData, updateLoading } = useRootStore().personalAreaStore;
+  const {personalAreaData, updateLoading, themeState} =
+    useRootStore().personalAreaStore;
   const [userData, setUserData] = useState(null);
   const [activity, setActivity] = useState(false);
 
@@ -115,10 +116,11 @@ const HomeScreen = () => {
             rightItem={
               <RN.View style={styles.profile}>
                 <RN.TouchableOpacity
+                  style={styles.messageIcon}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.MESSENGER as never)
                   }>
-                  <Images.Svg.messageIcon/>
+                  <themeState.messageIcon />
                   {activity && <RN.View style={styles.activity} />}
                 </RN.TouchableOpacity>
                 <RN.TouchableOpacity
@@ -128,7 +130,7 @@ const HomeScreen = () => {
                   }>
                   {personalAreaData?.avatar ? (
                     <RN.View style={styles.imageContainer}>
-                      <Images.Svg.profileBackground width={55} height={55} />
+                      <themeState.profileBackIcon width={55} height={55} />
                       <RN.Image
                         source={{ uri: personalAreaData.avatar }}
                         style={styles.profileImg}
@@ -144,7 +146,7 @@ const HomeScreen = () => {
                       ) : null}
                     </RN.View>
                   ) : (
-                    <Images.Svg.userIcon width={50} height={50} />
+                    <themeState.userIcon width={50} height={50} />
                   )}
                 </RN.TouchableOpacity>
               </RN.View>
@@ -153,7 +155,8 @@ const HomeScreen = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.watchBox}>
               <TextView
-                style={[styles.title, { marginTop: -15 }]}
+                color={themeState.darkGrayText}
+                style={[styles.title, {marginTop: -15}]}
                 text={`${personalAreaData.name}, ${t("Message to You!")}`}
               />
               <TextView
@@ -242,6 +245,9 @@ const styles = RN.StyleSheet.create({
   },
   renderWatchs: {
     marginTop: 9,
+  },
+  messageIcon: {
+    justifyContent: 'center',
   },
   activity: {
     height: 9,

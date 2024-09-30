@@ -2,33 +2,33 @@ import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigat
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ActivityIndicator, Linking, Platform } from 'react-native'
 import RN from '../../components/RN';
-import { GiftedChat, MessageImage } from 'react-native-gifted-chat';
-import { RootStackParamList } from '../../types/navigation';
-import { APP_ROUTES } from '../../navigation/routes';
-import { observer } from 'mobx-react-lite';
-import { KeyboardAvoidingView } from '../../components/KeyboardAvoidingView';
-import { Images } from '../../assets';
+import {GiftedChat, MessageImage} from 'react-native-gifted-chat';
+import {RootStackParamList} from '../../types/navigation';
+import {APP_ROUTES} from '../../navigation/routes';
+import {observer} from 'mobx-react-lite';
+import {KeyboardAvoidingView} from '../../components/KeyboardAvoidingView';
+import {Images} from '../../assets';
 import CustomActions from './components/CustomActions';
 import AudioPlayer from './components/AudioPlayer';
 import LinearGradient from 'react-native-linear-gradient';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import CustomMessage from './components/CustomBubble';
-import { PlatfromView } from '../../components/PlatformView/PlatfromView';
+import {PlatfromView} from '../../components/PlatformView/PlatfromView';
 import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
-import { db } from '../../config/firebase';
+import {db} from '../../config/firebase';
 import moment from 'moment';
 import FileViewer from 'react-native-file-viewer';
-import { windowWidth } from '../../utils/styles';
-import { COLORS } from '../../utils/colors';
+import {windowWidth} from '../../utils/styles';
+import {COLORS} from '../../utils/colors';
 import VideoPlayer from './components/VideoPlayer';
 import { uploadAudioToStorage, uploadDocumentToStorage, uploadMediaToStorage } from '../../services/firestoreService';
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid } from 'react-native';
+import {PermissionsAndroid} from 'react-native';
 import functions from '@react-native-firebase/functions';
-import { Timestamp } from "firebase/firestore";
+import {Timestamp} from 'firebase/firestore';
 import MessageActionSheet from './components/MessageAction';
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 import 'react-native-console-time-polyfill'
@@ -37,41 +37,43 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import useKeepScrollPosition from './components/hook';
 import { t } from '../../i18n';
 
+import useRootStore from '../../hooks/useRootStore';
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PROFILE_PAGE>;
 
 const DialogScreen = () => {
-    const route = useRoute<DialogScreenRouteProp>();
-    const navigation = useNavigation<NavigationProp>();
-    const { id, name, avatar } = route.params;
-    const currentUser = auth().currentUser;
-    const [messages, setMessages] = useState([]);
+  const {themeState} = useRootStore().personalAreaStore;
+  const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<DialogScreenRouteProp>();
+  const {id, name, avatar} = route.params;
+  const currentUser = auth().currentUser;
+  const groupId = `${id}-${currentUser?.uid}`;
+  const [messages, setMessages] = useState([]);
+  const [lastSeen, setLastSeen] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [newMessages, setNewMessages] = useState([]);
+  const [loadingMessages, setLoadingMessages] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [actionSheetVisible, setActionSheetVisible] = useState(false);
+  const [chatOpenedAt, setChatOpenedAt] = useState(null);
+  const [editingMessage, setEditingMessage] = useState(null);
+  const [inputText, setInputText] = useState('');
+  const [selectedEditMessage, setSelectedEditMessage] = useState(null);
+  const [editing, setEditing] = useState<boolean>(false);
+  const [roomId, setRoomId] = useState(null);
+  const [lastVisibleMessage, setLastVisibleMessage] = useState(null);
+  const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
+  const [allMessagesFetched, setAllMessagesFetched] = useState(false);
+  const { containerRef } = useKeepScrollPosition([messages]);
+  // const containerRef = useRef(null);
 
-    const [lastSeen, setLastSeen] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [newMessages, setNewMessages] = useState([]);
-    const [loadingMessages, setLoadingMessages] = useState<{ [key: string]: boolean }>({});
-    const [selectedMessage, setSelectedMessage] = useState(null);
-    const [actionSheetVisible, setActionSheetVisible] = useState(false);
-    const [chatOpenedAt, setChatOpenedAt] = useState(null);
-    const [editingMessage, setEditingMessage] = useState(null);
-    const [inputText, setInputText] = useState('');
-    const [selectedEditMessage, setSelectedEditMessage] = useState(null);
-    const [editing, setEditing] = useState<boolean>(false);
-    const [roomId, setRoomId] = useState(null);
-    const [lastVisibleMessage, setLastVisibleMessage] = useState(null);
-    const [isFetchingMore, setIsFetchingMore] = useState<boolean>(false);
-    const [allMessagesFetched, setAllMessagesFetched] = useState(false);
-    const { containerRef } = useKeepScrollPosition([messages]);
-    // const containerRef = useRef(null);
-
-
-    useEffect(() => {
-        const chatOpenedAt = new Date();
-        setChatOpenedAt(chatOpenedAt);
-    }, []);
-
+  useEffect(() => {
+    const chatOpenedAt = new Date();
+    setChatOpenedAt(chatOpenedAt);
+  }, []);
 
     const onLongPressMessage = (context, message) => {
         console.log('tadaaa', context);
@@ -81,9 +83,9 @@ const DialogScreen = () => {
         console.log('Long pressed message:', message);
     };
 
-    const onSelect = async (action) => {
-        setActionSheetVisible(false);
-        if (!selectedMessage) return;
+  const onSelect = async action => {
+    setActionSheetVisible(false);
+    if (!selectedMessage) return;
 
         switch (action) {
             case 'delete':
@@ -132,13 +134,11 @@ const DialogScreen = () => {
     const onReaction = (reaction) => {
         if (!selectedMessage) return;
 
-        setMessages((previousMessages) =>
-            previousMessages.map((message) =>
-                message._id === selectedMessage._id
-                    ? { ...message, reaction }
-                    : message
-            )
-        );
+    setMessages(previousMessages =>
+      previousMessages.map(message =>
+        message._id === selectedMessage._id ? {...message, reaction} : message,
+      ),
+    );
 
         db.collection('Messages').doc(selectedMessage._id).update({
             reaction: reaction
@@ -148,44 +148,42 @@ const DialogScreen = () => {
     };
 
 
-    useEffect(() => {
-        console.time('userRef');
+  useEffect(() => {
+    console.time('userRef');
 
         if (id && currentUser?.uid) {
             const userRef = db.collection('users').doc(currentUser?.uid);
             userRef.update({ openChatWith: id });
 
-            return () => {
-                userRef.update({ openChatWith: null });
-            };
-        }
-        console.timeEnd('userRef');
+      return () => {
+        userRef.update({openChatWith: null});
+      };
+    }
+    console.timeEnd('userRef');
+  }, [id, currentUser?.uid]);
 
-    }, [id, currentUser?.uid]);
-
-    useEffect(() => {
-        console.time('deviceToken');
+  useEffect(() => {
+    console.time('deviceToken');
 
         const deviceToken = async () => {
             await messaging().registerDeviceForRemoteMessages();
             const token = await messaging().getToken();
             // console.log('tokentokentoken', token);
 
-            const userDocRef = firestore().collection('users').doc(currentUser.uid);
-            const userDoc = await userDocRef.get();
-            const userData = userDoc.data();
-            const existingTokens = userData?.deviceTokens || [];
-            if (!existingTokens.includes(token)) {
-                const updatedTokens = [...existingTokens, token];
-                await userDocRef.update({
-                    deviceTokens: updatedTokens,
-                });
-            }
-        };
-        deviceToken();
-        console.timeEnd('deviceToken');
-
-    }, []);
+      const userDocRef = firestore().collection('users').doc(currentUser.uid);
+      const userDoc = await userDocRef.get();
+      const userData = userDoc.data();
+      const existingTokens = userData?.deviceTokens || [];
+      if (!existingTokens.includes(token)) {
+        const updatedTokens = [...existingTokens, token];
+        await userDocRef.update({
+          deviceTokens: updatedTokens,
+        });
+      }
+    };
+    deviceToken();
+    console.timeEnd('deviceToken');
+  }, []);
 
     async function sendNotification(tokens, title, body, senderId, chatId) {
         const sendNotification = functions().httpsCallable('sendNotification');
@@ -218,29 +216,32 @@ const DialogScreen = () => {
     }
 
 
-    useEffect(() => {
-        if (!id) {
-            navigation.navigate(APP_ROUTES.MESSENGER as never);
-            return;
-        }
-        const userRef = firestore().collection('users').doc(id);
+  useEffect(() => {
+    if (!id) {
+      navigation.navigate(APP_ROUTES.MESSENGER as never);
+      return;
+    }
+    const userRef = firestore().collection('users').doc(id);
 
-        const unsubscribe = userRef.onSnapshot((snapshot) => {
-            const userData = snapshot.data();
-            if (userData?.lastSeen) {
-                const lastSeenTimestamp = moment(userData.lastSeen.toDate());
-                const now = moment();
-                const isToday = lastSeenTimestamp.isSame(now, 'day');
-                const isYesterday = lastSeenTimestamp.clone().add(1, 'day').isSame(now, 'day');
-                let lastSeenFormatted;
-                if (isToday) {
-                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
-                } else if (isYesterday) {
-                    lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
-                } else {
-                    lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm');
-                }
-                const diffInMinutes = now.diff(lastSeenTimestamp, 'minutes');
+    const unsubscribe = userRef.onSnapshot(snapshot => {
+      const userData = snapshot.data();
+      if (userData?.lastSeen) {
+        const lastSeenTimestamp = moment(userData.lastSeen.toDate());
+        const now = moment();
+        const isToday = lastSeenTimestamp.isSame(now, 'day');
+        const isYesterday = lastSeenTimestamp
+          .clone()
+          .add(1, 'day')
+          .isSame(now, 'day');
+        let lastSeenFormatted;
+        if (isToday) {
+          lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
+        } else if (isYesterday) {
+          lastSeenFormatted = lastSeenTimestamp.format('HH:mm');
+        } else {
+          lastSeenFormatted = lastSeenTimestamp.format('MMMM DD, HH:mm');
+        }
+        const diffInMinutes = now.diff(lastSeenTimestamp, 'minutes');
 
                 if (diffInMinutes < 2) {
                     setLastSeen('Online');
@@ -455,15 +456,16 @@ const DialogScreen = () => {
     };
 
 
-    useLayoutEffect(() => {
-        setLoading(true);
-        const senderId = currentUser?.uid;
-        const receiverId = id;
+  useLayoutEffect(() => {
+    setLoading(true);
+    const senderId = currentUser?.uid;
+    const receiverId = id;
 
-        const roomQuery = db.collection('Rooms')
-            .where('senderId', 'in', [senderId, receiverId])
-            .where('receiverId', 'in', [senderId, receiverId])
-            .limit(1);
+    const roomQuery = db
+      .collection('Rooms')
+      .where('senderId', 'in', [senderId, receiverId])
+      .where('receiverId', 'in', [senderId, receiverId])
+      .limit(1);
 
         const updateChatOpenedAt = async () => {
             const currentTime = new Date();
@@ -477,23 +479,25 @@ const DialogScreen = () => {
             }
         };
 
-        updateChatOpenedAt();
+    updateChatOpenedAt();
 
-        const unsubscribe = roomQuery.onSnapshot(async (roomQuerySnapshot) => {
-            if (!roomQuerySnapshot.empty) {
-                const roomDoc = roomQuerySnapshot.docs[0];
-                const roomId = roomDoc.id;
+    const unsubscribe = roomQuery.onSnapshot(
+      async roomQuerySnapshot => {
+        if (!roomQuerySnapshot.empty) {
+          const roomDoc = roomQuerySnapshot.docs[0];
+          const roomId = roomDoc.id;
 
                 const messagesQuery = db.collection('Messages')
                     .where('roomId', '==', roomId)
                     .orderBy('createdAt', 'desc')
                     .limit(10);
 
-                messagesQuery.onSnapshot((messagesSnapshot) => {
-                    const messagesArray = messagesSnapshot.docs.map((doc) => {
-                        const data = doc.data();
-                        const isLoading = data.audio || data.video;
-                        setLoadingMessages(prev => ({ ...prev, [doc.id]: isLoading }));
+          messagesQuery.onSnapshot(
+            messagesSnapshot => {
+              const messagesArray = messagesSnapshot?.docs?.map(doc => {
+                const data = doc.data();
+                const isLoading = data.audio || data.video;
+                setLoadingMessages(prev => ({...prev, [doc.id]: isLoading}));
 
                         return {
                             _id: doc.id,
@@ -556,8 +560,8 @@ const DialogScreen = () => {
             setLoading(false);
         });
 
-        return () => unsubscribe();
-    }, [id, currentUser.uid]);
+    return () => unsubscribe();
+  }, [id, currentUser.uid]);
 
     const onSend = useCallback(async (messages = []) => {
         setEditing(false);
@@ -642,10 +646,11 @@ const DialogScreen = () => {
             messageType = 'document';
         }
 
-        let roomDocRef = db.collection('Rooms')
-            .where('senderId', 'in', [senderId, receiverId])
-            .where('receiverId', 'in', [senderId, receiverId])
-            .limit(1);
+      let roomDocRef = db
+        .collection('Rooms')
+        .where('senderId', 'in', [senderId, receiverId])
+        .where('receiverId', 'in', [senderId, receiverId])
+        .limit(1);
 
         const roomQuerySnapshot = await roomDocRef.get();
         let targetRoomId;
@@ -689,13 +694,18 @@ const DialogScreen = () => {
         const recipientData = recipientDoc.data();
         const recipientTokens = recipientData?.deviceTokens || [];
 
-        if (recipientTokens.length > 0) {
-            sendNotification(recipientTokens, currentUser?.displayName || 'Me', text || 'Sent a message', senderId, targetRoomId);
-        } else {
-            console.log('tadaaaaaaaaam');
-
-        }
-        console.timeEnd('onSendMessagae')
+      if (recipientTokens.length > 0) {
+        sendNotification(
+          recipientTokens,
+          currentUser?.displayName || 'Me',
+          text || 'Sent a message',
+          senderId,
+          targetRoomId,
+        );
+      } else {
+        console.log('tadaaaaaaaaam');
+      }
+      console.timeEnd('onSendMessagae');
 
         console.log('Message successfully added to the Messages collection!');
     }, [id, currentUser]);
@@ -805,8 +815,8 @@ const DialogScreen = () => {
         <PlatfromView>
             <LinearGradient
                 style={{ minHeight: '12%', top: 0, paddingHorizontal: 10, paddingVertical: 8 }}
-                colors={['#323D45', '#1B2024']}
-            >
+                colors={themeState.messengerHeader}>
+            
                 <HeaderContent
                     rightItem={
                         <RN.TouchableOpacity
@@ -822,19 +832,19 @@ const DialogScreen = () => {
                             }
                             style={styles.imageContainer}
                         >
-                            <Images.Svg.profileBackground width={49} height={49} />
+                            <themeState.profileBackIcon width={49} height={49} />
                             {
                                 avatar ? <RN.Image
                                     source={{ uri: avatar || null }}
                                     style={styles.profileImg}
-                                /> :
-                                    <Images.Svg.userIcon style={styles.profileImg} />
+                                /> :<themeState.userIcon style={styles.profileImg} />
+                                    
                             }
                         </RN.TouchableOpacity>
                     }
                     title={
                         <RN.View>
-                            <RN.Text style={styles.name}>{name}</RN.Text>
+                            <RN.Text style={[styles.name, {color: themeState.title}]}>{name}</RN.Text>
                             {lastSeen !== 'Online' && <RN.Text style={styles.lastSeen}>{t("Last seen")}</RN.Text>}
                             <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : `${t("Recently")}`}</RN.Text>
                         </RN.View>
@@ -848,8 +858,9 @@ const DialogScreen = () => {
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
             >
                 <RN.View
-                    style={styles.container}
-                >
+                    style={[styles.container, {backgroundColor: themeState.mainBack}]}>
+
+                
                     {loading ? (
                         <RN.View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <ActivityIndicator size="large" color={COLORS.white} />
@@ -916,7 +927,6 @@ const DialogScreen = () => {
 
 
 export default observer(DialogScreen);
-
 
 const styles = RN.StyleSheet.create({
     container: {

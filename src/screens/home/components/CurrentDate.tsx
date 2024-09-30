@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {Images} from '../../../assets';
+import GradientText from '../../../components/GradientText';
 import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
+import {normalizeHeight} from '../../../utils/dimensions';
 
 type Props = {
   day?: string;
@@ -12,9 +14,9 @@ type Props = {
 const CurrentDate: React.FC<Props> = ({day, month}) => {
   return (
     <RN.View style={styles.todayBox}>
-      <RN.Text style={styles.day} fontFamily="RedHatDisplay-SemiBold">
+      <GradientText style={styles.day} colors={['#ECC271', '#7F642E']}>
         {day}
-      </RN.Text>
+      </GradientText>
       <RN.Text style={styles.monthYear} fontFamily="RedHatDisplay-SemiBold">
         {month}
       </RN.Text>
@@ -29,13 +31,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   day: {
-    fontSize: 42,
+    fontSize: normalizeHeight(120),
     color: COLORS.yellow,
     textAlign: 'center',
   },
   monthYear: {
-    fontSize: 12,
-    color: COLORS.yellow,
+    fontSize: normalizeHeight(36),
+    color: COLORS.inActiveYellow,
     marginTop: -5,
+    fontFamily: 'RedHatDisplay-SemiBold',
   },
 });

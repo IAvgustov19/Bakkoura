@@ -33,6 +33,10 @@ const Events: React.FC<Props> = ({
     calculateRemainingTime,
     fetchAllEvents,
   } = useRootStore().calendarStore;
+  // console.log(
+  //   'allEventsData',
+  //   allEventsData.map(i => i.id),
+  // );
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -115,7 +119,7 @@ export default observer(Events);
 
 const styles = RN.StyleSheet.create({
   container: {
-    height: '90%',
+    height: '100%',
   },
   itemContainer: {},
   eventsTypeList: {
@@ -132,7 +136,7 @@ const styles = RN.StyleSheet.create({
     backgroundColor: COLORS.darkRed,
     alignItems: 'flex-end',
     justifyContent: 'center',
-    height: '80%',
+    height: '90%',
     marginTop: '1%',
     borderRadius: 5,
     width: '100%',

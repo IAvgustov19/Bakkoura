@@ -23,6 +23,7 @@ const RepeatTypeScreen = () => {
     selectedRepeat,
     onRepeatOkPress,
   } = useRootStore().alarmStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const navigation = useNavigation();
 
   const OnRepeatCancelPress = () => {
@@ -62,7 +63,10 @@ const RepeatTypeScreen = () => {
             rightItem={<Cancel onClose={OnRepeatCancelPress} />}
           />
           <RN.View style={styles.content}>
-            <RN.View style={styles.listBox}>{renderDays()}</RN.View>
+            <RN.View
+              style={[styles.listBox, {backgroundColor: themeState.mainBack}]}>
+              {renderDays()}
+            </RN.View>
             <RN.View>
               <StartBtn
                 text={`${t("Ok")}`}

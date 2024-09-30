@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
 type Props = {
   title?: string;
   _title?: string;
@@ -17,6 +18,7 @@ type Props = {
 
 const SwitchContain: React.FC<Props> = ({title, handlePress, back, _title}) => {
   const translateX = useSharedValue(0);
+  const {themeState} = useRootStore().personalAreaStore;
 
   const handlePresss = () => {
     if (back) {
@@ -37,7 +39,14 @@ const SwitchContain: React.FC<Props> = ({title, handlePress, back, _title}) => {
       onPress={() => {
         handlePresss(), handlePress();
       }}>
-      <RN.View style={[styles.box]}>
+      <RN.View
+        style={[
+          styles.box,
+          {
+            backgroundColor: themeState.inputBaack,
+            borderColor: themeState.inputBorder,
+          },
+        ]}>
         <Animated.View style={[styles.animatedBox, animatedStyles]}>
           <LinearGradient colors={['#ECC271', '#7F642E']} style={styles.linear}>
             <RN.Text style={styles.title}>{back ? title : _title}</RN.Text>
@@ -59,6 +68,8 @@ const styles = RN.StyleSheet.create({
     width: 80,
     height: 22,
     borderRadius: 20,
+    borderWidth: 0.8,
+    borderBottomWidth: 0,
   },
   animatedBox: {
     position: 'absolute',

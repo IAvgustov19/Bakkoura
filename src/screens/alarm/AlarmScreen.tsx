@@ -19,6 +19,10 @@ import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import AlarmClock from './components/AlarmClock';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import ListFooter from '../../components/ListFooter/ListFooter';
+import {windowHeight} from '../../utils/styles';
+import AlarmListItem from './components/AlarmListItem';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import {Vibration} from 'react-native';
 import { windowHeight } from '../../utils/styles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { t } from '../../i18n';
@@ -31,7 +35,6 @@ const AlarmScreen = () => {
     fetchAlarmsData,
     activeAlarm,
   } = useRootStore().alarmStore;
-  const [isClock, setClock] = useState(true);
   const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -58,38 +61,12 @@ const AlarmScreen = () => {
         key={index}
         renderRightActions={() => renderLeftActions(item.id)}
         onSwipeableWillOpen={() => handleDeleteAlarm(item.id)}>
-        <LinearGradient
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          colors={
-            item.isActive
-              ? ['#0D0D0D', '#051222', '#00448E']
-              : [COLORS.black, COLORS.black]
-          }
-          style={styles.itemContainer}>
-          <RN.View style={styles.timeBox}>
-            <RN.Text
-              style={[
-                styles.time,
-                { color: item.isActive ? COLORS.green : COLORS.white },
-              ]}>
-              {item.time}
-            </RN.Text>
-            <TextView
-              textAlign="left"
-              style={styles.desc}
-              text={
-                item.name.lenght > 25
-                  ? item.name.slice(0, 22) + '...'
-                  : item.name
-              }
-            />
-          </RN.View>
-          <SimpleSwitch
-            active={item.isActive}
-            handlePress={() => handleInactiveAlarm(item.id)}
-          />
-        </LinearGradient>
+        <AlarmListItem
+          isActive={item.isActive}
+          time={item.time}
+          name={item.name}
+          handleInactiveAlarm={() => handleInactiveAlarm(item.id)}
+        />
       </Swipeable>
     );
   };
@@ -123,7 +100,7 @@ const AlarmScreen = () => {
         </RN.View>
       );
     }
-  }, [isClock, is24h, alarmsListData, activeAlarm]);
+  }, [is24h, alarmsListData, activeAlarm]);
 
   return (
     <LinearContainer

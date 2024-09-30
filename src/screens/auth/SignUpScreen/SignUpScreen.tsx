@@ -42,6 +42,8 @@ type ISelect = {label: string; value: string};
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const { setAuthorized } = useRootStore().authStore;
+  const {setAuthorized} = useRootStore().authStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -110,6 +112,7 @@ const SignUpScreen = () => {
           inActiveMenus: newUser.inActiveMenus,
           startScreen: newUser.initialRouteName,
           id: user.uid,
+          theme: newUser.theme,
         });
 
         await AsyncStorage.setItem('userData', JSON.stringify(user));
@@ -152,7 +155,7 @@ const SignUpScreen = () => {
             );
             break;
           case 'auth/email-already-in-use':
-            Alert.alert('Email is busy',
+            Alert.alert(`${t('Email is busy')}`,
               `${t('The email address is already in use by another account.')}`,
             );
             break;
@@ -206,8 +209,7 @@ const SignUpScreen = () => {
             <RN.ScrollView
               ref={scrollViewRef}
               showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-            >
+              showsVerticalScrollIndicator={false}>
               <RN.View style={styles.content}>
                 <LoadingScreen loading={loading} setLoading={setLoading} />
                 <TextView title={`${t("Sign up")}`} textAlign="center" />
@@ -226,7 +228,9 @@ const SignUpScreen = () => {
                           color={COLORS.black}
                           style={{ marginTop: 3 }}
                         />
-                      ) : null
+                      ) : (
+                        <GiveImage source={Images.Img.eye} />
+                      )
                     }
                   />
                 </RN.View>
@@ -237,7 +241,7 @@ const SignUpScreen = () => {
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
                   }>
-                  <TextView style={styles.signUpText} text={`${t("Sign_in")}`} />
+                  <TextView color={themeState.yellow} style={styles.signUpText} text={`${t("Sign_in")}`} />
                 </RN.TouchableOpacity>
               </View>
               <View style={styles.terms}>
