@@ -44,7 +44,7 @@ const FingerprintAuth = ({ onAuthenticationSuccess }) => {
 
 
     useEffect(() => {
-        showWrongMessage && 
+        showWrongMessage && Platform.OS === 'android'
         Alert.alert(
             `${t("Biometry not set up")}`,
             `${t("You have not set up any biometric data. Please add your fingerprint in settings")}`,

@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {WINDOW_HEIGHT} from '@gorhom/bottom-sheet';
+import React, { useEffect, useRef, useState } from 'react';
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import {
   StyleSheet,
   View,
@@ -9,30 +9,30 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import reactNativeBcrypt from 'react-native-bcrypt';
-import {Images} from '../../../assets';
+import { Images } from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Input from '../../../components/Input/Input';
-import {KeyboardAvoidingView} from '../../../components/KeyboardAvoidingView';
+import { KeyboardAvoidingView } from '../../../components/KeyboardAvoidingView';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import useRootStore from '../../../hooks/useRootStore';
-import {APP_ROUTES} from '../../../navigation/routes';
+import { APP_ROUTES } from '../../../navigation/routes';
 import authh from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
 import CustomDropdown from '../../timeBiotic/components/CustomSelect';
 
-import {windowHeight} from '../../../utils/styles';
+import { windowHeight } from '../../../utils/styles';
 import GiveImage from '../../../components/GiveImage/GiveImage';
 import LoadingScreen from '../Loading/LoadingScreen';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import SignUpForm from './components/SignUpForm';
-import {COLORS} from '../../../utils/colors';
+import { COLORS } from '../../../utils/colors';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
 import { t } from '../../../i18n';
@@ -41,20 +41,20 @@ type ISelect = {label: string; value: string};
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
-  const {setAuthorized} = useRootStore().authStore;
+  const { setAuthorized } = useRootStore().authStore;
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [country, setCountry] = useState<ISelect>({label: '', value: ''});
-  const inputRefs = useRef<{[key: string]: TextInput}>({
+  const [country, setCountry] = useState<ISelect>({ label: '', value: '' });
+  const inputRefs = useRef<{ [key: string]: TextInput }>({
     name: null,
     username: null,
     email: null,
     password: null,
   });
 
-  const {newUser, clearNewUserState, clearLoginUseState, setNewUser} =
+  const { newUser, clearNewUserState, clearLoginUseState, setNewUser } =
     useRootStore().authStore;
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,7 +69,7 @@ const SignUpScreen = () => {
   ];
 
   const onSelect = (option: ISelect) => {
-    setCountry({value: option.value, label: option.value});
+    setCountry({ value: option.value, label: option.value });
   };
 
   useEffect(() => {
@@ -193,15 +193,16 @@ const SignUpScreen = () => {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
             <HeaderContent
               leftItem={<Images.Svg.btsRightLinear />}
-              // rightItem={
-              //   <LanguageBtn
-              //     value={newUser?.language}
-              //     onPress={() =>
-              //       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
-              //     }
-              //   />
-              // }
+              rightItem={
+                <LanguageBtn
+                  value={newUser?.language}
+                  onPress={() =>
+                    navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
+                  }
+                />
+              }
             />
+            <RN.Image source={Images.Img.authLight} style={styles.light} />
             <RN.ScrollView
               ref={scrollViewRef}
               showsHorizontalScrollIndicator={false}
@@ -223,7 +224,7 @@ const SignUpScreen = () => {
                       loading ? (
                         <ActivityIndicator
                           color={COLORS.black}
-                          style={{marginTop: 3}}
+                          style={{ marginTop: 3 }}
                         />
                       ) : null
                     }
@@ -309,4 +310,8 @@ const styles = StyleSheet.create({
   signUpText: {
     color: '#ECC271',
   },
+  light: {
+    top: -20,
+    position: 'absolute',
+  }
 });

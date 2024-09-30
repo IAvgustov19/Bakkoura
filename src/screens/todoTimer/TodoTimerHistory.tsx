@@ -1,21 +1,21 @@
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {observer} from 'mobx-react-lite';
-import React, {useCallback} from 'react';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useEffect } from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import OutlineBtn from '../../components/OutlineBtn/OutlineBtn';
 import RN from '../../components/RN';
-import {secondsToHMS} from '../../helper/helper';
+import { secondsToHMS } from '../../helper/helper';
 import useRootStore from '../../hooks/useRootStore';
-import {APP_ROUTES} from '../../navigation/routes';
-import {COLORS} from '../../utils/colors';
-import {HistoryData} from '../../utils/repeat';
+import { APP_ROUTES } from '../../navigation/routes';
+import { COLORS } from '../../utils/colors';
+import { HistoryData } from '../../utils/repeat';
 import HistoryListItem from './components/HistoryListItem';
 
 const ToDoTimerHistory = () => {
-  const {hide} = useRootStore().visibleStore;
+  const { hide } = useRootStore().visibleStore;
   const {
     tasksList,
     getOneTask,
@@ -23,8 +23,12 @@ const ToDoTimerHistory = () => {
     filterType,
     clearFilterType,
   } = useRootStore().todoTimer;
-  const navifation = useNavigation();
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
+
+
+  console.log('tasksListtasksListtasksList', JSON.stringify(tasksList, null, 2));
+
 
   const renderList = useCallback(() => {
     {
@@ -37,7 +41,7 @@ const ToDoTimerHistory = () => {
               time={secondsToHMS(item.timestamp)}
               onPress={() =>
                 getOneTask(item, () =>
-                  navifation.navigate(APP_ROUTES.NEW_TASK as never),
+                  navigation.navigate(APP_ROUTES.NEW_TASK as never),
                 )
               }
             />
@@ -50,7 +54,7 @@ const ToDoTimerHistory = () => {
   }, [tasksList]);
 
   const onHandleBack = () => {
-    navifation.goBack();
+    navigation.goBack();
     clearFilterType();
   };
 
@@ -65,6 +69,8 @@ const ToDoTimerHistory = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.breakTimeBox}>
               {HistoryData.map((item, index) => {
+                console.log('blablabla', item.key, filterType);
+                
                 return (
                   <OutlineBtn
                     key={index}

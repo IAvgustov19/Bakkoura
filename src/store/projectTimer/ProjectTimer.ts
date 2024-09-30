@@ -53,6 +53,7 @@ export class ProjectTimer {
           ];
           await addProjectTimerToFirestore(this.newProjectTimerState);
           calback();
+          this.calculateTotalTime();  
           this.clearState();
         }
       });
@@ -60,6 +61,7 @@ export class ProjectTimer {
       this.updateProjectTimer(this.newProjectTimerState.id);
       calback();
       this.clearState();
+      this.calculateTotalTime();  
     }
   };
   fetchProjectTimers = async () => {
@@ -67,6 +69,7 @@ export class ProjectTimer {
     console.log('timers', JSON.stringify(timers, null, 2))
     runInAction(() => {
       this.projectTimerList = timers;
+      this.calculateTotalTime();  
     });
   };
 
@@ -161,6 +164,7 @@ export class ProjectTimer {
     });
     runInAction(() => {
       this.projectTimerList = list;
+      this.calculateTotalTime();  
     });
     await updateProjectTimerInFirestore(id.toString(), this.newProjectTimerState);
   };

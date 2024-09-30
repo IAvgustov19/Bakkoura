@@ -15,6 +15,7 @@ import { COLORS } from '../../utils/colors';
 import { windowHeight } from '../../utils/styles';
 
 import {t} from '../../i18n'
+import { Alert } from 'react-native';
 
 const AddTaskScreen = () => {
   const navigation = useNavigation();
@@ -64,9 +65,17 @@ const AddTaskScreen = () => {
     handleDeleteTask(newTaskState.id);
   };
 
-useEffect(() => {
-  !isUpdate && clearState();
-}, []);
+  const handleTextChange = (key, value) => {
+    if (value.length >= 101) {
+      Alert.alert('Input Limit', 'You cannot write more than 100 characters.');
+      return;
+    }
+    setNewTaskState(key, value);
+  };
+
+  useEffect(() => {
+    !isUpdate && clearState();
+  }, []);
 
   return (
     <LinearContainer
@@ -82,20 +91,20 @@ useEffect(() => {
                 <RN.View style={styles.form}>
                   <Input
                     placeholder={`${t("name")}`}
+                    maxLenght={101}
                     value={newTaskState.name}
                     onChangeText={e => setNewTaskState('name', e)}
-                    
                   />
                   <Line />
                   <Input
                     placeholder={`${t("what working")}`}
                     multiLine={true}
+                    maxLenght={101}
                     height={110}
                     paddingTop={15}
                     value={newTaskState.description}
                     textAlignVertical={'top'}
                     onChangeText={e => setNewTaskState('description', e)}
-                    
                   />
                 </RN.View>
                 <RN.View style={styles.timeSelect}>

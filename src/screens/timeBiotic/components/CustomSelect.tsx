@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {Images} from '../../../assets';
+import { Images } from '../../../assets';
 import RN from '../../../components/RN';
-import {COLORS} from '../../../utils/colors';
+import { COLORS } from '../../../utils/colors';
 import Input from '../../../components/Input/Input';
 import {verticalScale} from '../../../utils/dimensions';
 import {observer} from 'mobx-react-lite';
 
 import {t} from '../../../i18n'
 
-const CustomDropdownInput = ({options, onSelect, black}) => {
+const CustomDropdownInput = ({ options, onSelect, black }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -52,7 +52,7 @@ const CustomDropdownInput = ({options, onSelect, black}) => {
 
 const styles = RN.StyleSheet.create({
   container: {
-    position: 'relative',
+    width: '100%',
   },
   dropdownOptions: {
     left: 0,

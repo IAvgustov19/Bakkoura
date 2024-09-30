@@ -1,10 +1,10 @@
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {Images} from '../../assets';
+import { StyleSheet } from 'react-native';
+import { Images } from '../../assets';
 import useRootStore from '../../hooks/useRootStore';
-import {SoundsData} from '../../utils/sounds';
-import {windowHeight} from '../../utils/styles';
+import { SoundsData } from '../../utils/sounds';
+import { windowHeight } from '../../utils/styles';
 import Cancel from '../Cancel/Cancel';
 import HeaderContent from '../HeaderContent/HeaderContent';
 import LinearContainer from '../LinearContainer/LinearContainer';
@@ -33,17 +33,22 @@ type Props = {
   onPressBtn?: () => void;
 };
 
-const Item = ({data, title, active, index, onPress}) => (
+const Item = ({ data, title, active, index, onPress }) => (
   <RN.TouchableOpacity
     style={[
       styles.item,
-      {borderBottomWidth: index === data.length - 1 ? 0 : 1},
+      { borderBottomWidth: index === data.length - 1 ? 0 : 1 },
     ]}
     onPress={() => onPress(index)}>
-    <RN.Text style={[styles.title, {color: active ? '#fff' : '#7D7D7D'}]}>
+    <RN.Text style={[styles.title, { color: active ? '#fff' : '#7D7D7D' }]}>
       {title}
     </RN.Text>
-    <RN.TouchableOpacity style={styles.radioBtn} onPress={() => onPress(index)}>
+    <RN.TouchableOpacity style={styles.radioBtn} onPress={() => {
+      if (!active) {
+        onPress(index);
+      }
+    }
+    }>
       {active ? (
         <Images.Svg.ellipseSmall
           style={styles.activeRadio}
@@ -86,7 +91,7 @@ const SoundsContent: React.FC<Props> = ({
               <RN.View style={styles.listsBox}>
                 <RN.FlatList
                   data={data}
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <Item
                       data={data}
                       title={item.title}
