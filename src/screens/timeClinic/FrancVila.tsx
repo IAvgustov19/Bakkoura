@@ -5,10 +5,14 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
-import {Concept30hTexts, FrancVillaTexts} from '../../constants/timeClinic';
+import {FrancVillaTexts} from '../../constants/timeClinic';
+import {FrancVillaTexts_ar} from '../../constants/timeClinic_ar';
 import {COLORS} from '../../utils/colors';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';
+
+import {t} from '../../i18n'
+import l from '../../i18n'
 
 const FrancVila = () => {
   const navigation = useNavigation();
@@ -21,6 +25,15 @@ const FrancVila = () => {
       />
     );
   }, [FrancVillaTexts]);
+
+  const renderTexts_ar = useCallback(() => {
+    return (
+      <ConceptItem
+        title={FrancVillaTexts_ar.title}
+        texts={FrancVillaTexts_ar.texts}
+      />
+    );
+  }, [FrancVillaTexts_ar]);
 
   return (
     <LinearContainer
@@ -37,7 +50,12 @@ const FrancVila = () => {
               <RN.View style={styles.francLogoBox}>
                 <Images.Svg.francVila />
               </RN.View>
-              <RN.View>{renderTexts()}</RN.View>
+              {
+                l.locale === 'en'?
+                <RN.View>{renderTexts()}</RN.View>
+                :
+                <RN.View>{renderTexts_ar()}</RN.View>
+              }
               <RN.Text style={styles.date}>07:08.2023 - Jihad Bakkoura</RN.Text>
             </RN.View>
           </RN.ScrollView>

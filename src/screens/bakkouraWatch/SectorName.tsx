@@ -12,6 +12,8 @@ import TextView from '../../components/Text/Text';
 import {windowHeight} from '../../utils/styles';
 import useRootStore from '../../hooks/useRootStore';
 
+import {t} from '../../i18n'
+
 const SectorName = () => {
   const navigation = useNavigation();
   const {setNewSelectState, clearName, newSelectState} =
@@ -22,22 +24,22 @@ const SectorName = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Name"
+            title={t("name")}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.nameBox}>
               <Input
-                placeholder={'Name'}
+                placeholder={t("name")}
                 icon={<Images.Svg.deleteIcon />}
                 iconPress={clearName}
                 value={newSelectState.name}
                 onChangeText={e => setNewSelectState('name', e)}
               />
-              <TextView text={'Enter the Name of task'} />
+              <TextView text={`${t("enter_task_name")}`} />
             </RN.View>
             <StartBtn
-              text="Ok"
+              text={t("Ok")}
               subWidth={70}
               elWidth={55}
               primary

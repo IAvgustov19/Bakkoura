@@ -6,6 +6,8 @@ import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
 
+import {t} from '../../i18n'
+
 type Props = {
   onPress?: () => void;
   title?: string;
@@ -17,7 +19,7 @@ const ArrowLeftBack: React.FC<Props> = ({
   onPress,
   title,
   icon,
-  titleColor = COLORS.white,
+  titleColor = COLORS.grey,
 }) => {
   return (
     <RN.TouchableOpacity
@@ -25,7 +27,7 @@ const ArrowLeftBack: React.FC<Props> = ({
       onPress={onPress}
       hitSlop={HITSLOP}>
       {icon ? icon : <Images.Svg.arrowLeft />}
-      <TextView text={title ? title : 'Back'} style={{color: titleColor}} />
+      <TextView text={title ? title : `${t('back')}`} style={{color: titleColor}} />
     </RN.TouchableOpacity>
   );
 };

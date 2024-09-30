@@ -3,14 +3,15 @@ import { Modal, View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react
 import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 import { smileyEmojis } from '../../../utils/messenger';
+import { t } from '../../../i18n';
 
 const MessageActionSheet = ({ visible, onClose, onSelect, onReact, messageType }) => {
     
     const [currentIndex, setCurrentIndex] = useState(0);
     const emojiFlatListRef = useRef(null);
     const options = [
-        { text: 'Edit', action: 'edit', icon: <RN.Image source={Images.Img.editMessage} style={{ width: 17, height: 17 }} /> },
-        { text: 'Delete', action: 'delete', icon: <Images.Svg.deleteMessage /> },
+        { text: `${t("Edit")}`, action: 'edit', icon: <RN.Image source={Images.Img.editMessage} style={{ width: 17, height: 17 }} /> },
+        { text: `${t("Delete")}`, action: 'delete', icon: <Images.Svg.deleteMessage /> },
     ];
 
     const handleSelect = useCallback((emoji) => {
@@ -65,10 +66,10 @@ const MessageActionSheet = ({ visible, onClose, onSelect, onReact, messageType }
                             .map((option) => (
                                 <TouchableOpacity
                                     key={option.text}
-                                    style={[styles.option, option.text === 'Delete' && { borderBottomWidth: messageType == 'text' ? 0.4 : 0}]}
+                                    style={[styles.option, option.text === `${t("Delete")}` && { borderBottomWidth: messageType == 'text' ? 0.4 : 0}]}
                                     onPress={() => onSelect(option.action)}
                                 >
-                                    <Text style={[styles.optionText, option.text === 'Delete' && { color: '#EB5545' }]}>{option.text}</Text>
+                                    <Text style={[styles.optionText, option.text === `${t("Delete")}` && { color: '#EB5545' }]}>{option.text}</Text>
                                     {option.icon}
                                 </TouchableOpacity>
                             ))}

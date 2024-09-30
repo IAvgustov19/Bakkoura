@@ -8,6 +8,8 @@ import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { MetronomData } from '../../utils/metronom';
 
+import {t} from '../../i18n'
+
 
 const MetronomSlider = () => {
     const navigation = useNavigation();
@@ -19,7 +21,7 @@ const MetronomSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Metronom"
+                        title={`${t("Metronom")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={MetronomData} height={width / 1.5} width={'100%'} marginTop={50} />

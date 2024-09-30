@@ -3,6 +3,7 @@ import { View, Text, Button, Platform, Linking, Alert } from 'react-native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import RN from '../../../components/RN';
 import LinearGradient from 'react-native-linear-gradient';
+import { t } from '../../../i18n';
 
 const FingerprintAuth = ({ onAuthenticationSuccess }) => {
     const [isVisible, setIsVisible] = useState<boolean>(true);
@@ -45,28 +46,28 @@ const FingerprintAuth = ({ onAuthenticationSuccess }) => {
     useEffect(() => {
         showWrongMessage && 
         Alert.alert(
-            'Biometry not set up',
-            'You have not set up any biometric data. Please add your fingerprint in settings.',
+            `${t("Biometry not set up")}`,
+            `${t("You have not set up any biometric data. Please add your fingerprint in settings")}`,
             [
-                {
-                    text: 'Go to Settings',
-                    onPress: () => {
-                        if (Platform.OS === 'android') {
-                            Linking.openSettings();
-                        } else {
-                            Alert.alert(
-                                'Unsupported',
-                                'This feature is only supported on Android.',
-                            );
-                        }
-                    },
+              {
+                text: `${t("Go to Settings")}`,
+                onPress: () => {
+                  if (Platform.OS === 'android') {
+                    Linking.openSettings();
+                  } else {
+                    Alert.alert(
+                      `${t("Unsupported")}`,
+                      `${t("This feature is only supported on Android")}`,
+                    );
+                  }
                 },
-                {
-                    text: 'Cancel',
-                    style: 'cancel',
-                },
+              },
+              {
+                text: `${t("Cancel")}`,
+                style: 'cancel',
+              },
             ],
-        );
+          );
     }, [])
 
 

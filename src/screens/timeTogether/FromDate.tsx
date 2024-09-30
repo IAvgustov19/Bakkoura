@@ -20,6 +20,8 @@ import {observer} from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
 import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 
+import {t} from '../../i18n'
+
 const FromDate = () => {
   const navigation = useNavigation();
   const {setAddEtapState} = useRootStore().togetherTimeStore;
@@ -121,7 +123,7 @@ const FromDate = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Date"
+            title={`${t("date")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
@@ -130,7 +132,7 @@ const FromDate = () => {
                 data={startListData}
                 itemHeight={55}
                 onChange={HandleChange}
-                label={'Day'}
+                label={`${t("Day")}`}
                 selectedValue={firstSelectedValue}
                 initialScrollIndex={initialScrollIndexStart}
               />
@@ -140,7 +142,7 @@ const FromDate = () => {
                 selectedValue={secondSelectedValue}
                 onChange={HandleChange}
                 style={styles.middleListStyle}
-                label={'Month.'}
+                label={`${t("Month")}`}
                 initialScrollIndex={initialScrollIndexMiddle}
               />
               <DateList
@@ -149,7 +151,7 @@ const FromDate = () => {
                 selectedValue={thirdSelectedValue}
                 onChange={HandleChange}
                 style={styles.middleListStyle}
-                label={'Year'}
+                label={`${t("year")}`}
                 initialScrollIndex={getInitialScrollIndex(
                   selectedMiddleItem.current,
                   lastListData,

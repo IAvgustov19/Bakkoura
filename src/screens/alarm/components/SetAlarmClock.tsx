@@ -7,6 +7,7 @@ import RN from '../../../components/RN';
 import {_getTimeData} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
 import DataListLinearBack from '../../../components/DataListLinearBack/DataListLinearBack';
+import { t } from '../../../i18n';
 
 type Props = {
   okOnPress?: () => void;
@@ -71,7 +72,7 @@ const SetAlarmClock: React.FC<Props> = ({okOnPress}) => {
           itemHeight={55}
           onChange={firstHandleChange}
           selectedValue={firstSelectedValue}
-          label="Hours"
+          label={`${t("hour")}`}
           initialScrollIndex={getInitialScrollIndex(
             selectedStartItem.current,
             middleListData,
@@ -82,7 +83,7 @@ const SetAlarmClock: React.FC<Props> = ({okOnPress}) => {
           itemHeight={55}
           selectedValue={secondSelectedValue}
           onChange={secondHandleChange}
-          label={'Min.'}
+          label={`${t("minute")}`}
           style={styles.middleListStyle}
           initialScrollIndex={getInitialScrollIndex(
             selectedMiddleItem.current,

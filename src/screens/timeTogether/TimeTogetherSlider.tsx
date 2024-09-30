@@ -8,6 +8,8 @@ import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { TogetherData } from '../../utils/timeTogether';
 
+import {t} from '../../i18n'
+
 
 const TimeTogetherSlider = () => {
     const navigation = useNavigation();
@@ -19,7 +21,7 @@ const TimeTogetherSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Time Together"
+                        title={`${t("Time Together")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={TogetherData} height={width / 3} width={'100%'}/>

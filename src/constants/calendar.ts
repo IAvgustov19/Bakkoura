@@ -1,16 +1,18 @@
+import { t } from "../i18n";
+
 export const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  `${t("January")}`,
+  `${t("February")}`,
+  `${t("March")}`,
+  `${t("April")}`,
+  `${t("May")}`,
+  `${t("June")}`,
+  `${t("July")}`,
+  `${t("August")}`,
+  `${t("September")}`,
+  `${t("October")}`,
+  `${t("November")}`,
+  `${t("December")}`,
 ];
 
 export const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];

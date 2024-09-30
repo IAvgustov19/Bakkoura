@@ -56,6 +56,7 @@ export enum APP_ROUTES {
   // others
 
   MESSENGER = 'Messanger',
+  ADD_USER = 'AddUser',
   MESSENGER_SLIDER = 'MessangerSlider',
   SEARCH_CONTACT = 'SearchContact',
   DIALOG_SCREEN = 'DialogScreen',

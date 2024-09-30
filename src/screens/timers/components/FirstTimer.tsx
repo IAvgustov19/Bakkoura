@@ -7,6 +7,8 @@ import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import DataListLinearBack from '../../../components/DataListLinearBack/DataListLinearBack';
 
+import {t} from '../../../i18n'
+
 const FirstTimer = () => {
   const {setFirstTimer, setAllTime, timerStatus, firstTimerValue} =
     useRootStore().timerStore;
@@ -51,7 +53,7 @@ const FirstTimer = () => {
           itemHeight={55}
           onChange={firstHandleChange}
           selectedValue={firstSelectedValue}
-          label="Hours"
+          label={`${t("hour")}`}
           initialScrollIndex={0}
         />
         <DateList
@@ -59,7 +61,7 @@ const FirstTimer = () => {
           itemHeight={55}
           selectedValue={secondSelectedValue}
           onChange={secondHandleChange}
-          label={'Min.'}
+          label={`${t("minute")}`}
           style={styles.middleListStyle}
           initialScrollIndex={0}
         />
@@ -68,7 +70,7 @@ const FirstTimer = () => {
           itemHeight={55}
           selectedValue={thirdSelectedValue}
           onChange={thirdHandleChange}
-          label={'Sec.'}
+          label={`${t("second")}`}
           style={styles.middleListStyle}
           initialScrollIndex={10}
         />

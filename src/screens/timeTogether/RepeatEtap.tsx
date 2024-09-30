@@ -13,6 +13,8 @@ import useRootStore from '../../hooks/useRootStore';
 import {RepeatData} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
 
+import {t} from '../../i18n'
+
 const RepeatEtap = () => {
   const navigation = useNavigation();
   const {
@@ -55,7 +57,7 @@ const RepeatEtap = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Repeat"
+            title={`${t("repeat")}`}
             rightItem={<Cancel onClose={onCancel} />}
           />
           <RN.View style={styles.eventsTypeList}>{renderRepeat()}</RN.View>

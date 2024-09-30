@@ -12,6 +12,8 @@ import storage from '@react-native-firebase/storage';
 import {getQueryParamValue} from '../../helper/helper';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import {t} from '../../i18n'
+
 export class TimeBioticStore {
   private readonly root: RootStore;
   constructor(root: RootStore) {
@@ -111,8 +113,8 @@ export class TimeBioticStore {
       },
     };
   
-    if (!data.name || !data.phone || !data.email || !data.isAccept || !this.isvalidEmail) {
-      Alert.alert('Please fill out all required fields and accept the privacy policy.');
+    if (!data.name || !data.phone || !data.isAccept) {
+      Alert.alert(`${t('Please fill out all required fields and accept the privacy policy')}`);
       runInAction(() => {
         this.sendEmailLoading = false;
       });
@@ -129,21 +131,21 @@ export class TimeBioticStore {
       });
       if (response.ok) {
         runInAction(() => {
-          this.responseText = 'Successfully sent, we will contact you soon.';
+          this.responseText = `${t('Successfully sent, we will contact you soon')}`;
           this.sendEmailLoading = false;
         });
   
         if (callBack) callBack();
         this.clearState();
       } else {
-        throw new Error('Failed to send email.');
+        throw new Error(`${t('Failed to send email')}`);
       }
     } catch (err) {
       runInAction(() => {
         this.sendEmailLoading = false;
-        this.responseText = 'Error, something went wrong';
+        this.responseText = `${t('Something went wrong')}`;
       });
-      Alert.alert('Error', err.message);
+      Alert.alert(`${t('Error')}`, err.message);
       console.log('error', err);
     }
   };
@@ -161,9 +163,9 @@ export class TimeBioticStore {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: 'Storage Permission Required',
+            title: `${t('Storage Permission Required')}`,
             message:
-              'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
+            `${t('Access is required to send photos and videos')}`,
             buttonPositive: '',
           },
         );
@@ -180,8 +182,8 @@ export class TimeBioticStore {
     const hasPermission = await this.requestStoragePermission();
     if (!hasPermission) {
       Alert.alert(
-        'Permission Denied',
-        'Storage permission is required to save photos',
+        `${t('Permission Denied')}`,
+        `${t('Storage permission is required to save photos')}`,
       );
       return;
     }

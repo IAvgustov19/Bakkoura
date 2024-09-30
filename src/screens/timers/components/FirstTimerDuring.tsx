@@ -29,7 +29,7 @@ const FirstTimerDuring: React.FC<Props> = ({stop, finished}) => {
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
-        <RN.Image style={styles.duringTimerBg} source={BG.duringTimerBg} />
+      {timeLottie}
 
         <RN.View style={styles.duringTimerBox}>
           {timerStatus.finished ? (

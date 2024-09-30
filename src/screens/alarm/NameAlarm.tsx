@@ -8,6 +8,7 @@ import Input from '../../components/Input/Input';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import useRootStore from '../../hooks/useRootStore';
+import { t } from '../../i18n';
 
 const NameAlarm = () => {
   const navigation = useNavigation();
@@ -18,12 +19,12 @@ const NameAlarm = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Name"
+            title={`${t("name")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.inputBox}>
             <Input
-              placeholder="Name"
+              placeholder={`${t("name")}`}
               value={alarmItemData.name}
               onChangeText={e => setNewAlarmState('name', e)}
             />

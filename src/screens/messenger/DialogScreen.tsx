@@ -35,6 +35,7 @@ import 'react-native-console-time-polyfill'
 import Image from './components/Image';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useKeepScrollPosition from './components/hook';
+import { t } from '../../i18n';
 
 
 type DialogScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.DIALOG_SCREEN>;
@@ -834,11 +835,11 @@ const DialogScreen = () => {
                     title={
                         <RN.View>
                             <RN.Text style={styles.name}>{name}</RN.Text>
-                            {lastSeen !== 'Online' && <RN.Text style={styles.lastSeen}>Last seen</RN.Text>}
-                            <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : 'Yesterday, 07:04'}</RN.Text>
+                            {lastSeen !== 'Online' && <RN.Text style={styles.lastSeen}>{t("Last seen")}</RN.Text>}
+                            <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : `${t("Recently")}`}</RN.Text>
                         </RN.View>
                     }
-                    leftItem={<ArrowLeftBack onPress={() => navigation.navigate(APP_ROUTES.MESSENGER as never,)} title='Chats' titleColor='#656E77' />}
+                    leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
                 />
             </LinearGradient>
             <KeyboardAvoidingView

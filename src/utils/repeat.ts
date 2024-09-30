@@ -1,81 +1,83 @@
+import {t} from '../i18n'
+
 export const RepeatData = [
   {
     id: 1,
-    title: 'Daily',
+    title: `${t("Daily")}`,
   },
   {
     id: 2,
-    title: 'Monthly',
+    title: `${t("Monthly")}`,
   },
   {
     id: 3,
-    title: 'Yearly',
+    title: `${t("yearly")}`,
   },
   {
     id: 4,
-    title: 'Never',
+    title: `${t("never")}`,
   },
 ];
 
 export const WeekRepeatData = [
   {
     id: 1,
-    title: 'Monday',
+    title: `${t("Monday")}`,
   },
   {
     id: 2,
-    title: 'Tuesday',
+    title: `${t("Tuesday")}`,
   },
   {
     id: 3,
-    title: 'Wendesday',
+    title: `${t("Wednesday")}`,
   },
   {
     id: 4,
-    title: 'Thursday',
+    title: `${t("Thursday")}`,
   },
   {
     id: 5,
-    title: 'Friday',
+    title: `${t("Friday")}`,
   },
   {
     id: 6,
-    title: 'Saturday',
+    title: `${t("Saturday")}`,
   },
   {
     id: 7,
-    title: 'Sunday',
+    title: `${t("Sunday")}`,
   },
   {
     id: 8,
-    title: 'Never',
+    title: `${t("never")}`,
   },
 ];
 
 export const BreakData = [
   {
     id: 1,
-    title: 'Pomodoro',
+    title: `${t("Pomodoro")}`,
   },
   {
     id: 2,
-    title: 'Short Break',
+    title: `${t("Short Break")}`,
   },
   {
     id: 3,
-    title: 'Long Break',
+    title: `${t("Long Break")}`,
   },
 ];
 
 export const ControlData = [
   {
     id: 1,
-    title: 'Start',
+    title: `${t("Start")}`,
     active: true,
   },
   {
     id: 2,
-    title: 'Stopped',
+    title: `${t("Stopped")}`,
     active: false,
   },
 ];
@@ -83,22 +85,22 @@ export const ControlData = [
 export const StatusData = [
   {
     id: 1,
-    title: 'Dating',
+    title: `${t("Dating")}`,
     active: true,
   },
   {
     id: 2,
-    title: 'Separated',
+    title: `${t("Separated")}`,
     active: false,
   },
   {
     id: 3,
-    title: 'Betrothal',
+    title: `${t("Betrothal")}`,
     active: false,
   },
   {
     id: 4,
-    title: 'Merried',
+    title: `${t("Merried")}`,
     active: false,
   },
 ];
@@ -127,74 +129,74 @@ export const etapCountData = [
 export const HistoryData = [
   {
     id: 1,
-    title: 'Last Day',
+    title: `${t("Last Day")}`,
     key: 'lastDay',
   },
   {
     id: 2,
-    title: 'Last Week',
+    title: `${t("Last Week")}`,
     key: 'lastWeek',
   },
   {
     id: 3,
-    title: 'Last Month',
+    title: `${t("Last Month")}`,
     key: 'lastMonth',
   },
 ];
 export const TodoGoalData = [
   {
     id: 1,
-    title: 'Day',
+    title: `${t("Day")}`,
   },
   {
     id: 2,
-    title: 'Week',
+    title: `${t("Week")}`,
   },
   {
     id: 3,
-    title: 'Month',
+    title: `${t("Month")}`,
   },
 ];
 
 export const ToDoTaskNameData = [
   {
     id: 1,
-    title: 'Work',
+    title: `${t("Work")}`,
     key: 'work',
   },
   {
     id: 2,
-    title: 'Self-development (thinking counts here)',
+    title: `${t("Self-develop")}`,
     key: 'self_develop',
   },
   {
     id: 3,
-    title: 'Sports',
+    title: `${t("Sport")}`,
     key: 'sport',
   },
   {
     id: 4,
-    title: 'Self-care (massage, masks etc)',
+    title: `${t("Self-care")}`,
     key: 'self_care',
   },
   {
     id: 5,
-    title: 'Rest and relax',
+    title: `${t("Rest and relax")}`,
     key: 'rest',
   },
   {
     id: 6,
-    title: 'House keeping',
+    title: `${t("House keeping")}`,
     key: 'house_keep',
   },
   {
     id: 7,
-    title: 'Time-killers (social nets, internet serfing,TV)',
+    title: `${t("Time-killers")}`,
     key: 'time_killers',
   },
   {
     id: 8,
-    title: 'Family and friends',
+    title: `${t("Family and friends")}`,
     key: 'family',
   },
 ];

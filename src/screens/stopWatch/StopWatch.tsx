@@ -18,6 +18,8 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
 import { APP_ROUTES } from '../../navigation/routes';
 
+import {t} from '../../i18n'
+
 const StopWatch = () => {
   const [isWatch, setIsWatch] = useState(true);
   const navigation = useNavigation();
@@ -47,7 +49,7 @@ const StopWatch = () => {
           {laps.map((item, index) => {
             return (
               <RN.View style={styles.laps} key={index}>
-                <RN.Text style={styles.lap}>Circle {item.id}</RN.Text>
+                <RN.Text style={styles.lap}>{t("circle")} {item.id}</RN.Text>
                 <RN.Text style={styles.lap}>{item.lap}</RN.Text>
               </RN.View>
             );
@@ -64,7 +66,7 @@ const StopWatch = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Stop Watch"
+            title={t("Stopwatch")}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.STOP_WATCH_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
@@ -110,25 +112,25 @@ const StopWatch = () => {
               ) : (
                 <RN.View style={[styles.child, styles.childTwo]}>
                   <RN.Text style={styles.text}>{maindis}</RN.Text>
-                  {stop ? <RN.Text style={styles.pausa}>Pause</RN.Text> : null}
+                  {stop ? <RN.Text style={styles.pausa}>{t("Pause")}</RN.Text> : null}
                 </RN.View>
               )}
             </RN.View>
             {isRunning ? (
               <RN.View style={styles.btnsBox}>
                 <StartBtn
-                  text={circle ? 'Circle' : 'Reset'}
+                  text={circle ? `${t("circle")}` : `${t("repeat")}`}
                   onPress={() => circleResetTimer(maindis)}
                 />
                 <StartBtn
-                  text={start ? 'Stop' : 'Start'}
+                  text={start ? `${t("Stop")}` : `${t("Start")}`}
                   primary
                   onPress={startStopTimer}
                 />
               </RN.View>
             ) : (
               <RN.View style={styles.btnBox}>
-                <StartBtn text="Start" primary onPress={startStopTimer} />
+                <StartBtn text={t("Start")} primary onPress={startStopTimer} />
               </RN.View>
             )}
             {renderLaps}
@@ -175,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(50),
     fontWeight: '100',
     width: '100%',
-    paddingLeft: '10%',
+    paddingLeft: '7%',
   },
 
   changeBtn: {

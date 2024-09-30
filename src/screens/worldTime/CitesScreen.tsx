@@ -11,6 +11,8 @@ import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
 import Cancel from '../../components/Cancel/Cancel';
 
+import {t} from '../../i18n'
+
 const CitesScreen = () => {
   const navigation = useNavigation();
   const {
@@ -52,13 +54,13 @@ const CitesScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="City"
+            title={`${t("City")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
             <Input
               onChangeText={e => filterWorldData(e)}
-              placeholder="City"
+              placeholder={`${t("City")}`}
               icon={<Images.Svg.searchIcon />}
             />
           </RN.View>

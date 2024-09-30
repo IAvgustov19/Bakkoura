@@ -20,6 +20,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {HITSLOP, windowHeight} from '../../utils/styles';
+import { t } from '../../i18n';
 
 const NewEventScreen = () => {
   const navigation = useNavigation();
@@ -74,7 +75,7 @@ const NewEventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="New Event"
+            title={isUpdate ? `${t("Edit event")}` : `${t("new events")}`}
             rightItem={<Cancel onClose={onHandleGoBack} />}
           />
           <RN.ScrollView
@@ -94,13 +95,13 @@ const NewEventScreen = () => {
                         {paddingTop: RN.Platform.OS === 'ios' ? 18 : 10},
                       ]}
                       placeholderTextColor={COLORS.grey}
-                      placeholder="Name"
+                      placeholder={`${t("name")}`}
                       value={newEventData.name}
                     />
                   </RN.View>
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Date"
+                    title={`${t("date")}`}
                     value={
                       formattedDate(
                         newEventData.day,
@@ -118,7 +119,7 @@ const NewEventScreen = () => {
                     <>
                       <RN.View style={styles.line}></RN.View>
                       <ListItemCont
-                        title="Time"
+                        title={`${t("Time")}`}
                         value={formattedTime(
                           newEventData.hour,
                           newEventData.minut,
@@ -133,7 +134,7 @@ const NewEventScreen = () => {
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
-                    title="All day"
+                    title={`${t("all day")}`}
                     rightVertical={5}
                     rightItem={
                       <SimpleSwitch
@@ -144,7 +145,7 @@ const NewEventScreen = () => {
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Repeat"
+                    title={`${t("repeat")}`}
                     value={newEventData.repeat}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.REPEAT as never)
@@ -153,7 +154,7 @@ const NewEventScreen = () => {
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
-                    title="Reminder"
+                    title={`${t("reminder")}`}
                     rightVertical={5}
                     rightItem={
                       <SimpleSwitch
@@ -169,7 +170,7 @@ const NewEventScreen = () => {
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Sound"
+                    title={`${t("sound")}`}
                     value={selectedSound.title}
                     onPress={() => setSound(true)}
                   />
@@ -186,7 +187,7 @@ const NewEventScreen = () => {
                         {paddingTop: RN.Platform.OS === 'ios' ? 16 : 0},
                       ]}
                       placeholderTextColor={COLORS.grey}
-                      placeholder="Coment"
+                      placeholder={`${t("comment")}`}
                       value={newEventData.comment}
                       onPressIn={Scroll}
                       onKeyPress={Scroll}
@@ -198,7 +199,7 @@ const NewEventScreen = () => {
                 <StartBtn
                   onPress={addEvent}
                   primary={true}
-                  text={isUpdate ? 'Ok' : 'Add'}
+                  text={isUpdate ? `${t("Ok")}` : `${t("add")}`}
                   subWidth={70}
                   elWidth={55}
                 />
@@ -206,11 +207,11 @@ const NewEventScreen = () => {
             </RN.View>
           </RN.ScrollView>
           <SoundsContent
-            headerTitle="Sounds"
+            headerTitle={`${t("sound")}`}
             data={soundsData}
             onItemPress={onSoundItemPress as never}
             headerLeftItem={
-              <ArrowLeftBack onPress={() => setSound(e => !e)} title="Back" />
+              <ArrowLeftBack onPress={() => navigation.goBack()} />
             }
             onClose={() => setSound(e => !e)}
             modalVisible={sound}

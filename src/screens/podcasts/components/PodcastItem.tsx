@@ -8,6 +8,8 @@ import { Images } from "../../../assets";
 import RN from "../../../components/RN";
 import Sound from "react-native-sound";
 
+import {t} from '../../../i18n'
+
 interface PodcastItemProps {
     id: string,
     time: string;
@@ -139,14 +141,14 @@ const PodcastItem: React.FC<PodcastItemProps> = ({
                     <StartBtn
                         primary
                         onPress={handlePlayPause}
-                        text={isPlaying ? "Pause" : "Play"}
+                        text={isPlaying ? `${t("Pause")}` : `${t("Play")}`}
                     />
                     <RN.TouchableOpacity onPress={handleFastForward}>
                         <Images.Svg.podcastRightArrow />
                     </RN.TouchableOpacity>
                 </RN.View>
                 <RN.View style={styles.progressBarContainer}>
-                    <Bar progress={currentProgress} width={300} height={4} style={styles.progressBar} />
+                    <Bar progress={currentProgress} width={windowWidth/1.5} height={4} style={styles.progressBar} />
                     <RN.Text style={styles.duration}>{sound?.current?.getDuration() ? formatDuration(sound?.current?.getDuration()) : '00:00'}</RN.Text>
                 </RN.View>
             </RN.View>

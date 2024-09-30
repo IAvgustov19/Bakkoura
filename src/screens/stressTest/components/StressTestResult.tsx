@@ -8,23 +8,25 @@ import useRootStore from '../../../hooks/useRootStore';
 import {observer} from 'mobx-react-lite';
 import {StresTestResult} from '../../../constants/stresTest';
 
+import {t} from '../../../i18n'
+
 const StressTestResult = () => {
   const navigation = useNavigation();
   const {stressTestData, stressTestStatus} = useRootStore().stressTestStore;
 
   const renderResult = useCallback(() => {
     if (stressTestData.seconds > 70) {
-      return StresTestResult.moreThan70;
+      return t("more 70");
     } else if (stressTestData.seconds < 70 && stressTestData.seconds > 65) {
-      return StresTestResult.between65_70;
+      return t("63-70");
     } else if (stressTestData.seconds < 65 && stressTestData.seconds > 55) {
-      return StresTestResult.between55_64;
+      return t("55-64");
     } else if (stressTestData.seconds < 55 && stressTestData.seconds > 45) {
-      return StresTestResult.between45_54;
+      return t("45-54");
     } else if (stressTestData.seconds < 45 && stressTestData.seconds > 35) {
-      return StresTestResult.lessThan45;
+      return t("less 45");
     } else if (stressTestData.seconds < 35) {
-      return StresTestResult.lessThan35;
+      return t("less 35");
     }
   }, [stressTestStatus]);
 
@@ -33,7 +35,7 @@ const StressTestResult = () => {
       <Images.Svg.yellowPanda />
       <RN.View style={styles.textInfo}>
         <RN.Text style={styles.result}>{stressTestData.time}</RN.Text>
-        <TextView title="Result" />
+        <TextView title={t("result")} />
         <TextView text={renderResult()} />
       </RN.View>
     </RN.View>

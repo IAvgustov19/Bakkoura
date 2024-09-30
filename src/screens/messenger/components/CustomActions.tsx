@@ -31,6 +31,7 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { firebase } from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import { uploadFileFromContentUri } from '../../../services/firestoreService';
+import { t } from '../../../i18n';
 
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
@@ -98,7 +99,7 @@ const CustomComposer = props => {
   // Function to open app settings
   function openSettings() {
     Linking.openSettings().catch(() => {
-      Alert.alert('Unable to open settings');
+      Alert.alert(`${t("Unable to open settings")}`);
     });
   }
   const handlePickImage = () => {
@@ -333,7 +334,7 @@ const CustomComposer = props => {
           }
         } else {
           console.error('File does not exist:', audioPath);
-          Alert.alert('Error', 'The audio file does not exist.');
+          Alert.alert(`${t("Error")}`, `${t("The audio file does not exist")}`);
         }
       }
       isRecordingCancelledRef.current = false;
@@ -409,7 +410,7 @@ const CustomComposer = props => {
               </View>
               <Pressable style={styles.recordingItem}>
                 <Images.Svg.deleteIcon />
-                <TextView text={'pull left to delete'} />
+                <TextView text={`${t("pull_to_delete")}`} />
               </Pressable>
             </>
           ) : null}
@@ -515,7 +516,7 @@ const CustomComposer = props => {
               </View>
               <Pressable style={styles.recordingItem}>
                 <Images.Svg.deleteIcon />
-                <TextView text={'pull left to delete'} />
+                <TextView text={`${t("pull_to_delete")}`} />
               </Pressable>
             </>
           ) : null}
@@ -596,7 +597,7 @@ const CustomComposer = props => {
                   setModalVisible(false);
                   handlePickImage();
                 }}>
-                <RN.Text style={styles.modalOption}>Pick from Gallery</RN.Text>
+                <RN.Text style={styles.modalOption}>{`${t("Pick from Gallery")}`}</RN.Text>
               </TouchableOpacity>
               <Line />
               <TouchableOpacity
@@ -604,12 +605,12 @@ const CustomComposer = props => {
                   setModalVisible(false);
                   handlePickDocument();
                 }}>
-                <RN.Text style={styles.modalOption}>Pick Document</RN.Text>
+                <RN.Text style={styles.modalOption}>{`${t("Pick Document")}`}</RN.Text>
               </TouchableOpacity>
             </RN.View>
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <RN.Text style={[styles.modalOption, styles.modalOptionBtn]}>
-                Cancel
+              {`${t("Cancel")}`}
               </RN.Text>
             </TouchableOpacity>
           </View>
@@ -619,7 +620,7 @@ const CustomComposer = props => {
             {...props}
             // text={editingText ? editingText : text}
             text={text}
-            placeholder="Message"
+            placeholder={`${t("Message")}`}
             placeholderTextColor="#636366"
             onTextChanged={onTextChanged}
             textInputStyle={styles.textInput}
@@ -707,7 +708,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     textAlign: 'center',
     backgroundColor: '#333',
-    color: 'red',
+    color: 'white',
   },
   modalOptionBtn: {
     borderRadius: 10,

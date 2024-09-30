@@ -10,6 +10,8 @@ import Line from '../../../components/Line/Line';
 import {Images} from '../../../assets';
 import DataListLinearBack from '../../../components/DataListLinearBack/DataListLinearBack';
 
+import {t} from '../../../i18n'
+
 type Props = {
   okOnPress?: () => void;
 };
@@ -60,7 +62,7 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
           itemHeight={40}
           onChange={fromHourChange}
           selectedValue={fromHourSelectedValue}
-          label="Hours"
+          label={t("hour")}
           initialScrollIndex={0}
         />
         <DateList
@@ -68,7 +70,7 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
           itemHeight={40}
           selectedValue={fromMinutSelectedValue}
           onChange={fromMinutChange}
-          label={'Min.'}
+          label={t("minute")}
           style={styles.middleListStyle}
           initialScrollIndex={0}
         />
@@ -81,7 +83,7 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
           itemHeight={40}
           onChange={toHourChange}
           selectedValue={toHourSelectedValue}
-          label="Hours"
+          label={t("hour")}
           initialScrollIndex={0}
         />
         <DateList
@@ -89,7 +91,7 @@ const SetSectorTime: React.FC<Props> = ({okOnPress}) => {
           itemHeight={40}
           selectedValue={toMinutSelectedValue}
           onChange={toMinutChange}
-          label={'Min.'}
+          label={t("minute")}
           style={styles.middleListStyle}
           initialScrollIndex={0}
         />

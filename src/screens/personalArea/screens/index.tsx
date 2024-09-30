@@ -16,7 +16,10 @@ import StorageApi, {
   pickImageFromDevice,
 } from '../../../store/personalArea/avatar';
 import ButtonComp from '../../../components/Button/Button';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
+
+import {t} from '../../../i18n'
 
 const PersonalArea = () => {
   const {
@@ -53,16 +56,16 @@ const PersonalArea = () => {
 
   const onHandleDeleteUser = () => {
     Alert.alert(
-      'Delete account',
-      'Are you sure you want to delete your account?',
+      `${t("Delete account")}`,
+      `${t("Are you sure you want to delete your account")}`,
       [
         {
-          text: 'No',
+          text: `${t("No")}`,
           onPress: () => console.log('cancel'),
           style: 'cancel',
         },
         {
-          text: 'Yes',
+          text: `${t("Yes")}`,
           onPress: () =>
             deleteAccount(() =>
               navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never),
@@ -74,6 +77,10 @@ const PersonalArea = () => {
     // deleteAccount(() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never));
   };
 
+  const onBackHandle = () => {
+    navigation.goBack();
+  };
+
   const navigation = useNavigation();
   return (
     <LinearContainer
@@ -81,14 +88,8 @@ const PersonalArea = () => {
         <RN.View style={styles.container}>
           {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
-            rightItem={
-              <RN.TouchableOpacity
-                style={styles.cancelBtn}
-                onPress={() => navigation.goBack()}>
-                <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-              </RN.TouchableOpacity>
-            }
-            title="Personal Area"
+            rightItem={ <ArrowLeftBack onPress={() => navigation.goBack()} />}
+            title= {`${t("Personal Area")}`}
           />
           <RN.ScrollView showsVerticalScrollIndicator={false}>
             <RN.TouchableOpacity
@@ -118,7 +119,7 @@ const PersonalArea = () => {
             <RN.TouchableOpacity
               style={styles.chooseBtn}
               onPress={onUploadImage}>
-              <RN.Text style={styles.chooseText}>Choose a photo</RN.Text>
+              <RN.Text style={styles.chooseText}>{`${t("Choose a photo")}`}</RN.Text>
             </RN.TouchableOpacity>
             <RN.View style={styles.content}>
               <RN.View>
@@ -131,14 +132,14 @@ const PersonalArea = () => {
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Login & Password"
+                    title= {`${t("Login & Password")}`}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.LOGIN_PASSWORD as never)
                     }
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Secure Entry"
+                    title={`${t("Secure Entry")}`}
                     value={
                       personalAreaData ? personalAreaData?.secureEntry : 'Free'
                     }
@@ -167,7 +168,7 @@ const PersonalArea = () => {
                 </RN.View> */}
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
-                    title="Language"
+                    title={`${t("Language")}`}
                     value={
                       personalAreaData ? personalAreaData.language : 'English'
                     }
@@ -183,7 +184,7 @@ const PersonalArea = () => {
                 </RN.View> */}
                 <RN.View style={[styles.eventsTypeList, {marginTop: 10}]}>
                   <ButtonComp
-                    title="Delete account"
+                    title={`${t("Delete account")}`}
                     onPress={onHandleDeleteUser}
                   />
                 </RN.View>

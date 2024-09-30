@@ -17,6 +17,8 @@ import ListEmptyComp from '../../components/ListEmptyComp/ListEmtyComp';
 import { windowHeight } from '../../utils/styles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const WorldTime = () => {
   const [is24h, setIs24h] = useState(true);
   const { selectedCountries, isLoading, fetchCountriesFromFirestore, } = useRootStore().worldTimeStore;
@@ -58,7 +60,7 @@ const WorldTime = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="World Time"
+            title={`${t("World Time")}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.WORLD_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

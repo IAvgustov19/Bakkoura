@@ -21,6 +21,7 @@ import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import ListFooter from '../../components/ListFooter/ListFooter';
 import { windowHeight } from '../../utils/styles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { t } from '../../i18n';
 
 const AlarmScreen = () => {
   const {
@@ -102,7 +103,7 @@ const AlarmScreen = () => {
           <RN.View style={styles.flatList}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              ListEmptyComponent={<ListEmptyComp title="No Alarm yet" />}
+              ListEmptyComponent={<ListEmptyComp title={`${t("No alarm yet")}`}/>}
               data={alarmsListData}
               renderItem={renderItem}
               ListFooterComponent={<ListFooter />}
@@ -130,7 +131,7 @@ const AlarmScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Alarm clock"
+            title={`${t("Alarm Clock")}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.ALARM_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

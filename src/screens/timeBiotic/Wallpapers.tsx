@@ -9,6 +9,8 @@ import RN from '../../components/RN';
 import useRootStore from '../../hooks/useRootStore';
 import WallpaperItem from './components/WallpaperiItem';
 
+import {t} from '../../i18n'
+
 const Wallpapers = () => {
   const navigation = useNavigation();
   const {
@@ -39,11 +41,11 @@ const Wallpapers = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Wallpapers"
+            title={`${t("Wallpapers")}`}
             leftItem={<ArrowLeftBack onPress={onHandleBack} />}
             rightItem={
               <ButtonComp
-                title="Download"
+                title={`${t("Download")}`}
                 width={100}
                 paddingVertical={8}
                 onPress={() => saveImagesToGallery(getSelectedWallpapers)}

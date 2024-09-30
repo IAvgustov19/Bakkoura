@@ -20,6 +20,8 @@ import { windowHeight, windowWidth } from '../../utils/styles';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Text from 'react-native'
 
+import {t} from '../../i18n'
+
 const Pomodoro = () => {
   const {
     currentBreakTime,
@@ -97,9 +99,9 @@ const Pomodoro = () => {
                 <RN.Text style={styles.tasksText}>{item.name}</RN.Text>
               </RN.View>
               <RN.Text style={styles.tasksTime}>{`${0}`}/{`${item.minut}`}</RN.Text>
-              <Images.Svg.dots onPress={() => onHandleTask(item)} />
+              <Images.Svg.dots onPress={() => onHandleTask(item)} style={styles.dotImg}/>
             </RN.View>
-            {hasDescription && <TextView text={item.description} />}
+            {hasDescription && <TextView text={item.description} textAlign='left'/>}
           </RN.View>
         </RN.Pressable>
       );
@@ -137,7 +139,7 @@ const Pomodoro = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Pomodoro"
+            title={`${t("Pomodoro")}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.POMODORO_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
@@ -179,10 +181,10 @@ const Pomodoro = () => {
                 {isCurrentPomodoro && newTaskState?.name && (
                   <RN.View style={styles.pomodoroInfoBox}>
                     <RN.Text style={styles.pomodoroInfoName}>
-                      Pomos: {`${estimatedPomodoros} / ${newTaskState.minut}`}
+                    ${t("Pomos")}: {`${estimatedPomodoros} / ${newTaskState.minut}`}
                     </RN.Text>
                     <RN.Text style={styles.pomodoroInfoName}>
-                      Finish At: {finishTime}
+                    ${t("Finish At")}: {finishTime}
                     </RN.Text>
                     <RN.Text
                       style={
@@ -193,9 +195,9 @@ const Pomodoro = () => {
               </RN.View>
               {isRunCurrent ? (
                 <RN.View style={styles.btnsBox}>
-                  <StartBtn text="Stop" onPress={() => stopCurrentPomodoro(currentBreakIndex)} />
+                  <StartBtn text={`${t("Stop")}`} onPress={() => stopCurrentPomodoro(currentBreakIndex)} />
                   <StartBtn
-                    text={isStartCurrent ? 'Pause' : 'Start'}
+                    text={isStartCurrent ? `${t("Pause")}` : `${t("Start")}`}
                     primary
                     onPress={() => startCurrentPomodoro(currentBreakIndex)}
                   />
@@ -203,7 +205,7 @@ const Pomodoro = () => {
               ) : (
                 <RN.View style={styles.btnBox}>
                   <StartBtn
-                    text="Start"
+                    text={`${t("Start")}`}
                     primary
                     onPress={() => startCurrentPomodoro(currentBreakIndex)}
                   />
@@ -230,7 +232,7 @@ const Pomodoro = () => {
             ) : (
               <RN.View style={styles.addTaskBtn}>
                 <ButtonComp
-                  title="Add task +"
+                  title={`${t("add task")}`}
                   outline
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.ADD_TASK_SCREEN as never)
@@ -337,18 +339,16 @@ const styles = RN.StyleSheet.create({
   },
   tasksText: {
     fontSize: 16,
-    width: '80%',
-    color: COLORS.white,
-  },
-  tasksTime: {
-    fontSize: 16,
-    width: '80%',
+    width: '77%',
     color: COLORS.white,
   },
   tasksTime: {
     fontSize: 16,
     color: COLORS.white,
-    width: windowWidth/1.4
+    width: 30,
+  },
+  dotImg:{
+    paddingTop:5
   },
   renderTask: {
    height:250

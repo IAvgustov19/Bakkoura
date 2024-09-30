@@ -1,25 +1,26 @@
 import { Images } from "../assets";
+import { t } from "../i18n";
 
 export const MessageTypes = [
     {
         id: 1,
-        title: 'Media',
+        title: `${t("Media")}`,
     },
     {
         id: 2,
-        title: 'Voices',
+        title: `${t("Voices")}`,
     },
     {
         id: 3,
-        title: 'Links',
+        title: `${t("Links")}`,
     },
     {
         id: 4,
-        title: 'Files',
+        title: `${t("Files")}`,
     },
     {
         id: 5,
-        title: 'Music',
+        title: `${t("Music")}`,
     },
 
 ];
@@ -28,27 +29,27 @@ export const MessageTypes = [
 export const SearchMessageTypes = [
     {
         id: 1,
-        title: 'Сhats',
+        title: `${t("Chats")}`,
     },
     {
         id: 2,
-        title: 'Media',
+        title: `${t("Media")}`,
     },
     {
         id: 3,
-        title: 'Voices',
+        title: `${t("Voices")}`,
     },
     {
         id: 4,
-        title: 'Links',
+        title: `${t("Links")}`,
     },
     {
         id: 5,
-        title: 'Files',
+        title: `${t("Files")}`,
     },
     {
         id: 6,
-        title: 'Music',
+        title: `${t("Music")}`,
     },
 
 ];
@@ -72,7 +73,7 @@ export const ChatData = [
     {
         id: 1,
         image: Images.Img.messengerSlider1,
-        text: 'To edit a message, delete it, or set a reaction, hold down the desired message and select the desired action'
+        text: `${t("messenger_slider_1")}`
     },
     // Чтобы отредактировать сообщение, удалить его или поставить реакцию, зажмите необходимое сообщение и выберите необходимое действие \n
 ]

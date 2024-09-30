@@ -12,6 +12,8 @@ import {APP_ROUTES} from '../../navigation/routes';
 import StressTestResult from './components/StressTestResult';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const StressTest = () => {
   const navigation = useNavigation();
   const {stressTestStatus, resetStressTimer} = useRootStore().stressTestStore;
@@ -33,10 +35,7 @@ const StressTest = () => {
           <Images.Svg.yellowPanda1 />
           <RN.View style={styles.textInfo}>
             <TextView
-              text={`The "subjective minute" test was developed by Dr. Litvak, a specialist in psychiatry, psychology, and stress management. Instructions: press the START button, close your eyes, and mentally imagine when 60 seconds have passed. It is IMPORTANT not to count the minute, but to feel the time.`}
-            />
-            <TextView
-              text={`When you feel: a minute has passed, press STOP,`}
+              text={`${t("stress_text")}`}
             />
           </RN.View>
         </>
@@ -50,14 +49,14 @@ const StressTest = () => {
         <RN.View style={styles.container}>
           <HeaderContent
            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Stress Tests"
+            title={t("Stress Test")}
             rightItem={<Images.Svg.timerLogo />}
           />
           <RN.View style={styles.content}>
             {renderComponent}
             <StartBtn
               onPress={NewStressTest}
-              text={stressTestStatus.finished ? 'New' : 'Start'}
+              text={stressTestStatus.finished ? `${t("Stop")}` : `${t("Start")}`}
               primary={true}
             />
           </RN.View>

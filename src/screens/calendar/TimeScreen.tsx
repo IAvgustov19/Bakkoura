@@ -13,6 +13,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 import Cancel from '../../components/Cancel/Cancel';
+import { t } from '../../i18n';
 
 const TimeScreen = () => {
   const {setNewEventState, newEventData} = useRootStore().calendarStore;
@@ -54,7 +55,7 @@ const TimeScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Time"
+            title={`${t("Time")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.row}>
@@ -63,7 +64,7 @@ const TimeScreen = () => {
               itemHeight={55}
               onChange={firstHandleChange}
               selectedValue={firstSelectedValue}
-              label="Hours"
+              label={`${t("hours")}`}
               initialScrollIndex={newEventData.hour}
             />
             <DateList
@@ -71,7 +72,7 @@ const TimeScreen = () => {
               itemHeight={55}
               selectedValue={secondSelectedValue}
               onChange={secondHandleChange}
-              label={'Min.'}
+              label={`${t("minute")}`}
               style={styles.middleListStyle}
               initialScrollIndex={newEventData.minut}
             />
@@ -80,7 +81,7 @@ const TimeScreen = () => {
               itemHeight={55}
               selectedValue={thirdSelectedValue as never}
               onChange={thirdHandleChange}
-              label={'Sec.'}
+              label={`${t("second")}`}
               style={styles.middleListStyle}
               initialScrollIndex={newEventData.second}
             />
@@ -90,7 +91,7 @@ const TimeScreen = () => {
             <StartBtn
               onPress={okTime}
               primary={true}
-              text="OK"
+              text={`${t("Ok")}`}
               subWidth={70}
               elWidth={55}
             />

@@ -11,6 +11,8 @@ import { TimeBioticList } from '../../constants/timeBiotic';
 import { OtherList } from '../../constants/other';
 import { APP_ROUTES } from '../../navigation/routes';
 
+import {t} from '../../i18n'
+
 const Other = () => {
   const navigation = useNavigation();
 
@@ -31,7 +33,7 @@ const Other = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="Other"
+            title={`${t('Other')}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.OTHER_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

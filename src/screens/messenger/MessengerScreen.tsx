@@ -16,6 +16,7 @@ import { windowWidth } from '../../utils/styles';
 import { Images } from '../../assets';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import RN from '../../components/RN';
+import { t } from '../../i18n';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
@@ -82,9 +83,9 @@ const MessengerScreen = () => {
           name={item.name}
           description={
             item.lastMessage?.audio
-              ? 'Voice message'
+              ? `${t("Voice message")}`
               : item.lastMessage?.video
-                ? 'Video message'
+                ? `${t("Video message")}`
                 : item.lastMessage?.text || ''
           }
 
@@ -107,14 +108,14 @@ const MessengerScreen = () => {
               </RN.TouchableOpacity>
             </RN.View>
           }
-          title="Messenger"
+          title={`${t("Messenger")}`}
         />
         <View style={styles.content}>
           {loading ? (
             <LoadingScreen loading={loading} setLoading={() => { }} />
           ) : userData.length === 0 ? (
             <View style={styles.center}>
-              <Text style={styles.text}>There are no dialogues</Text>
+              <Text style={styles.text}>`${t("There are no dialogues")}`</Text>
             </View>
           ) : (
             <ScrollView
@@ -132,7 +133,7 @@ const MessengerScreen = () => {
                 subWidth={75}
                 icon={<Images.Svg.btnAddIcon />}
                 primary
-                onPress={() => navigation.navigate(APP_ROUTES.SEARCH_CONTACT as never)}
+                onPress={() => navigation.navigate(APP_ROUTES.ADD_USER as never)}
               />
             </View>
           }

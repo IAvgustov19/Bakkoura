@@ -45,7 +45,7 @@ const OneMonthAndEvents = () => {
                 titleColor={COLORS.yellow}
               />
             }
-            title={`${currentMonth.slice(0, 3)} ${currentYear}`}
+            title={`${currentMonth} ${currentYear}`}
             rightItem={<Images.Svg.timerLogo />}
           />
           <RN.View style={styles.yearBottom}>

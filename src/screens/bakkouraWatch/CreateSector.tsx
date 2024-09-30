@@ -16,6 +16,8 @@ import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import Vertices from './components/Vertices';
 
+import {t} from '../../i18n'
+
 const CreateSector = () => {
   const navigation = useNavigation();
   const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
@@ -35,7 +37,7 @@ const CreateSector = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Sector"
+            title={t("Sector")}
             rightItem={<Cancel onClose={onBackHandle} />}
           />
           <RN.ScrollView
@@ -53,7 +55,7 @@ const CreateSector = () => {
               <RN.View style={styles.bottomBox}>
                 <RN.View style={styles.btnBox}>
                   <StartBtn
-                    text="Delete"
+                    text={t("Delete")}
                     elWidth={55}
                     subWidth={70}
                     onPress={() =>
@@ -64,7 +66,7 @@ const CreateSector = () => {
                     textSize={14}
                   />
                   <StartBtn
-                    text="Ok"
+                    text={t("Ok")}
                     elWidth={55}
                     subWidth={70}
                     primary
@@ -74,7 +76,7 @@ const CreateSector = () => {
                 </RN.View>
                 <RN.View style={styles.bottom}>
                   <ListItemCont
-                    title="Name"
+                    title={t("name")}
                     value={newSelectState.name}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.SECTOR_NAME as never)
@@ -82,7 +84,7 @@ const CreateSector = () => {
                   />
                   <Line />
                   <ListItemCont
-                    title="Color"
+                    title={t("Color")}
                     value={
                       newSelectState.color ? (
                         <Images.Svg.smallColorBox
@@ -93,7 +95,7 @@ const CreateSector = () => {
                           }
                         />
                       ) : (
-                        'not selected'
+                        `${t("Not selected")}`
                       )
                     }
                     onPress={() =>
@@ -102,7 +104,7 @@ const CreateSector = () => {
                   />
                   <Line />
                   <ListItemCont
-                    title="Time"
+                    title={t("Time")}
                     value={
                       formattedTimeHourMinut(
                         newSelectState.fromHour,

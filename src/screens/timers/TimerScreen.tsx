@@ -19,6 +19,8 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
 import { APP_ROUTES } from '../../navigation/routes';
 
+import {t} from '../../i18n'
+
 const TimerScreen = () => {
   const navigation = useNavigation();
   const {
@@ -81,7 +83,7 @@ const TimerScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Timer"
+            title={`${t("Timer")}`}
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TIMER_SLIDER as never)}>
@@ -118,8 +120,8 @@ const TimerScreen = () => {
               <SwitchContain
                 back={timerStatus.back}
                 handlePress={() => toggle('back')}
-                title="Back"
-                _title="Forward"
+                title={`${t("back")}`}
+                _title={`${t("Forward")}`}
               />
             </RN.View>
           )}
@@ -129,14 +131,14 @@ const TimerScreen = () => {
               : renderSecondTimerStatus}
           </RN.View>
           <RN.View style={styles.startStop}>
-            <StartBtn text="Reset" onPress={resetTimer} />
+            <StartBtn text={`${t("Reset")}`} onPress={resetTimer} />
             <StartBtn
               text={
                 timerStatus.start
-                  ? 'Stop'
+                  ? `${t("Stop")}`
                   : timerStatus.pausa
-                    ? 'Start'
-                    : 'Start'
+                    ? `${t("Start")}`
+                    : `${t("Start")}`
               }
               primary={timerStatus.reset ? true : false}
               onPress={StartTimer}
@@ -148,14 +150,14 @@ const TimerScreen = () => {
           <RN.TouchableOpacity
             style={styles.soundList}
             onPress={() => toggle('soundsVisible')}>
-            <RN.Text color="#fff">Sound</RN.Text>
+            <RN.Text color="#fff">`${t("sound")}`</RN.Text>
             <RN.View style={styles.sound}>
               <RN.Text color="#2F4252">{selectedSound.title}</RN.Text>
               <Images.Svg.arrowRight />
             </RN.View>
           </RN.TouchableOpacity>
           <SoundsContent
-            headerTitle="Sound"
+            headerTitle={`${t("sound")}`}
             data={soundsData}
             onItemPress={onSoundItemPress as never}
             headerLeftItem={

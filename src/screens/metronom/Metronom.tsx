@@ -20,6 +20,8 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
 import { APP_ROUTES } from '../../navigation/routes';
 
+import {t} from '../../i18n'
+
 const Metronom = () => {
   const navigation = useNavigation();
   const {
@@ -92,7 +94,7 @@ const Metronom = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Metronom"
+            title={`${t("Metronom")}`}
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.METRONOM_SLIDER as never)}>
@@ -140,20 +142,20 @@ const Metronom = () => {
                 </SwiperFlatList>
                 <RN.View style={styles.btnBox}>
                   <StartBtn
-                    text="Tap Tempo"
+                    text={`${t("Tap Tempo")}`}
                     color={COLORS.grey}
                     onPress={clearState}
                   />
                   <StartBtn
                     primary
-                    text={isPlaying ? 'Stop' : 'Start'}
+                    text={isPlaying ? `${t("Stop")}` : `${t("Start")}`}
                     onPress={playPause}
                   />
                 </RN.View>
               </RN.View>
               <RN.View style={styles.typeBox}>
                 {OneWithoutSound}
-                <TextView text={'1 bar with sound and 1 bar without sound'} />
+                <TextView text={`${t("with_and_without_sound")}`} />
               </RN.View>
               <RN.View style={styles.bottomBox}>
                 <RN.TouchableOpacity onPress={RemoveEtap}>

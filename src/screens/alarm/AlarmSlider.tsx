@@ -7,6 +7,7 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { AlarmData } from '../../utils/alarm';
 import { Dimensions } from 'react-native';
+import { t } from '../../i18n';
 
 
 const AlarmSlider = () => {
@@ -19,7 +20,7 @@ const AlarmSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Alarm clock"
+                        title={`${t("Alarm Clock")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={AlarmData} height={width / 2.2} width={'100%'}/>

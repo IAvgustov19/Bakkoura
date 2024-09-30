@@ -12,6 +12,7 @@ import ListItemCont from '../ListItemCont/ListItemCont';
 import RN from '../RN';
 import SimpleSwitch from '../SimpleSwitch/SimpleSwitch';
 import StartBtn from '../StopStartBtn/StopStartBtn';
+import { t } from '../../i18n';
 
 type Props = {
   modalVisible?: boolean;
@@ -101,7 +102,7 @@ const SoundsContent: React.FC<Props> = ({
                   <RN.View style={styles.eventsTypeList}>
                     <RN.View style={styles.listItem}>
                       <RN.Text style={styles.listItemText}>
-                        Vibro-signal
+                      {t("Vibro signal")}
                       </RN.Text>
                       <SimpleSwitch
                         active={vibrationActive}
@@ -111,7 +112,7 @@ const SoundsContent: React.FC<Props> = ({
                   </RN.View>
                 ) : null}
                 {myMusic ? (
-                  <ListItemCont title="My music" value="Tiesto" backBlack />
+                  <ListItemCont title={`${t("My music")}`} value={`${t("Not selected")}`} backBlack />
                 ) : null}
               </RN.View>
             </RN.View>

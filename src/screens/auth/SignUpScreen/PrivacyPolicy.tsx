@@ -4,6 +4,7 @@ import React, {useRef} from 'react';
 import {WebView} from 'react-native-webview';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import RN from '../../../components/RN';
+import { t } from '../../../i18n';
 
 const PrivacyPolicy = () => {
   const webviewRef = useRef<WebView>(null);
@@ -17,7 +18,7 @@ const PrivacyPolicy = () => {
       <WebView
         startInLoadingState
         ref={webviewRef}
-        source={{uri: 'https://www.bakkoura.com/privacy-policy'}}
+        source={{uri: `${t("privacy_link")}`}}
         style={{flex: 1}}
         javaScriptEnabled={true}
       />

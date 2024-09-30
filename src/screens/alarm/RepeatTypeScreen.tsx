@@ -13,6 +13,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
 import {WeekRepeatData} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
+import { t } from '../../i18n';
 
 const RepeatTypeScreen = () => {
   const {
@@ -57,14 +58,14 @@ const RepeatTypeScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Repeat"
+            title={`${t("repeat")}`}
             rightItem={<Cancel onClose={OnRepeatCancelPress} />}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.listBox}>{renderDays()}</RN.View>
             <RN.View>
               <StartBtn
-                text="Ok"
+                text={`${t("Ok")}`}
                 primary
                 elWidth={60}
                 subWidth={75}

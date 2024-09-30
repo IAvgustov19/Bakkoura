@@ -22,6 +22,8 @@ import LottieContent from '../../components/LottieContent/LottieContent';
 import { Lotties } from '../../lotties/lottie';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const TimeTogether = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -90,11 +92,11 @@ const TimeTogether = () => {
             if (!alertShown) {
               alertShown = true;
               Alert.alert(
-                'Sync Confirmation',
-                `Do you want to accept synchronization from ${userEmail}?`,
+                `${t("Sync Confirmation")}`,
+                `${t("Do you want to accept synchronization from")} ${userEmail}?`,
                 [
                   {
-                    text: 'Cancel',
+                    text: `${t("Cancel")}`,
                     style: 'cancel',
                     onPress: async () => {
                       try {
@@ -137,11 +139,11 @@ const TimeTogether = () => {
 
   const deleteSync = async () => {
     Alert.alert(
-      'Delete Sync',
-      `Do you really want to delete the sync?`,
+      `${t("Delete Sync")}`,
+      `${t("Do you really want to delete the sync")}`,
       [
         {
-          text: 'Yes',
+          text: `${t("Yes")}`,
           style: 'cancel',
           onPress: async () => {
             try {
@@ -155,7 +157,7 @@ const TimeTogether = () => {
           },
         },
         {
-          text: 'No',
+          text: `${t("No")}`,
         },
       ],
       { cancelable: false }
@@ -207,7 +209,7 @@ const TimeTogether = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Time Together"
+            title={`${t("Time Together")}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TIME_TOGETHER_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
@@ -234,16 +236,16 @@ const TimeTogether = () => {
                   style={styles.coupleTimeText}
                   title={
                     selcetedEtap.timeStamp
-                      ? `${selcetedEtap.type} ${selcetedEtap.uid !== auth().currentUser.uid ? '' : `with ${selcetedEtap.name ? selcetedEtap.name : 'no Name'
+                      ? `${selcetedEtap.type} ${selcetedEtap.uid !== auth().currentUser.uid ? '' : `${t("with")} ${selcetedEtap.name ? selcetedEtap.name : `${t("no Name")}`
                         }`}`
-                      : 'Time'
+                      : `${t("Time")}`
                   }
                 />
                 <RN.Text style={styles.coupleTime}>
                   {selcetedEtap.time != '0' ? selcetedEtap.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} days
+                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} ${t("days")}
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
                   {selcetedEtap.fromDate != '0'
@@ -255,7 +257,7 @@ const TimeTogether = () => {
             <RN.View style={styles.btns}>
               <ButtonComp
                 width={'45%'}
-                title={'Add Etap +'}
+                title={`${t("Add Etap")}`}
                 outline
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.ADD_ETAP as never)
@@ -264,7 +266,7 @@ const TimeTogether = () => {
               <ButtonComp
                 outline={synchronized}
                 width={'45%'}
-                title={synchronized ? 'Synchronized' : 'Synchronize'}
+                title={synchronized ? `${t("Synchronized")}` : `${t("Synchronize")}`}
                 onPress={() => {
                   synchronized ? deleteSync() :
                     navigation.navigate(APP_ROUTES.SYNCHRONYZE as never)

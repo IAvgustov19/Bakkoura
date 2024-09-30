@@ -32,6 +32,8 @@ import WatchConstructor from '../../screens/watchConstructor/WatchConstructor';
 import WorldTime from '../../screens/worldTime/WorldTime';
 import {APP_ROUTES} from '../routes';
 
+import {t} from '../../i18n'
+
 export const bottomTabBarOptions = {
   options: {
     tabBarHideOnKeyboard: true,
@@ -43,28 +45,28 @@ export const bottomTabBarOptions = {
       index: 0,
       tabName: APP_ROUTES.HOME_START,
       component: HomeScreen,
-      buttonLabel: 'Home',
+      buttonLabel: `${t('Home')}`,
       key: 'home',
     },
     {
       index: 1,
       tabName: APP_ROUTES.TOOLS,
       component: Tools,
-      buttonLabel: 'Tools',
+      buttonLabel: `${t('Tools')}`,
       key: 'tools',
     },
     {
       index: 2,
       tabName: APP_ROUTES.MARKET,
       component: MarketScreen,
-      buttonLabel: 'Market',
+      buttonLabel: `${t('Market')}`,
       key: 'market',
     },
     {
       index: 3,
       tabName: APP_ROUTES.OTHER,
       component: Other,
-      buttonLabel: 'Other',
+      buttonLabel: `${t('Other')}`,
       key: 'other',
     },
     // {

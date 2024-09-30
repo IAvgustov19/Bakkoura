@@ -7,6 +7,8 @@ import Input from '../../../components/Input/Input';
 import {verticalScale} from '../../../utils/dimensions';
 import {observer} from 'mobx-react-lite';
 
+import {t} from '../../../i18n'
+
 const CustomDropdownInput = ({options, onSelect, black}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -22,11 +24,11 @@ const CustomDropdownInput = ({options, onSelect, black}) => {
       <RN.TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
         <Input
           black={black}
-          title="Country"
+          title={`${t("country")}`}
           editable={false}
           // onPressIn={() => { }}
           onChangeText={onSelect}
-          placeholder="Select Option"
+          placeholder= {`${t("Select Option")}`}
           icon={<Images.Svg.darkDownArrow />}
           iconPress={() => setIsOpen(!isOpen)}
           value={selectedOption ? selectedOption.label : ''}

@@ -15,6 +15,8 @@ import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { updateEtapsMailInFirestore } from '../../services/firestoreService';
 
+import {t} from '../../i18n'
+
 const Synchronyze = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
@@ -27,7 +29,7 @@ const Synchronyze = () => {
 
     if (userExists) {
       Alert.alert(
-        'Synchronize invite sent!',
+        `${t("Synchronize invite sent")}`,
         '',
         [
           {
@@ -39,7 +41,7 @@ const Synchronyze = () => {
       );
       updateEtapsMailInFirestore(email);
     } else {
-      Alert.alert('There is no user with this email');
+      Alert.alert(`${t("There is no user with this email")}`);
     }
   }
 
@@ -48,20 +50,20 @@ const Synchronyze = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Synchronyze"
+            title={`${t("Synchronize")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
-            <TextView title="Synchronyze" />
-            <TextView text="Enter your loved one's email address. We will send a request to confirm the status of your relationship." />
+            <TextView title={`${t("Synchronize")}`} />
+            <TextView text={`${t("enter_lover_email")}`} />
             <Input
               value={email}
-              placeholder="Email"
+              placeholder={`${t("email")}`}
               onChangeText={(text) => setEmail(text)}
             />
             <ButtonComp
               width={'50%'}
-              title={'Send'}
+              title={`${t("send")}`}
               onPress={onSend}
             />
           </RN.View>

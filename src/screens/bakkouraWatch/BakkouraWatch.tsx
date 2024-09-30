@@ -13,6 +13,8 @@ import { observer } from 'mobx-react-lite';
 import Vertices from './components/Vertices';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const BakkouraWatch = () => {
   const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
@@ -33,7 +35,7 @@ const BakkouraWatch = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Bakkoura Watch"
+            title={t("Bakkoura Watch")}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.BAKKOURA_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

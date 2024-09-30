@@ -14,6 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from '../Loading/LoadingScreen';
+import { t } from '../../../i18n';
 
 const SignInScreen = () => {
 
@@ -70,7 +71,7 @@ const SignInScreen = () => {
           setShowCaptcha(false);
           setAuthorized();
         } else {
-          Alert.alert('Account not verified. Please verify your email.');
+          Alert.alert(`${t("Account not verified")}`);
         }
       } catch (error) {
         setFailedAttempts(prev => prev + 1);
@@ -81,23 +82,23 @@ const SignInScreen = () => {
           switch (error.code) {
             case 'auth/invalid-email':
             case 'auth/wrong-password':
-              Alert.alert('Incorrect email or password');
+              Alert.alert(`${t("Incorrect email or password")}`);
               break;
             case 'auth/network-request-failed':
-              Alert.alert('Check your internet connection');
+              Alert.alert(`${t("Check your internet connection")}`);
               break;
             case 'auth/too-many-requests':
               setShowCaptcha(true);
-              Alert.alert('Too many requests. Please try again later.');
+              Alert.alert(`${t("Too many requests")}`);
               break;
             default:
-              Alert.alert('An error occurred. Please try again.');
+              Alert.alert(`${t("An error occurred")}`);
               break;
           }
         }
       }
     } else {
-      Alert.alert('Please enter both email and password');
+      Alert.alert(`${t("Please enter both email and password")}`);
     }
   };
 
@@ -143,19 +144,19 @@ const SignInScreen = () => {
           <HeaderContent />
           <View style={styles.content}>
             <View style={styles.titleBox}>
-              <TextView title="Hello Friend!" />
-              <TextView text="Start tracking and improving Your Life!" />
+              <TextView title={`${t("hello_friend")}`} />
+              <TextView text={`${t("start_tracking")}`} />
             </View>
             <View style={styles.formBox}>
-              <TextView style={styles.label} text="Login" />
+              <TextView style={styles.label} text={`${t("login")}`} />
               <Input
-                placeholder="Enter your email"
+                placeholder={`${t("enter_login")}`}
                 onChangeText={text => setEmail(text)}
                 value={email}
               />
-              <TextView style={styles.label} text="Password" />
+              <TextView style={styles.label} text={`${t("pass")}`} />
               <Input
-                placeholder="Enter your password"
+                placeholder={`${t("enter_pass")}`}
                 onChangeText={text => setPassword(text)}
                 value={password}
                 secureTextEntry
@@ -163,19 +164,19 @@ const SignInScreen = () => {
             </View>
             <View style={styles.forgotBox}>
               <TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)}>
-                <TextView style={styles.forgot} text="Forgot Your Password?" />
+                <TextView style={styles.forgot} text={`${t("forgot_pass")}`} />
               </TouchableOpacity>
             </View>
             <View style={styles.signUp}>
               <ButtonComp
-                title="Sign In"
+                title={`${t("Sign_in")}`}
                 onPress={() => signIn(email, password)}
               />
             </View>
             <View style={styles.needAcc}>
-              <TextView text="Need an Account?" />
+              <TextView text={`${t("need_account")}`} />
               <TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)}>
-                <TextView style={styles.signUpText} text="Sign Up" />
+                <TextView style={styles.signUpText} text={`${t("sign_up")}`} />
               </TouchableOpacity>
             </View>
           </View>

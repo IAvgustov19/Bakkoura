@@ -17,6 +17,8 @@ import { db } from '../../config/firebase';
 import auth from '@react-native-firebase/auth';
 import { COLORS } from '../../utils/colors';
 
+import {t} from '../../i18n'
+
 const AddEtap = () => {
   const navigation = useNavigation();
   const userUid = auth().currentUser.uid;
@@ -91,7 +93,7 @@ const AddEtap = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Etap"
+            title={`${t("Etap")}`}
             rightItem={<Cancel onClose={ClearState} />}
           />
           <RN.ScrollView style={styles.scrollView}>
@@ -99,19 +101,19 @@ const AddEtap = () => {
               <RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
-                    title="Name"
+                    title={`${t("name")}`}
                     value={addEtapState.name}
                     onPress={() => onHandleNavigation(APP_ROUTES.LOVER_NAME)}
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Status"
+                    title={`${t("Status")}`}
                     value={addEtapState.type}
                     onPress={() => setRepeat(e => !e)}
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="From"
+                    title={`${t("From")}`}
                     value={
                       addEtapState.fromDate == '0' ? '' : addEtapState.fromDate
                     }
@@ -120,14 +122,14 @@ const AddEtap = () => {
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <RN.View style={styles.listItem}>
-                    <RN.Text style={styles.listItemText}>Reminder</RN.Text>
+                    <RN.Text style={styles.listItemText}>{`${t("reminder")}`}</RN.Text>
                     <SimpleSwitch
                       active={addEtapState.reminder}
                       handlePress={onSetReminder}
                     />
                   </RN.View>
                   <ListItemCont
-                    title="Repeat"
+                    title={`${t("repeat")}`}
                     value={addEtapState.repeat}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.REPEAT_ETAP as never)
@@ -136,13 +138,13 @@ const AddEtap = () => {
                 </RN.View>
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
-                    title="Control"
+                    title={`${t("Control")}`}
                     value={addEtapState.control}
                     onPress={() => setControl(e => !e)}
                   />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont
-                    title="Delete"
+                    title={`${t("Delete")}`}
                     onPress={() => onHandleNavigation(APP_ROUTES.DELETE_ETAP)}
                   />
                 </RN.View>
@@ -162,7 +164,7 @@ const AddEtap = () => {
                   <StartBtn
                     onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
                     primary={true}
-                    text="Add"
+                    text={`${t("add")}`}
                     subWidth={70}
                     elWidth={55}
                   />
@@ -170,29 +172,29 @@ const AddEtap = () => {
               }
             </RN.View>
             <SoundsContent
-              headerTitle="Status"
+              headerTitle={`${t("Status")}`}
               data={statusData}
               onItemPress={onStatusItemPress as never}
               headerLeftItem={
                 <ArrowLeftBack
                   onPress={() => setRepeat(e => !e)}
-                  title="Back"
+                  title={`${t("back")}`}
                 />
               }
               onClose={() => setRepeat(e => !e)}
               modalVisible={repeat}
               okBtn
-              okBtnText="Ok"
+              okBtnText={`${t("Ok")}`}
               onPressBtn={() => setRepeat(e => !e)}
             />
             <SoundsContent
-              headerTitle="Control"
+              headerTitle={`${t("Control")}`}
               data={controlData}
               onItemPress={onControlItemPress as never}
               headerLeftItem={
                 <ArrowLeftBack
                   onPress={() => setControl(e => !e)}
-                  title="Back"
+                  title={`${t("back")}`}
                 />
               }
               onClose={() => setControl(e => !e)}

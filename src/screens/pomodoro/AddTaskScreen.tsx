@@ -14,6 +14,8 @@ import useRootStore from '../../hooks/useRootStore';
 import { COLORS } from '../../utils/colors';
 import { windowHeight } from '../../utils/styles';
 
+import {t} from '../../i18n'
+
 const AddTaskScreen = () => {
   const navigation = useNavigation();
   const {
@@ -29,13 +31,15 @@ const AddTaskScreen = () => {
 
   const [minut, setMinut] = useState(newTaskState.minut ?? 1);
   const addMinut = () => {
-    setMinut(minut + 1);
-    setNewTaskState('minut', minut + 1);
-    setNewTaskState('totalCycle', newTaskState.minut);
-    calculateTime();
+    if (minut + 1 <= 9){
+      setMinut(minut + 1);
+      setNewTaskState('minut', minut + 1);
+      setNewTaskState('totalCycle', newTaskState.minut);
+      calculateTime();
+    }
   };
   const subMinut = () => {
-    if (minut) {
+    if (minut - 1 >= 0) {
       setMinut(minut - 1);
       setNewTaskState('minut', minut - 1);
       setNewTaskState('totalCycle', newTaskState.minut);
@@ -69,7 +73,7 @@ useEffect(() => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title={'Task'}
+            title={`${t("Task")}`}
             rightItem={<Cancel onClose={onBackHandle} />}
           />
           <RN.ScrollView style={styles.scrollView}>
@@ -77,23 +81,25 @@ useEffect(() => {
               <RN.View style={styles.fomrBox}>
                 <RN.View style={styles.form}>
                   <Input
-                    placeholder="Name"
+                    placeholder={`${t("name")}`}
                     value={newTaskState.name}
                     onChangeText={e => setNewTaskState('name', e)}
+                    
                   />
                   <Line />
                   <Input
-                    placeholder="What are You working on?"
+                    placeholder={`${t("what working")}`}
                     multiLine={true}
                     height={110}
                     paddingTop={15}
                     value={newTaskState.description}
                     textAlignVertical={'top'}
                     onChangeText={e => setNewTaskState('description', e)}
+                    
                   />
                 </RN.View>
                 <RN.View style={styles.timeSelect}>
-                  <RN.Text style={styles.estPom}>Est Pomodoros</RN.Text>
+                  <RN.Text style={styles.estPom}>{`${t("Est Pomodoros")}`}</RN.Text>
                   <RN.View style={styles.timeSelectBox}>
                     <RN.TouchableOpacity onPress={subMinut}>
                       <Images.Svg.minusDelete />
@@ -104,6 +110,8 @@ useEffect(() => {
                       placeholderTextColor={COLORS.grey}
                       value={`${newTaskState.minut}`}
                       onChangeText={e => setNewTaskState('minut', e)}
+                      maxLength={1}
+                      keyboardType='Number'
                     />
                     <RN.TouchableOpacity onPress={addMinut}>
                       <Images.Svg.addSmallicon />
@@ -116,14 +124,14 @@ useEffect(() => {
                   <StartBtn
                     subWidth={70}
                     elWidth={55}
-                    text="delete"
+                    text={`${t("Delete")}`}
                     primary
                     onPress={deltateTask}
                   />
                   <StartBtn
                     subWidth={70}
                     elWidth={55}
-                    text="Ok"
+                    text={`${t("ok")}`}
                     primary
                     onPress={UpdateTask}
                   />
@@ -133,7 +141,7 @@ useEffect(() => {
                   <StartBtn
                     subWidth={70}
                     elWidth={55}
-                    text="Add"
+                    text={`${t("add")}`}
                     primary
                     onPress={() => createTask(onBackHandle)}
                   />

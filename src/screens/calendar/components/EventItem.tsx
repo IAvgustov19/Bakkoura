@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Images} from '../../../assets';
 import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
+import { t } from '../../../i18n';
 
 type Props = {
   eventName?: string;
@@ -69,7 +70,7 @@ const EventItem: React.FC<Props> = ({
           {already ? (
             <RN.View style={styles.already}>
               <Images.Svg.bellGreen width={24} />
-              <RN.Text style={styles.alreadyText}>Already</RN.Text>
+              <RN.Text style={styles.alreadyText}>{t("already")}</RN.Text>
             </RN.View>
           ) : null}
           <Images.Svg.arrowRight />

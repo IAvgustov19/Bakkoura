@@ -19,6 +19,8 @@ import {windowHeight} from '../../utils/styles';
 import FormContainer from './components/FormContainer';
 import Thanks from './Thanks';
 
+import {t} from '../../i18n'
+
 type Props = {};
 
 const Consultation: React.FC<Props> = ({}) => {
@@ -46,7 +48,7 @@ const Consultation: React.FC<Props> = ({}) => {
 
   const onHandleCategory = () => {
     navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
-    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
+    onHandleWebVIew(`${t("privacy_link")}`);
   };
 
   const onSendEmail = () => {
@@ -60,7 +62,7 @@ const Consultation: React.FC<Props> = ({}) => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Consultation"
+            title={`${t("Consultation")}`}
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           />
           <RN.ScrollView
@@ -70,24 +72,23 @@ const Consultation: React.FC<Props> = ({}) => {
             <RN.View style={styles.content}>
               <TextView
                 text={
-                  "BAKKOURA is the only atelier in the world that will translate you into a brand. Each person's story is unique, it cannot be repeated or falsified, we help you to write your own legend, because this brand is you yourself."
+                  `${t("Consultation_text")}`
                 }
               />
               <FormContainer bottomInputPress={Scroll} />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} />
+                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
-                    Your personal data are guaranteed to be safe and will not be
-                    handed over to third parties.
+                    {`${t("your_data_safe")}`}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-    </RN.Pressable>
+                    <RN.Text style={styles.privacyLink}>{t("I_accept")}</RN.Text>
+                  </RN.Pressable>
                 </RN.View>
               </RN.View>
               <ButtonComp
-                title="Send"
+                title={`${t("send")}`}
                 icon={
                   sendEmailLoading ? (
                     <ActivityIndicator

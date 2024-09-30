@@ -8,6 +8,8 @@ import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { TimerData } from '../../utils/timer';
 
+import {t} from '../../i18n'
+
 
 const TimerSlider = () => {
     const navigation = useNavigation();
@@ -20,7 +22,7 @@ const TimerSlider = () => {
 
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Timer"
+                        title={`${t("Timer")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={TimerData} height={width / 1.1} width={'100%'} marginTop={40} />

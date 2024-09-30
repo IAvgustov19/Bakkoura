@@ -20,6 +20,11 @@ import CustomSelect from './components/CustomSelect';
 import { Countries } from '../../utils/languages';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import ButtonComp from '../../components/Button/Button';
+import GiveImage from '../../components/GiveImage/GiveImage';
+
+import {t} from '../../i18n'
+
 const WatchValuation = () => {
   const navigation = useNavigation();
 
@@ -37,7 +42,7 @@ const WatchValuation = () => {
 
   const onHandleCategory = () => {
     navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
-    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
+    onHandleWebVIew(`${t("privacy_link")}`);
   };
 
   const Scroll = () => {
@@ -63,7 +68,7 @@ const WatchValuation = () => {
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
-            title="Assestment Watch"
+            title= {`${t("Assestment Watch")}`}
           />
           <RN.ScrollView
             ref={scrollViewRef}
@@ -74,11 +79,11 @@ const WatchValuation = () => {
               <RN.View style={styles.valuationInfo}>
                 <TextView
                   style={styles.title}
-                  title={'Send us an application or give us a call'}
+                  title= {`${t("AssestmentWatch_top_title_text")}`}
                 />
                 <TextView
                   style={styles.text}
-                  text={`The magic begins when you're ready.Within 15 days, we will review \n your application and decide if a Bakkoura expert is ready to dedicate \n time to develop your brand.The concept of a work of art made with \n soul can only be realized for those who have values, goals and \n methods that match ours \n Send us an application or give us a call`}
+                  text= {`${t("AssestmentWatch_top_text")}`}
                 />
               </RN.View>
               <FormContainer
@@ -95,31 +100,33 @@ const WatchValuation = () => {
                 black={true}
               /> */}
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
-                    {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
+                  `${t('your_data_safe')}`
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-                    <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-                  </RN.Pressable>
+      <RN.Text style={styles.privacyLink}>`${t('I_accept')}`</RN.Text>
+    </RN.Pressable>
                 </RN.View>
-              </RN.View>
-              <SimpleBtn
-                title="Send"
+                </RN.View>
+              <ButtonComp
+               title={`${t('send')}`}
                 icon={
                   sendEmailLoading ? (
                     <ActivityIndicator
                       color={COLORS.black}
                       style={{ marginTop: 3 }}
                     />
-                  ) : null
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
                 }
                 onPress={onSendEmail}
               />
               <TextView
                 style={[styles.text, styles.pv39]}
-                text={`But that's not all. To learn how to embody beautiful and strong \n souls in watches, we have spent years studying more than just \n watchmaking. Psychology, art history, biographies of great people,\n fine arts, philosophy - all this knowledge has taught us how to feel \n people and create brands.`}
+                text= {`${t("AssestmentWatch_bottom_text")}`}
               />
             </RN.View>
           </RN.ScrollView>

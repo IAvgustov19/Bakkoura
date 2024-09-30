@@ -12,6 +12,8 @@ import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 import SetSectorTime from './components/SetSectorTime';
 
+import {t} from '../../i18n'
+
 const SectorTime = () => {
   const navigation = useNavigation();
   const {selectStartEndTime, newSelectState, clearTime} =
@@ -30,7 +32,7 @@ const SectorTime = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Time"
+            title={t("Time")}
             rightItem={<Cancel onClose={onBackHandle} />}
           />
           <RN.View style={styles.content}>
@@ -39,7 +41,7 @@ const SectorTime = () => {
             </RN.View>
             <RN.View style={styles.btn}>
               <StartBtn
-                text="Ok"
+                text={t("Ok")}
                 elWidth={55}
                 subWidth={70}
                 primary

@@ -12,6 +12,7 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {RepeatData} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
+import { t } from '../../i18n';
 
 const RepeatScreen = () => {
   const navigation = useNavigation();
@@ -55,14 +56,14 @@ const RepeatScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="New Event"
+            title={`${t("repeat")}`}
             rightItem={<Cancel onClose={onCancel} />}
           />
           <RN.View style={styles.eventsTypeList}>{renderRepeat()}</RN.View>
           <RN.View style={styles.btnBox}>
             <StartBtn
               primary
-              text="Ok"
+              text={`${t("Ok")}`}
               elWidth={65}
               subWidth={80}
               onPress={onSelect}

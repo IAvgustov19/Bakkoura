@@ -16,6 +16,7 @@ import LinearContainer from '../../../components/LinearContainer/LinearContainer
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import { useNavigation } from '@react-navigation/native';
+import { t } from '../../../i18n';
 
 type Props = {
   is24h?: boolean;
@@ -67,7 +68,7 @@ const AlarmClock: React.FC<Props> = ({ is24h }) => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Alarm Clock"
+            title={`${t("Alarm Clock")}`}
           />
           <RN.View style={styles.clockBox}>
             {renderLottieClock()}
@@ -75,12 +76,12 @@ const AlarmClock: React.FC<Props> = ({ is24h }) => {
           </RN.View>
           <RN.View style={styles.btnBox}>
             <StartBtn
-              text="Later"
+              text={`${t("Later")}`}
               onPress={() => handleLaterAction(activeAlarm as never)}
             />
             {renderTime()}
             <StartBtn
-              text="Stop"
+              text={`${t("Stop")}`}
               primary
               onPress={() => handleStopAction(activeAlarm as never)}
             />

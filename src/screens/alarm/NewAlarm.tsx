@@ -16,6 +16,7 @@ import useRootStore from '../../hooks/useRootStore';
 import { APP_ROUTES } from '../../navigation/routes';
 import { COLORS } from '../../utils/colors';
 import SetAlarmClock from './components/SetAlarmClock';
+import { t } from '../../i18n';
 
 const NewAlarmScreen = () => {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const NewAlarmScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Alarm Clock"
+            title={`${t("Alarm Clock")}`}
           />
           <RN.View style={styles.content}>
             <RN.View>
@@ -61,7 +62,7 @@ const NewAlarmScreen = () => {
               </RN.View>
               <RN.View style={styles.listsBox}>
                 <ListItemCont
-                  title="Repeat"
+                  title={`${t("repeat")}`}
                   value={
                     selectedRepeat.join().length > 20
                       ? selectedRepeat.join().slice(0, 20) + '...'
@@ -76,21 +77,21 @@ const NewAlarmScreen = () => {
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.NAME_ALARM as never)
                   }
-                  title="Name"
+                  title={`${t("name")}`}
                   value={alarmItemData.name}
                 />
               </RN.View>
               <RN.View style={styles.listsBox}>
                 <RN.View style={styles.eventsTypeList}>
                   <RN.View style={styles.listItem}>
-                    <RN.Text style={styles.listItemText}>Reminder</RN.Text>
+                    <RN.Text style={styles.listItemText}>{`${t("reminder")}`}</RN.Text>
                     <SimpleSwitch active={leter} handlePress={onSetLeter} />
                   </RN.View>
                 </RN.View>
                 <Line />
                 <ListItemCont
                   onPress={() => setSound(e => !e)}
-                  title="Sound"
+                  title={`${t("sound")}`}
                   value={selectedSound.title}
                 />
               </RN.View>
@@ -99,16 +100,16 @@ const NewAlarmScreen = () => {
               elWidth={55}
               subWidth={70}
               primary
-              text="Add"
+              text={`${t("add")}`}
               onPress={CreateAlarm}
             />
           </RN.View>
           <SoundsContent
-            headerTitle="Sound"
+            headerTitle={`${t("sound")}`}
             data={soundData}
             onItemPress={onSoundItemPress as never}
             headerLeftItem={
-              <ArrowLeftBack onPress={() => setSound(e => !e)} title="Back" />
+              <ArrowLeftBack onPress={() => navigation.goBack()} />
             }
             onClose={() => setSound(e => !e)}
             modalVisible={sound}
@@ -117,7 +118,7 @@ const NewAlarmScreen = () => {
             setVibrationActive={() => setVibation(e => !e)}
             myMusic
             okBtn
-            okBtnText="Ok"
+            okBtnText={`${t("Ok")}`}
             onPressBtn={() => setSound(e => !e)}
           />
         </RN.View>

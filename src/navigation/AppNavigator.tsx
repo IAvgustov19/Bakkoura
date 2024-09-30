@@ -72,7 +72,8 @@ import PasswordPrompt from '../screens/home/secureEntry/passwordAuth';
 import FingerprintAuth from '../screens/home/secureEntry/fingerprintAuth';
 import RepeatTypeScreen from '../screens/alarm/RepeatTypeScreen';
 import MessengerScreen from '../screens/messenger/MessengerScreen';
-import SearchContact from '../screens/messenger/SearchContact';
+import SearchContact from '../screens/messenger/SearchFile';
+import AddUser from '../screens/messenger/AddUser';
 import DialogScreen from '../screens/messenger/DialogScreen';
 import TermsOfUse from '../screens/auth/SignUpScreen/TermsOfUse';
 import PrivacyPolicy from '../screens/auth/SignUpScreen/PrivacyPolicy';
@@ -277,6 +278,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name={APP_ROUTES.SEARCH_CONTACT}
           component={SearchContact}
+          options={{
+            headerTitleAlign: 'center',
+          }}
+        />
+        <Stack.Screen
+          name={APP_ROUTES.ADD_USER}
+          component={AddUser}
           options={{
             headerTitleAlign: 'center',
           }}

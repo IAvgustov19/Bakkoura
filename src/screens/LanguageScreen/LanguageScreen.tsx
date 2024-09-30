@@ -13,8 +13,11 @@ import RN from '../../components/RN';
 import { ActivityIndicator } from 'react-native';
 import { windowWidth } from '../../utils/styles';
 
-//import I18n from 'react-native-i18n';
+import I18n from 'react-native-i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+
+import {t} from '../../i18n'
 
 const LanguageScreen = () => {
   const navigation = useNavigation();
@@ -41,7 +44,7 @@ const LanguageScreen = () => {
     try {
       const language = await AsyncStorage.getItem('selectedLanguage');
       if (language) {
-       // I18n.locale = language;
+        I18n.locale = language;
         setLanguage(language);
       }
     } catch (error) {
@@ -59,7 +62,7 @@ const LanguageScreen = () => {
 
   const onLanguageItemPress = async (index) => {
     const selectedLanguage = languages[index].key;
-    //I18n.locale = selectedLanguage;
+    I18n.locale = selectedLanguage;
     setLanguage(selectedLanguage);
     await saveLanguagePreference(selectedLanguage);
     onLanguageItemPressStore(index);
@@ -92,11 +95,10 @@ const LanguageScreen = () => {
               <RN.TouchableOpacity
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
+                 <ArrowLeftBack onPress={() => navigation.goBack()} />
               </RN.TouchableOpacity>
             }
-            title="Languages"
+            title={`${t("lang")}`}
           />
           <RN.FlatList
             data={languages}
@@ -108,7 +110,7 @@ const LanguageScreen = () => {
             <StartBtn
               onPress={update}
               primary={true}
-              text={updateLoading ? '' : 'Ok'}
+              text={updateLoading ? '' : `${t("Ok")}`}
               icon={
                 updateLoading ? (
                   <ActivityIndicator

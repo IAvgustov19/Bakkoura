@@ -35,6 +35,8 @@ import SignUpForm from './components/SignUpForm';
 import {COLORS} from '../../../utils/colors';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
+import { t } from '../../../i18n';
+
 type ISelect = {label: string; value: string};
 
 const SignUpScreen = () => {
@@ -59,8 +61,11 @@ const SignUpScreen = () => {
   const [users, setUsers] = useState([]);
   const options = [
     {label: 'OAE', value: 'OAE'},
-    {label: 'USA', value: 'USA'},
-    {label: 'UK', value: 'UK'},
+  {label: 'USA', value: 'USA'},
+  {label: 'UK', value: 'UK'},
+  {label: 'RU', value: 'RU'},
+  {label: 'EG', value: 'EG'},
+  {label: 'FR', value: 'FR'},
   ];
 
   const onSelect = (option: ISelect) => {
@@ -112,18 +117,18 @@ const SignUpScreen = () => {
         try {
           await authh().currentUser.sendEmailVerification();
         } catch (err) {
-          Alert.alert('Error', 'Failed to send verification email.');
+          Alert.alert(`${t('Error')}`, `${t('Failed to send verification email')}`);
           setLoading(false);
           return;
         }
 
         if (!user.emailVerified) {
           Alert.alert(
-            'Verify your email',
-            'Press OK to go to the sign-in page',
+            `${t('Verify your email')}`,
+            `${t('Press OK to go to the sign-in page')}`,
             [
               {
-                text: 'OK',
+                text: `${t('OK')}`,
                 onPress: () =>
                   navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never),
               },
@@ -138,24 +143,24 @@ const SignUpScreen = () => {
         switch (error.code) {
           case 'auth/weak-password':
             Alert.alert(
-              'Password is too weak.', 'Please enter a stronger password.',
+              `${t('Password is too weak')}`, `${t('Please enter a stronger password')}`,
             );
             break;
           case 'auth/invalid-email':
             Alert.alert(
-              'Email address is badly formatted', 'Please enter a valid email.',
+              `${t('Email address is badly formatted')}`, `${t('Please enter a valid email')}`,
             );
             break;
           case 'auth/email-already-in-use':
             Alert.alert('Email is busy',
-              'The email address is already in use by another account.',
+              `${t('The email address is already in use by another account.')}`,
             );
             break;
             case 'auth/network-request-failed':
-            Alert.alert('Check your internet connection');
+            Alert.alert(`${t('Check your internet connection')}`);
             break;
           default:
-            Alert.alert('Something went wrong', 'Please try again later');
+            Alert.alert(`${t('Something went wrong')}`, `${t('Please try again later')}`);
         }
         //clearNewUserState();
         clearLoginUseState();
@@ -163,7 +168,7 @@ const SignUpScreen = () => {
         setLoading(false);
       }
     } else {
-      Alert.alert('Please fill out all fields');
+      Alert.alert(`${t('Please fill out all fields')}`);
     }
   };
 
@@ -204,7 +209,7 @@ const SignUpScreen = () => {
             >
               <RN.View style={styles.content}>
                 <LoadingScreen loading={loading} setLoading={setLoading} />
-                <TextView title="Sign up" textAlign="center" />
+                <TextView title={`${t("Sign up")}`} textAlign="center" />
                 <SignUpForm
                   bottomInputPress={Scroll}
                   options={options}
@@ -213,7 +218,7 @@ const SignUpScreen = () => {
                 <RN.View style={styles.signUpBtn}>
                   <ButtonComp
                     onPress={signUp}
-                    title={'Sign Up'}
+                    title={`${t('Sign Up')}`}
                     icon={
                       loading ? (
                         <ActivityIndicator
@@ -226,12 +231,12 @@ const SignUpScreen = () => {
                 </RN.View>
               </RN.View>
               <View style={styles.needAcc}>
-                <TextView text="Already have an Account?" />
+                <TextView text={`${t("already_have?")}`} />
                 <RN.TouchableOpacity
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)
                   }>
-                  <TextView style={styles.signUpText} text="Sign In" />
+                  <TextView style={styles.signUpText} text={`${t("Sign_in")}`} />
                 </RN.TouchableOpacity>
               </View>
               <View style={styles.terms}>
@@ -239,13 +244,13 @@ const SignUpScreen = () => {
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.PRIVACY_POLICY as never)
                   }>
-                  <TextView style={styles.signUpText} text="Privacy policy" />
+                  <TextView style={styles.signUpText} text={`${t("privacy")}`} />
                 </RN.TouchableOpacity>
                 <RN.TouchableOpacity
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.TERMS_OF_USE as never)
                   }>
-                  <TextView style={styles.signUpText} text="Terms of use" />
+                  <TextView style={styles.signUpText} text={`${t("terms")}`} />
                 </RN.TouchableOpacity>
               </View>
             </RN.ScrollView>

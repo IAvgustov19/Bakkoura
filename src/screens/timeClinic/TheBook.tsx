@@ -7,6 +7,9 @@ import RN from '../../components/RN';
 import {TheBookTexts} from '../../constants/timeClinic';
 import {windowHeight} from '../../utils/styles';
 import TheBookitem from './components/TheBookItem';
+import {TheBookTexts_ar} from '../../constants/timeClinic_ar'
+import l from '../../i18n'
+import {t} from '../../i18n'
 
 const TheBook = () => {
   const navigation = useNavigation();
@@ -22,7 +25,20 @@ const TheBook = () => {
         />
       );
     });
-  }, [TheBookTexts]);
+  }, [ TheBookTexts ]);
+
+  const renderBooks_ar = useCallback(() => {
+    return TheBookTexts_ar.map((item, index) => {
+      return (
+        <TheBookitem
+          key={index}
+          title={item.title}
+          texts={item.texts}
+          page={item.id}
+        />
+      );
+    });
+  }, [ TheBookTexts_ar ]);
 
   return (
     <LinearContainer
@@ -30,13 +46,24 @@ const TheBook = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Book"
+            title={`${t("Book")}`}
           />
+          
+            {
+              l.locale === 'en'?
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>{renderBooks()}</RN.View>
-          </RN.ScrollView>
+          </RN.ScrollView> 
+          :
+          <RN.ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
+            <RN.View style={styles.content}>{renderBooks_ar()}</RN.View>
+          </RN.ScrollView> 
+            }
+      
         </RN.View>
       }
     />

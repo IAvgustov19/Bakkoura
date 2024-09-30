@@ -21,6 +21,8 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import { PomodoroData } from '../../utils/pomodoro';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 
+import {t} from '../../i18n'
+
 const PomodoroSlider = () => {
     const { width } = Dimensions.get('window');
     const navigation = useNavigation();
@@ -32,7 +34,7 @@ const PomodoroSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Pomodoro"
+                        title={`${t("Pomodoro")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={PomodoroData} height={width / 2.7} width={'100%'}/>

@@ -4,6 +4,8 @@ import { Images } from '../../assets';
 import { COLORS } from '../../utils/colors';
 import RN from '../RN';
 
+import {t} from '../../i18n'
+
 type Props = {
   black?: boolean;
   onPress?: () => void;
@@ -12,7 +14,7 @@ type Props = {
 const UploadFileInput: React.FC<Props> = ({ onPress, black }) => {
   return (
     <RN.Pressable style={styles.container}>
-      <RN.Text style={styles.label}>File</RN.Text>
+      <RN.Text style={styles.label}>{`${t('File')}`}</RN.Text>
       <RN.TouchableOpacity style={[styles.file,  black && styles.bordered]} onPress={onPress}>
         {black ? <Images.Svg.darkUpArrow /> : <Images.Svg.uploadFile />}
       </RN.TouchableOpacity>

@@ -13,6 +13,7 @@ import {APP_ROUTES} from '../../../navigation/routes';
 import {NewEventStateType} from '../../../types/calendar';
 import {COLORS} from '../../../utils/colors';
 import EventItem from './EventItem';
+import { t } from '../../../i18n';
 
 type Props = {
   isShowDate?: boolean;
@@ -83,11 +84,11 @@ const Events: React.FC<Props> = ({
             already={item.already}
             date={item.date[0]}
             // finished={isFinished[index]}
-            time={`${item.stayedDay} days ${
+            time={`${item.stayedDay} ${t("days")} ${
               item.stayedHour < 10 ? `0${item.stayedHour}` : item.stayedHour
             }:${
               item.stayedMinut < 10 ? `0${item.stayedMinut}` : item.stayedMinut
-            } hours`}
+            } ${t("hours")}`}
             onPress={() => onGetHandle(item)}
           />
         </RN.View>
@@ -100,7 +101,7 @@ const Events: React.FC<Props> = ({
       <RN.View style={styles.eventsTypeList}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<ListEmptyComp title="No event yet" />}
+          ListEmptyComponent={<ListEmptyComp title={`${t("No event yet")}`} />}
           data={allEventsData}
           renderItem={renderItem}
           ListFooterComponent={<ListFooter />}

@@ -19,6 +19,8 @@ import { ActivityIndicator, Alert } from 'react-native';
 import { APP_ROUTES } from '../../navigation/routes';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const ContactUs = () => {
   const navigation = useNavigation();
 
@@ -36,7 +38,7 @@ const ContactUs = () => {
 
   const onHandleCategory = () => {
     navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
-    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
+    onHandleWebVIew(`${t("privacy_link")}`);
   };
 
   const Scroll = () => {
@@ -54,7 +56,7 @@ const ContactUs = () => {
         navigation.navigate(APP_ROUTES.CONTACT_THANKS as never),
       );
     } else {
-      Alert.alert('Please select who you would like to contact');
+      Alert.alert(`${t("Please select who you would like to contact")}`);
     }
   };
 
@@ -68,7 +70,7 @@ const ContactUs = () => {
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
-            title="Contact Us"
+            title={`${t("Contact Us")}`}
           />
           <RN.ScrollView
             ref={scrollViewRef}
@@ -79,10 +81,10 @@ const ContactUs = () => {
               <RN.View style={styles.contactInfo}>
                 <TextView
                   style={styles.headerText}
-                  text={`Select who you would like to contact `}
+                  text={`${t("Select who you would like to contact")}`}
                 />
                 <OutlineBtn
-                  text="General Director"
+                  text={`${t("General Director")}`}
                   Width={'100%'}
                   Height={56}
                   borderColor={
@@ -95,7 +97,7 @@ const ContactUs = () => {
                   onPress={() => setOrderState('type', 'General Director')}
                 />
                 <OutlineBtn
-                  text="Developer"
+                  text={`${t("Developer")}`}
                   Width={'100%'}
                   Height={56}
                   borderColor={
@@ -106,7 +108,7 @@ const ContactUs = () => {
                   onPress={() => setOrderState('type', 'Developer')}
                 />
                 <OutlineBtn
-                  text="Technical Support"
+                  text={`${t("Technical Support")}`}
                   Width={'100%'}
                   Height={56}
                   borderColor={
@@ -120,29 +122,23 @@ const ContactUs = () => {
                 />
                 <TextView
                   style={styles.text}
-                  text={`Send Your letter now and We will contact you shortly \n to clarify the details.`}
+                  text={`${t("Contact_text")}`}
                 />
               </RN.View>
               <FormContainer bottomInputPress={Scroll} black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn
-                  active={orderState.isAccept}
-                  onPress={() =>
-                    setOrderState('isAccept', !orderState.isAccept)
-                  }
-                />
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
                   <RN.Text style={styles.privacyInfo}>
-                    Your personal data are guaranteed to be safe and will not be
-                    handed over to third parties.
+                  `${t('your_data_safe')}`
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-                    <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
-                  </RN.Pressable>
+      <RN.Text style={styles.privacyLink}>`${t('I_accept')}`</RN.Text>
+    </RN.Pressable>
                 </RN.View>
               </RN.View>
               <ButtonComp
-                title="Send"
+               title={`${t('send')}`}
                 icon={
                   sendEmailLoading ? (
                     <ActivityIndicator

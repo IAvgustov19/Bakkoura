@@ -16,6 +16,8 @@ import {COLORS} from '../../../utils/colors';
 import {moderateScale} from '../../../utils/dimensions';
 import {windowWidth} from '../../../utils/styles';
 
+import {t} from '../../../i18n'
+
 const StressTestDuring = () => {
   const [is24, setIs24] = useState(true);
   const navigation = useNavigation();
@@ -42,7 +44,7 @@ const StressTestDuring = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Stress Test"
+            title={t("Stress Test")}
             rightItem={<Images.Svg.timerLogo />}
           />
           <RN.View style={styles.content}>
@@ -56,11 +58,11 @@ const StressTestDuring = () => {
             </RN.View>
             {stressTestStatus.reset ? (
               <RN.View style={styles.startReset}>
-                <StartBtn text="Reset" onPress={resetStressTimer} />
-                <StartBtn text={'Stop'} primary onPress={FinishStressTest} />
+                <StartBtn text={t("Reset")} onPress={resetStressTimer} />
+                <StartBtn text={t("Stop")} primary onPress={FinishStressTest} />
               </RN.View>
             ) : (
-              <StartBtn text="Start" primary onPress={startStopStressTest} />
+              <StartBtn text={t("Start")} primary onPress={startStopStressTest} />
             )}
             <SwitchContain
               title="24h"

@@ -4,11 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
-import { BtsNavigationItems_en } from '../../utils/btsNavigation';
+import { BtsNavigationItems_en, BtsNavigationItems_ar } from '../../utils/btsNavigation';
 import TextView from '../../components/Text/Text';
 import { windowHeight } from '../../utils/styles';
 import { COLORS } from '../../utils/colors';
 import RN from '../../components/RN';
+
+import {t} from '../../i18n'
+import l from '../../i18n'
 
 
 const BtsNavigation = () => {
@@ -36,15 +39,25 @@ const BtsNavigation = () => {
                 <RN.View style={styles.container}>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="BTS Navigation"
+                        title={`${t("BTS navigation")}`}
                     />
                     <RN.View style={styles.content}>
-                        <RN.FlatList
+                        {
+                            l.locale === 'en'?
+                            <RN.FlatList
                             data={BtsNavigationItems_en}
                             renderItem={renderItem}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={(item, index) => index.toString()}
                         />
+                        :
+                        <RN.FlatList
+                            data={BtsNavigationItems_ar}
+                            renderItem={renderItem}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                        }
                     </RN.View>
                 </RN.View>
             }

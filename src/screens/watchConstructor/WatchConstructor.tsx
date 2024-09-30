@@ -29,6 +29,8 @@ import storage from '@react-native-firebase/storage';
 import {useNavigation} from '@react-navigation/native';
 import {APP_ROUTES} from '../../navigation/routes';
 
+import {t} from '../../i18n'
+
 const WatchConstructor = () => {
   const {currentPart, setPart, setCurrentWatch} =
     useRootStore().watchConstructor;
@@ -43,12 +45,12 @@ const WatchConstructor = () => {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: 'Storage Permission Required',
+            title: `${t("Storage Permission Required")}`,
             message:
-              'Access is required to send photos and videos to the chat, upload avatars to your profile, and send materials to the support service',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
+            `${t("Access is required to send photos and videos")}`,
+            buttonNeutral: `${t("Ask Me Later")}`,
+            buttonNegative: `${t("Cancel")}`,
+            buttonPositive: `${t("Ok")}`,
           },
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
@@ -64,8 +66,8 @@ const WatchConstructor = () => {
     const hasPermission = await requestStoragePermission();
     if (!hasPermission) {
       Alert.alert(
-        'Permission Denied',
-        'You need to give storage permission to save the screenshot',
+        `${t("Permission Denied")}`,
+        `${t("You need to give storage permission to save the screenshot")}`,
       );
       return;
     }
@@ -80,13 +82,13 @@ const WatchConstructor = () => {
         CameraRoll.save(destPath, {type: 'photo'})
           .then(() => {
             Alert.alert(
-              'Screenshot successfully Saved',
-              'Screenshot has been saved to your gallery',
+              `${t("Screenshot successfully Saved")}`,
+              `${t("Screenshot has been saved to your gallery")}`,
             );
           })
           .catch(error => {
             console.error(error);
-            Alert.alert('Error', 'Failed to save screenshot to gallery');
+            Alert.alert(`${t("Error")}`, `${t("Failed to save screenshot to gallery")}`);
           });
       });
     } else {
@@ -110,13 +112,13 @@ const WatchConstructor = () => {
             console.log('avatarUri', downloadURL);
             setIdeaLoading(false);
           } else {
-            Alert.alert('something went wrong');
+            Alert.alert(`${t("Something went wrong")}`);
             setIdeaLoading(false);
           }
         })
         .catch(error => {
           console.error(error);
-          Alert.alert('Error', 'Failed to capture and upload screenshot');
+          Alert.alert(`${t("Error")}`, `${t("Failed to capture and upload screenshot")}`);
         });
     }
   };
@@ -166,7 +168,7 @@ const WatchConstructor = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Watch Constructor"
+            title={`${t("Watch Constructor")}`}
             leftItem={<ArrowLeftBack onPress={onHandleback} />}
             rightItem={<Cancel onClose={onHandleback} />}
           />
@@ -177,13 +179,13 @@ const WatchConstructor = () => {
           </RN.View>
           <RN.View style={styles.btns}>
             <OutlineBtn
-              text="Save in gallery"
+              text={`${t("Save in gallery")}`}
               Width={'48%'}
               Height={45}
               onPress={() => captureAndSaveScreenshot('save')}
             />
             <OutlineBtn
-              text="Send idea"
+              text={`${t("Send idea")}`}
               Width={'48%'}
               Height={45}
               onPress={captureAndSaveScreenshot}

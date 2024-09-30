@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import {SoundsData} from '../utils/sounds';
 
 export type AlarmListsItemType = {
@@ -22,7 +23,7 @@ export type AlarmListsItemType = {
 export const AlarmListsItemInitial: AlarmListsItemType = {
   uid: '',
   id: '',
-  name: 'Alarm',
+  name: `${t("Alarm")}`,
   time: '',
   hours: '',
   minutes: '',

@@ -13,6 +13,7 @@ import Events from './components/Events';
 import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { t } from '../../i18n';
 
 const EventScreen = () => {
   const {
@@ -41,13 +42,13 @@ const EventScreen = () => {
   }, [switchCalendar]);
 
   const title = useMemo(() => {
-    let t = '';
+    let title = '';
     if (switchCalendar) {
-      t = 'Calendar';
+      title = `${t("Calendar")}`;
     } else {
-      t = 'Calendar';
+      title = `${t("Calendar")}`;
     }
-    return t;
+    return title;
   }, [switchCalendar]);
 
   return (

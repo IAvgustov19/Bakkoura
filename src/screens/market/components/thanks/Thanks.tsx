@@ -13,6 +13,8 @@ import Cancel from '../../../../components/Cancel/Cancel';
 import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../../hooks/useRootStore';
 
+import {t} from '../../../../i18n'
+
 type Props = {};
 
 const OrderThanks: React.FC<Props> = ({}) => {
@@ -32,15 +34,12 @@ const OrderThanks: React.FC<Props> = ({}) => {
               <RN.TouchableOpacity
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
               </RN.TouchableOpacity>
             }
-            rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           {/* <HeaderContent leftItem={<Images.Svg.btsGreyLogo /> */}
           <RN.View style={styles.content}>
-            <TextView title="Thank You" />
+            <TextView title={`${t('Thank You')}`} />
             {renderResponse}
             <SimpleBtn
               title={'Ok'}

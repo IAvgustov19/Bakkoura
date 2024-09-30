@@ -17,6 +17,7 @@ import RN from '../../components/RN';
 import {Platform} from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { t } from '../../i18n';
 
 export class AlarmStore {
   private readonly root: RootStore;
@@ -48,8 +49,8 @@ export class AlarmStore {
         {
           id: 'userAction',
           actions: [
-            {id: 'Stop', title: 'Stop', options: {foreground: true}},
-            {id: 'Later', title: 'Later', options: {foreground: true}},
+            {id: 'Stop', title: `${t("Stop")}`, options: {foreground: true}},
+            {id: 'Later', title: `${t("Later")}`, options: {foreground: true}},
           ],
         },
       ]);
@@ -290,7 +291,7 @@ export class AlarmStore {
           message: alarm.name,
           playSound: true,
           soundName: alarm.sound.url,
-          actions: ['Stop', 'Later'],
+          actions: [`${t("Stop")}`, `${t("Later")}`],
           userInfo: {id: alarm.id},
           autoCancel: false,
           vibrate: alarm.vibration,

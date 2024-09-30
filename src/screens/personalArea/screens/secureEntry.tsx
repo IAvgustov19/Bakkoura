@@ -17,6 +17,9 @@ import { APP_ROUTES } from '../../../navigation/routes';
 import { RootStackParamList } from '../../../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import {t} from '../../../i18n'
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PASSWORD>;
 const SecureEntry = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -50,24 +53,24 @@ const SecureEntry = () => {
 
       if (!biometryOptions && isBiometricSelected) {
         Alert.alert(
-          'Biometry not set up',
-          'You have not set up any biometric data. Please add your fingerprint in settings.',
+          `${t("Biometry not set up")}`,
+          `${t("You have not set up any biometric data. Please add your fingerprint in settings")}`,
           [
             {
-              text: 'Go to Settings',
+              text: `${t("Go to Settings")}`,
               onPress: () => {
                 if (Platform.OS === 'android') {
                   Linking.openSettings();
                 } else {
                   Alert.alert(
-                    'Unsupported',
-                    'This feature is only supported on Android.',
+                    `${t("Unsupported")}`,
+                    `${t("This feature is only supported on Android")}`,
                   );
                 }
               },
             },
             {
-              text: 'Cancel',
+              text: `${t("Cancel")}`,
               style: 'cancel',
             },
           ],
@@ -76,7 +79,7 @@ const SecureEntry = () => {
         updateProfile(() => navigation.goBack());
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to check biometry.');
+      Alert.alert(`${t("Error")}`, `${t("Failed to check biometry")}`);
     }
   };
 
@@ -140,11 +143,10 @@ const SecureEntry = () => {
               <RN.TouchableOpacity
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
+                <ArrowLeftBack onPress={() => navigation.goBack()} />
               </RN.TouchableOpacity>
             }
-            title="Secure Entry"
+            title={`${t("Secure Entry")}`}
           />
           <RN.FlatList
             data={secureEntries}
@@ -155,7 +157,7 @@ const SecureEntry = () => {
             <StartBtn
               onPress={updateSecure}
               primary={true}
-              text={updateLoading ? '' : 'Ok'}
+              text={updateLoading ? '' : `${t("Ok")}`}
               icon={
                 updateLoading ? (
                   <ActivityIndicator

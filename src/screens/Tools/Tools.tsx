@@ -10,6 +10,8 @@ import TimeClinicListItem from '../timeClinic/components/TimeClinicListItem';
 import { ToolsList } from '../../constants/tools';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const Tools = () => {
     const navigation = useNavigation();
 
@@ -31,7 +33,7 @@ const Tools = () => {
                 <RN.View style={styles.container}>
                     <HeaderContent
                         leftItem={<Images.Svg.btsRightLinear />}
-                        title="Tools"
+                        title={`${t("Tools")}`}
                     />
                     <RN.View style={styles.content}>
                         <RN.FlatList

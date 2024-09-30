@@ -21,6 +21,7 @@ import { Linking, Modal } from 'react-native';
 import { formatDate } from "../../helper/formatTimeMessage";
 import Voice from './components/VoicePlayer';
 import { windowHeight } from '../../utils/styles';
+import { t } from '../../i18n';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.DIALOG_SCREEN>;
 
@@ -89,7 +90,7 @@ const SearchContact = () => {
         if (filteredImages.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title="No images" />
+                    <EmptyState title={`${t("No media")}`} />
                 </RN.View>
             );
         }
@@ -245,7 +246,7 @@ const SearchContact = () => {
         if (filteredVoice.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title="No audios" />
+                    <EmptyState title={`${t("No voices")}`} />
                 </RN.View>
             );
         }
@@ -277,7 +278,7 @@ const SearchContact = () => {
         if (filteredLinks.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title="No links" />
+                    <EmptyState title={`${t("No links")}`} />
                 </RN.View>
             );
         }
@@ -312,7 +313,7 @@ const SearchContact = () => {
         if (fileData.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title="No files" />
+                    <EmptyState title={`${t("No files")}`}/>
                 </RN.View>
             );
         }
@@ -346,7 +347,7 @@ const SearchContact = () => {
         // }
 
         if (searchedUsers.length === 0 && searchPerformed) {
-            return <ListEmptyComp title="No user found" />;
+            return <ListEmptyComp title={`${t("The user was not found")}`} />;
         }
         return (
             <RN.ScrollView
@@ -384,7 +385,7 @@ const SearchContact = () => {
         if (musicData.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title="No music" />
+                    <EmptyState title={`${t("No music")}`} />
                 </RN.View>
             );
         }
@@ -431,14 +432,14 @@ const SearchContact = () => {
         <LinearContainer>
             <RN.View style={styles.container}>
                 <HeaderContent
-                    title="Messenger"
+                    title={`${t("Messenger")}`}
                     rightItem={<Cancel onClose={() => navigation.navigate(APP_ROUTES.MESSENGER as never)} />}
                 />
                 <RN.View style={styles.content}>
                     <Input
                         value={search}
                         onChangeText={(text) => setSearch(text)}
-                        placeholder="Enter a name"
+                        placeholder={`${t("Enter a name")}`}
                         icon={<Images.Svg.searchIcon />}
                     />
                 </RN.View>

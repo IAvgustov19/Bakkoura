@@ -9,6 +9,8 @@ import PodcastItem from './components/PodcastItem';
 import { podcastData } from '../../utils/podcasts';
 import RN from '../../components/RN';
 
+import {t} from '../../i18n'
+
 Sound.setCategory('Playback');
 
 const Podcasts = () => {
@@ -29,7 +31,7 @@ const Podcasts = () => {
         <RN.View>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Podcasts"
+            title={`${t("Podcast")}`}
           />
           <RN.FlatList
             data={podcastData}
