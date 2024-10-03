@@ -1,48 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View, TouchableOpacity, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import TextView from '../../../components/Text/Text';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
-import { APP_ROUTES } from '../../../navigation/routes';
+import {APP_ROUTES} from '../../../navigation/routes';
 import CaptchaV2Lib1 from './components/CaptchaV2Lib1';
 import useRootStore from '../../../hooks/useRootStore';
 import firestore from '@react-native-firebase/firestore';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from '../Loading/LoadingScreen';
+import GiveImage from '../../../components/GiveImage/GiveImage';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import RN from '../../../components/RN';
 import { Images } from '../../../assets';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
+import { t } from '../../../i18n';
 
 const SignInScreen = () => {
-
   const [loading, setLoading] = useState(false);
-  const { setAuthorized, setLoginUser, loginUser, newUser, isAuthorized } =
+  const {setAuthorized, setLoginUser, loginUser, newUser, isAuthorized} =
     useRootStore().authStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [showCaptcha, setShowCaptcha] = useState(false);
   const navigation = useNavigation();
 
-
-
   GoogleSignin.configure({
     webClientId:
       '669015865828-etrnvlung2lkfmndu9ccth6597hsjp7g.apps.googleusercontent.com',
   });
 
-
   const handleCloseCaptcha = () => {
     setShowCaptcha(false);
     setFailedAttempts(0);
   };
-
 
   const [users, setUsers] = useState([]);
 
@@ -60,12 +61,13 @@ const SignInScreen = () => {
     return () => unsubscribe();
   }, []);
 
-
-
   const signIn = async (email, password) => {
     if (email && password) {
       try {
-        const userCredential = await auth().signInWithEmailAndPassword(email, password);
+        const userCredential = await auth().signInWithEmailAndPassword(
+          email,
+          password,
+        );
         const user = userCredential.user;
         const token = await user.getIdToken();
 
@@ -74,7 +76,7 @@ const SignInScreen = () => {
           setShowCaptcha(false);
           setAuthorized();
         } else {
-          Alert.alert('Account not verified. Please verify your email.');
+          Alert.alert(`${t("Account not verified")}`);
         }
       } catch (error) {
         setFailedAttempts(prev => prev + 1);
@@ -85,23 +87,23 @@ const SignInScreen = () => {
           switch (error.code) {
             case 'auth/invalid-email':
             case 'auth/wrong-password':
-              Alert.alert('Incorrect email or password');
+              Alert.alert(`${t("Incorrect email or password")}`);
               break;
             case 'auth/network-request-failed':
-              Alert.alert('Check your internet connection');
+              Alert.alert(`${t("Check your internet connection")}`);
               break;
             case 'auth/too-many-requests':
               setShowCaptcha(true);
-              Alert.alert('Too many requests. Please try again later.');
+              Alert.alert(`${t("Too many requests")}`);
               break;
             default:
-              Alert.alert('An error occurred. Please try again.');
+              Alert.alert(`${t("An error occurred")}`);
               break;
           }
         }
       }
     } else {
-      Alert.alert('Please enter both email and password');
+      Alert.alert(`${t("Please enter both email and password")}`);
     }
   };
 
@@ -110,7 +112,7 @@ const SignInScreen = () => {
     try {
       const has = await GoogleSignin.hasPlayServices();
 
-      const { idToken } = await GoogleSignin.signIn();
+      const {idToken} = await GoogleSignin.signIn();
       const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
       await AsyncStorage.setItem('token', idToken);
 
@@ -138,7 +140,6 @@ const SignInScreen = () => {
     setLoading(false);
   };
 
-
   return (
     <>
       <LinearContainer>
@@ -158,39 +159,42 @@ const SignInScreen = () => {
           <View style={styles.content}>
             <RN.Image source={Images.Img.authLight} style={styles.light} />
             <View style={styles.titleBox}>
-              <TextView title="Hello Friend!" />
-              <TextView text="Start tracking and improving Your Life!" />
+              <TextView title={`${t("hello_friend")}`} />
+              <TextView text={`${t("start_tracking")}`} />
             </View>
             <View style={styles.formBox}>
-              <TextView style={styles.label} text="Login" />
+              <TextView style={styles.label} text={`${t("login")}`} />
               <Input
-                placeholder="Enter your email"
+                placeholder={`${t("enter_login")}`}
                 onChangeText={text => setEmail(text)}
                 value={email}
+                bordered
               />
-              <TextView style={styles.label} text="Password" />
+              <TextView style={styles.label} text={`${t("pass")}`} />
               <Input
-                placeholder="Enter your password"
+                placeholder={`${t("enter_pass")}`}
                 onChangeText={text => setPassword(text)}
                 value={password}
                 secureTextEntry
+                bordered
               />
             </View>
             <View style={styles.forgotBox}>
               <TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.RECOVER_PASSWORD as never)}>
-                <TextView style={styles.forgot} text="Forgot Your Password?" />
+                <TextView style={styles.forgot} text={`${t("forgot_pass")}`} />
               </TouchableOpacity>
             </View>
             <View style={styles.signUp}>
               <ButtonComp
-                title="Sign In"
+                title={`${t("Sign_in")}`}
                 onPress={() => signIn(email, password)}
+                icon={<GiveImage source={Images.Img.eye} />}
               />
             </View>
             <View style={styles.needAcc}>
-              <TextView text="Need an Account?" />
+              <TextView text={`${t("need_account")}`} />
               <TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.AUTH_SIGN_UP as never)}>
-                <TextView style={styles.signUpText} text="Sign Up" />
+                <TextView color={themeState.yellow} style={styles.signUpText} text={`${t("sign_up")}`} />
               </TouchableOpacity>
             </View>
           </View>

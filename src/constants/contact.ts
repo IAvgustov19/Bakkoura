@@ -1,4 +1,5 @@
 import {APP_ROUTES} from '../navigation/routes';
+import {t} from '../i18n'
 
 export type ContactListType = {
   id: number;
@@ -10,19 +11,19 @@ export type ContactListType = {
 export const ContactList: ContactListType[] = [
   {
     id: 1,
-    title: 'Contact Us',
+    title: `${t("Contact Us")}`,
     navigate: APP_ROUTES.CONTACT_US,
     isbtn: false,
   },
   {
     id: 2,
-    title: 'Send Idea',
+    title: `${t("Send idea")}`,
     navigate: APP_ROUTES.SEND_IDEA,
     isbtn: false,
   },
   {
     id: 3,
-    title: 'Assestment Watch',
+    title: `${t("Assestment Watch")}`,
     navigate: APP_ROUTES.WATCH_VALUATION,
     isbtn: false,
   },

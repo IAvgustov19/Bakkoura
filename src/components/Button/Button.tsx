@@ -11,6 +11,8 @@ import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import {verticalScale} from '../../utils/dimensions';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   title: string;
@@ -35,17 +37,20 @@ const ButtonComp: React.FC<Props> = ({
   textColor,
   containerColor,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <LinearGradient
       style={[
         styles.gradient,
         {
           // backgroundColor: containerColor,
-          borderColor: outline ? COLORS.darkGreyText : '#ECC271',
+          borderColor: outline ? themeState.inputBorder : '#ECC271',
           width: width ? width : '100%',
         },
       ]}
-      colors={outline ? ['#1c252f', '#0b0d10'] : ['#ECC271', '#35270A']}>
+      colors={
+        outline ? themeState.button : ['#ECC271', themeState.buttonYellow]
+      }>
       <TouchableOpacity
         style={[
           styles.button,
@@ -60,7 +65,7 @@ const ButtonComp: React.FC<Props> = ({
         <Text
           style={[
             styles.title,
-            {color: color ? color : outline ? COLORS.white : COLORS.black},
+            {color: color ? color : outline ? themeState.title : COLORS.black},
           ]}>
           {title}
         </Text>
@@ -70,7 +75,7 @@ const ButtonComp: React.FC<Props> = ({
   );
 };
 
-export default ButtonComp;
+export default observer(ButtonComp);
 
 const styles = StyleSheet.create({
   gradient: {
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     textAlign: 'center',
-    fontWeight: '100',
+    fontWeight: '600',
     lineHeight: 24,
     color: COLORS.black,
     fontFamily: 'RedHatDisplay-SemiBold',

@@ -2,6 +2,7 @@ import {observer} from 'mobx-react-lite';
 import React from 'react';
 import RN from '../../../components/RN';
 import {COLORS} from '../../../utils/colors';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   name?: string;
@@ -10,12 +11,17 @@ type Props = {
 };
 
 const HistoryListItem: React.FC<Props> = ({name, time, onPress}) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
-    <RN.TouchableOpacity style={styles.container} onPress={onPress}>
-      <RN.Text style={styles.name}>
+    <RN.TouchableOpacity
+      style={[styles.container, {backgroundColor: themeState.mainBack}]}
+      onPress={onPress}>
+      <RN.Text style={[styles.name, {color: themeState.title}]}>
         {name.length > 25 ? name.slice(0, 22) + '...' : name}
       </RN.Text>
-      <RN.Text style={styles.time}>Total {time}</RN.Text>
+      <RN.Text style={[styles.time, {color: themeState.title}]}>
+        Total {time}
+      </RN.Text>
     </RN.TouchableOpacity>
   );
 };

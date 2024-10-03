@@ -2,6 +2,8 @@ import React from 'react';
 import {DimensionValue} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   top?: DimensionValue;
@@ -9,25 +11,20 @@ type Props = {
 };
 
 const DataListLinearBack: React.FC<Props> = ({top, height}) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <LinearGradient
+      colors={themeState.dateList}
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
       style={[
         styles.linear,
         {top: top ? top : 110, height: height ? height : 55},
-      ]}
-      colors={[
-        'transparent',
-        'rgba(13,13,13,.3)',
-        '#0D0D0D',
-        'rgba(13,13,13,.3)',
-        'transparent',
       ]}></LinearGradient>
   );
 };
 
-export default DataListLinearBack;
+export default observer(DataListLinearBack);
 
 const styles = RN.StyleSheet.create({
   linear: {

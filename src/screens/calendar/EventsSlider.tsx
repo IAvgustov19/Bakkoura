@@ -7,6 +7,7 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { EventsData } from '../../utils/events';
+import { t } from '../../i18n';
 
 
 const EventSlider = () => {
@@ -20,7 +21,7 @@ const EventSlider = () => {
 
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Calendar"
+                        title={`${t("Calendar")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={EventsData} height={width / 1.1} width={'100%'} marginTop={30} />

@@ -15,6 +15,8 @@ import { AboutList } from '../../constants/aboutCompany';
 import { ContactList } from '../../constants/contact';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const ContactStack = () => {
     const navigation = useNavigation();
 
@@ -41,7 +43,7 @@ const ContactStack = () => {
                 <RN.View style={styles.container}>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="About company"
+                        title={`${t("Contact Us")}`}
                     />
                     <RN.View style={styles.content}>
                         <RN.FlatList

@@ -11,6 +11,8 @@ import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
 import Cancel from '../../components/Cancel/Cancel';
 
+import {t} from '../../i18n'
+
 const CitesScreen = () => {
   const navigation = useNavigation();
   const {
@@ -20,6 +22,7 @@ const CitesScreen = () => {
     selectedCountries,
     getAllCountries,
   } = useRootStore().worldTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   useEffect(() => {
     getAllCountries();
@@ -29,13 +32,14 @@ const CitesScreen = () => {
     return worldData.length > 0
       ? worldData.map((e, index) => {
           return (
-            <RN.View key={index} style={styles.countryBox}>
+            <RN.View key={index} style={[styles.countryBox]}>
               <RN.TouchableOpacity
                 onPress={() => setCountry(e, () => navigation.goBack())}>
                 <RN.Text
-                  style={
-                    styles.country
-                  }>{`${e.capital}, ${e.name.common}`}</RN.Text>
+                  style={[
+                    styles.country,
+                    {color: themeState.title},
+                  ]}>{`${e.capital}, ${e.name.common}`}</RN.Text>
               </RN.TouchableOpacity>
               <Line />
             </RN.View>
@@ -44,7 +48,7 @@ const CitesScreen = () => {
       : null;
   }, [worldData, selectedCountries]);
 
-    console.log(worldData)
+  console.log(worldData);
 
   return (
     <LinearContainer
@@ -52,17 +56,21 @@ const CitesScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="City"
+            title={`${t("City")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
             <Input
               onChangeText={e => filterWorldData(e)}
-              placeholder="City"
+              placeholder={`${t("City")}`}
               icon={<Images.Svg.searchIcon />}
             />
           </RN.View>
-          <RN.ScrollView style={styles.countryList}>
+          <RN.ScrollView
+            style={[
+              styles.countryList,
+              {backgroundColor: themeState.mainBack},
+            ]}>
             {countries()}
           </RN.ScrollView>
         </RN.View>

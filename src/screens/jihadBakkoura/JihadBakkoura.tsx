@@ -14,6 +14,9 @@ import TimeClinicListItem from '../timeClinic/components/TimeClinicListItem';
 import { AboutList } from '../../constants/aboutCompany';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+import l from '../../i18n'
+
 const JihadBakkoura = () => {
   const navigation = useNavigation();
 
@@ -40,7 +43,7 @@ const JihadBakkoura = () => {
         <RN.View style={styles.container}>
           <HeaderContent
            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="About company"
+            title={`${t("About Company")}`}
           />
           <RN.View style={styles.content}>
             <RN.FlatList

@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { Images } from '../../../assets';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {Images} from '../../../assets';
 import ButtonComp from '../../../components/Button/Button';
 import GiveImage from '../../../components/GiveImage/GiveImage';
 import HeaderContent from '../../../components/HeaderContent/HeaderContent';
@@ -8,13 +8,13 @@ import Input from '../../../components/Input/Input';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
-import { APP_ROUTES } from '../../../navigation/routes';
-import { HITSLOP } from '../../../utils/styles';
-
+import {APP_ROUTES} from '../../../navigation/routes';
+import {HITSLOP} from '../../../utils/styles';
 
 import authh from '@react-native-firebase/auth';
-import { Alert } from 'react-native';
-import { db } from '../../../config/firebase';
+import {Alert} from 'react-native';
+import {db} from '../../../config/firebase';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 const RecoverPasswordScreen = () => {
   const navigation = useNavigation();
@@ -23,11 +23,10 @@ const RecoverPasswordScreen = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    console.log(email)
-  })
+    console.log(email);
+  });
 
-
-  console.log(users)
+  console.log(users);
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -41,7 +40,7 @@ const RecoverPasswordScreen = () => {
 
     getUsers();
   }, []);
-  console.log(JSON.stringify(users, null, 2))
+  console.log(JSON.stringify(users, null, 2));
 
   const resetPassword = async (email: string) => {
     if (!users.includes(email)) {
@@ -53,25 +52,17 @@ const RecoverPasswordScreen = () => {
           { text: 'OK', onPress: () => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never) },
         ])
       } catch (err) {
-        Alert.alert(err)
+        Alert.alert(err);
       }
     }
-  }
+  };
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={
-              <RN.TouchableOpacity
-                hitSlop={HITSLOP}
-                style={styles.backBtn}
-                onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
-              </RN.TouchableOpacity>
-            }
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           />
           <RN.View style={styles.centerBox}>
             <TextView title="Recover password" />
@@ -84,7 +75,7 @@ const RecoverPasswordScreen = () => {
               <Input
                 value={email}
                 placeholder="bakkourainfo@gmail.com"
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={text => setEmail(text)}
               />
             </RN.View>
             <RN.View style={styles.sendBtn}>

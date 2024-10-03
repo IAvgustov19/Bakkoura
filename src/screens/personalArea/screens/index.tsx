@@ -16,7 +16,12 @@ import StorageApi, {
   pickImageFromDevice,
 } from '../../../store/personalArea/avatar';
 import ButtonComp from '../../../components/Button/Button';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
+
+import {t} from '../../../i18n'
+import Line from '../../../components/Line/Line';
+import Cancel from '../../../components/Cancel/Cancel';
 
 const PersonalArea = () => {
   const {
@@ -26,6 +31,8 @@ const PersonalArea = () => {
     updateLoading,
     initialRouteNameChanged,
     deleteAccount,
+    themeState,
+    currentTheme,
   } = useRootStore().personalAreaStore;
   const [avatarLoading, setAvatarLoading] = useState(true);
 
@@ -53,16 +60,16 @@ const PersonalArea = () => {
 
   const onHandleDeleteUser = () => {
     Alert.alert(
-      'Delete account',
-      'Are you sure you want to delete your account?',
+      `${t("Delete account")}`,
+      `${t("Are you sure you want to delete your account")}`,
       [
         {
-          text: 'No',
+          text: `${t("No")}`,
           onPress: () => console.log('cancel'),
           style: 'cancel',
         },
         {
-          text: 'Yes',
+          text: `${t("Yes")}`,
           onPress: () =>
             deleteAccount(() =>
               navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never),
@@ -74,6 +81,10 @@ const PersonalArea = () => {
     // deleteAccount(() => navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never));
   };
 
+  const onBackHandle = () => {
+    navigation.goBack();
+  };
+
   const navigation = useNavigation();
   return (
     <LinearContainer
@@ -81,14 +92,8 @@ const PersonalArea = () => {
         <RN.View style={styles.container}>
           {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
-            rightItem={
-              <RN.TouchableOpacity
-                style={styles.cancelBtn}
-                onPress={() => navigation.goBack()}>
-                <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-              </RN.TouchableOpacity>
-            }
-            title="Personal Area"
+            rightItem={ <ArrowLeftBack onPress={() => navigation.goBack()} />}
+            title= {`${t("Personal Area")}`}
           />
           <RN.ScrollView showsVerticalScrollIndicator={false}>
             <RN.TouchableOpacity
@@ -96,7 +101,7 @@ const PersonalArea = () => {
               onPress={onUploadImage}>
               {personalAreaData?.avatar ? (
                 <RN.View style={styles.imageContainer}>
-                  <Images.Svg.profileBackground width={79} height={79} />
+                  <themeState.profileBackIcon width={79} height={79} />
                   <RN.Image
                     source={{uri: personalAreaData.avatar}}
                     style={styles.profileImg}
@@ -112,33 +117,37 @@ const PersonalArea = () => {
                   ) : null}
                 </RN.View>
               ) : (
-                <Images.Svg.userIcon width={79} height={79} />
+                <themeState.userIcon width={79} height={79} />
               )}
             </RN.TouchableOpacity>
             <RN.TouchableOpacity
               style={styles.chooseBtn}
               onPress={onUploadImage}>
-              <RN.Text style={styles.chooseText}>Choose a photo</RN.Text>
+              <RN.Text style={styles.chooseText}>{`${t("Choose a photo")}`}</RN.Text>
             </RN.TouchableOpacity>
             <RN.View style={styles.content}>
               <RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
                     title={personalAreaData ? personalAreaData.name : 'User'}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.PERSONAL_DETAILS as never)
                     }
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
-                    title="Login & Password"
+                    title= {`${t("Login & Password")}`}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.LOGIN_PASSWORD as never)
                     }
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
-                    title="Secure Entry"
+                    title={`${t("Secure Entry")}`}
                     value={
                       personalAreaData ? personalAreaData?.secureEntry : 'Free'
                     }
@@ -154,7 +163,7 @@ const PersonalArea = () => {
                       navigation.navigate(APP_ROUTES.MENU as never)
                     }
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
                     title="Start Screen"
                     value={initialRouteNameChanged?.title}
@@ -167,7 +176,7 @@ const PersonalArea = () => {
                 </RN.View> */}
                 <RN.View style={styles.eventsTypeList}>
                   <ListItemCont
-                    title="Language"
+                    title={`${t("Language")}`}
                     value={
                       personalAreaData ? personalAreaData.language : 'English'
                     }
@@ -177,13 +186,28 @@ const PersonalArea = () => {
                   />
                 </RN.View>
                 {/* <RN.View style={styles.eventsTypeList}>
+                </RN.View> */}
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
+                  <ListItemCont
+                    title="Theme"
+                    value={currentTheme}
+                    onPress={() =>
+                      navigation.navigate(APP_ROUTES.THEME as never)
+                    }
+                  />
+                </RN.View>
+                {/* <RN.View style={[styles.eventsTypeList,{backgroundColor: themeState.mainBack},]}>
                   <ListItemCont title="Important Dates" onPress={() => {}} />
                   <RN.View style={styles.line}></RN.View>
                   <ListItemCont title="Couple Time" onPress={() => {}} />
                 </RN.View> */}
                 <RN.View style={[styles.eventsTypeList, {marginTop: 10}]}>
                   <ButtonComp
-                    title="Delete account"
+                    title={`${t("Delete account")}`}
                     onPress={onHandleDeleteUser}
                   />
                 </RN.View>
@@ -204,18 +228,6 @@ const styles = RN.StyleSheet.create({
     position: 'relative',
     paddingHorizontal: 15,
     alignItems: 'center',
-  },
-  bg: {
-    position: 'absolute',
-  },
-  cancelBtn: {
-    paddingTop: 5,
-    paddingRight: 5,
-    paddingBottom: 5,
-  },
-  cancelTxt: {
-    color: COLORS.grey,
-    fontSize: 16,
   },
   imageContainer: {
     position: 'relative',
@@ -249,14 +261,8 @@ const styles = RN.StyleSheet.create({
     height: windowHeight - windowHeight / 6,
   },
   eventsTypeList: {
-    backgroundColor: '#0D0D0D',
     borderRadius: 3,
     paddingHorizontal: 5,
     marginTop: 5,
-  },
-  line: {
-    backgroundColor: '#131F28',
-    width: '100%',
-    height: 1,
   },
 });

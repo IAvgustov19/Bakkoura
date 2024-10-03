@@ -10,6 +10,8 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {SelectColorData} from '../../utils/colors';
 
+import {t} from '../../i18n'
+
 const SectorColor = () => {
   const navigation = useNavigation();
   const {onSelectSectorColor, newSelectState} =
@@ -20,7 +22,7 @@ const SectorColor = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Color"
+            title={t("Color")}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
@@ -41,7 +43,7 @@ const SectorColor = () => {
               })}
             </RN.View>
             <StartBtn
-              text="Ok"
+              text={t("Ok")}
               subWidth={70}
               elWidth={55}
               primary

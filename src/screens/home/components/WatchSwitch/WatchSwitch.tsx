@@ -17,6 +17,7 @@ type Props = {
 const WatchSwitch: React.FC<Props> = ({title, handlePress}) => {
   const translateX = useSharedValue(20);
   const {whichWatch, changeWatch} = useRootStore().homeClockStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const handlePresss = () => {
     if (whichWatch === 1) {
@@ -39,7 +40,14 @@ const WatchSwitch: React.FC<Props> = ({title, handlePress}) => {
 
   return (
     <RN.TouchableOpacity onPress={handlePresss}>
-      <RN.View style={[styles.box]}>
+      <RN.View
+        style={[
+          styles.box,
+          {
+            backgroundColor: themeState.inputBaack,
+            borderColor: themeState.inputBorder,
+          },
+        ]}>
         <Animated.View style={[styles.animatedBox, animatedStyles]}>
           <LinearGradient colors={['#ECC271', '#7F642E']} style={styles.linear}>
             <RN.Text style={styles.title} fontFamily="RedHatDisplay-SemiBold">
@@ -56,10 +64,13 @@ export default observer(WatchSwitch);
 
 const styles = RN.StyleSheet.create({
   box: {
-    backgroundColor: '#000000',
     width: 110,
     height: 22,
     borderRadius: 20,
+    borderTopWidth: 0.6,
+    borderRightWidth: 0.3,
+    borderLeftWidth: 0.3,
+    borderBottomWidth: 0,
   },
   animatedBox: {
     position: 'absolute',

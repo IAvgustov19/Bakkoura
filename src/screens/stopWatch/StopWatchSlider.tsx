@@ -12,6 +12,8 @@ import { PomodoroData } from '../../utils/pomodoro';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { StopWatchData } from '../../utils/stopWatch';
 
+import {t} from '../../i18n'
+
 const StopWatchSlider = () => {
     const { width } = Dimensions.get('window');
     const navigation = useNavigation();
@@ -23,7 +25,7 @@ const StopWatchSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Stop Watch"
+                        title={t("Stopwatch")}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={StopWatchData} height={width / 1.6} width={'100%'} marginTop={40} />

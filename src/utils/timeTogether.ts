@@ -1,10 +1,11 @@
 import { Images } from '../assets';
+import {t} from '../i18n'
 
 export const TogetherData = [
     {
         id: 1,
         image: Images.Img.togetherSlide1,
-        text: 'The created etaps will be displayed in the list below, where you can change them by clicking on the 3 dots on the right, synchronize the clock with another user by clicking on the yellow sync button, or select the necessary stage to show information about it'
+        text: `${t("time_together_slider_1")}`
     },
     // {
     //     id: 2,
@@ -15,7 +16,7 @@ export const TogetherData = [
     {
         id: 2,
         image: Images.Img.togetherSlide3,
-        text: 'At the top of the screen, you can use the toggle switch to change the hour format of the clock - 24h or 30h'
+        text: `${t("time_together_slider_2")}`
     },
     // Вверху экрана с помощью тумблера вы можете изменять часовой формат часов - 24ч или 30ч \n
 ]

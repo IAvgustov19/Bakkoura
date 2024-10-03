@@ -51,16 +51,17 @@ const Vertices: React.FC<VerticesType> = ({
   watchLines,
 }) => {
   const {calendarCurrentTime} = useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <RN.View style={styles.watchBox}>
       <RN.Image
         style={styles.bakkouraWatch}
-        source={watchBack ? watchBack : Images.Img.sectorWatch}
+        source={watchBack ? watchBack : themeState.bakkouraWatchs.watchBack}
       />
       <RN.Image
         style={styles.bakkouraWatchHours}
-        source={watchFront ? watchFront : Images.Img.bakkouraWatchLines}
+        source={watchFront ? watchFront : themeState.bakkouraWatchs.watchFront}
       />
       {data.map((item, index) => {
         return (

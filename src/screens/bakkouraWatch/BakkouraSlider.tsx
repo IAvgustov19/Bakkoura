@@ -8,6 +8,8 @@ import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { BakkouraData } from '../../utils/bakkoura';
 
+import {t} from '../../i18n'
+
 
 const BakkouraSlider = () => {
     const navigation = useNavigation();
@@ -20,7 +22,7 @@ const BakkouraSlider = () => {
 
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Bakkoura Watch"
+                        title={t("Bakkoura Watch")}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={BakkouraData} height={width / 2.4} width={'100%'} marginTop={60}/>

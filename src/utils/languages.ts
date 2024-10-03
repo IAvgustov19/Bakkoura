@@ -23,4 +23,7 @@ export const Countries = [
   {label: 'OAE', value: 'OAE'},
   {label: 'USA', value: 'USA'},
   {label: 'UK', value: 'UK'},
+  {label: 'RU', value: 'RU'},
+  {label: 'EG', value: 'EG'},
+  {label: 'FR', value: 'FR'},
 ];

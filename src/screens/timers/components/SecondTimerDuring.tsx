@@ -23,12 +23,20 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
     timerStatus,
     increasePercentage,
   } = useRootStore().timerStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
         {stop ? <RN.Text style={styles.pausa}>pause</RN.Text> : null}
-        <RN.View style={styles.timerPercentBox}>
+        <RN.View
+          style={[
+            styles.timerPercentBox,
+            {
+              backgroundColor: themeState.inputBaack,
+              borderColor: themeState.inputBorder,
+            },
+          ]}>
           <LinearGradient
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
@@ -36,23 +44,27 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
               width: `${timerStatus.back ? percentage : increasePercentage}%`,
               height: '100%',
             }}
-            colors={[
-              COLORS.black2,
-              COLORS.darkGreyText,
-              COLORS.lightGreen,
-            ]}></LinearGradient>
+            colors={themeState.timer}></LinearGradient>
         </RN.View>
         <RN.View style={styles.timerTimeBox}>
           {timerStatus.finished ? (
-            <RN.Text style={styles.finished}>{currentTime}</RN.Text>
+            <RN.Text style={[styles.finished, {color: themeState.title}]}>
+              {currentTime}
+            </RN.Text>
           ) : timerStatus.back ? (
-            <RN.Text style={styles.timerTime}>{secondTimerValue.time}</RN.Text>
+            <RN.Text style={[styles.timerTime, {color: themeState.title}]}>
+              {secondTimerValue.time}
+            </RN.Text>
           ) : (
-            <RN.Text style={styles.timerTime}>{secondTimerTime.time}</RN.Text>
+            <RN.Text style={[styles.timerTime, {color: themeState.title}]}>
+              {secondTimerTime.time}
+            </RN.Text>
           )}
           {timerStatus.finished ? (
             <RN.View style={styles.finishedStatus}>
-              <RN.Text style={styles.timeOver}>Time is over</RN.Text>
+              <RN.Text style={[styles.timeOver, {color: themeState.green}]}>
+                Time is over
+              </RN.Text>
               <Images.Svg.bellGreen width={35} />
             </RN.View>
           ) : (
@@ -90,10 +102,11 @@ const styles = StyleSheet.create({
   timerPercentBox: {
     width: '100%',
     height: 90,
-    backgroundColor: '#000',
     borderRadius: 80,
     overflow: 'hidden',
     marginTop: 20,
+    borderWidth: 1,
+    borderBottomWidth: 0,
   },
   timerTimeBox: {
     marginTop: 20,

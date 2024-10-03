@@ -8,6 +8,8 @@ import auth from '@react-native-firebase/auth';
 import PushNotification from 'react-native-push-notification';
 import { channelId } from '../../../App';
 
+import {t} from '../../i18n'
+
 export class PomodoroStore {
   constructor() {
     makeAutoObservable(this);
@@ -73,7 +75,7 @@ export class PomodoroStore {
     const userId = auth().currentUser.uid;
     this.setNewTaskState('uid', userId);
     if (!this.newTaskState.name) {
-      Alert.alert('Enter task name');
+      Alert.alert(`${t("Enter task name")}`);
       return;
     }
     this.calculateTime();
@@ -273,15 +275,15 @@ export class PomodoroStore {
 
     PushNotification.localNotification({
       channelId: channelId, // This is optional, and you may need to create a channel for Android
-      title: "Pomodoro Timer",
-      message: `Pomodoro session has ended. ${this.currentBreakTime.id === 3 && this.shortBreakCount < 4
-        ? "Back to Pomodoro!"
+      title: `${t("Pomodoro Timer")}`,
+      message: `${t("Pomodoro session has ended")} ${this.currentBreakTime.id === 3 && this.shortBreakCount < 4
+        ? `${t("Back to Pomodoro!")}`
         : this.currentBreakTime.id === 2
-          ? "Back to Pomodoro!"
+          ? `${t("Back to Pomodoro!")}`
           : this.currentBreakTime.id === 1
             ? this.shortBreakCount < 3
-              ? "Take a short break!"
-              : "Time for a long break!"
+              ? `${t("Take a short break!")}`
+              : `${t("Time for a long break!")}`
             : `Unknown state: ID ${this.currentBreakTime.id}` // Print the actual ID for debugging
         }`,
       playSound: true,

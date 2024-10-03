@@ -23,14 +23,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, Text } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import TextView from '../../components/Text/Text';
-//import { t } from '../../i18n';
+import { t } from '../../i18n';
 
 const HomeScreen = () => {
   const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
   const { getPersonalState } = useRootStore().personalAreaStore;
   const { nearDay, filterNearDay, allEventsData } = useRootStore().calendarStore;
   const navigation = useNavigation();
-  const { personalAreaData, updateLoading } = useRootStore().personalAreaStore;
+  const {personalAreaData, updateLoading, themeState} =
+    useRootStore().personalAreaStore;
   const [userData, setUserData] = useState(null);
   const [activity, setActivity] = useState(false);
 
@@ -112,14 +113,14 @@ const HomeScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            // title="Home"
             rightItem={
               <RN.View style={styles.profile}>
                 <RN.TouchableOpacity
+                  style={styles.messageIcon}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.MESSENGER as never)
                   }>
-                  <Images.Svg.messageIcon/>
+                  <themeState.messageIcon />
                   {activity && <RN.View style={styles.activity} />}
                 </RN.TouchableOpacity>
                 <RN.TouchableOpacity
@@ -129,7 +130,7 @@ const HomeScreen = () => {
                   }>
                   {personalAreaData?.avatar ? (
                     <RN.View style={styles.imageContainer}>
-                      <Images.Svg.profileBackground width={55} height={55} />
+                      <themeState.profileBackIcon width={55} height={55} />
                       <RN.Image
                         source={{ uri: personalAreaData.avatar }}
                         style={styles.profileImg}
@@ -145,7 +146,7 @@ const HomeScreen = () => {
                       ) : null}
                     </RN.View>
                   ) : (
-                    <Images.Svg.userIcon width={50} height={50} />
+                    <themeState.userIcon width={50} height={50} />
                   )}
                 </RN.TouchableOpacity>
               </RN.View>
@@ -154,13 +155,14 @@ const HomeScreen = () => {
           <RN.View style={styles.content}>
             <RN.View style={styles.watchBox}>
               <TextView
-                style={[styles.title, { marginTop: -15 }]}
-                text={`${personalAreaData.name}, messageToYou`}
+                color={themeState.darkGrayText}
+                style={[styles.title, {marginTop: -15}]}
+                text={`${personalAreaData.name}, ${t("Message to You!")}`}
               />
               <TextView
                 fonWeight="300"
                 style={[styles.title, { marginTop: 5 }]}
-                title={'Today is your day! Do something good!'}
+                title={`${t("Today is your day! Do something good!")}`}
               />
               <RN.View style={styles.renderWatchs}>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
@@ -243,6 +245,9 @@ const styles = RN.StyleSheet.create({
   },
   renderWatchs: {
     marginTop: 9,
+  },
+  messageIcon: {
+    justifyContent: 'center',
   },
   activity: {
     height: 9,

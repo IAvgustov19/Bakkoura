@@ -24,6 +24,7 @@ const ToDoTimerHistory = () => {
     clearFilterType,
   } = useRootStore().todoTimer;
   const navigation = useNavigation();
+  const {themeState} = useRootStore().personalAreaStore;
   const isFocused = useIsFocused();
 
 
@@ -75,8 +76,12 @@ const ToDoTimerHistory = () => {
                   <OutlineBtn
                     key={index}
                     text={item.title}
-                    textColor={filterType === item.key && COLORS.yellow}
-                    borderColor={filterType === item.key && COLORS.yellow}
+                    textColor={
+                      filterType === item.key && themeState.selectYellow
+                    }
+                    borderColor={
+                      filterType === item.key && themeState.selectYellow
+                    }
                     onPress={() => filterItemsByTime(item.key)}
                     Width={'30%'}
                   />

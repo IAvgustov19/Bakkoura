@@ -19,6 +19,8 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import {APP_ROUTES} from '../../navigation/routes';
 import {observer} from 'mobx-react-lite';
 import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
+import { t } from '../../i18n';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const DateScreen = () => {
   const navigation = useNavigation();
@@ -122,13 +124,9 @@ const DateScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Date"
+            title={`${t("date")}`}
             rightItem={
-              <RN.TouchableOpacity
-                style={styles.cancelBtn}
-                onPress={() => navigation.goBack()}>
-                <RN.Text style={styles.cancelTxt}>Cancel</RN.Text>
-              </RN.TouchableOpacity>
+              <ArrowLeftBack onPress={() => navigation.goBack()} />
             }
           />
           <RN.View style={styles.row}>
@@ -136,7 +134,7 @@ const DateScreen = () => {
               data={startListData}
               itemHeight={55}
               onChange={firstHandleChange}
-              label={'Day'}
+              label={`${t("Day")}`}
               selectedValue={firstSelectedValue}
               initialScrollIndex={initialScrollIndexStart}
             />
@@ -146,7 +144,7 @@ const DateScreen = () => {
               selectedValue={secondSelectedValue}
               onChange={secondHandleChange}
               style={styles.middleListStyle}
-              label={'Month.'}
+              label={`${t("Month")}`}
               initialScrollIndex={initialScrollIndexMiddle}
             />
             <DateList
@@ -155,7 +153,7 @@ const DateScreen = () => {
               selectedValue={thirdSelectedValue}
               onChange={thirdHandleChange}
               style={styles.middleListStyle}
-              label={'Year'}
+              label={`${t("year")}`}
               initialScrollIndex={0}
             />
             <DataListLinearBack />
@@ -164,7 +162,7 @@ const DateScreen = () => {
             <StartBtn
               onPress={okDate}
               primary={true}
-              text="OK"
+              text={`${t("Ok")}`}
               subWidth={70}
               elWidth={55}
             />

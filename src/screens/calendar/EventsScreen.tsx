@@ -13,17 +13,13 @@ import Events from './components/Events';
 import Calendars from './components/Calendars';
 import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { t } from '../../i18n';
 
 const EventScreen = () => {
-  const {
-    calendarCurrentTime,
-    setSwitchCalendar,
-    switchCalendar,
-    setAllEvents,
-    allEventsData,
-  } = useRootStore().calendarStore;
+  const {calendarCurrentTime, setSwitchCalendar, switchCalendar, setAllEvents} =
+    useRootStore().calendarStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const navigation = useNavigation();
-  // console.log('allEventsData', allEventsData);
 
   const toggleSwitch = () => {
     setTimeout(() => {
@@ -41,13 +37,13 @@ const EventScreen = () => {
   }, [switchCalendar]);
 
   const title = useMemo(() => {
-    let t = '';
+    let title = '';
     if (switchCalendar) {
-      t = 'Calendar';
+      title = `${t("Calendar")}`;
     } else {
-      t = 'Calendar';
+      title = `${t("Calendar")}`;
     }
-    return t;
+    return title;
   }, [switchCalendar]);
 
   return (
@@ -55,7 +51,7 @@ const EventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.EVENTS_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />

@@ -9,6 +9,8 @@ import { Dimensions } from 'react-native';
 import { WorldData } from '../../utils/worldTime';
 import { OtherData } from '../../utils/other';
 
+import {t} from '../../i18n'
+
 
 const OtherSlider = () => {
     const navigation = useNavigation();
@@ -18,10 +20,9 @@ const OtherSlider = () => {
         <LinearContainer
             children={
                 <>
-
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Other"
+                        title={`${t('Other')}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={OtherData} height={width / 1.9} width={'100%'} marginTop={70} />

@@ -1,11 +1,18 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { Alert } from 'react-native';
-import { genPos } from '../../helper/chart';
-import { hoursSecondsToS } from '../../helper/helper';
-import { SelectListDataInitial, SelectListDataType } from '../../types/alarm';
-import { SelectColorData } from '../../utils/colors';
-import { addSectorToFirestore, deleteSectorFromFirestore, getSectorFromFirestore, getSectorsFromFirestore, updateSectorInFirestore } from '../../services/firestoreService';
+import {makeAutoObservable, runInAction} from 'mobx';
+import {Alert} from 'react-native';
+import {genPos} from '../../helper/chart';
+import {hoursSecondsToS} from '../../helper/helper';
+import {SelectListDataInitial, SelectListDataType} from '../../types/alarm';
+import {SelectColorData} from '../../utils/colors';
+import {
+  addSectorToFirestore,
+  deleteSectorFromFirestore,
+  getSectorFromFirestore,
+  getSectorsFromFirestore,
+  updateSectorInFirestore,
+} from '../../services/firestoreService';
 import auth from '@react-native-firebase/auth';
+import { t } from '../../i18n';
 
 export class BakkouraWatchStore {
   constructor() {
@@ -19,7 +26,7 @@ export class BakkouraWatchStore {
   onSelectSectorColor = (id: number | string) => {
     const selectSectorColor = SelectColorData.find(item => item.id === id);
     if (this.listSelects.some(item => item.color === selectSectorColor.color)) {
-      Alert.alert('This color has already been selected');
+      Alert.alert(`${t("This color has already been selected")}`);
     } else {
       this.setNewSelectState('color', selectSectorColor.color);
     }
@@ -41,19 +48,20 @@ export class BakkouraWatchStore {
       genPos({
         hour: this.newSelectState.fromHour,
         min: this.newSelectState.fromMin,
-      })
+      }),
     );
     this.setNewSelectState(
       'end',
       genPos({
         hour: this.newSelectState.toHour,
         min: this.newSelectState.toMin,
-      })
+      }),
     );
   };
 
   selectStartEndTime = (callback?: () => void) => {
-    const startMins = this.newSelectState.fromHour * 60 + this.newSelectState.fromMin;
+    const startMins =
+      this.newSelectState.fromHour * 60 + this.newSelectState.fromMin;
     const endMins = this.newSelectState.toHour * 60 + this.newSelectState.toMin;
 
     if (startMins < endMins) {
@@ -61,34 +69,32 @@ export class BakkouraWatchStore {
         !this.listSelects.some(
           item =>
             this.newSelectState.start >= item.start &&
-            this.newSelectState.end <= item.end
+            this.newSelectState.end <= item.end,
         )
       ) {
         this.listSelects = [...this.listSelects, this.newSelectState];
         // this.isHas = false;
         callback?.();
       } else {
-        Alert.alert('This time has already been selected');
+        Alert.alert(`${t("This time has already been selected")}`);
       }
     } else {
-      Alert.alert('End time should be higher than start time');
+      Alert.alert(`${t("End time should be higher than start time")}`);
     }
   };
 
   addNewSelect = async (callback?: () => void) => {
     const userId = auth().currentUser?.uid;
     if (!userId) {
-      Alert.alert('User not authenticated');
+      Alert.alert(`${t("User not authenticated")}`);
       return;
     }
     if (this.isHas) {
-      console.log('Updating sector', this.newSelectState);
       await this.updateSector(this.newSelectState.id);
       this.isHas = false;
       callback?.();
       this.clearState();
     } else {
-      
       if (this.newSelectState.name && this.newSelectState.color) {
         this.setNewSelectState('uid', userId);
         await addSectorToFirestore(this.newSelectState);
@@ -96,7 +102,7 @@ export class BakkouraWatchStore {
         callback?.();
         this.clearState();
       } else {
-        Alert.alert('Name or color is empty');
+        Alert.alert(`${t("Name or color is empty")}`);
       }
     }
   };
@@ -108,16 +114,16 @@ export class BakkouraWatchStore {
       this.newSelectState = sector;
       await getSectorFromFirestore(id);
     } else {
-      Alert.alert('Sector not found');
+      Alert.alert(`${t("Sector not found")}`);
     }
   };
 
   updateSector = async (id: number | string) => {
     const sectorToUpdate = this.listSelects.find(item => item.id === id);
     if (sectorToUpdate) {
-      const updatedSector = { ...sectorToUpdate, ...this.newSelectState };
+      const updatedSector = {...sectorToUpdate, ...this.newSelectState};
       const updatedList = this.listSelects.map(item =>
-        item.id === id ? updatedSector : item
+        item.id === id ? updatedSector : item,
       );
 
       try {

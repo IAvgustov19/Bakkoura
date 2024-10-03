@@ -14,6 +14,8 @@ import {windowHeight} from '../../utils/styles';
 import TimeClinicListItem from './components/TimeClinicListItem';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const TimeClinic = () => {
   const navigation = useNavigation();
 
@@ -40,7 +42,7 @@ const TimeClinic = () => {
         <RN.View style={styles.container}>
           <HeaderContent
            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Time Clinic"
+            title={`${t('Time Clinic')}`}
           />
           <RN.View style={styles.content}>
             <RN.FlatList

@@ -20,6 +20,9 @@ import useRootStore from '../../../hooks/useRootStore';
 import LoadingScreen from '../../auth/Loading/LoadingScreen';
 import {COLORS} from '../../../utils/colors';
 
+import {t} from '../../../i18n'
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+
 const LoginPassword = () => {
   const navigation = useNavigation();
   const {setNotAuthorized} = useRootStore().authStore;
@@ -69,11 +72,11 @@ const LoginPassword = () => {
       await Promise.all(updatePromises);
 
       Alert.alert(
-        'Success',
-        'User password updated',
+        `${t("Success")}`,
+        `${t("User password updated")}`,
         [
           {
-            text: 'OK',
+            text: `${t("Ok")}`,
             onPress: () => navigation.goBack(),
           },
         ],
@@ -81,9 +84,9 @@ const LoginPassword = () => {
       );
     } catch (error) {
       if (error.code === 'auth/weak-password') {
-        Alert.alert('Password should be at least 6 characters');
+        Alert.alert(`${t("Error")}`,`${t("Password should be at least 6 characters")}`);
       } else if (error.code === 'auth/requires-recent-login') {
-        Alert.alert('To update your password, you need to log in again.');
+        Alert.alert(`${t("Error")}`,`${t("To update your password, you need to log in again")}`);
       } else {
         Alert.alert(error.code);
       }
@@ -109,16 +112,15 @@ const LoginPassword = () => {
                 <RN.TouchableOpacity
                   style={styles.back}
                   onPress={() => navigation.goBack()}>
-                  <Images.Svg.arrowLeft />
-                  <TextView text="Back" />
+                 <ArrowLeftBack onPress={() => navigation.goBack()} />
                 </RN.TouchableOpacity>
               }
-              title="Login & Password"
+              title={`${t("Login & Password")}`}
             />
             <RN.View style={styles.content}>
               <RN.View style={styles.inputBox}>
                 <Input
-                  placeholder="Login"
+                  placeholder={`${t("login")}`}
                   value={userData.login}
                   inputRef={ref => (inputRefs.current.login = ref)}
                   onPressIn={() => focusInput('login')}
@@ -127,7 +129,7 @@ const LoginPassword = () => {
               <RN.View style={styles.inputBox}>
                 <Input
                   secureTextEntry={showHide.showPassword}
-                  placeholder="New Password"
+                  placeholder={`${t("New Password")}`}
                   value={userData.newPassword}
                   inputRef={ref => (inputRefs.current.password = ref)}
                   onPressIn={() => focusInput('password')}
@@ -162,7 +164,7 @@ const LoginPassword = () => {
                         style={{marginTop: 3}}
                       />
                     ) : (
-                      'Ok'
+                      `${t("Ok")}`
                     )
                   }
                   elWidth={55}

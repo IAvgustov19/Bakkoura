@@ -1,6 +1,8 @@
 import {APP_ROUTES} from '../navigation/routes';
 import {ImageSourcePropType} from 'react-native';
 
+import {t} from '../i18n'
+
 export type AboutListType = {
   id: number;
   title: string;
@@ -11,7 +13,7 @@ export type AboutListType = {
 export const AboutList: AboutListType[] = [
   {
     id: 1,
-    title: 'About Jihad Bakkoura',
+    title: `${t("About Jihad Bakkoura")}`,
     navigate: APP_ROUTES.JIHAD_BAKKOURA_TIME_CLINIC,
     isbtn: false,
   },

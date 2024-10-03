@@ -7,6 +7,7 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { ChatData } from '../../utils/messenger';
+import { t } from '../../i18n';
 
 
 const MessengerSlider = () => {
@@ -20,7 +21,7 @@ const MessengerSlider = () => {
 
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Messenger"
+                        title={`${t("Messenger")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={ChatData} height={width / 1.6} width={'100%'} marginTop={40} />

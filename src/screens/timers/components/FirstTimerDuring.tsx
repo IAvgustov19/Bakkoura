@@ -8,18 +8,20 @@ import useRootStore from '../../../hooks/useRootStore';
 import { Lotties } from '../../../lotties/lottie';
 import { horizontalScale, moderateScale } from '../../../utils/dimensions';
 import { windowWidth } from '../../../utils/styles';
+import { t } from '../../../i18n';
 
 type Props = { stop?: boolean; finished?: boolean };
 
 const FirstTimerDuring: React.FC<Props> = ({ stop, finished }) => {
   const { firstTimerValue, currentTime, firstTimerTime, timerStatus } =
     useRootStore().timerStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const timeLottie = React.useMemo(() => {
     return (
       <LottieContent
         autoPlay={!timerStatus.stop || !timerStatus.finished}
-        source={Lotties.timer}
+        source={themeState.lotties.timer}
         width={windowWidth - 10}
         speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
       />
@@ -29,15 +31,21 @@ const FirstTimerDuring: React.FC<Props> = ({ stop, finished }) => {
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
-        <RN.Image style={styles.duringTimerBg} source={BG.duringTimerBg} />
-        {/* {timeLottie} */}
+      {timeLottie}
+
         <RN.View style={styles.duringTimerBox}>
           {timerStatus.finished ? (
-            <RN.Text style={styles.duringTimer}>{currentTime}</RN.Text>
+            <RN.Text style={[styles.duringTimer, {color: themeState.title}]}>
+              {currentTime}
+            </RN.Text>
           ) : timerStatus.back ? (
-            <RN.Text style={styles.duringTimer}>{firstTimerValue.time}</RN.Text>
+            <RN.Text style={[styles.duringTimer, {color: themeState.title}]}>
+              {firstTimerValue.time}
+            </RN.Text>
           ) : (
-            <RN.Text style={styles.duringTimer}>{firstTimerTime.time}</RN.Text>
+            <RN.Text style={[styles.duringTimer, {color: themeState.title}]}>
+              {firstTimerTime.time}
+            </RN.Text>
           )}
         </RN.View>
         <RN.View style={styles.currentTimeBox}>
@@ -46,13 +54,15 @@ const FirstTimerDuring: React.FC<Props> = ({ stop, finished }) => {
           ) : (
             <>
               <Images.Svg.bellBlueLeft />
-              <RN.Text style={styles.currentTime}>{currentTime}</RN.Text>
+              <RN.Text style={{color: themeState.gray}}>{currentTime}</RN.Text>
             </>
           )}
         </RN.View>
-        {stop ? <RN.Text style={styles.pausa}>Pause</RN.Text> : null}
+        {stop ? <RN.Text style={[styles.pausa, {color: themeState.green}]}>{t("pause")}</RN.Text> : null}
         {timerStatus.finished ? (
-          <RN.Text style={styles.pausa}>Time is over</RN.Text>
+          <RN.Text style={[styles.pausa, {color: themeState.green}]}>
+            {t("time is over")}
+          </RN.Text>
         ) : null}
       </RN.View>
     </RN.View>
@@ -75,6 +85,9 @@ const styles = StyleSheet.create({
   duringTimerBg: {
     width: '100%',
     objectFit: 'contain',
+    position: 'absolute',
+  },
+  lottieBox: {
     position: 'absolute',
   },
   duringTimerBox: {

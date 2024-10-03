@@ -1,17 +1,19 @@
+import {t} from '../i18n'
+
 export const SecureEntries = [
   {
     id: 1,
-    title: 'Password',
+    title: `${t("pass")}`,
     active: false,
   },
   {
     id: 2,
-    title: 'Biometry',
+    title: `${t("Biometry")}`,
     active: false,
   },
   {
     id: 3,
-    title: 'Free',
+    title: `${t("Free")}`,
     active: true,
   },
 ];

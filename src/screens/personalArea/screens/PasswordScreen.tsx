@@ -10,6 +10,7 @@ import ButtonComp from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import RN from '../../../components/RN';
 import { useNavigation } from '@react-navigation/native';
+import { t } from '../../../i18n';
 
 const PasswordScreen = () => {
     const navigation = useNavigation();
@@ -25,7 +26,7 @@ const PasswordScreen = () => {
             setPromptVisible(false);
         } catch (error) {
             console.error('Error updating password:', error);
-            Alert.alert('Error', 'There was an issue updating the password.');
+            Alert.alert(`${t("Error")}`, `${t("There was an issue updating the password")}`);
         }
         navigation.goBack();
     }, [password]);

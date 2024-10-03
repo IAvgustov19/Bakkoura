@@ -38,6 +38,7 @@ export const CalendarComp: React.FC<Props> = ({
   weekend,
 }) => {
   const [activeDate, setActiveDate] = useState<Date>(date);
+  const {themeState} = useRootStore().personalAreaStore;
 
   useEffect(() => {
     if (!(date instanceof Date)) {
@@ -75,15 +76,18 @@ export const CalendarComp: React.FC<Props> = ({
               style={[
                 styles.dateText,
                 {
-                  color: weekend
-                    ? item.value === today
+                  color:
+                    item.value === today
                       ? COLORS.black
-                      : colIndex == 6
-                      ? COLORS.grey
-                      : colIndex == 5
-                      ? COLORS.grey
-                      : COLORS.white
-                    : COLORS.white,
+                      : weekend
+                      ? item.value === today
+                        ? COLORS.black
+                        : colIndex == 6
+                        ? COLORS.grey
+                        : colIndex == 5
+                        ? COLORS.grey
+                        : themeState.calendarText
+                      : themeState.calendarText,
                   fontSize: dayFontSize ? dayFontSize : 18,
                 },
               ]}>
@@ -110,7 +114,7 @@ export const CalendarComp: React.FC<Props> = ({
       ]}>
       {showMonth ? (
         <RN.Text style={[styles.currentDate, {fontSize: currentDateFontSize}]}>
-          {`${months[new Date(activeDate).getMonth()].slice(0, 3)}`}
+          {`${months[new Date(activeDate).getMonth()]}`}
         </RN.Text>
       ) : null}
       {showWeekDays ? (

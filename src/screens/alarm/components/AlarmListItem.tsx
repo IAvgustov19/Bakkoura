@@ -5,39 +5,41 @@ import RN from '../../../components/RN';
 import SimpleSwitch from '../../../components/SimpleSwitch/SimpleSwitch';
 import TextView from '../../../components/Text/Text';
 import {COLORS} from '../../../utils/colors';
+import {normalizeHeight} from '../../../utils/dimensions';
+import useRootStore from '../../../hooks/useRootStore';
 
 type Props = {
   time?: string;
-  description?: string;
+  name?: string;
   isActive?: boolean;
   handleInactiveAlarm?: (e?: any) => void;
 };
 
 const AlarmListItem: React.FC<Props> = ({
   time,
-  description,
+  name,
   isActive,
   handleInactiveAlarm,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <LinearGradient
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
-      colors={
-        isActive
-          ? ['#0D0D0D', '#051222', '#00448E']
-          : [COLORS.black, COLORS.black]
-      }
+      colors={isActive ? themeState.alarmActiveList : themeState.alarmList}
       style={styles.itemContainer}>
       <RN.View style={styles.timeBox}>
         <RN.Text
           style={[
             styles.time,
-            {color: isActive ? COLORS.green : COLORS.white},
+            {color: isActive ? COLORS.green : themeState.alarmText},
           ]}>
           {time}
         </RN.Text>
-        <TextView style={styles.desc} text={description} />
+        <RN.Text
+          style={[styles.name, {color: isActive ? COLORS.green : COLORS.grey}]}>
+          {name}
+        </RN.Text>
       </RN.View>
       <SimpleSwitch active={isActive} handlePress={handleInactiveAlarm} />
     </LinearGradient>
@@ -53,7 +55,6 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     paddingVertical: 15,
-    backgroundColor: COLORS.black,
     borderRadius: 5,
     marginVertical: 3,
   },
@@ -61,11 +62,12 @@ const styles = RN.StyleSheet.create({
     gap: 5,
   },
   time: {
-    fontSize: 36,
+    fontSize: normalizeHeight(126),
     color: COLORS.white,
     fontWeight: '200',
   },
-  desc: {
+  name: {
     textAlign: 'left',
+    fontSize: normalizeHeight(46),
   },
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,36 +7,32 @@ import {
   ImageBackground,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { OnBoardingData } from '../../utils/onBoardingData';
+import {OnBoardingData} from '../../utils/onBoardingData';
 import ButtonComp from '../Button/Button';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { APP_ROUTES } from '../../navigation/routes';
+import {APP_ROUTES} from '../../navigation/routes';
 import GiveImage from '../GiveImage/GiveImage';
-import { Images } from '../../assets';
+import {Images} from '../../assets';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useRootStore from '../../hooks/useRootStore';
 import auth from '@react-native-firebase/auth';
 import LoadingScreen from '../../screens/auth/Loading/LoadingScreen';
 import * as Progress from 'react-native-progress';
 
-
 const OnBoarding = () => {
   const navigation = useNavigation();
-  const { setAuthorized } = useRootStore().authStore;
+  const {setAuthorized} = useRootStore().authStore;
 
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     auth().currentUser && setLoading(false);
-  }, [auth().currentUser])
-
+  }, [auth().currentUser]);
 
   return (
     <>
       {
-
        auth().currentUser  ?
        <LinearGradient colors={['#485661', '#090A0A']} style={{ width: '100%', height: '100%' }}>
          <LoadingScreen loading={true} setLoading={setLoading} />
@@ -82,7 +78,7 @@ const OnBoarding = () => {
   );
 };
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   wrapper: {},

@@ -6,8 +6,12 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import {Concept30hTexts} from '../../constants/timeClinic';
+import {Concept30hTexts_ar} from '../../constants/timeClinic_ar';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';
+
+import {t} from '../../i18n'
+import l from '../../i18n'
 
 const Concept30h = () => {
   const navigation = useNavigation();
@@ -18,13 +22,19 @@ const Concept30h = () => {
     });
   }, [Concept30hTexts]);
 
+  const renderTexts_ar = useCallback(() => {
+    return Concept30hTexts.map((item, index) => {
+      return <ConceptItem key={index} title={item.title} texts={item.texts} />;
+    });
+  }, [Concept30hTexts_ar]);
+
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="30H Concept"
+            title={`${t("30H Concept")}`}
           />
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
@@ -36,7 +46,13 @@ const Concept30h = () => {
                   source={Images.Img.concept30h}
                 />
               </RN.View>
-              <RN.View>{renderTexts()}</RN.View>
+              {
+                l.locale ==='en'?
+                <RN.View>{renderTexts()}</RN.View>
+                :
+                <RN.View>{renderTexts_ar()}</RN.View>
+              }
+              
             </RN.View>
           </RN.ScrollView>
         </RN.View>

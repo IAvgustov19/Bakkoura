@@ -1,4 +1,5 @@
 import {ConstructorSvgs} from '../assets/constructor';
+import {t} from '../i18n'
 
 export const WatchConstrctorData = {
   bodyTypes: [
@@ -92,26 +93,26 @@ export const WatchConstrctorData = {
 export const ConstructorParts = [
   {
     key: 'bodyTypes',
-    title: 'Body Type',
+    title: `${t("Body Type")}`,
   },
   {
     key: 'faceTypes',
-    title: 'Clock face Type',
+    title: `${t("Clock face Type")}`,
   },
   {
     key: 'arrows',
-    title: 'Arrows Type',
+    title: `${t("Arrows Type")}`,
   },
   {
     key: 'numbers',
-    title: 'Numbers Type',
+    title: `${t("Numbers Type")}`,
   },
   {
     key: 'backStyles',
-    title: 'Background Style',
+    title: `${t("Background Style")}`,
   },
   {
     key: 'options',
-    title: 'Add. Options',
+    title: `${t("add_options")}`,
   },
 ];

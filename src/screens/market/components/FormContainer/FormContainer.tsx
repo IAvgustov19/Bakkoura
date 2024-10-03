@@ -23,6 +23,8 @@ import {COLORS} from '../../../../utils/colors';
 import {HITSLOP, windowHeight, windowWidth} from '../../../../utils/styles';
 import CustomDropdown from '../../../timeBiotic/components/CustomSelect';
 
+import {t} from '../../../../i18n'
+
 type Props = {
   black?: boolean;
   options?: any[];
@@ -41,6 +43,7 @@ const FormContainer: React.FC<Props> = ({
   withSelect = false,
 }) => {
   const {setOrderState, orderState, deleteFile} = useRootStore().marketStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const {setIsEmail} = useRootStore().timeBiotic;
   const [fileLoading, setFileLoading] = React.useState(false);
   const [emailErr, setEmailErr] = React.useState(null);
@@ -54,7 +57,7 @@ const FormContainer: React.FC<Props> = ({
         setEmailErr(null);
         setIsEmail(true);
       } else if (!isValidEmail(email)) {
-        setEmailErr('Email is invalid');
+        setEmailErr(`${t('Email is invalid')}`);
         setIsEmail(false);
       } else {
         setEmailErr(null);
@@ -119,17 +122,18 @@ const FormContainer: React.FC<Props> = ({
       <Input
         value={orderState.name}
         black={black}
-        title="Name"
-        placeholder="Name"
+        title={`${t('name')}`}
+        placeholder={`${t('name')}`}
         backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => setOrderState('name', e)}
+        bordered
       />
       <Input
         value={orderState.phone}
         black={black}
-        title="Phone"
-        placeholder="Phone"
+        title={`${t('Phone')}`}
+        placeholder={`${t('Phone')}`}
         backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => setOrderState('phone', e)}
@@ -139,8 +143,8 @@ const FormContainer: React.FC<Props> = ({
       <Input
         value={orderState.email}
         black={black}
-        title="E-mail"
-        placeholder="E-mail"
+        title={`${t('email')}`}
+        placeholder={`${t('email')}`}
         backColor={black ? COLORS.black : COLORS.c3}
         width="100%"
         onChangeText={e => handleChange(e)}
@@ -152,18 +156,19 @@ const FormContainer: React.FC<Props> = ({
         <Input
           value={orderState.message}
           black={black}
-          title="Your ideas"
+          title={`${t('Your ideas')}`}
           height={100}
-          placeholder="Text"
+          placeholder={`${t('Enter your idea')}`}
           width="100%"
           multiLine={true}
           textAlignVertical="top"
-          backColor={black ? COLORS.black : COLORS.c3}
           onChangeText={e => setOrderState('message', e)}
           onPressIn={bottomInputPress}
         />
       ) : (
-        <CustomDropdown options={options} onSelect={onSelect} black={true} />
+        <RN.View style={{height: 100, width: '100%'}}>
+          <CustomDropdown options={options} onSelect={onSelect} black={true} />
+        </RN.View>
       )}
       {!uploadAtTop ? (
         <>
@@ -185,7 +190,7 @@ const FormContainer: React.FC<Props> = ({
                   />
                 </RN.View>
                 <RN.TouchableOpacity hitSlop={HITSLOP} onPress={deleteFile}>
-                  <Images.Svg.cancelGrey />
+                  <themeState.delete />
                 </RN.TouchableOpacity>
               </>
             ) : null}

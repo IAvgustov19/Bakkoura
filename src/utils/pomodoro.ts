@@ -1,10 +1,11 @@
 import { Images } from '../assets';
+import {t} from '../i18n'
 
 export const PomodoroData = [
     {
         id: 1,
         image: Images.Img.pomodoroSlide,
-        text: 'The tasks you have created will be displayed at the bottom of the screen. Each of them displays the number of pomodoro cycles, name and description. To start the task timer, select it from the list. To change or delete a task, click on the three dots on the right.'
+        text: `${t("pomodoro_slider")}`
     },
 ]
 

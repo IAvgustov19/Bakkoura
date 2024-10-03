@@ -6,12 +6,16 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import LinearContainer from '../../components/LinearContainer/LinearContainer';
 import RN from '../../components/RN';
 import {JihadBakkouraTexts} from '../../constants/timeClinic';
+import {JihadBakkouraTexts_ar} from '../../constants/timeClinic_ar';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';
 import TimeWebView from './components/TimeWebView';
+
+import {t} from '../../i18n'
+import l from '../../i18n'
 
 const JihadBakkouraTimeClinic = () => {
   const navigation = useNavigation();
@@ -28,13 +32,19 @@ const JihadBakkouraTimeClinic = () => {
     });
   }, [JihadBakkouraTexts]);
 
+  const renderText_ar = useCallback(() => {
+    return JihadBakkouraTexts_ar.map((item, index) => {
+      return <ConceptItem key={index} title={item.title} texts={item.texts} />;
+    });
+  }, [JihadBakkouraTexts_ar]);
+
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Jihad Bakkoura"
+            title={`${t("Jihad Bakkoura")}`}
           />
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
@@ -49,7 +59,12 @@ const JihadBakkouraTimeClinic = () => {
                   <Images.Svg.jihadBakkouraLogoTitle />
                 </RN.View>
               </RN.View>
-              <RN.View style={styles.textsBox}>{renderText()}</RN.View>
+              {
+                l.locale === 'en'?
+                <RN.View style={styles.textsBox}>{renderText()}</RN.View>
+                :
+                <RN.View style={styles.textsBox}>{renderText_ar()}</RN.View>
+              }
               <TimeWebView
                 linkName="jihadbakkoura.com"
                 logo={<Images.Svg.jihadBakkouraSiteLogo />}
@@ -70,7 +85,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 4,
+    paddingBottom: 50,
   },
   avatarBox: {
     width: '100%',
@@ -89,6 +104,6 @@ const styles = RN.StyleSheet.create({
     bottom: '20%',
   },
   textsBox: {
-    top: -50,
+    top: -20,
   },
 });

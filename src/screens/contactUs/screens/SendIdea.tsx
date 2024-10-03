@@ -1,18 +1,46 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import useRootStore from '../../../hooks/useRootStore';
+import React, { useRef, useState } from 'react';
+import { windowHeight } from '../../../utils/styles';
 import LinearContainer from '../../../components/LinearContainer/LinearContainer';
 import RN from '../../../components/RN';
-import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import { Images } from '../../../assets';
+import HeaderContent from '../../../components/HeaderContent/HeaderContent';
 import Cancel from '../../../components/Cancel/Cancel';
-import { useNavigation } from '@react-navigation/native';
-import { windowHeight, windowWidth } from '../../../utils/styles';
-import ButtonComp from '../../../components/Button/Button';
-import { APP_ROUTES } from '../../../navigation/routes';
-import OutlineBtn from '../../../components/OutlineBtn/OutlineBtn';
 import RadioBtn from '../../../components/RadioBtn/RadioBtn';
+import { COLORS } from '../../../utils/colors';
+import ButtonComp from '../../../components/Button/Button';
+import GiveImage from '../../../components/GiveImage/GiveImage';
+import { ActivityIndicator } from 'react-native';
+import { APP_ROUTES } from '../../../navigation/routes';
+const [accept, setAccept] = useState(false);
+
+
+import {t} from '../../../i18n'
 
 const SendIdea = () => {
     const navigation = useNavigation();
+
+    const { onSubmitEmail, sendEmailLoading } = useRootStore().timeBiotic;
+    const { setOrderState, orderState } = useRootStore().marketStore;
+    const { onHandleWebVIew } = useRootStore().marketStore;
+
+    const onSendEmail = () => {
+          onSubmitEmail(orderState, orderState.type, () =>
+            navigation.navigate(APP_ROUTES.THANKS as never),
+          );
+      };
+
+      const AcceptPrivacy = () => {
+        setOrderState('isAccept', !accept);
+        setAccept(e => !e);
+      }
+
+      const onHandleCategory = () => {
+        navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
+        onHandleWebVIew(`${t("privacy_link")}`);
+      };
+
     return (
         <LinearContainer
             children={
@@ -22,25 +50,39 @@ const SendIdea = () => {
                         <HeaderContent
                             leftItem={<Images.Svg.btsRightLinear />}
                             rightItem={<Cancel onClose={() => navigation.goBack()} />}
-                            title="Your Idea"
+                            title={`${t("Your idea")}`}
                         />
                         <RN.Text style={styles.text}>
-                            {`Your preferences are very important to us. We strive to satisfy your most sophisticated tastes. Just imagine, \n you have the opportunity to realize your idea in the  \n most exquisite form!`}
+                        `${t("Idea_text")}`
                         </RN.Text>
-                        <RN.View style={{display: 'flex', justifyContent: 'space-between', flexDirection:'row', gap: 13}}>
-                            <RadioBtn active />
-                            <RN.View>
-                            <RN.Text style={styles.text}>
-                                {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
-                            </RN.Text>
-
-                            </RN.View>
+                        <RN.View style={styles.privacyBox}>
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
+                <RN.View style={styles.privacyText}>
+                  <RN.Text style={styles.privacyInfo}>
+                  `${t('your_data_safe')}`
+                  </RN.Text>
+                  <RN.Pressable onPress={onHandleCategory}>
+      <RN.Text style={styles.privacyLink}>`${t('I_accept')}`</RN.Text>
+    </RN.Pressable>
+                </RN.View>
+              </RN.View>
+                        
+                        <ButtonComp
+               title={`${t('send')}`}
+                icon={
+                  sendEmailLoading ? (
+                    <ActivityIndicator
+                      color={COLORS.black}
+                      style={{ marginTop: 3 }}
+                    />
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
+                }
+                onPress={onSendEmail}
+              />
                         </RN.View>
-                        <RN.View style={styles.btn}>
-                            <ButtonComp title='Send' containerColor='white' outline textColor='black'
-                                onPress={() => navigation.navigate(APP_ROUTES.THANKS as never)} />
-                        </RN.View>
-                    </RN.View>
+                 
                 </RN.ScrollView>
             }
         />
@@ -72,6 +114,21 @@ const styles = RN.StyleSheet.create({
     btn: {
         bottom: '5%',
         position: 'absolute',
-    }
+    },
+    privacyBox: {
+        flexDirection: 'row',
+        gap: 15,
+        paddingTop: 20,
+        paddingBottom: 35,
+      },
+      privacyText: {
+        gap: 5,
+      },
+      privacyInfo: {
+        color: COLORS.white,
+      },
+      privacyLink: {
+        color: '#ECC271',
+      },
 
 });

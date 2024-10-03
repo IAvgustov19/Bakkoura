@@ -16,10 +16,13 @@ import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import Vertices from './components/Vertices';
 
+import {t} from '../../i18n'
+
 const CreateSector = () => {
   const navigation = useNavigation();
   const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
     useRootStore().bakkouraWatchStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const CreateSector = () => {
     addNewSelect(() => navigation.navigate(APP_ROUTES.BAKKOURA_WATCH as never));
@@ -35,7 +38,7 @@ const CreateSector = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Sector"
+            title={t("Sector")}
             rightItem={<Cancel onClose={onBackHandle} />}
           />
           <RN.ScrollView
@@ -43,17 +46,11 @@ const CreateSector = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
-              <Vertices
-                data={listSelects.map(value => ({
-                  color: value.color,
-                  start: value.start,
-                  end: value.end,
-                }))}
-              />
+              <Vertices data={listSelects} />
               <RN.View style={styles.bottomBox}>
                 <RN.View style={styles.btnBox}>
                   <StartBtn
-                    text="Delete"
+                    text={t("Delete")}
                     elWidth={55}
                     subWidth={70}
                     onPress={() =>
@@ -64,7 +61,7 @@ const CreateSector = () => {
                     textSize={14}
                   />
                   <StartBtn
-                    text="Ok"
+                    text={t("Ok")}
                     elWidth={55}
                     subWidth={70}
                     primary
@@ -72,9 +69,13 @@ const CreateSector = () => {
                     textSize={14}
                   />
                 </RN.View>
-                <RN.View style={styles.bottom}>
+                <RN.View
+                  style={[
+                    styles.bottom,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
-                    title="Name"
+                    title={t("name")}
                     value={newSelectState.name}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.SECTOR_NAME as never)
@@ -82,7 +83,7 @@ const CreateSector = () => {
                   />
                   <Line />
                   <ListItemCont
-                    title="Color"
+                    title={t("Color")}
                     value={
                       newSelectState.color ? (
                         <Images.Svg.smallColorBox
@@ -93,7 +94,7 @@ const CreateSector = () => {
                           }
                         />
                       ) : (
-                        'not selected'
+                        `${t("Not selected")}`
                       )
                     }
                     onPress={() =>
@@ -102,7 +103,7 @@ const CreateSector = () => {
                   />
                   <Line />
                   <ListItemCont
-                    title="Time"
+                    title={t("Time")}
                     value={
                       formattedTimeHourMinut(
                         newSelectState.fromHour,

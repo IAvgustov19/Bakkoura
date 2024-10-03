@@ -2,7 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { APP_ROUTES } from '../../navigation/routes';
 import MessengerScreen from './MessengerScreen';
 import DialogScreen from './DialogScreen';
-import SearchContact from './SearchContact';
+import SearchContact from './SearchFile';
 
 const Stack = createStackNavigator();
 

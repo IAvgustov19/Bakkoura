@@ -12,29 +12,32 @@ import TextView from '../../components/Text/Text';
 import {windowHeight} from '../../utils/styles';
 import useRootStore from '../../hooks/useRootStore';
 
+import {t} from '../../i18n'
+
 const LoverName = () => {
   const navigation = useNavigation();
   const {addEtapState, setAddEtapState, clearLoverName} =
     useRootStore().togetherTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <LinearContainer
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Lover Name"
+            title={`${t("Lover Name")}`}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.nameBox}>
               <Input
-                placeholder={'Name'}
-                icon={<Images.Svg.deleteIcon />}
+                placeholder={`${t("name")}`}
+                icon={<themeState.delete />}
                 value={addEtapState.name}
                 iconPress={clearLoverName}
                 onChangeText={e => setAddEtapState('name', e)}
               />
-              <TextView text={"Enter your loved one's Name."} />
+              <TextView text={`${t("enter_locer_name")}`} />
             </RN.View>
             <StartBtn
               text="Ok"

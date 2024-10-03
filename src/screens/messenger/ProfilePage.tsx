@@ -18,6 +18,7 @@ import { Images } from "../../assets";
 import RN from "../../components/RN";
 import { formatDate } from "../../helper/formatTimeMessage";
 import { fetchMessagesByRoomId, getUserNameById } from "../../services/firestoreService";
+import { t } from "../../i18n";
 
 type RrofileScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.PROFILE_PAGE>;
 const ProfilePage = () => {
@@ -140,7 +141,7 @@ const ProfilePage = () => {
     const renderGridImages = () => {
         if (imageData.length === 0) {
             return (
-                <EmptyState title="No images" />
+                <EmptyState title={`${t("No media")}`} />
             );
         }
         return (
@@ -178,7 +179,7 @@ const ProfilePage = () => {
     const renderVoices = () => {
         if (voiceData.length === 0) {
             return (
-                <EmptyState title="No audios" />
+                <EmptyState title={`${t("No voices")}`} />
             );
         }
         return (
@@ -202,7 +203,7 @@ const ProfilePage = () => {
     const renderLinks = () => {
         if (linkData.length === 0) {
             return (
-                <EmptyState title="No links" />
+                <EmptyState title={`${t("No links")}`} />
             );
         }
         return (
@@ -231,7 +232,7 @@ const ProfilePage = () => {
     const renderFiles = () => {
         if (fileData.length === 0) {
             return (
-                <EmptyState title="No files" />
+                <EmptyState title={`${t("No files")}`} />
             );
         }
         return (
@@ -275,7 +276,7 @@ const ProfilePage = () => {
     const renderMusic = () => {
         if (musicData.length === 0) {
             return (
-                <EmptyState title="No music" />
+                <EmptyState title={`${t("No music")}`}/>
             );
         }
         return (
@@ -345,8 +346,8 @@ const ProfilePage = () => {
                     </RN.View>
                     <RN.View style={styles.profileInfo}>
                         <RN.Text style={styles.name}>{name}</RN.Text>
-                        <RN.Text style={styles.lastSeen}>Last seen</RN.Text>
-                        <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : 'Yesterday, 07:04'}</RN.Text>
+                        <RN.Text style={styles.lastSeen}>{t("Last seen")}</RN.Text>
+                        <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : `${t("Recently")}`}</RN.Text>
                     </RN.View>
                     <RN.Text style={styles.name}>{personalAreaData?.phone ? personalAreaData.phone : ''}</RN.Text>
                     <RN.View style={styles.content}>

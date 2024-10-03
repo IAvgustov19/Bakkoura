@@ -5,6 +5,7 @@ import { RootStore } from '../rootStore';
 import { addCountryToFirestore, getAllCountriesFromFirestore } from '../../services/firestoreService';
 
 import auth from '@react-native-firebase/auth';
+import {t} from '../../i18n'
 
 export class WorldTimeStore {
   private readonly root: RootStore;
@@ -162,7 +163,7 @@ export class WorldTimeStore {
       capital: data.capital,
       name: data.name?.common?.toString(),
       time: time,
-      date: `Today ${this.temp}C  ${date}`,
+      date: `${t("Today")} ${this.temp}C  ${date}`,
       hour: this.hour,
       minut: this.minut,
       timezones: data.timezones,
@@ -204,7 +205,7 @@ export class WorldTimeStore {
         return {
           ...country,
           time,
-          date: `Today ${temp}°C ${date}`,
+          date: `${t("Today")} ${temp}°C ${date}`,
           hour: this.hour,
           minut: this.minut,
           hour30: this.hour + this.hour / 4,

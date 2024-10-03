@@ -16,6 +16,8 @@ import Thanks from './components/thanks/Thanks';
 import ButtonComp from '../../components/Button/Button';
 import GiveImage from '../../components/GiveImage/GiveImage';
 
+import {t} from '../../i18n'
+
 const MarketScreen = () => {
   const navigation = useNavigation();
   const {onHandleWebVIew} = useRootStore().marketStore;
@@ -31,7 +33,7 @@ const MarketScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<Images.Svg.btsRightLinear />}
-            title="Market"
+            title={`${t('Market')}`}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.companies}>
@@ -41,12 +43,12 @@ const MarketScreen = () => {
                 }
                 companyLogo={<Images.Svg.bakkouraLogo width={'100%'} />}
                 companyImage={Images.Img.bakkouraMarket}
-                companyInfo={'We decided to be!'}
+                companyInfo={`${t('We decided to be!')}`}
               />
               <CompanyCard
                 companyLogo={<Images.Svg.francvilaLogo />}
                 companyImage={Images.Img.francvillaMarket}
-                companyInfo={'Espirit Unique'}
+                companyInfo={`${t('Espirit Unique')}`}
                 onPress={() =>
                   onHandleCategory('https://www.badreya.com/brand/franc-vila')
                 }
@@ -54,7 +56,7 @@ const MarketScreen = () => {
             </RN.View>
             <ButtonComp
               // width={150}
-              title="Watch Order"
+              title={`${t('Watch Order')}`}
               icon={<GiveImage source={Images.Img.eye} />}
               onPress={() =>
                 navigation.navigate(APP_ROUTES.ORDER_SCREEN as never)

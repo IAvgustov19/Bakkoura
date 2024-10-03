@@ -10,6 +10,8 @@ import {verticalScale} from '../../utils/dimensions';
 import {HITSLOP} from '../../utils/styles';
 import RN from '../RN';
 import TextView from '../Text/Text';
+import useRootStore from '../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   title?: string;
@@ -34,6 +36,7 @@ type Props = {
   keyBoardType?: KeyboardTypeOptions;
   err?: string;
   inputRef?: React.Ref<TextInput>;
+  bordered?: boolean;
 };
 
 const Input: React.FC<Props> = ({
@@ -59,7 +62,9 @@ const Input: React.FC<Props> = ({
   keyBoardType,
   err,
   inputRef,
+  bordered,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
     <RN.View style={styles.container}>
       {title ? <TextView style={styles.title} text={title} /> : null}
@@ -69,10 +74,10 @@ const Input: React.FC<Props> = ({
         <RN.View
           style={[
             styles.inputBox,
-            black && styles.borderedInput,
             {
               paddingHorizontal: paddingHorizontal ? paddingHorizontal : 30,
-              backgroundColor: backColor ? backColor : COLORS.black,
+              backgroundColor: backColor ? backColor : themeState.inputBaack,
+              borderColor: bordered ? themeState.inputBorder : 'transparent',
             },
           ]}>
           <TextInput
@@ -88,6 +93,7 @@ const Input: React.FC<Props> = ({
             style={[
               styles.input,
               {
+                color: themeState.title,
                 height: height,
                 paddingTop: paddingTop,
                 width: '95%',
@@ -113,7 +119,7 @@ const Input: React.FC<Props> = ({
   );
 };
 
-export default Input;
+export default observer(Input);
 
 const styles = StyleSheet.create({
   container: {
@@ -125,13 +131,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.black,
     borderRadius: 30,
     paddingHorizontal: 30,
+    borderWidth: 1,
+    borderBottomWidth: 0,
   },
   input: {
     paddingVertical: verticalScale(15),
-    color: '#fff',
     fontFamily: 'RedHatDisplay-Regular',
     fontSize: 16,
     fontWeight: '400',
@@ -145,11 +151,6 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginBottom: 5,
     marginTop: 10,
-  },
-  borderedInput: {
-    borderWidth: 1,
-    borderBottomWidth: 0,
-    borderColor: '#304A66',
   },
   err: {
     color: COLORS.red,

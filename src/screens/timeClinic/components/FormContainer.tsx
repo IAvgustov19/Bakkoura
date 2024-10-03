@@ -6,6 +6,8 @@ import RN from '../../../components/RN';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
 
+import {t} from '../../../i18n'
+
 type Props = {
   bottomInputPress?: () => void;
 };
@@ -16,29 +18,31 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
     <RN.View style={styles.container}>
       <Input
         value={orderState.name}
-        title="Name"
-        placeholder="Name"
+        title={`${t("name")}`}
+        placeholder={`${t("name")}`}
         backColor={COLORS.black}
         width="100%"
         onChangeText={e => setOrderState('name', e)}
         black={true}
+        bordered
       />
       <Input
         value={orderState.phone}
-        title="Phone"
-        placeholder="Phone"
+        title={`${t("Phone")}`}
+        placeholder={`${t("Phone")}`}
         backColor={COLORS.black}
         width="100%"
         onPressIn={bottomInputPress}
         onChangeText={e => setOrderState('phone', e)}
         black={true}
         keyBoardType="numeric"
+        bordered
       />
       <Input
         value={orderState.message}
-        title="Comment"
+        title={`${t("comment")}`}
         height={100}
-        placeholder="Text"
+        placeholder={`${t("Text")}`}
         backColor={COLORS.black}
         width="100%"
         multiLine={true}
@@ -46,6 +50,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         onChangeText={e => setOrderState('message', e)}
         onPressIn={bottomInputPress}
         black={true}
+        bordered
       />
     </RN.View>
   );

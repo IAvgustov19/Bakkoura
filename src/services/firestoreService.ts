@@ -21,6 +21,7 @@ import storage from '@react-native-firebase/storage';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Audio, Image, Video } from 'react-native-compressor';
 import ImageResizer from 'react-native-image-resizer';
+import { t } from '../i18n';
 
 // calendar events
 export const addEventToFirestore = async event => {
@@ -495,10 +496,13 @@ export const updateEtapsMailInFirestore = async synchronizedEmail => {
   }
 };
 
-export const updateEtapsInFirestore = async (id: any, updatedEtap: Partial<TogetherDataType>) => {
+export const updateEtapsInFirestore = async (
+  id: any,
+  updatedEtap: Partial<TogetherDataType>,
+) => {
   try {
     const filteredEtap = Object.fromEntries(
-      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined)
+      Object.entries(updatedEtap).filter(([_, value]) => value !== undefined),
     );
 
     await db.collection('etaps').doc(id).update(filteredEtap);
@@ -800,6 +804,7 @@ export const getAlarmsFromFirestore = async () => {
         leter: data.leter,
         laterHours: data.laterHours,
         laterMinutes: data.laterMinutes,
+        vibration: data.vibration,
       };
     });
     return alarms;
@@ -897,11 +902,12 @@ export const deleteProjectTimerFromFirestore = async (id: string) => {
     console.error('Error deleting project timer:', error);
   }
 };
-export const getAllUsersFromFirestore = async (uid: string, lastDocId?: string): Promise<UserType[]> => {
+export const getAllUsersFromFirestore = async (
+  uid: string,
+  lastDocId?: string,
+): Promise<UserType[]> => {
   try {
-    let query = db.collection('users')
-      .where('id', '!=', uid)
-      .orderBy('id');
+    let query = db.collection('users').where('id', '!=', uid).orderBy('id');
 
     if (lastDocId) {
       const lastDoc = await db.collection('users').doc(lastDocId).get();
@@ -950,6 +956,8 @@ export const uploadAudioToStorage = async (uri, path) => {
     const url = await reference.getDownloadURL();
     return url;
   } catch (error) {
+    console.error('Error uploading file:', error);
+    throw error;
     console.error('Error uploading file:', error);
     throw error;
   }
@@ -1043,11 +1051,11 @@ async function requestStoragePermission(): Promise<boolean> {
       } else if (granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ||
         granted['android.permission.WRITE_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
         Alert.alert(
-          'Permission Required',
-          'Storage access is required to upload files. You have denied this permission and chosen "Don\'t ask again". Please enable it manually in the app settings.',
+          `${t("Permission Required")}`,
+          `${t("Storage access is required to upload files")}`,
           [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Open Settings', onPress: () => Linking.openSettings() },
+            { text: `${t("Cancel")}`, style: 'cancel' },
+            { text: `${t("Open Settings")}`, onPress: () => Linking.openSettings() },
           ],
         );
         return false;
@@ -1083,7 +1091,7 @@ export async function uploadFileFromContentUri(contentUri: string) {
   try {
     const hasPermission = await requestStoragePermission();
     if (!hasPermission) {
-      Alert.alert('Permission Denied', 'Storage permission is required to upload files.');
+      Alert.alert(`${t("Permission Denied")}`, `${t("Storage access is required to upload files")}`);
       return;
     }
 
@@ -1094,14 +1102,14 @@ export async function uploadFileFromContentUri(contentUri: string) {
       await reference.putFile(filePath);
       const url = await reference.getDownloadURL();
       console.log('File URL:', url);
-      Alert.alert('Upload Successful', `File URL: ${url}`);
+      Alert.alert(`${t("Upload Successful")}`, `${t("File URL")} ${url}`);
       return url;
     } else {
-      Alert.alert('File Error', 'Could not resolve file path.');
+      Alert.alert(`${t("Error")}`, `${t("Could not resolve file path")}`);
     }
   } catch (error) {
     console.error('Upload failed:', error);
-    Alert.alert('Upload Failed', 'Failed to upload the file.');
+    Alert.alert(`${t("Upload Failed")}`, `${t("Failed to upload the file.")}`);
   }
 }
 
@@ -1115,7 +1123,7 @@ export async function uploadDocumentToStorage(fileUri) {
     console.log('File available at:', url);
     return url;
   } catch (error) {
-    Alert.alert('Error uploading document')
+    Alert.alert(`${t("Error uploading document")}`)
     console.error('Error uploading document:', error);
   }
 }

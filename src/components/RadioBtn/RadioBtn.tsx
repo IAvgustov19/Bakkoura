@@ -4,6 +4,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import {Images} from '../../assets';
 import {COLORS} from '../../utils/colors';
 import RN from '../RN';
+import useRootStore from '../../hooks/useRootStore';
 
 type Props = {
   white?: boolean;
@@ -16,8 +17,11 @@ const RadioBtn: React.FC<Props> = ({
   onPress,
   white = false,
 }) => {
+  const {themeState} = useRootStore().personalAreaStore;
   return (
-    <RN.TouchableOpacity style={styles.container} onPress={onPress}>
+    <RN.TouchableOpacity
+      style={[styles.container, {backgroundColor: themeState.radioback}]}
+      onPress={onPress}>
       {active ? (
         <>
           {white ? (

@@ -3,6 +3,8 @@ import {Text, View, StyleSheet} from 'react-native';
 import RN from '../../../components/RN';
 import TextView from '../../../components/Text/Text';
 import {COLORS} from '../../../utils/colors';
+import useRootStore from '../../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
 
 type Props = {
   title?: string;
@@ -11,6 +13,7 @@ type Props = {
 };
 
 const TheBookitem: React.FC<Props> = ({title, page = 1, texts}) => {
+  const {themeState} = useRootStore().personalAreaStore;
   const renderText = useCallback(() => {
     return texts.map((item, index) => {
       return (
@@ -19,25 +22,32 @@ const TheBookitem: React.FC<Props> = ({title, page = 1, texts}) => {
           style={styles.text}
           text={item}
           textAlign="left"
+          color={themeState.darkGrayText}
         />
       );
     });
   }, [texts]);
 
   return (
-    <RN.View style={styles.container}>
+    <RN.View style={[styles.container, {backgroundColor: themeState.mainBack}]}>
         <TextView title={title} textAlign="left" />
+      ) : (
+        <TextView
+          text={title}
+          textAlign="left"
+          color={themeState.darkGrayText}
+        />
+      )}
       <RN.View>{renderText()}</RN.View>
       {/*<TextView text={page} style={styles.pageNumber} />*/}
     </RN.View>
   );
 };
 
-export default TheBookitem;
+export default observer(TheBookitem);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.black,
     paddingHorizontal: 25,
     paddingTop: 20,
     paddingBottom: 10,

@@ -10,6 +10,8 @@ import Animated, {
 import {Images} from '../../assets';
 import {styles} from './SwitchBtnStyles';
 
+import {t} from '../../i18n'
+
 type Props = {
   onPress?: () => void;
   isWork?: boolean;
@@ -51,7 +53,7 @@ const SwitchBtn: React.FC<Props> = ({onPress, isWork}) => {
           {isWork ? <Images.Svg.sendIcon /> : <Images.Svg.sunIcon />}
         </Animated.View>
         <Animated.View style={[animatedTextStyles]}>
-          <Text style={styles.title}>{isWork ? 'Work' : 'Rest'}</Text>
+          <Text style={styles.title}>{isWork ? `${t("work")}` : `${t("rest")}`}</Text>
         </Animated.View>
       </LinearGradient>
     </TouchableOpacity>

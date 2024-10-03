@@ -1,6 +1,6 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {observer} from 'mobx-react-lite';
+import React, {useEffect, useState} from 'react';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -11,11 +11,14 @@ import SimpleSwitch from '../../components/SimpleSwitch/SimpleSwitch';
 import SoundsContent from '../../components/SoundsContent/SoundsContent';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import { APP_ROUTES } from '../../navigation/routes';
-import { windowHeight } from '../../utils/styles';
-import { db } from '../../config/firebase';
+import {APP_ROUTES} from '../../navigation/routes';
+import {windowHeight} from '../../utils/styles';
+import {db} from '../../config/firebase';
 import auth from '@react-native-firebase/auth';
 import { COLORS } from '../../utils/colors';
+
+import {t} from '../../i18n'
+import Line from '../../components/Line/Line';
 
 const AddEtap = () => {
   const navigation = useNavigation();
@@ -23,22 +26,23 @@ const AddEtap = () => {
   const [synchronizedEmail, setSynchronizedEmail] = useState<string>('');
   const [synchronized, setSynchronized] = useState<boolean>(false);
 
-
   useEffect(() => {
     const getInvitedId = async () => {
-      const etapDoc = await db.collection('etaps').where('uid', '==', userUid).get();
+      const etapDoc = await db
+        .collection('etaps')
+        .where('uid', '==', userUid)
+        .get();
       // @ts-ignore
-      const emails = etapDoc.docs.map((etap) => etap._data.synchronizedEmail);
+      const emails = etapDoc.docs.map(etap => etap._data.synchronizedEmail);
       setSynchronizedEmail(emails[emails.length - 1]);
       // @ts-ignore
-      const synched = etapDoc.docs.map((etap) => etap._data.synchronized)
+      const synched = etapDoc.docs.map(etap => etap._data.synchronized);
       setSynchronized(synched[synched.length - 1]);
-    }
+    };
     getInvitedId();
-  })
+  });
 
-  console.log(synchronizedEmail)
-
+  console.log(synchronizedEmail);
 
   const {
     addEtapState,
@@ -53,6 +57,7 @@ const AddEtap = () => {
     createNewEtap,
     clearState,
   } = useRootStore().togetherTimeStore;
+  const {themeState} = useRootStore().personalAreaStore;
   const [repeat, setRepeat] = useState(false);
   const [reminder, setReminder] = useState(addEtapState.reminder);
   const [control, setControl] = useState(false);
@@ -62,14 +67,16 @@ const AddEtap = () => {
   };
 
   const onSetReminder = () => {
-    setReminder((prev) => {
+    setReminder(prev => {
       setAddEtapState('reminder', !prev);
       return !prev;
     });
   };
 
   const AddNewEtap = (synchronizedEmail, synchronized) => {
-    createNewEtap(synchronizedEmail, synchronized, () => onHandleNavigation(APP_ROUTES.TIME_TOGETHER));
+    createNewEtap(synchronizedEmail, synchronized, () =>
+      onHandleNavigation(APP_ROUTES.TIME_TOGETHER),
+    );
   };
 
   const ClearState = () => {
@@ -91,63 +98,75 @@ const AddEtap = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Etap"
+            title={`${t("Etap")}`}
             rightItem={<Cancel onClose={ClearState} />}
           />
           <RN.ScrollView style={styles.scrollView}>
             <RN.View style={styles.content}>
               <RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
-                    title="Name"
+                    title={`${t("name")}`}
                     value={addEtapState.name}
                     onPress={() => onHandleNavigation(APP_ROUTES.LOVER_NAME)}
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
-                    title="Status"
+                    title={`${t("Status")}`}
                     value={addEtapState.type}
                     onPress={() => setRepeat(e => !e)}
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
-                    title="From"
+                    title={`${t("From")}`}
                     value={
                       addEtapState.fromDate == '0' ? '' : addEtapState.fromDate
                     }
                     onPress={() => onHandleNavigation(APP_ROUTES.FROM_DATE)}
                   />
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <RN.View style={styles.listItem}>
-                    <RN.Text style={styles.listItemText}>Reminder</RN.Text>
+                    <RN.Text style={styles.listItemText}>{`${t("reminder")}`}</RN.Text>
                     <SimpleSwitch
                       active={addEtapState.reminder}
                       handlePress={onSetReminder}
                     />
                   </RN.View>
                   <ListItemCont
-                    title="Repeat"
+                    title={`${t("repeat")}`}
                     value={addEtapState.repeat}
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.REPEAT_ETAP as never)
                     }
                   />
                 </RN.View>
-                <RN.View style={styles.eventsTypeList}>
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
                   <ListItemCont
-                    title="Control"
+                    title={`${t("Control")}`}
                     value={addEtapState.control}
                     onPress={() => setControl(e => !e)}
                   />
-                  <RN.View style={styles.line}></RN.View>
+                  <Line />
                   <ListItemCont
-                    title="Delete"
+                    title={`${t("Delete")}`}
                     onPress={() => onHandleNavigation(APP_ROUTES.DELETE_ETAP)}
                   />
                 </RN.View>
               </RN.View>
-              {isUpdate ?
+              {isUpdate ? (
                 <RN.View style={styles.addBtn}>
                   <StartBtn
                     onPress={UpdateTask}
@@ -157,42 +176,47 @@ const AddEtap = () => {
                     elWidth={55}
                   />
                 </RN.View>
-                :
+              ) : (
                 <RN.View style={styles.addBtn}>
                   <StartBtn
-                    onPress={() => AddNewEtap(synchronizedEmail ? synchronizedEmail : '', synchronized ? synchronized : false)}
+                    onPress={() =>
+                      AddNewEtap(
+                        synchronizedEmail ? synchronizedEmail : '',
+                        synchronized ? synchronized : false,
+                      )
+                    }
                     primary={true}
-                    text="Add"
+                    text={`${t("add")}`}
                     subWidth={70}
                     elWidth={55}
                   />
                 </RN.View>
-              }
+              )}
             </RN.View>
             <SoundsContent
-              headerTitle="Status"
+              headerTitle={`${t("Status")}`}
               data={statusData}
               onItemPress={onStatusItemPress as never}
               headerLeftItem={
                 <ArrowLeftBack
                   onPress={() => setRepeat(e => !e)}
-                  title="Back"
+                  title={`${t("back")}`}
                 />
               }
               onClose={() => setRepeat(e => !e)}
               modalVisible={repeat}
               okBtn
-              okBtnText="Ok"
+              okBtnText={`${t("Ok")}`}
               onPressBtn={() => setRepeat(e => !e)}
             />
             <SoundsContent
-              headerTitle="Control"
+              headerTitle={`${t("Control")}`}
               data={controlData}
               onItemPress={onControlItemPress as never}
               headerLeftItem={
                 <ArrowLeftBack
                   onPress={() => setControl(e => !e)}
-                  title="Back"
+                  title={`${t("back")}`}
                 />
               }
               onClose={() => setControl(e => !e)}

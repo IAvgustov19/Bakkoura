@@ -1,16 +1,17 @@
 import { Images } from '../assets';
+import { t } from '../i18n';
 
 export const EventsData = [
     {
         id: 1,
         image: Images.Img.calendarSlider1,
-        text: 'To delete a event, simply swipe it to the left to the end'
+        text: `${t("calendar_slider_1")}`
     },
     // Чтобы удалить событие просто смахните его влево до конца \n
     {
         id: 2,
         image: Images.Img.calendarSlider2,
-        text: 'By clicking on the toggle switch on the left, you can change the calendar view - a list or scrollable days'
+        text: `${t("calendar_slider_2")}`
     },
     // Нажимая на тумблер слева, вы можете менять вид календаря - список или листаемые дни \n
     // {

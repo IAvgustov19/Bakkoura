@@ -1,39 +1,45 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { Bubble } from 'react-native-gifted-chat';
+import {View, Text, StyleSheet} from 'react-native';
+import {Bubble} from 'react-native-gifted-chat';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import React from 'react';
 
-import { Images } from '../../../assets';
+import {Images} from '../../../assets';
 import RN from '../../../components/RN';
+import useRootStore from '../../../hooks/useRootStore';
+import {observer} from 'mobx-react-lite';
+import {COLORS} from '../../../utils/colors';
 
 const CustomTime = props => {
   const currentUser = auth().currentUser;
-  const { currentMessage, position } = props;
+  const {currentMessage, position} = props;
   const isRead = currentMessage.read;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <View style={styles.timeContainer}>
       <Text
         style={[
           styles.time,
-          { textAlign: position === 'right' ? 'right' : 'left' },
+          {
+            textAlign: position === 'right' ? 'left' : 'right',
+            color: COLORS.gray,
+          },
         ]}>
         {moment(currentMessage.createdAt).format('HH:mm')}
-        {currentMessage.user._id === currentUser?.uid &&
+        {currentMessage.user._id === currentUser?.uid && (
           <>{isRead ? <Images.Svg.read /> : <Images.Svg.sent />}</>
-        }
+        )}
       </Text>
     </View>
   );
 };
 
-
-const CustomMessage = (props) => {
-  const { currentMessage, position } = props;
-  const { image, user, reaction } = currentMessage;
-  const { selectedImage, imageName, imageSize } = currentMessage;
-
+const CustomMessage = props => {
+  const {currentMessage, position} = props;
+  const {image, user, reaction} = currentMessage;
+  const {selectedImage, imageName, imageSize} = currentMessage;
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
     <View style={styles.container}>
@@ -41,8 +47,7 @@ const CustomMessage = (props) => {
         style={[
           styles.reactionsContainer,
           position === 'right' ? styles.reactionRight : styles.reactionLeft,
-        ]}
-      >
+        ]}>
         {reaction && (
           <View style={styles.reaction}>
             <Text style={styles.reactionText}>{reaction}</Text>
@@ -53,12 +58,18 @@ const CustomMessage = (props) => {
         <Bubble
           {...props}
           wrapperStyle={{
-            left: styles.bubbleLeft,
-            right: styles.bubbleRight,
+            left: [
+              styles.bubbleLeft,
+              {backgroundColor: themeState.messageBack},
+            ],
+            right: [
+              styles.bubbleRight,
+              {backgroundColor: themeState.rightMessageBack},
+            ],
           }}
           textStyle={{
-            left: styles.textLeft,
-            right: styles.textRight,
+            left: [styles.textLeft, {color: themeState.title}],
+            right: [styles.textRight, {color: themeState.title}],
           }}
           timeTextStyle={{
             right: {
@@ -72,7 +83,7 @@ const CustomMessage = (props) => {
         />
         {selectedImage && (
           <View style={styles.imageContainer}>
-            <RN.Image source={{ uri: selectedImage }} style={styles.image} />
+            <RN.Image source={{uri: selectedImage}} style={styles.image} />
             <View style={styles.imageInfo}>
               <Text style={styles.imageName}>{imageName}</Text>
               <Text style={styles.imageSize}>{imageSize} MB</Text>
@@ -106,7 +117,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     position: 'relative',
-
   },
   bubbleRight: {
     color: 'white',
@@ -177,7 +187,7 @@ const styles = StyleSheet.create({
   timeContainer: {
     gap: 10,
     display: 'flex',
-  }
+  },
 });
 
-export default CustomMessage;
+export default observer(CustomMessage);

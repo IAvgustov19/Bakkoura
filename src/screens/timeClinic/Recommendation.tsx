@@ -20,10 +20,16 @@ import TimeWebView from './components/TimeWebView';
 const Recommendation = () => {
   const navigation = useNavigation();
   const {onHandleWebVIew} = useRootStore().marketStore;
+  const {setRecommendation} = useRootStore().timeClinicStore;
 
   const onHandleCategory = () => {
     navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
     onHandleWebVIew('https://jihadbakkoura.com/');
+  };
+
+  const GetReco = (id: number) => {
+    setRecommendation(id);
+    navigation.navigate(APP_ROUTES.RECOMMENDATION_View as never);
   };
 
   const renderCards = useCallback(() => {
@@ -35,9 +41,7 @@ const Recommendation = () => {
           texts={item.texts}
           imageUrl={item.imageUrl}
           date={item.date}
-          onPress={() =>
-            navigation.navigate(APP_ROUTES.RECOMMENDATION_View as never)
-          }
+          onPress={() => GetReco(item.id)}
         />
       );
     });
@@ -56,11 +60,11 @@ const Recommendation = () => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <RN.View style={styles.cardBox}>{renderCards()}</RN.View>
-              <TimeWebView
+              {/* <TimeWebView
                 linkName="jihadbakkoura.com"
                 logo={<Images.Svg.jihadBakkouraSiteLogo />}
                 onHandleCategory={onHandleCategory}
-              />
+              /> */}
             </RN.View>
           </RN.ScrollView>
         </RN.View>

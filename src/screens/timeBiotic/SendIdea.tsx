@@ -20,10 +20,12 @@ import {ActivityIndicator} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
+import {t} from '../../i18n'
+
 const SendIdea = () => {
   const navigation = useNavigation();
   const {onHandleWebVIew} = useRootStore().marketStore;
-
+  const {themeState} = useRootStore().personalAreaStore;
   const [accept, setAccept] = useState(false);
   const {setOrderState, deleteFile, orderState} = useRootStore().marketStore;
   const {sendEmailLoading, onSubmitEmail} = useRootStore().timeBiotic;
@@ -35,7 +37,7 @@ const SendIdea = () => {
 
   const onHandleCategory = () => {
     navigation.navigate(APP_ROUTES.MARKET_WEB_VIEW as never);
-    onHandleWebVIew('https://www.bakkoura.com/privacy-policy');
+    onHandleWebVIew(`${t("privacy_link")}`);
   };
 
   const scrollViewRef = useRef(null);
@@ -63,9 +65,9 @@ const SendIdea = () => {
                         <Images.Svg.bg style={styles.bg} />
                     </RN.View> */}
           <HeaderContent
-           leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={<Cancel onClose={() => navigation.goBack()} />}
-            title="Your Idea"
+            title={`${t("Your idea")}`}
           />
           <RN.ScrollView
             ref={scrollViewRef}
@@ -76,30 +78,38 @@ const SendIdea = () => {
               <RN.View style={styles.ideaInfo}>
                 <TextView
                   style={styles.text}
-                  text={`Your preferences are very important to us. We strive to satisfy your most sophisticated tastes. Just imagine, \n you have the opportunity to realize your idea in the  \n most exquisite form!`}
-                />
+                  color={themeState.darkGrayText}
+                  text= {`${t("Idea_text")}`}
+                  />
               </RN.View>
               <FormContainer bottomInputPress={Scroll} uploadAtTop black />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy}/>
+                <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
-                    {`Your personal data are guaranteed to be safe \n and will not be handed over to third parties.`}
+                <RN.Text
+                    style={[
+                      styles.privacyInfo,
+                      {color: themeState.darkGrayText},
+                    ]}>
+                  `${t('your_data_safe')}`
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>I accept the privacy policy.</RN.Text>
+                  <RN.Text
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>`${t('I_accept')}`</RN.Text>
     </RN.Pressable>
                 </RN.View>
               </RN.View>
-              <SimpleBtn
-                title="Send"
+              <ButtonComp
+               title={`${t('send')}`}
                 icon={
                   sendEmailLoading ? (
                     <ActivityIndicator
                       color={COLORS.black}
-                      style={{marginTop: 3}}
+                      style={{ marginTop: 3 }}
                     />
-                  ) : null
+                  ) : (
+                    <GiveImage source={Images.Img.eye} />
+                  )
                 }
                 onPress={onSendEmail}
               />

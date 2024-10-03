@@ -12,6 +12,8 @@ import {Images} from '../../assets';
 import {windowHeight} from '../../utils/styles';
 import useRootStore from '../../hooks/useRootStore';
 
+import {t} from '../../i18n'
+
 const ContactThanks = () => {
   const {responseText} = useRootStore().timeBiotic;
   const navigation = useNavigation();
@@ -29,10 +31,10 @@ const ContactThanks = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
-            <TextView title="Thank You" />
+            <TextView title={`${t("Thank You")}`} />
             {renderResponse}
             <ButtonComp
-              title="OK"
+              title={`${t("Ok")}`}
               width={'50%'}
               onPress={() => navigation.goBack()}
               icon={<GiveImage source={Images.Img.eye} />}

@@ -12,12 +12,20 @@ import {observer} from 'mobx-react-lite';
 import useRootStore from '../../../hooks/useRootStore';
 import {ActivityIndicator} from 'react-native';
 import {COLORS} from '../../../utils/colors';
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+
+import {t} from '../../../i18n'
 
 const PersonalDetails = () => {
   const navigation = useNavigation();
 
-  const {personalAreaData, setPersonalAreaState, updateProfile, updateLoading} =
-    useRootStore().personalAreaStore;
+  const {
+    personalAreaData,
+    setPersonalAreaState,
+    updateProfile,
+    updateLoading,
+    themeState,
+  } = useRootStore().personalAreaStore;
 
   const updateName = () => {
     updateProfile(() => navigation.goBack());
@@ -35,30 +43,26 @@ const PersonalDetails = () => {
               <RN.TouchableOpacity
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
+                <ArrowLeftBack onPress={() => navigation.goBack()} />
               </RN.TouchableOpacity>
             }
-            title="Name"
+            title={`${t("name")}`}
           />
           <RN.ScrollView>
             <RN.View style={styles.content}>
               <RN.View style={styles.inputBox}>
                 <Input
-                  placeholder={'Name'}
+                  placeholder={`${t("name")}`}
                   value={personalAreaData ? personalAreaData?.name : 'User'}
                   onChangeText={text => setPersonalAreaState('name', text)}
+                  icon={<themeState.delete />}
+                  iconPress={() => setPersonalAreaState('name', ' ' as never)}
                 />
-                <RN.TouchableOpacity
-                  style={styles.deleteBox}
-                  onPress={() => setPersonalAreaState('name', ' ' as never)}>
-                  <Images.Svg.deleteIcon />
-                </RN.TouchableOpacity>
               </RN.View>
               <RN.View style={styles.addBtn}>
                 <StartBtn
                   primary={true}
-                  text={updateLoading ? '' : 'Ok'}
+                  text={updateLoading ? '' : `${t("Ok")}`}
                   icon={
                     updateLoading ? (
                       <ActivityIndicator

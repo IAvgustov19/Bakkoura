@@ -6,6 +6,7 @@ import {View, StyleSheet, DimensionValue} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import RN from '../RN';
 import {COLORS} from '../../utils/colors';
+import useRootStore from '../../hooks/useRootStore';
 
 type Props = {
   onChangeValue?: (e: number) => void;
@@ -34,9 +35,18 @@ const LinearRange: React.FC<Props> = ({
   const gradientWidth = useMemo(() => {
     return ((value - minValue) / (maxValue - minValue)) * 100;
   }, [value]);
+  const {themeState} = useRootStore().personalAreaStore;
 
   return (
-    <RN.View style={[styles.container, {height: height}]}>
+    <RN.View
+      style={[
+        styles.container,
+        {
+          height: height,
+          backgroundColor: themeState.inputBaack,
+          borderColor: themeState.inputBorder,
+        },
+      ]}>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
@@ -68,6 +78,8 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 20,
     justifyContent: 'center',
+    borderWidth: 0.5,
+    borderBottomWidth: 0,
   },
   linearGradient: {
     borderRadius: 20,

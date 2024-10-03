@@ -17,7 +17,12 @@ import { APP_ROUTES } from '../../../navigation/routes';
 import { RootStackParamList } from '../../../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import {t} from '../../../i18n'
+import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PASSWORD>;
+import Line from '../../../components/Line/Line';
+
 const SecureEntry = () => {
   const navigation = useNavigation<NavigationProp>();
 
@@ -28,6 +33,7 @@ const SecureEntry = () => {
     secureEntries,
     updateLoading,
     personalAreaData,
+    themeState,
   } = useRootStore().personalAreaStore;
 
   const [localSecureEntries, setLocalSecureEntries] = useState(secureEntries);
@@ -50,24 +56,24 @@ const SecureEntry = () => {
 
       if (!biometryOptions && isBiometricSelected) {
         Alert.alert(
-          'Biometry not set up',
-          'You have not set up any biometric data. Please add your fingerprint in settings.',
+          `${t("Biometry not set up")}`,
+          `${t("You have not set up any biometric data. Please add your fingerprint in settings")}`,
           [
             {
-              text: 'Go to Settings',
+              text: `${t("Go to Settings")}`,
               onPress: () => {
                 if (Platform.OS === 'android') {
                   Linking.openSettings();
                 } else {
                   Alert.alert(
-                    'Unsupported',
-                    'This feature is only supported on Android.',
+                    `${t("Unsupported")}`,
+                    `${t("This feature is only supported on Android")}`,
                   );
                 }
               },
             },
             {
-              text: 'Cancel',
+              text: `${t("Cancel")}`,
               style: 'cancel',
             },
           ],
@@ -76,7 +82,7 @@ const SecureEntry = () => {
         updateProfile(() => navigation.goBack());
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to check biometry.');
+      Alert.alert(`${t("Error")}`, `${t("Failed to check biometry")}`);
     }
   };
 
@@ -104,7 +110,8 @@ const SecureEntry = () => {
     console.log('isActiveisActive', isActive);
 
     return (
-      <RN.View style={styles.eventsTypeList}>
+      <RN.View
+        style={[styles.eventsTypeList, {backgroundColor: themeState.mainBack}]}>
         <ListItemCont
           rightItem={
             <RadioBtn
@@ -114,16 +121,16 @@ const SecureEntry = () => {
           }
           title={
             <RN.Text
-              color={isActive
-                ? '#fff'
-                : '#7D7D7D'
+              color={
+                item.title === personalAreaData?.secureEntry
+                  ? themeState.title
+                  : '#7D7D7D'
               }>
               {item.title}
             </RN.Text>
           }
           onPress={() => handleItemPress(index)}
         />
-        <RN.View style={styles.line}></RN.View>
       </RN.View>
     );
   };
@@ -140,11 +147,10 @@ const SecureEntry = () => {
               <RN.TouchableOpacity
                 style={styles.back}
                 onPress={() => navigation.goBack()}>
-                <Images.Svg.arrowLeft />
-                <TextView text="Back" />
+                <ArrowLeftBack onPress={() => navigation.goBack()} />
               </RN.TouchableOpacity>
             }
-            title="Secure Entry"
+            title={`${t("Secure Entry")}`}
           />
           <RN.FlatList
             data={secureEntries}
@@ -155,7 +161,7 @@ const SecureEntry = () => {
             <StartBtn
               onPress={updateSecure}
               primary={true}
-              text={updateLoading ? '' : 'Ok'}
+              text={updateLoading ? '' : `${t("Ok")}`}
               icon={
                 updateLoading ? (
                   <ActivityIndicator
@@ -190,7 +196,6 @@ const styles = RN.StyleSheet.create({
     position: 'absolute',
   },
   eventsTypeList: {
-    backgroundColor: '#0D0D0D',
     borderRadius: 3,
     paddingHorizontal: 5,
     marginTop: 5,

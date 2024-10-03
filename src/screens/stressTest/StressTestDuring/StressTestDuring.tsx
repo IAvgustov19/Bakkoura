@@ -16,6 +16,8 @@ import {COLORS} from '../../../utils/colors';
 import {moderateScale} from '../../../utils/dimensions';
 import {windowWidth} from '../../../utils/styles';
 
+import {t} from '../../../i18n'
+
 const StressTestDuring = () => {
   const [is24, setIs24] = useState(true);
   const navigation = useNavigation();
@@ -26,6 +28,7 @@ const StressTestDuring = () => {
     resetStressTimer,
     finishStressTest,
   } = useRootStore().stressTestStore;
+  const {themeState} = useRootStore().personalAreaStore;
 
   const FinishStressTest = () => {
     finishStressTest();
@@ -33,7 +36,9 @@ const StressTestDuring = () => {
   };
 
   const pandaLottie = useMemo(() => {
-    return <LottieContent source={Lotties.stressTest} width={windowWidth} />;
+    return (
+      <LottieContent source={themeState.lotties.panda} width={windowWidth} />
+    );
   }, []);
 
   return (
@@ -42,25 +47,25 @@ const StressTestDuring = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Stress Test"
-            rightItem={<Images.Svg.timerLogo />}
+            title={t("Stress Test")}
+            rightItem={<themeState.timeLogo />}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.timeBox}>
               <RN.View style={styles.panda}>
-                {stressTestStatus.reset ? pandaLottie : <Images.Svg.panda />}
+                {stressTestStatus.reset ? pandaLottie : <themeState.panda />}
               </RN.View>
-              <RN.Text style={styles.time}>
+              <RN.Text style={[styles.time, {color: themeState.title}]}>
                 {stressTestData.time ? stressTestData.time : '00:00:00'}
               </RN.Text>
             </RN.View>
             {stressTestStatus.reset ? (
               <RN.View style={styles.startReset}>
-                <StartBtn text="Reset" onPress={resetStressTimer} />
-                <StartBtn text={'Stop'} primary onPress={FinishStressTest} />
+                <StartBtn text={t("Reset")} onPress={resetStressTimer} />
+                <StartBtn text={t("Stop")} primary onPress={FinishStressTest} />
               </RN.View>
             ) : (
-              <StartBtn text="Start" primary onPress={startStopStressTest} />
+              <StartBtn text={t("Start")} primary onPress={startStopStressTest} />
             )}
             <SwitchContain
               title="24h"

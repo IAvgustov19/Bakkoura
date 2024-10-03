@@ -1,14 +1,14 @@
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import { BG, Images } from '../../../../assets';
+import {BG, Images} from '../../../../assets';
 import RN from '../../../../components/RN';
 import TextView from '../../../../components/Text/Text';
-import { APP_ROUTES } from '../../../routes';
-import { styles } from './MyTabbar.styles';
+import {APP_ROUTES} from '../../../routes';
+import {styles} from './MyTabbar.styles';
 import BottomSheet from '@gorhom/bottom-sheet';
 import useRootStore from '../../../../hooks/useRootStore';
-import { observer } from 'mobx-react-lite';
-import { splitCamelCaseAndRemoveScreen } from '../../../../helper/validation';
+import {observer} from 'mobx-react-lite';
+import {splitCamelCaseAndRemoveScreen} from '../../../../helper/validation';
 
 type TabBarItem = {
   route: any;
@@ -20,29 +20,30 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
-  const { inActiveMenus, initialRouteName } = useRootStore().personalAreaStore;
+  const {inActiveMenus, initialRouteName, themeState} =
+    useRootStore().personalAreaStore;
   const renderTabBar = React.useCallback(
-    ({ route, index }: TabBarItem) => {
-      const { options } = descriptors[route.key];
+    ({route, index}: TabBarItem) => {
+      const {options} = descriptors[route.key];
       const label =
         options.tabBarLabel !== undefined
           ? options.tabBarLabel
           : options.title !== undefined
-            ? options.title
-            : route.name;
+          ? options.title
+          : route.name;
 
       const renderIcon = () => {
         switch (label as APP_ROUTES) {
           case APP_ROUTES.HOME_START:
-            return <Images.Svg.homeIcon />;
+            return <themeState.bottomSheetIcons.home />;
           case APP_ROUTES.TOOLS:
-            return <Images.Svg.watchAtelierIcon />;
+            return <themeState.bottomSheetIcons.watchAtelier />;
           case APP_ROUTES.MARKET:
-            return <Images.Svg.marketIcon />;
+            return <themeState.bottomSheetIcons.market />;
           case APP_ROUTES.OTHER:
-            return <Images.Svg.messengerIcon />;
+            return <themeState.bottomSheetIcons.messenger />;
           default:
-            return <Images.Svg.homeIcon />;
+            return <themeState.bottomSheetIcons.home />;
         }
       };
 
@@ -54,7 +55,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
         });
         bottomSheetRef.current?.collapse();
         if (!event.defaultPrevented) {
-          navigation.navigate({ name: route.name, merge: true } as any);
+          navigation.navigate({name: route.name, merge: true} as any);
         }
         if (bottomScrollViewRef.current) {
           bottomScrollViewRef.current.scrollTo({
@@ -83,15 +84,15 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
         </RN.TouchableOpacity>
       );
     },
-    [inActiveMenus],
+    [inActiveMenus, initialRouteName, themeState],
   );
   const renderTabBars = () =>
-    state.routes.map((route, index) => renderTabBar({ route, index }));
+    state.routes.map((route, index) => renderTabBar({route, index}));
 
   const bottomSheetRef = React.useRef<BottomSheet>(null);
   const bottomScrollViewRef = React.useRef(null);
 
-  const current: { key: string; type: string }[] = navigation.getState()
+  const current: {key: string; type: string}[] = navigation.getState()
     .history as never;
 
   const snapPoints = React.useMemo(
@@ -100,8 +101,13 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
   );
 
   return (
-    <RN.View style={styles.bottomSheet}>
-      <RN.View style={styles.renderTabBarsContainer}>
+    <RN.View
+      style={[styles.bottomSheet, {backgroundColor: themeState.mainBack}]}>
+      <RN.View
+        style={[
+          styles.renderTabBarsContainer,
+          {backgroundColor: themeState.mainBack},
+        ]}>
         {renderTabBars()}
       </RN.View>
     </RN.View>

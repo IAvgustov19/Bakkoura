@@ -1,9 +1,10 @@
 import { Images } from '../assets';
+import {t} from '../i18n'
 
 export const OtherData = [
     {
         id: 1,
         image: Images.Img.otherSlider1,
-        text: 'Раздел Time Clinic станет для вас настоящим спасением и поможет вам изменить понимание о времени, получить консультацию, изучить новые материалы и многое другое'
+        text: `${t('time_clinic_tip_1')}`
     },
 ]

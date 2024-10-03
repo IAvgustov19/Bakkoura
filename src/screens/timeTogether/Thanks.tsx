@@ -12,6 +12,8 @@ import TextView from '../../components/Text/Text';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 
+import {t} from '../../i18n'
+
 const Thanks = () => {
   const navigation = useNavigation();
   return (
@@ -22,9 +24,9 @@ const Thanks = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           />
           <RN.View style={styles.content}>
-            <TextView title="Thank’s" />
+            <TextView title={`${t("thank")}`} />
             <TextView
-              text={`Enter your loved one's email address. We will send a\n request to confirm the status of your relationship.`}
+              text={`${t("enter_lover_email")}`}
             />
             <ButtonComp
               width={'50%'}

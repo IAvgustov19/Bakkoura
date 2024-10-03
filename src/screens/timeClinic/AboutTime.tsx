@@ -11,6 +11,11 @@ import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
 import TimeClinicListItem from './components/TimeClinicListItem';
 
+import {t} from '../../i18n'
+import l from '../../i18n'
+
+import { AboutTimeData_ar } from '../../constants/timeClinic_ar';
+
 const AboutTime = () => {
   const navigation = useNavigation();
   const {setAboutTimeInfo} = useRootStore().timeClinicStore;
@@ -38,16 +43,28 @@ const AboutTime = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="About Time"
+            title={`${t('About Time')}`}
           />
+          {l.locale === 'en' 
+          ? 
+          <RN.View style={styles.content}>
+          <RN.FlatList
+            showsVerticalScrollIndicator={false}
+            style={styles.flatlist}
+            data={AboutTimeData}
+            renderItem={({item}) => renderItem({item})}
+          />
+        </RN.View>
+          :
           <RN.View style={styles.content}>
             <RN.FlatList
               showsVerticalScrollIndicator={false}
               style={styles.flatlist}
-              data={AboutTimeData}
+              data={AboutTimeData_ar}
               renderItem={({item}) => renderItem({item})}
             />
-          </RN.View>
+          </RN.View>}
+          
         </RN.View>
       }
     />
