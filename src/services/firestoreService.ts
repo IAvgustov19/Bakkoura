@@ -992,7 +992,8 @@ export const uploadMediaToStorage = async (uri, path, mediaType) => {
     if (mediaType === 'image') {
       // Apply existing image compression logic
       compressedUri = await Image.compress(uri, {
-        compressionMethod: 'auto', // Can be 'jpeg', 'png', etc.
+        compressionMethod: 'auto', 
+        quality: 0.8,
       });
 
       // Convert the image to WebP format
@@ -1001,7 +1002,7 @@ export const uploadMediaToStorage = async (uri, path, mediaType) => {
         800, // new width (adjust as needed)
         600, // new height (adjust as needed)
         'WEBP', // format
-        80, // quality (0 to 100)
+        90, // quality (0 to 100)
       );
 
       compressedUri = resizedImage.uri;
