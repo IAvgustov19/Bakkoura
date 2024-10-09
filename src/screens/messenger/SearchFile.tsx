@@ -81,6 +81,8 @@ const SearchContact = () => {
     });
 
     const renderGridImages = useCallback(() => {
+
+        const {themeState} = useRootStore().personalAreaStore;
         const filteredImages = search
             ? imageData.filter((item) =>
                 item?.fileName?.toLowerCase().includes(search.toLowerCase())
@@ -90,7 +92,7 @@ const SearchContact = () => {
         if (filteredImages.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title={`${t("No media")}`} />
+                    <EmptyState title={`${t("No media")}`} color={themeState.title}/>
                 </RN.View>
             );
         }
@@ -235,6 +237,8 @@ const SearchContact = () => {
     const renderVoices = useCallback(() => {
         console.log(search);
 
+        const {themeState} = useRootStore().personalAreaStore;
+
         console.log('voiceDatavoiceData', voiceData);
 
         const filteredVoice = search
@@ -246,7 +250,7 @@ const SearchContact = () => {
         if (filteredVoice.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title={`${t("No voices")}`} />
+                    <EmptyState title={`${t("No voices")}`} color={themeState.title}/>
                 </RN.View>
             );
         }
@@ -271,6 +275,8 @@ const SearchContact = () => {
     }, [search, voiceData, playingId, onPlayPress]);
 
     const renderLinks = useCallback(() => {
+
+        const {themeState} = useRootStore().personalAreaStore;
         const filteredLinks = search
             ? linkData.filter((item) =>
                 item?.uri?.toLowerCase().includes(search.toLowerCase()))
@@ -278,7 +284,7 @@ const SearchContact = () => {
         if (filteredLinks.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title={`${t("No links")}`} />
+                     <EmptyState title={`${t("No links")}`} color={themeState.title}/>
                 </RN.View>
             );
         }
@@ -306,6 +312,8 @@ const SearchContact = () => {
     }, [search, linkData]);
 
     const renderFiles = useCallback(() => {
+        const {themeState} = useRootStore().personalAreaStore;
+
         const filteredFiles = search
             ? fileData.filter((item) =>
                 item?.title?.toLowerCase().includes(search.toLowerCase()))
@@ -313,7 +321,7 @@ const SearchContact = () => {
         if (fileData.length === 0) {
             return (
                 <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title={`${t("No files")}`}/>
+                    <EmptyState title={`${t("No files")}`} color={themeState.title}/>
                 </RN.View>
             );
         }
@@ -345,6 +353,7 @@ const SearchContact = () => {
         // if (loading) {
         //     return <ActivityIndicator size="large" color={COLORS.white} />;
         // }
+        const {themeState} = useRootStore().personalAreaStore;
 
         if (searchedUsers.length === 0 && searchPerformed) {
             return <ListEmptyComp title={`${t("The user was not found")}`} />;
@@ -365,13 +374,13 @@ const SearchContact = () => {
                         })}
                     >
                         <RN.View style={styles.imageContainer}>
-                            <Images.Svg.profileBackground width={54} height={54} />
+                        <themeState.profileBackIcon width={55} height={55} />
                             <RN.Image
                                 source={{ uri: item.avatar || null }}
                                 style={styles.profileImg}
                             />
                         </RN.View>
-                        <RN.Text style={styles.name}>{item.name}</RN.Text>
+                        <RN.Text style={[styles.name, {color:themeState.title}]}>{item.name}</RN.Text>
                     </RN.TouchableOpacity>
                 ))}
             </RN.ScrollView>
@@ -381,37 +390,37 @@ const SearchContact = () => {
 
     const musicData = [];
 
-    const renderMusic = () => {
-        if (musicData.length === 0) {
-            return (
-                <RN.View style={{ height: windowHeight }}>
-                    <EmptyState title={`${t("No music")}`} />
-                </RN.View>
-            );
-        }
-        return (
-            <RN.ScrollView
-                style={styles.gridScroll}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.gridContentContainer}
-            >
-                <RN.View style={{ gap: 5 }}>
-                    {musicData.map((item) => (
-                        <RN.View key={item.id} style={styles.voiceContainer}>
-                            <Images.Svg.fileIconMedia width={40} height={40} />
-                            <RN.View style={styles.voiceInfo}>
-                                <RN.View style={{ flexDirection: 'row', gap: 10 }}>
-                                    <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
-                                    <Images.Svg.blueArrow width={16} height={12} />
-                                </RN.View>
-                                <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
-                            </RN.View>
-                        </RN.View>
-                    ))}
-                </RN.View>
-            </RN.ScrollView>
-        );
-    };
+    // const renderMusic = () => {
+    //     if (musicData.length === 0) {
+    //         return (
+    //             <RN.View style={{ height: windowHeight }}>
+    //                 <EmptyState title={`${t("No music")}`} />
+    //             </RN.View>
+    //         );
+    //     }
+    //     return (
+    //         <RN.ScrollView
+    //             style={styles.gridScroll}
+    //             showsVerticalScrollIndicator={false}
+    //             contentContainerStyle={styles.gridContentContainer}
+    //         >
+    //             <RN.View style={{ gap: 5 }}>
+    //                 {musicData.map((item) => (
+    //                     <RN.View key={item.id} style={styles.voiceContainer}>
+    //                         <Images.Svg.fileIconMedia width={40} height={40} />
+    //                         <RN.View style={styles.voiceInfo}>
+    //                             <RN.View style={{ flexDirection: 'row', gap: 10 }}>
+    //                                 <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
+    //                                 <Images.Svg.blueArrow width={16} height={12} />
+    //                             </RN.View>
+    //                             <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
+    //                         </RN.View>
+    //                     </RN.View>
+    //                 ))}
+    //             </RN.View>
+    //         </RN.ScrollView>
+    //     );
+    // };
 
 
     const renderContent = () => {
@@ -420,8 +429,8 @@ const SearchContact = () => {
             renderGridImages,
             renderVoices,
             renderLinks,
-            renderFiles,
-            renderMusic,
+          //  renderFiles,
+            //renderMusic,
         ];
 
         return renderFunctions[active]();

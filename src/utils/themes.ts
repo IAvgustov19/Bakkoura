@@ -1,10 +1,10 @@
-import {Image} from 'react-native-svg';
+import {Image, Svg} from 'react-native-svg';
 import {BG, Images} from '../assets';
 import {Lotties} from '../lotties/lottie';
 import {COLORS} from './colors';
 import {ConstructorSvgs} from '../assets/constructor';
 
-export const ThemeTypes = ['dark', 'light'];
+export const ThemeTypes = ['Dark', 'Light'];
 export const Themes = {
   light: {
     loadingScreen: ['#D2D2D2', '#D2D2D2', '#F7F7F7', '#D2D2D2', '#D2D2D2'],
@@ -24,13 +24,16 @@ export const Themes = {
     alarmText: COLORS.black,
     dateText: '#787878',
     mainBack: '#EEEEEE',
+    homeAlarmWatch: Images.Svg.light_alarmNotificatiion,
     bottomSheetBg: BG.bottomSheetLightBg,
-    inputBaack: '#CBCFD2',
-    radioback: '#CBCFD2',
+    inputBaack: '#c0c2c3',
+    backgrounColor:'#fff',
+    radioback: '#c0c2c3',
     inputBorder: '#BDBDBD',
-    line: '#DDE0E1',
+    line: '#c0c2c3',
     listBak: '#EEEEEE',
     input2: '#CBCFD2',
+    recordingBack: '#CBCFD2',
     buttonYellow: '#7F642E',
     calendarText: '#979DA1',
     green: COLORS.greenDark,
@@ -58,8 +61,10 @@ export const Themes = {
     timeLogo: Images.Svg.lightTimerLogo,
     eventAndTime: Images.Svg.lightEventAndTime,
     userIcon: Images.Svg.lightUser,
+    editIcon:Images.Img.light_editMessage,
     profileBackIcon: Images.Svg.lightProfileBack,
     arrowRight: Images.Svg.lightArrowRight,
+    scrollSmiles: Images.Svg.light_scrollSmiles,
     arrowLeft: Images.Svg.lightArrowLeft,
     delete: Images.Svg.lightDelete,
     checkbox: Images.Svg.lightCheckbox,
@@ -86,9 +91,10 @@ export const Themes = {
       tomato: Lotties.whiteTomato,
       panda: Lotties.whitePanda,
       timer: Lotties.whiteShape,
-      heart: Lotties.whiteHeart,
+      heart: Lotties.goldHeart,
       goldHeart: Lotties.goldHeart,
     },
+    heartIdle: Images.Svg.goldheartIcon,
     watchConstructor: {
       faceBack: ConstructorSvgs.lightFaceBack,
     },
@@ -245,17 +251,20 @@ export const Themes = {
     alarmList: [COLORS.black, COLORS.black],
     alarmText: COLORS.white,
     dateText: '#787878',
-    mainBack: '#0D0D0D',
+    scrollSmiles: Images.Svg.scrollSmiles,
+    backgrounColor:'#000',
+    mainBack: 'black',
     bottomSheetBg: BG.bottomSheetBg,
     inputBaack: '#0D0D0D',
     inputBorder: '#304A66',
-    radioback: '#141414',
+    radioback: '#0e0e0e',
     line: '#131F28',
     listBak: '#0D0D0D',
     gray: COLORS.grey,
     green: COLORS.greenLight,
     selectYellow: COLORS.inActiveYellow,
     title: COLORS.white,
+    recordingBack: '#1C1C1D',
     yellow: COLORS.yellow,
     darkGrayText: COLORS.grey,
     input2: '#141414',
@@ -270,6 +279,7 @@ export const Themes = {
       home30: Images.Img.homeWatch30,
       home24and30: Images.Img.homeWatch24and30,
     },
+    homeAlarmWatch: Images.Svg.alarmNotificatiion,
     bakkouraWatchs: {
       watchBack: Images.Img.watchBack,
       watchMain: Images.Img.bakkouraWatchMain,
@@ -287,6 +297,8 @@ export const Themes = {
     checkbox: Images.Svg.checkbox,
     uploadFile: Images.Svg.darkUpArrow,
     ellipse: Images.Svg.ellipseOut,
+    editIcon:Images.Img.editMessage,
+    heartIdle: Images.Svg.heartIcon,
     substrack: Images.Svg.subtrackOut,
     metronom: Images.Svg.metronom,
     smallSubtrack: Images.Svg.bottonEllipse,
@@ -375,7 +387,6 @@ export const Themes = {
         ConstructorSvgs.backStyle6,
         ConstructorSvgs.backStyle7,
         ConstructorSvgs.backStyle8,
-        ConstructorSvgs.backStyle9,
         ConstructorSvgs.backStyle10,
         ConstructorSvgs.backStyle11,
         ConstructorSvgs.backStyle12,

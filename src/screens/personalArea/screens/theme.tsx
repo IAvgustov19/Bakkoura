@@ -13,6 +13,8 @@ import useRootStore from '../../../hooks/useRootStore';
 import {Themes, ThemeTypes} from '../../../utils/themes';
 import Line from '../../../components/Line/Line';
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
+import { t } from '../../../i18n';
+import l from '../../../i18n'
 
 const Theme = () => {
   const navigation = useNavigation();
@@ -45,7 +47,14 @@ const Theme = () => {
                 onPress={() => setUpdateCurrentTheme(item)}
               />
             }
-            title={item}
+            title={
+              l.locale == 'English' ?
+                item == 'Dark' ?
+                  'Dark' : 'Light'
+                :
+                item == 'Dark' ?
+                  'غامق' : 'ضوء'
+            }
             onPress={() => setUpdateCurrentTheme(item)}
           />
           <Line />
@@ -61,7 +70,7 @@ const Theme = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Theme"
+            title={`${t("Theme")}`}
           />
           <RN.FlatList
             data={ThemeTypes}
@@ -71,7 +80,7 @@ const Theme = () => {
           <RN.View style={styles.addBtn}>
             <StartBtn
               primary={true}
-              text={'Ok'}
+              text={`${t("ok")}`}
               subWidth={70}
               elWidth={55}
               onPress={onUpdateProfile}

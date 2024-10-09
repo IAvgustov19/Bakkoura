@@ -5,6 +5,7 @@ import Input from '../../../../components/Input/Input';
 import RN from '../../../../components/RN';
 import useRootStore from '../../../../hooks/useRootStore';
 import CustomSelect from '../../../timeBiotic/components/CustomSelect';
+import { t } from '../../../../i18n';
 
 type Props = {
   options: any;
@@ -29,8 +30,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect}) => {
   return (
     <RN.View style={styles.formBox}>
       <Input
-        title="Name"
-        placeholder="Enter your name"
+        title={`${t("name")}`}
         value={newUser.name}
         onPressIn={() => focusInput('name')}
         onChangeText={e => setNewUser('name', e)}
@@ -38,8 +38,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect}) => {
         bordered
       />
       <Input
-        title="Username"
-        placeholder="Enter your username"
+        title={`${t("Username")}`}
         value={newUser.username}
         onPressIn={() => focusInput('username')}
         onChangeText={e => setNewUser('username', e)}
@@ -47,8 +46,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect}) => {
         bordered
       />
       <Input
-        title="Email"
-        placeholder="Enter your email"
+        title={`${t("email")}`}
         value={newUser.email}
         onPressIn={() => focusInput('email')}
         onChangeText={e => setNewUser('email', e)}
@@ -57,8 +55,7 @@ const SignUpForm: React.FC<Props> = ({bottomInputPress, options, onSelect}) => {
       />
       <Input
         secureTextEntry
-        title="Password"
-        placeholder="Enter your password"
+        title={`${t("pass")}`}
         value={newUser.password}
         onChangeText={e => setNewUser('password', e)}
         inputRef={ref => (inputRefs.current.password = ref)}

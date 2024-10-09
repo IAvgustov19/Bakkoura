@@ -15,6 +15,7 @@ import { formatDateTime, secondsToHMS } from '../../helper/helper';
 import { COLORS } from '../../utils/colors';
 import ButtonComp from '../../components/Button/Button';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { t } from '../../i18n';
 
 const ToDoTimer = () => {
   const { getOneTask, tasksList, playProject, fetchTasks, tasksListClone } =
@@ -67,7 +68,7 @@ const ToDoTimer = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="To-do Timer"
+            title={`${t("To-do Timer")}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TODOTIMER_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
@@ -78,7 +79,7 @@ const ToDoTimer = () => {
             <RN.View style={styles.switch}>
               <ButtonComp
                 width={90}
-                title="History"
+                title={`${t("History")}`}
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.TODO_TIMER_HISTORY as never)
                 }

@@ -79,7 +79,7 @@ const Consultation: React.FC<Props> = ({}) => {
               />
               <FormContainer bottomInputPress={Scroll} />
               <RN.View style={styles.privacyBox}>
-                <RadioBtn active={accept} onPress={AcceptPrivacy} white />
+                <RadioBtn active={accept} onPress={AcceptPrivacy}/>
                 <RN.View style={styles.privacyText}>
                 <RN.Text
                     style={[
@@ -124,7 +124,6 @@ const styles = StyleSheet.create({
   },
   content: {
     gap: 15,
-    paddingBottom: 210,
   },
   privacyBox: {
     flexDirection: 'row',

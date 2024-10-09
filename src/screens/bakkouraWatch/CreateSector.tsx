@@ -61,7 +61,7 @@ const CreateSector = () => {
                     textSize={14}
                   />
                   <StartBtn
-                    text={t("Ok")}
+                    text={t("ok")}
                     elWidth={55}
                     subWidth={70}
                     primary

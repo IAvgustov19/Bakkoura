@@ -15,6 +15,8 @@ import l from '../../i18n'
 
 import ListFooter from '../../components/ListFooter/ListFooter';
 import useRootStore from '../../hooks/useRootStore';
+import { Themes } from '../../utils/themes';
+import { color } from '@rneui/base';
 
 const BtsNavigation = () => {
   const {themeState} = useRootStore().personalAreaStore;
@@ -24,13 +26,17 @@ const BtsNavigation = () => {
         return (
             <RN.View style={styles.itemContainer}>
                 <RN.View style={styles.itemInfo}>
-                    <item.image />
-                    <TextView text={item.label} style={styles.label} />
+                  {
+                    themeState.title == COLORS.white ? <item.image /> : <item.image2 />
+                  }
+                    
+                    <TextView text={item.label} style={[styles.label]} />
                 </RN.View>
                 <TextView
                     textAlign='left'
                     text={item.text}
                     style={styles.text}
+                    color={themeState.title}
                 />
             </RN.View>
         );
@@ -46,7 +52,7 @@ const BtsNavigation = () => {
                     />
                     <RN.View style={styles.content}>
                         {
-                            l.locale === 'en'?
+                            l.locale === 'English'?
                             <RN.FlatList
                             data={BtsNavigationItems_en}
                             renderItem={renderItem}
@@ -77,7 +83,7 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     paddingTop: 18,
-    paddingBottom: 70,
+    paddingBottom: 120,
   },
   itemContainer: {
     gap: 35,

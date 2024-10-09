@@ -46,22 +46,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginTop: 25,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   title: {
     alignSelf: 'center',
     position: 'absolute',
-    // left: 150,
     width: '100%',
     textAlign: 'center',
     justifyContent: 'center',
+    fontSize:20,
   },
   leftItem: {
     justifyContent: 'center',
     zIndex: 1,
+    marginTop:1,
+    marginBottom:-1
   },
   rightItem: {
     justifyContent: 'center',
     zIndex: 1,
+    marginTop:1,
+    marginBottom:-1
   },
 });

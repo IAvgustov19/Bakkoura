@@ -8,6 +8,7 @@ import SwitchContain from '../../../components/SwitchContain/SwitchContain';
 import {formattedTime} from '../../../helper/helper';
 import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
+import { t } from '../../../i18n';
 
 type Props = {
   stop?: boolean;
@@ -28,7 +29,7 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
   return (
     <RN.View style={styles.container}>
       <RN.View style={styles.duringTimerContent}>
-        {stop ? <RN.Text style={styles.pausa}>pause</RN.Text> : null}
+        {stop ? <RN.Text style={styles.pausa}>{t("Pause")}</RN.Text> : null}
         <RN.View
           style={[
             styles.timerPercentBox,
@@ -63,7 +64,7 @@ const SecondTimerDuring: React.FC<Props> = ({stop, finished}) => {
           {timerStatus.finished ? (
             <RN.View style={styles.finishedStatus}>
               <RN.Text style={[styles.timeOver, {color: themeState.green}]}>
-                Time is over
+              {t("Time is over")}
               </RN.Text>
               <Images.Svg.bellGreen width={35} />
             </RN.View>
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: 20,
     position: 'absolute',
-    left: '45%',
+    left: '43%',
     fontSize: 16,
   },
   timerPercentBox: {
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   timerTime: {
-    fontSize: 50,
+    fontSize: 45,
     color: '#fff',
     fontWeight: '200',
   },
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   finished: {
-    fontSize: 50,
+    fontSize: 45,
     color: '#fff',
     fontWeight: '200',
   },

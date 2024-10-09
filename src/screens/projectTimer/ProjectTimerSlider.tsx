@@ -8,6 +8,7 @@ import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { TimerData } from '../../utils/timer';
 import { ProjectTimerData } from '../../utils/projectTimer';
+import { t } from '../../i18n';
 
 
 const ProjectTimerSlider = () => {
@@ -21,7 +22,7 @@ const ProjectTimerSlider = () => {
 
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="Project Timer"
+                        title={`${t('Project Timer')}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={ProjectTimerData} height={width / 1.2} width={'100%'} marginTop={30} />

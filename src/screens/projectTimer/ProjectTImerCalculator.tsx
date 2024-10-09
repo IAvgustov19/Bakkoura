@@ -20,6 +20,7 @@ import TextView from '../../components/Text/Text';
 import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
 import {HITSLOP, windowHeight} from '../../utils/styles';
+import { t } from '../../i18n';
 
 const ProjectTimerCalculator = () => {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ const ProjectTimerCalculator = () => {
           <RN.View style={styles.projectsBox}>
             <HeaderContent
               leftItem={<ArrowLeftBack onPress={onHandleProjects} />}
-              title={'Projects'}
+              title={`${t("Projects")}`}
             />
             <RN.ScrollView
               showsHorizontalScrollIndicator={false}
@@ -83,7 +84,7 @@ const ProjectTimerCalculator = () => {
                 elWidth={60}
                 subWidth={75}
                 primary
-                text="Ok"
+                text={`${t("ok")}`}
                 onPress={onHandleProjects}
               />
             </RN.View>
@@ -99,8 +100,7 @@ const ProjectTimerCalculator = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={onBackHandle} />}
-            title="Calculator"
-            rightItem={<Cancel onClose={onBackHandle} />}
+            title={`${t("calc")}`}
           />
           <RN.View style={styles.content}>
             <SelectInput
@@ -111,7 +111,7 @@ const ProjectTimerCalculator = () => {
             />
             <RN.View style={styles.timePrice}>
               <RN.View style={styles.timeBox}>
-                <TextView text="Time" style={styles.label} />
+                <TextView text={`${t("Time")}`} style={styles.label} />
                 <RN.View
                   style={[
                     styles.itemBox,
@@ -124,7 +124,7 @@ const ProjectTimerCalculator = () => {
                 </RN.View>
               </RN.View>
               <RN.View style={styles.priceBox}>
-                <TextView text="Price $" style={styles.label} />
+                <TextView text={`${t("Price")}, $`} style={styles.label} />
                 <RN.View
                   style={[
                     styles.itemBox,
@@ -139,7 +139,7 @@ const ProjectTimerCalculator = () => {
             </RN.View>
             <RN.View style={styles.amount}>
               <TextView
-                text="Amount"
+                text={`${t("Amount")}`}
                 style={[styles.label, styles.amountLabel]}
               />
               <LinearGradient
@@ -161,7 +161,7 @@ const ProjectTimerCalculator = () => {
             </RN.View>
             {recentlyCalculated?.id ? (
               <RN.View style={styles.counted}>
-                <TextView text="Recently counted" style={styles.label} />
+                <TextView text={`${t("Recently counted")}`} style={styles.label} />
                 <SelectInput
                   title={
                     recentlyCalculated?.title ? recentlyCalculated.title : ''

@@ -124,7 +124,7 @@ const FormContainer: React.FC<Props> = ({
         black={black}
         title={`${t('name')}`}
         placeholder={`${t('name')}`}
-        backColor={black ? COLORS.black : COLORS.c3}
+        
         width="100%"
         onChangeText={e => setOrderState('name', e)}
         bordered
@@ -134,23 +134,25 @@ const FormContainer: React.FC<Props> = ({
         black={black}
         title={`${t('Phone')}`}
         placeholder={`${t('Phone')}`}
-        backColor={black ? COLORS.black : COLORS.c3}
+       
         width="100%"
         onChangeText={e => setOrderState('phone', e)}
         onPressIn={bottomInputPress}
         keyBoardType="numeric"
+        bordered
       />
       <Input
         value={orderState.email}
         black={black}
         title={`${t('email')}`}
         placeholder={`${t('email')}`}
-        backColor={black ? COLORS.black : COLORS.c3}
+      
         width="100%"
         onChangeText={e => handleChange(e)}
         onPressIn={bottomInputPress}
         keyBoardType="email-address"
         err={emailErr}
+        bordered
       />
       {!withSelect ? (
         <Input
@@ -164,6 +166,7 @@ const FormContainer: React.FC<Props> = ({
           textAlignVertical="top"
           onChangeText={e => setOrderState('message', e)}
           onPressIn={bottomInputPress}
+          bordered
         />
       ) : (
         <RN.View style={{height: 100, width: '100%'}}>

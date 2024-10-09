@@ -148,7 +148,7 @@ export default observer(SoundsContent);
 
 const styles = RN.StyleSheet.create({
   centeredView: {
-    height: '90%',
+    height: '85%',
     // backgroundColor: 'red',
   },
   modalView: {

@@ -276,20 +276,29 @@ export class PomodoroStore {
     PushNotification.localNotification({
       channelId: channelId, // This is optional, and you may need to create a channel for Android
       title: `${t("Pomodoro Timer")}`,
-      message: `${t("Pomodoro session has ended")} ${this.currentBreakTime.id === 3 && this.shortBreakCount < 4
-        ? `${t("Back to Pomodoro!")}`
-        : this.currentBreakTime.id === 2
-          ? `${t("Back to Pomodoro!")}`
-          : this.currentBreakTime.id === 1
-            ? this.shortBreakCount < 3
-              ? `${t("Take a short break!")}`
-              : `${t("Time for a long break!")}`
-            : `Unknown state: ID ${this.currentBreakTime.id}` // Print the actual ID for debugging
-        }`,
+      message: `${t("Pomodoro session has ended")}`,
       playSound: true,
       soundName: 'default',
       // Other notification options
     });
+
+    // PushNotification.localNotification({
+    //   channelId: channelId, // This is optional, and you may need to create a channel for Android
+    //   title: `${t("Pomodoro Timer")}`,
+    //   message: `${t("Pomodoro session has ended")} ${this.currentBreakTime.id === 3 && this.shortBreakCount < 4
+    //     ? `${t("Back to Pomodoro!")}`
+    //     : this.currentBreakTime.id === 2
+    //       ? `${t("Back to Pomodoro!")}`
+    //       : this.currentBreakTime.id === 1
+    //         ? this.shortBreakCount <= 3
+    //           ? `${t("Take a short break!")}`
+    //           : `${t("Time for a long break!")}`
+    //         : `` // Print the actual ID for debugging
+    //     }`,
+    //   playSound: true,
+    //   soundName: 'default',
+    //   // Other notification options
+    // });
 
     // clearInterval(this.currentSecondInterval);
     // if (this.currentBreakTime.id === 1) {

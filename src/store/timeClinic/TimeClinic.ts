@@ -22,7 +22,7 @@ export class TimeClinicStore {
 
   setAboutTimeInfo = (id: number) => {
     runInAction(() => {
-      if (l.locale === 'ar'){
+      if (l.locale != 'English'){
         this.aboutTimeInfo = AboutTimeData_ar.find(item => item.id === id);
       }
       else{

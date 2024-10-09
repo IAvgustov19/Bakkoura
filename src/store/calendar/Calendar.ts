@@ -29,6 +29,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import RN from '../../components/RN';
 
 import {t} from '../../i18n'
+import l from '../../i18n'
 
 export class CalendarStore {
   private readonly root: RootStore;
@@ -63,8 +64,8 @@ export class CalendarStore {
   oneMonth: Date | string;
 
   nearDay: {day: string; name: string; date: any} = {
-    name: `${t('No events yet')}`,
-    day:`${t('Today')}`,
+    name: '',
+    day: '',
     date: '',
   };
   calendarData: any[];

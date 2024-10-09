@@ -125,7 +125,7 @@ const DateScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title={`${t("date")}`}
-            rightItem={
+            leftItem={
               <ArrowLeftBack onPress={() => navigation.goBack()} />
             }
           />
@@ -162,7 +162,7 @@ const DateScreen = () => {
             <StartBtn
               onPress={okDate}
               primary={true}
-              text={`${t("Ok")}`}
+              text={`${t("ok")}`}
               subWidth={70}
               elWidth={55}
             />

@@ -7,6 +7,7 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import CustomSwiper from '../../components/CustomSwiper/CustomSwiper';
 import { Dimensions } from 'react-native';
 import { ToDoData } from '../../utils/todo';
+import { t } from '../../i18n';
 
 
 const ToDoTimerSlider = () => {
@@ -19,7 +20,7 @@ const ToDoTimerSlider = () => {
                 <>
                     <HeaderContent
                         leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-                        title="To do Timer"
+                        title={`${t("To-do Timer")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
                     <CustomSwiper data={ToDoData} height={width / 1.5} width={'100%'} marginTop={40}/>

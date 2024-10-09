@@ -53,7 +53,7 @@ const OneMonthAndEvents = () => {
           </RN.View>
           <RN.View style={styles.calendar}>{renderEvents()}</RN.View>
           <RN.View style={styles.events}>
-            <Events borderRaduis={0} isShowDate={false} leftLine={true} />
+            <Events borderRaduis={0} isShowDate={true} leftLine={true} withoutDelete={true}/>
           </RN.View>
           <RN.View style={styles.createBtn}>
             <StartBtn

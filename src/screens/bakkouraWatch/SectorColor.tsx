@@ -43,7 +43,7 @@ const SectorColor = () => {
               })}
             </RN.View>
             <StartBtn
-              text={t("Ok")}
+              text={t("ok")}
               subWidth={70}
               elWidth={55}
               primary

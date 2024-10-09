@@ -8,6 +8,7 @@ import {TimerValueInitial, TimerValueType} from '../../types/alarm';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import {Platform} from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { t } from '../../i18n';
 
 Sound.setCategory('Playback');
 
@@ -115,7 +116,7 @@ export class TimerStore {
     PushNotification.localNotification({
       channelId: this.timerChannelId,
       title: 'BTS',
-      message: 'Timer',
+      message: `${t('Timer')}`,
       soundName: this.selectedSound.url,
       playSound: true,
       autoCancel: false,

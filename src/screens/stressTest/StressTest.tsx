@@ -79,10 +79,10 @@ const styles = RN.StyleSheet.create({
     height: '80%',
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingVertical: 30,
+    marginBottom: 120,
   },
   textInfo: {
     paddingHorizontal: 10,
-    gap: 20,
+    gap: 20
   },
 });

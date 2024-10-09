@@ -142,7 +142,7 @@ const WatchConstructor = () => {
             {'options' === currentPart ? (
               <RN.Image style={styles.costImage} source={Item} />
             ) : (
-              <Item width={windowWidth / 5} height={100} />
+              <Item width={windowWidth / 5 + 6} height={100}/>
             )}
           </RN.Pressable>
         </RN.View>
@@ -183,7 +183,6 @@ const WatchConstructor = () => {
           <HeaderContent
             title={`${t("Watch Constructor")}`}
             leftItem={<ArrowLeftBack onPress={onHandleback} />}
-            rightItem={<Cancel onClose={onHandleback} />}
           />
           <RN.View style={styles.content}>
             <ViewShot ref={viewShotRef} style={styles.viewShot}>
@@ -196,7 +195,6 @@ const WatchConstructor = () => {
               Width={'48%'}
               Height={45}
               onPress={() => captureAndSaveScreenshot('save')}
-              outline
             />
             <OutlineBtn
               text={`${t("Send idea")}`}
@@ -216,7 +214,8 @@ const WatchConstructor = () => {
           </RN.ScrollView>
           <RN.ScrollView
             style={styles.partsScroll}
-            showsHorizontalScrollIndicator={false}>
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
             <RN.View
               style={[styles.parts, {backgroundColor: themeState.mainBack}]}>
               {renderParts()}
@@ -250,7 +249,7 @@ const styles = RN.StyleSheet.create({
     height: windowHeight / 4,
   },
   parts: {
-    paddingBottom: windowHeight / 12,
+    paddingBottom: 10,
   },
   part: {
     height: 100,

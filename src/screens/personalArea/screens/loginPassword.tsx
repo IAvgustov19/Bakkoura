@@ -164,7 +164,7 @@ const LoginPassword = () => {
                         style={{marginTop: 3}}
                       />
                     ) : (
-                      `${t("Ok")}`
+                      `${t("ok")}`
                     )
                   }
                   elWidth={55}
@@ -220,7 +220,7 @@ const styles = RN.StyleSheet.create({
   deleteBox: {
     position: 'absolute',
     right: '7%',
-    top: '30%',
+    top: '31%',
   },
   overlay: {
     position: 'absolute',

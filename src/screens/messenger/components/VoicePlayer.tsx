@@ -10,6 +10,7 @@ interface SimpleAudioItemProps {
     onPlayPress: (id: string) => void;
     title: string;
     subtitle: string;
+    titleColor: string;
 }
 
 const Voice: React.FC<SimpleAudioItemProps> = ({
@@ -18,7 +19,8 @@ const Voice: React.FC<SimpleAudioItemProps> = ({
     isPlaying,
     onPlayPress,
     title,
-    subtitle
+    subtitle,
+    titleColor,
 }) => {
     const sound = useRef<Sound | null>(null);
 
@@ -59,7 +61,7 @@ const Voice: React.FC<SimpleAudioItemProps> = ({
                 )}
             </RN.TouchableOpacity>
             <RN.View style={styles.voiceInfo}>
-                <RN.Text style={styles.voiceTitle}>{title}</RN.Text>
+                <RN.Text style={[styles.voiceTitle, {color:titleColor}]}>{title}</RN.Text>
                 <RN.Text style={styles.voiceSubTitle}>{subtitle}</RN.Text>
             </RN.View>
         </RN.View>

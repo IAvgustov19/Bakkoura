@@ -1,9 +1,10 @@
 import React, {useState, useRef} from 'react';
-import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
+import {Text, View, StyleSheet, ActivityIndicator, StatusBar} from 'react-native';
 import RN from '../../../components/RN';
 import Video from 'react-native-video';
 import {observer} from 'mobx-react-lite';
 import {Images} from '../../../assets';
+import { red } from 'react-native-reanimated/lib/typescript/Colors';
 
 const VideoPlayer = (props: any) => {
   const {currentMessage} = props;
@@ -159,10 +160,11 @@ const VideoPlayer = (props: any) => {
               />
               <View style={styles.videoInfo}>
                 <Text style={styles.fileName}>{currentMessage.fileName}</Text>
-                <Text style={styles.fileSize}>{currentMessage.fileSize}</Text>
-                <Text style={styles.time}>{currentMessage.time}</Text>
+                {/* <Text style={styles.fileSize}>{currentMessage.fileSize}</Text> */}
+                {/* <Text style={styles.time}>{currentMessage.time}</Text> */}
               </View>
             </RN.TouchableOpacity>
+            <StatusBar backgroundColor='red'/>
             <RN.Modal
               visible={modalVisible}
               transparent={true}
@@ -211,10 +213,11 @@ const styles = StyleSheet.create({
   container: {},
   fileName: {
     color: '#fff',
-    fontSize: 14,
-    flexWrap: 'wrap',
-    maxWidth: 200,
-  },
+    fontSize: 16,
+    width:100,
+    flexWrap:'wrap',
+    fontFamily:'RedHatDisplay-Regular'
+},
   fileSize: {
     color: '#bbb',
     fontSize: 12,
@@ -225,19 +228,18 @@ const styles = StyleSheet.create({
   },
   videoMessage: {
     flexDirection: 'row',
-
     overflow: 'hidden',
-    gap: 5,
+    gap: 10,
     maxWidth: '100%',
   },
   video: {
     width: 100,
     height: 100,
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   videoInfo: {
-    marginTop: 10,
+   justifyContent:'center'
   },
   circleVideoBox: {
     justifyContent: 'center',

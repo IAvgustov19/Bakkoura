@@ -48,7 +48,7 @@ const RecommendationView = () => {
                 />
               </RN.View>
               <RN.View>{renderTexts()}</RN.View>
-              {/* <RN.Text style={styles.date}>07:08.2023 - Jihad Bakkoura</RN.Text> */}
+              {/* <RN.Text style={styles.date}>07.08.2023 - Jihad Bakkoura</RN.Text> */}
             </RN.View>
           </RN.ScrollView>
         </RN.View>

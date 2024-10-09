@@ -130,7 +130,7 @@ const NewAlarmScreen = () => {
                     {backgroundColor: themeState.mainBack},
                   ]}>
                   <RN.View style={styles.listItem}>
-                    <RN.Text style={styles.listItemText}>{`${t("reminder")}`}</RN.Text>
+                    <RN.Text style={[styles.listItemText, {color:themeState.darkGrayText}]}>{`${t("reminder")}`}</RN.Text>
                     <SimpleSwitch active={leter} handlePress={onSetLeter} />
                   </RN.View>
                 </RN.View>
@@ -160,7 +160,10 @@ const NewAlarmScreen = () => {
             data={soundData}
             onItemPress={onSoundItemPress as never}
             headerLeftItem={
-              <ArrowLeftBack onPress={() => navigation.goBack()} />
+              <ArrowLeftBack onPress={() => {
+                navigation.goBack()
+                navigation.navigate(APP_ROUTES.NEW_ALARM_SCREEN as never)
+              }} />
             }
             onClose={() => setSound(e => !e)}
             modalVisible={sound}
@@ -169,7 +172,7 @@ const NewAlarmScreen = () => {
             setVibrationActive={() => setVibation(e => !e)}
             myMusic
             okBtn
-            okBtnText={`${t("Ok")}`}
+            okBtnText={`${t("ok")}`}
             onPressBtn={() => setSound(e => !e)}
             onSelectMyMusic={selectMusicFile}
             myMusicValue={
@@ -208,7 +211,7 @@ const styles = RN.StyleSheet.create({
   eventsTypeList: {
     backgroundColor: '#0D0D0D',
     borderRadius: 3,
-    paddingHorizontal: 5,
+    paddingRight: 5,
     marginTop: 5,
   },
   listItem: {
@@ -220,7 +223,6 @@ const styles = RN.StyleSheet.create({
     width: '100%',
   },
   listItemText: {
-    color: '#7D7D7D',
     fontSize: 16,
   },
 });

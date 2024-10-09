@@ -66,7 +66,6 @@ const SendIdea = () => {
                     </RN.View> */}
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title={`${t("Your idea")}`}
           />
           <RN.ScrollView
@@ -91,11 +90,11 @@ const SendIdea = () => {
                       styles.privacyInfo,
                       {color: themeState.darkGrayText},
                     ]}>
-                  `${t('your_data_safe')}`
+                  {t('your_data_safe')}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
                   <RN.Text
-                      style={[styles.privacyLink, {color: themeState.yellow}]}>`${t('I_accept')}`</RN.Text>
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>{t('I_accept')}</RN.Text>
     </RN.Pressable>
                 </RN.View>
               </RN.View>
@@ -149,11 +148,11 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     gap: 20,
-    paddingBottom: windowHeight / 5,
+    paddingBottom: 20,
   },
   ideaInfo: {
     gap: 20,
-    marginVertical: 20,
+    marginTop: 20,
   },
   privacyBox: {
     flexDirection: 'row',

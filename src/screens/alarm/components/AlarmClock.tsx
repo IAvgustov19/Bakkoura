@@ -65,13 +65,10 @@ const AlarmClock: React.FC<Props> = ({is24h}) => {
   }, [is24h, activeAlarm]);
 
   return (
-    <LinearContainer
+    <RN.View
       children={
         <RN.View style={styles.container}>
-          <HeaderContent
-            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title={`${t("Alarm Clock")}`}
-          />
+          
           <RN.View style={styles.clockBox}>
             {renderLottieClock()}
             {renderClock}
@@ -98,7 +95,7 @@ export default observer(AlarmClock);
 const styles = StyleSheet.create({
   container: {
     height: windowHeight - 130,
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   btnBox: {
     paddingHorizontal: 5,
@@ -114,6 +111,6 @@ const styles = StyleSheet.create({
   clockBox: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
+    marginTop:50
   },
 });

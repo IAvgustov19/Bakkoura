@@ -100,7 +100,6 @@ const Metronom = () => {
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.METRONOM_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
-                <themeState.timeLogo />
               </RN.TouchableOpacity>
             } />
           <RN.View style={styles.content}>
@@ -157,7 +156,7 @@ const Metronom = () => {
                 <RN.View style={styles.btnBox}>
                   <StartBtn
                     text={`${t("Tap Tempo")}`}
-                    color={COLORS.grey}
+                    color={themeState.gray}
                     onPress={clearState}
                   />
                   <StartBtn
@@ -209,14 +208,12 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 50,
-    borderWidth: 0.5,
-    borderBottomWidth: 0,
   },
   activeBtn: {
     position: 'absolute',
     right: 0,
     flexDirection: 'row',
-    gap: 10,
+    gap: 5,
   },
   child: {
     width: windowWidth - 40,

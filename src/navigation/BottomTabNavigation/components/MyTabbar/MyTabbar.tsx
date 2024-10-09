@@ -42,6 +42,14 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
             return <themeState.bottomSheetIcons.market />;
           case APP_ROUTES.OTHER:
             return <themeState.bottomSheetIcons.messenger />;
+            case APP_ROUTES.HOME_START_AR:
+            return <themeState.bottomSheetIcons.home />;
+          case APP_ROUTES.TOOLS_AR:
+            return <themeState.bottomSheetIcons.watchAtelier />;
+          case APP_ROUTES.MARKET_AR:
+            return <themeState.bottomSheetIcons.market />;
+          case APP_ROUTES.OTHER_AR:
+            return <themeState.bottomSheetIcons.messenger />;
           default:
             return <themeState.bottomSheetIcons.home />;
         }
@@ -105,8 +113,7 @@ const MyTabbar: React.FC<BottomTabBarProps> = ({
       style={[styles.bottomSheet, {backgroundColor: themeState.mainBack}]}>
       <RN.View
         style={[
-          styles.renderTabBarsContainer,
-          {backgroundColor: themeState.mainBack},
+          styles.renderTabBarsContainer
         ]}>
         {renderTabBars()}
       </RN.View>

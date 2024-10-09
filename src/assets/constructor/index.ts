@@ -37,7 +37,6 @@ import backStyle5 from './back/backStyle5.svg';
 import backStyle6 from './back/backStyle6.svg';
 import backStyle7 from './back/backStyle7.svg';
 import backStyle8 from './back/backStyle8.svg';
-import backStyle9 from './back/backStyle9.svg';
 import backStyle10 from './back/backStyle10.svg';
 import backStyle11 from './back/backStyle11.svg';
 import backStyle12 from './back/backStyle12.svg';
@@ -141,7 +140,6 @@ export const ConstructorSvgs = {
   backStyle6,
   backStyle7,
   backStyle8,
-  backStyle9,
   backStyle10,
   backStyle11,
   backStyle12,

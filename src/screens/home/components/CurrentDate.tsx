@@ -31,12 +31,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   day: {
-    fontSize: normalizeHeight(120),
+    fontSize: normalizeHeight(130),
     color: COLORS.yellow,
     textAlign: 'center',
   },
   monthYear: {
-    fontSize: normalizeHeight(36),
+    fontSize: normalizeHeight(43),
     color: COLORS.inActiveYellow,
     marginTop: -5,
     fontFamily: 'RedHatDisplay-SemiBold',

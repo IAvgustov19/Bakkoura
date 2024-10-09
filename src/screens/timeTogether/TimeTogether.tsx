@@ -15,7 +15,7 @@ import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import {db} from '../../config/firebase';
-import {Alert} from 'react-native';
+import {Alert, Text} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   updateEtapsMailInFirestore,
@@ -27,6 +27,7 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 import {t} from '../../i18n'
 import {normalizeHeight} from '../../utils/dimensions';
+import { color } from '@rneui/base';
 
 const TimeTogether = () => {
   const navigation = useNavigation();
@@ -60,7 +61,7 @@ const TimeTogether = () => {
   };
 
 
-  console.log(selcetedEtap);
+  //console.log(selcetedEtap);
   
 
   useEffect(() => {
@@ -199,8 +200,10 @@ const TimeTogether = () => {
               +calculateDaysDifference(item.fromDate) > 0
                 ? calculateDaysDifference(item.fromDate)
                 : 0
-            } days`}</RN.Text>
-            <Images.Svg.dots onPress={() => onHandleTask(item)} />
+            } ${t('days')}`}</RN.Text>
+            <RN.TouchableOpacity onPress={() => onHandleTask(item)} style={styles.dotPress}>
+                <Images.Svg.dots style={styles.dotImg}/>
+              </RN.TouchableOpacity>
           </RN.Pressable>
           <Line />
         </RN.View>
@@ -208,9 +211,9 @@ const TimeTogether = () => {
     });
   }, [etapList]);
 
-  useEffect(() => {
-    console.log(getTimeFormat());
-  }, [getTimeFormat]);
+  // useEffect(() => {
+  //   console.log(getTimeFormat());
+  // }, [getTimeFormat]);
 
   const lottie = useMemo(() => {
     return (
@@ -253,24 +256,25 @@ const TimeTogether = () => {
             <RN.View style={styles.coupleBox}>
               <RN.View style={styles.heartBox}>
                 {(selcetedEtap?.uid && etapList?.length) ? lottie :
-                  <Images.Svg.heartIcon width={windowWidth - 40} />
+                <RN.View style={[{marginTop:30}]}>
+                    <themeState.heartIdle width={windowWidth - 40}/>
+                 </RN.View>
                 }
               </RN.View>
               <RN.View style={styles.coupleInfo}>
-                <TextView
-                  style={styles.coupleTimeText}
-                  title={
-                    selcetedEtap.timeStamp
-                      ? `${selcetedEtap.type} ${selcetedEtap.uid !== auth().currentUser.uid ? '' : `${t("with")} ${selcetedEtap.name ? selcetedEtap.name : `${t("no Name")}`
-                        }`}`
-                      : `${t("Time")}`
-                  }
-                />
+                <Text
+                  style={[styles.coupleTimeText, {color: COLORS.white}]}
+                > {
+                  selcetedEtap.timeStamp
+                    ? `${selcetedEtap.type} ${selcetedEtap.uid !== auth().currentUser.uid ? '' : `${t("with")} ${selcetedEtap.name ? selcetedEtap.name : `${t("no Name")}`
+                      }`}`
+                    : `${t("Time")}`
+                }</Text>
                 <RN.Text style={styles.coupleTime}>
                   {selcetedEtap?.time != '0' ? selcetedEtap?.time : '00:00:00'}
                 </RN.Text>
                 <RN.Text style={styles.coupleDays}>
-                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} days
+                  {+calculateDaysDifference(selcetedEtap.fromDate) > 0 ? calculateDaysDifference(selcetedEtap.fromDate) : 0} {t('days')}
                 </RN.Text>
                 <RN.Text style={styles.coupleDate}>
                   {selcetedEtap?.fromDate != '0'
@@ -319,6 +323,16 @@ const styles = RN.StyleSheet.create({
   container: {
     paddingHorizontal: 5,
   },
+  dotPress:{
+    width:15,
+    height:25,
+    paddingLeft:5,
+    
+    justifyContent:'center',
+  },
+  dotImg:{
+    paddingTop:5
+  },
   content: {
     height: windowHeight - windowHeight / 4,
   },
@@ -329,7 +343,7 @@ const styles = RN.StyleSheet.create({
   },
   heartBox: {
     position: 'absolute',
-    paddingTop: 20,
+    paddingTop: 0,
   },
   coupleInfo: {
     height: '100%',
@@ -340,21 +354,22 @@ const styles = RN.StyleSheet.create({
     marginTop: 10,
     color: COLORS.white,
     fontSize: normalizeHeight(76),
+    fontFamily:'RedHatDisplay-Regular'
   },
   coupleTime: {
     color: COLORS.white,
-    fontSize: normalizeHeight(126),
+    fontSize: 46,
     fontWeight: '300',
   },
   coupleDays: {
     color: COLORS.white,
-    fontSize: normalizeHeight(66),
+    fontSize: 20,
     fontWeight: '200',
     lineHeight: 25,
   },
   coupleDate: {
     color: COLORS.yellow,
-    fontSize: normalizeHeight(50),
+    fontSize: 16,
     marginTop: 15,
   },
   btns: {
@@ -373,11 +388,11 @@ const styles = RN.StyleSheet.create({
     paddingVertical: 12,
   },
   etapType: {
-    fontSize: normalizeHeight(56),
+    fontSize: 18,
     color: COLORS.white,
   },
   etapDays: {
-    fontSize: normalizeHeight(50),
+    fontSize: 16,
     color: COLORS.white,
   },
   switch: {

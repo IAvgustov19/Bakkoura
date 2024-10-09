@@ -48,9 +48,13 @@ export enum APP_ROUTES {
 
   //bottomsheet screens
   HOME_START = 'HomeScreen',
+  HOME_START_AR = 'الرئيسية',
   MARKET = 'MarketScreen',
   TOOLS = 'Tools',
   OTHER = 'Other',
+  MARKET_AR = 'السوق',
+  TOOLS_AR = 'الأدوات',
+  OTHER_AR = 'أخرى',
   OTHER_SLIDER = 'OtherSlider',
 
   // others

@@ -77,7 +77,7 @@ const NewEventScreen = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title={isUpdate ? `${t("Edit event")}` : `${t("new events")}`}
+            title={`${t("Event")}`}
             rightItem={<Cancel onClose={onHandleGoBack} />}
           />
           <RN.ScrollView
@@ -106,6 +106,7 @@ const NewEventScreen = () => {
                       placeholderTextColor={COLORS.grey}
                       placeholder={`${t("name")}`}
                       value={newEventData.name}
+                      maxLength={40}
                     />
                   </RN.View>
                   <Line />
@@ -215,6 +216,7 @@ const NewEventScreen = () => {
                       value={newEventData.comment}
                       onPressIn={Scroll}
                       onKeyPress={Scroll}
+                      maxLength={200}
                     />
                   </RN.View>
                 </RN.View>
@@ -223,7 +225,7 @@ const NewEventScreen = () => {
                 <StartBtn
                   onPress={addEvent}
                   primary={true}
-                  text={isUpdate ? `${t("Ok")}` : `${t("add")}`}
+                  text={`${t("ok")}`}
                   subWidth={70}
                   elWidth={55}
                 />
@@ -235,7 +237,10 @@ const NewEventScreen = () => {
             data={soundsData}
             onItemPress={onSoundItemPress as never}
             headerLeftItem={
-              <ArrowLeftBack onPress={() => navigation.goBack()} />
+              <ArrowLeftBack onPress={() => {
+                navigation.goBack()
+                navigation.navigate(APP_ROUTES.NEW_EVENT as never)
+              }} />
             }
             onClose={() => setSound(e => !e)}
             modalVisible={sound}
@@ -286,9 +291,9 @@ const styles = RN.StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     width: '100%',
-    height: 60,
+    height: "100%",
+    minHeight:60,
     alignItems: 'flex-end',
-    // backgroundColor: 'red',
   },
   line: {
     backgroundColor: '#131F28',

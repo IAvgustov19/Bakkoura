@@ -39,7 +39,6 @@ const Podcasts = () => {
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.container}
-            ListFooterComponent={<ListFooter />}
             renderItem={({item}) => (
               <PodcastItem
                 id={item.id}
@@ -64,5 +63,6 @@ const styles = RN.StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
+    paddingBottom: 100,
   },
 });

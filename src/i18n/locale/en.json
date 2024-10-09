@@ -131,7 +131,6 @@
     "work": "Work",
     "rest": "Rest",  
     "sound": "Sound",
-    "Stop": "Stop",
     "Pause": "Pause",  
     "Time is over": "Time is over",    
     "Cancel": "Cancel",
@@ -157,7 +156,7 @@
     "mon": "Mon.",
     "year": "Year",  
 
-    "stress_text": "The \"subjective minute\" test was developed by Dr. Litvak, a specialist in psychiatry, psychology, and stress management.\nInstructions: press the START button, close your eyes, and mentally imagine when 60 seconds have passed. It is IMPORTANT not to count the minute, but to feel the time.\nWhen you feel: a minute has passed, press STOP",
+    "stress_text": "The \"subjective minute\" test was developed by Dr. Litvak, a specialist in psychiatry, psychology, and stress management.\n\nInstructions: press the START button, close your eyes, and mentally imagine when 60 seconds have passed. It is IMPORTANT not to count the minute, but to feel the time.\n\nWhen you feel: a minute has passed, press STOP",
     "result": "Result",  
     "new": "New",   
     "less 35": "A result of less than 35 seconds (especially obtained repeatedly at different times of the day) is already a full–fledged reason to take care of yourself and think about the help of a specialist.",
@@ -171,7 +170,7 @@
 
     "on this week": "On this week",    
     "calc": "Calculate",
-    "total": "Total",  
+    "total": "Total:",  
     "Yesterday": "Yesterday",
     "Description": "Description",
     "Price": "Price",  
@@ -319,7 +318,7 @@
     "Language": "Language",
     "Theme": "Theme",  
     "Dark": "Dark",
-    "White": "White",
+    "White": "Light",
     "Repeat Password": "Repeat Password",   
 
     "Send Your Idea": "Send Your Idea",  
@@ -328,11 +327,11 @@
     "Watch Constructor": "Watch Constructor", 
     "Wallpapers": "Wallpapers",
     "Contact Us": "Contact Us",  
-    "send_idea_desc": "If you have an idea, we can bring it to life...",
-    "Constructor_desc": "You can create a watch using the constructor...",
+    "send_idea_desc": "If you have an idea, we can bring it to life",
+    "Constructor_desc": "You can create a watch using the constructor",
 
     "wallpaper_desc": "An updated list of wallpapers of brand watches",  
-    "details_about": "Details about the concept...",
+    "details_about": "Details about the concept",
     "Download": "Download",
     "Body Type": "Secure Entry", 
     "Save": "Save",
@@ -379,7 +378,7 @@
     "Important tips with mesmerizing images":"Important tips with mesmerizing images",
     "pomodoro_slider":"The tasks you have created will be displayed at the bottom of the screen. Each of them displays the number of pomodoro cycles, name and description. To start the task timer, select it from the list. To change or delete a task, click on the three dots on the right.",
     "Pomodoro Timer":"Pomodoro Timer",
-    "Pomodoro session has ended":"Pomodoro session has ended.",
+    "Pomodoro session has ended":"Session has ended.",
     "Back to Pomodoro!":"Back to Pomodoro!",
     "Take a short break!":"Take a short break!",
     "Time for a long break!":"Time for a long break!",
@@ -392,7 +391,7 @@
     "no Name":"no Name",
     "time_together_slider_1":"The created etaps will be displayed in the list below, where you can change them by clicking on the 3 dots on the right, synchronize the clock with another user by clicking on the yellow sync button, or select the necessary stage to show information about it",
     "time_together_slider_2":"At the top of the screen, you can use the toggle switch to change the hour format of the clock - 24h or 30h",
-    "Stopped":"Stopped",
+    "Stop":"Stop",
 
     "hour":"Hour",
     "minute":"Min.",
@@ -456,5 +455,23 @@
   "September": "September",
   "October": "October",
   "November": "November",
-  "December": "December"
+  "December": "December",
+
+  "Event":"Event",
+  "No project timer yet":"No project timer yet",
+  "Update":"Update",
+  "Enter a price":"Enter a price",
+
+  "Re-enter the application":"Re-enter the application",
+  "To change the language correctly, please re-enter the application":"To change the language correctly, please re-enter the application",
+
+  "Tasks":"Tasks",
+
+  "project_timer_slider_1":"To delete a project, simply swipe it to the left to the end",
+  "project_timer_slider_2":"By going to the ‘Calculate’ page, you can select the project whose income and time spent you want to view in the drop-down list at the top",
+
+  "Username":"Username",
+
+  "to_do_timer_slider":"By clicking on the ‘History’ page you can see and filter projects by time spent over a certain period by selecting the appropriate filter from above"
+  
 }

@@ -23,6 +23,7 @@ import { t } from "../../i18n";
 type RrofileScreenRouteProp = RouteProp<RootStackParamList, typeof APP_ROUTES.PROFILE_PAGE>;
 const ProfilePage = () => {
     const route = useRoute<RrofileScreenRouteProp>();
+    const {themeState} = useRootStore().personalAreaStore;
     const navigation = useNavigation();
     const { lastSeen, name, avatar, roomId } = route.params;
     const [messages, setMessages] = useState<any[]>([]);
@@ -141,7 +142,7 @@ const ProfilePage = () => {
     const renderGridImages = () => {
         if (imageData.length === 0) {
             return (
-                <EmptyState title={`${t("No media")}`} />
+                <EmptyState title={`${t("No media")}`} color={themeState.title}/>
             );
         }
         return (
@@ -179,7 +180,7 @@ const ProfilePage = () => {
     const renderVoices = () => {
         if (voiceData.length === 0) {
             return (
-                <EmptyState title={`${t("No voices")}`} />
+                <EmptyState title={`${t("No voices")}`} color={themeState.title}/>
             );
         }
         return (
@@ -195,7 +196,8 @@ const ProfilePage = () => {
                         isPlaying={playingId === item.id}
                         onPlayPress={onPlayPress}
                         title={item.title}
-                        subtitle={item.subtitle} />
+                        subtitle={item.subtitle} 
+                        titleColor={themeState.title}/>
                 )}
             />
         );
@@ -203,7 +205,7 @@ const ProfilePage = () => {
     const renderLinks = () => {
         if (linkData.length === 0) {
             return (
-                <EmptyState title={`${t("No links")}`} />
+                <EmptyState title={`${t("No links")}`} color={themeState.title}/>
             );
         }
         return (
@@ -229,35 +231,35 @@ const ProfilePage = () => {
         );
     };
 
-    const renderFiles = () => {
-        if (fileData.length === 0) {
-            return (
-                <EmptyState title={`${t("No files")}`} />
-            );
-        }
-        return (
-            <RN.ScrollView
-                style={styles.gridScroll}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.gridContentContainer}
-            >
-                <RN.View style={{ gap: 5 }}>
-                    {fileData.map((item) => (
-                        <RN.View key={item.id} style={styles.voiceContainer}>
-                            <Images.Svg.fileIconMedia width={40} height={40} />
-                            <RN.View style={styles.voiceInfo}>
-                                <RN.View style={{ flexDirection: 'row', gap: 10 }}>
-                                    <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
-                                    <Images.Svg.blueArrow width={16} height={12} />
-                                </RN.View>
-                                <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
-                            </RN.View>
-                        </RN.View>
-                    ))}
-                </RN.View>
-            </RN.ScrollView>
-        );
-    };
+    // const renderFiles = () => {
+    //     if (fileData.length === 0) {
+    //         return (
+    //             <EmptyState title={`${t("No files")}`} />
+    //         );
+    //     }
+    //     return (
+    //         <RN.ScrollView
+    //             style={styles.gridScroll}
+    //             showsVerticalScrollIndicator={false}
+    //             contentContainerStyle={styles.gridContentContainer}
+    //         >
+    //             <RN.View style={{ gap: 5 }}>
+    //                 {fileData.map((item) => (
+    //                     <RN.View key={item.id} style={styles.voiceContainer}>
+    //                         <Images.Svg.fileIconMedia width={40} height={40} />
+    //                         <RN.View style={styles.voiceInfo}>
+    //                             <RN.View style={{ flexDirection: 'row', gap: 10 }}>
+    //                                 <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
+    //                                 <Images.Svg.blueArrow width={16} height={12} />
+    //                             </RN.View>
+    //                             <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
+    //                         </RN.View>
+    //                     </RN.View>
+    //                 ))}
+    //             </RN.View>
+    //         </RN.ScrollView>
+    //     );
+    // };
 
     const renderTypes = () => {
         return MessageTypes.map((item, index) => (
@@ -271,45 +273,45 @@ const ProfilePage = () => {
         ));
     };
 
-    const musicData = [];
+    // const musicData = [];
 
-    const renderMusic = () => {
-        if (musicData.length === 0) {
-            return (
-                <EmptyState title={`${t("No music")}`}/>
-            );
-        }
-        return (
-            <RN.ScrollView
-                style={styles.gridScroll}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.gridContentContainer}
-            >
-                <RN.View style={{ gap: 5 }}>
-                    {musicData.map((item) => (
-                        <RN.View key={item.id} style={styles.voiceContainer}>
-                            <Images.Svg.fileIconMedia width={40} height={40} />
-                            <RN.View style={styles.voiceInfo}>
-                                <RN.View style={{ flexDirection: 'row', gap: 10 }}>
-                                    <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
-                                    <Images.Svg.blueArrow width={16} height={12} />
-                                </RN.View>
-                                <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
-                            </RN.View>
-                        </RN.View>
-                    ))}
-                </RN.View>
-            </RN.ScrollView>
-        );
-    };
+    // const renderMusic = () => {
+    //     if (musicData.length === 0) {
+    //         return (
+    //             <EmptyState title={`${t("No music")}`}/>
+    //         );
+    //     }
+    //     return (
+    //         <RN.ScrollView
+    //             style={styles.gridScroll}
+    //             showsVerticalScrollIndicator={false}
+    //             contentContainerStyle={styles.gridContentContainer}
+    //         >
+    //             <RN.View style={{ gap: 5 }}>
+    //                 {musicData.map((item) => (
+    //                     <RN.View key={item.id} style={styles.voiceContainer}>
+    //                         <Images.Svg.fileIconMedia width={40} height={40} />
+    //                         <RN.View style={styles.voiceInfo}>
+    //                             <RN.View style={{ flexDirection: 'row', gap: 10 }}>
+    //                                 <RN.Text style={styles.voiceTitle}>{item.title}</RN.Text>
+    //                                 <Images.Svg.blueArrow width={16} height={12} />
+    //                             </RN.View>
+    //                             <RN.Text style={styles.voiceSubTitle}>{item.subtitle}</RN.Text>
+    //                         </RN.View>
+    //                     </RN.View>
+    //                 ))}
+    //             </RN.View>
+    //         </RN.ScrollView>
+    //     );
+    // };
 
     const renderContent = () => {
         const renderFunctions = [
             renderGridImages,
             renderVoices,
             renderLinks,
-            renderFiles,
-            renderMusic,
+            // renderFiles,
+            // renderMusic,
         ];
 
         return renderFunctions[active]();
@@ -345,7 +347,7 @@ const ProfilePage = () => {
                         )}
                     </RN.View>
                     <RN.View style={styles.profileInfo}>
-                        <RN.Text style={styles.name}>{name}</RN.Text>
+                        <RN.Text style={[styles.name, {color:themeState.title}]}>{name}</RN.Text>
                         <RN.Text style={styles.lastSeen}>{t("Last seen")}</RN.Text>
                         <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : `${t("Recently")}`}</RN.Text>
                     </RN.View>
@@ -467,8 +469,9 @@ const styles = RN.StyleSheet.create({
         display: 'flex',
         marginVertical: 15,
         flexDirection: 'row',
-        paddingHorizontal: 10,
-        justifyContent: 'space-around',
+        paddingHorizontal: 30,
+        justifyContent: 'space-between',
+        
     },
     typeText: {
         fontSize: 14,

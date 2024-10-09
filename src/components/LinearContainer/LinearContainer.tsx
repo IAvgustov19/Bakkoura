@@ -37,7 +37,7 @@ export default observer(LinearContainer);
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: 'red',
-    height: windowHeight,
+    height: windowHeight + 50,
     paddingVertical: 20,
     paddingHorizontal: 10,
   },

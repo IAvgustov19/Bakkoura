@@ -24,6 +24,7 @@ import { ActivityIndicator, Text } from 'react-native';
 import { COLORS } from '../../utils/colors';
 import TextView from '../../components/Text/Text';
 import { t } from '../../i18n';
+import l from '../../i18n'
 
 const HomeScreen = () => {
   const { whichWatch, homeCurrentTime } = useRootStore().homeClockStore;
@@ -167,8 +168,18 @@ const HomeScreen = () => {
               <RN.View style={styles.renderWatchs}>{renderWatchs()}</RN.View>
               <RN.View style={styles.dateBox}>
                 <TodayEvent
-                  day={nearDay?.day}
-                  title={nearDay?.name}
+                  day={
+                    nearDay?.day == '' ?
+                      l.locale == 'English' ?
+                        'Today' : 'اليوم'
+                      : nearDay?.day
+                  }
+                  title={
+                    nearDay?.name == '' ?
+                      l.locale == 'English' ?
+                        'No events yet' : 'لا يوجد أحداث حتى الآن'
+                      : nearDay?.name
+                  }
                   date={nearDay?.date}
                 />
                 <AlarmNotification

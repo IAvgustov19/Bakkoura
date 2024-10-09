@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     writingDirection: 'ltr',
   },
   title: {
-    fontSize: 17,
-    marginLeft:5
+    fontSize: 17
   },
 });

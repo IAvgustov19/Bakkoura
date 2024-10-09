@@ -82,6 +82,9 @@ const ToDoTimerHistory = () => {
                     borderColor={
                       filterType === item.key && themeState.selectYellow
                     }
+                    borderColor_2={
+                      themeState.radioback
+                    }
                     onPress={() => filterItemsByTime(item.key)}
                     Width={'30%'}
                   />

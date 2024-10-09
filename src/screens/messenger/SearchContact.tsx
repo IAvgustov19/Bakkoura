@@ -86,15 +86,13 @@ const SearchContact = () => {
           })
         }>
         <RN.View style={styles.imageContainer}>
-          <themeState.profileBackIcon width={54} height={54} />
+        <themeState.profileBackIcon width={55} height={55} />
           <RN.Image
             source={{uri: item.avatar || null}}
             style={styles.profileImg}
           />
         </RN.View>
-        <RN.Text style={[styles.name, {color: themeState.title}]}>
-          {item.name}
-        </RN.Text>
+        <RN.Text style={[styles.name, {color:themeState.title}]}>{item.name}</RN.Text>
       </RN.TouchableOpacity>
     ));
   }, [searchedUsers, loading, navigation, search]);
@@ -138,7 +136,7 @@ export default observer(SearchContact);
 const styles = RN.StyleSheet.create({
   container: {
     paddingHorizontal: 5,
-    paddingBottom: 40,
+    paddingBottom: 0,
   },
   content: {},
   userList: {

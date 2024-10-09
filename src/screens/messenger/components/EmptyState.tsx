@@ -2,16 +2,18 @@ import React from 'react';
 import RN from '../../../components/RN';
 import { Images } from '../../../assets';
 import { t } from '../../../i18n';
+import { ColorValue } from 'react-native';
 
 interface EmptyStateProps {
     title: string;
+    color: ColorValue;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ title }) => {
+const EmptyState: React.FC<EmptyStateProps> = ({ title,color }) => {
     return (
         <RN.View style={styles.container}>
             <Images.Svg.noData width={52} height={52} />
-            <RN.Text style={styles.title}>{title}</RN.Text>
+            <RN.Text style={[styles.title, {color:color}]}>{title}</RN.Text>
             <RN.Text style={styles.subtitle}>{`${t("oops")}`}</RN.Text>
         </RN.View>
     );

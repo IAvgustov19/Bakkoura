@@ -8,6 +8,7 @@ import ListFooter from '../../components/ListFooter/ListFooter';
 import LottieContent from '../../components/LottieContent/LottieContent';
 import RN from '../../components/RN';
 import {TimeClinicList, TimeClinicListType} from '../../constants/timeClinic';
+import {TimeClinicList_ar} from '../../constants/timeClinic_ar';
 import {Lotties} from '../../lotties/lottie';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight} from '../../utils/styles';
@@ -15,6 +16,7 @@ import TimeClinicListItem from './components/TimeClinicListItem';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 import {t} from '../../i18n'
+import l from '../../i18n'
 
 const TimeClinic = () => {
   const navigation = useNavigation();
@@ -48,7 +50,7 @@ const TimeClinic = () => {
             <RN.FlatList
               showsVerticalScrollIndicator={false}
               style={styles.flatlist}
-              data={TimeClinicList}
+              data={ l.locale == 'English' ? TimeClinicList : TimeClinicList_ar}
               renderItem={({item}) => renderItem({item})}
               ListFooterComponent={<ListFooter />}
             />

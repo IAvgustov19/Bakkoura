@@ -26,9 +26,9 @@ const CustomTime = props => {
             color: COLORS.gray,
           },
         ]}>
-        {moment(currentMessage.createdAt).format('HH:mm')}
+        {moment(currentMessage.createdAt).format('HH:mm ')}
         {currentMessage.user._id === currentUser?.uid && (
-          <>{isRead ? <Images.Svg.read /> : <Images.Svg.sent />}</>
+          <>{isRead ? <Images.Svg.read /> : <Images.Svg.sent/>}</>
         )}
       </Text>
     </View>
@@ -133,11 +133,11 @@ const styles = StyleSheet.create({
   },
   time: {
     color: '#fff',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '400',
     lineHeight: 13.13,
     fontStyle: 'italic',
-    fontFamily: 'SF Pro Text',
+    fontFamily: 'SF Pro Text'
   },
   imageContainer: {
     flexDirection: 'row',
@@ -188,6 +188,9 @@ const styles = StyleSheet.create({
     gap: 10,
     display: 'flex',
   },
+  state_image:{
+    marginRight:10
+  }
 });
 
 export default observer(CustomMessage);

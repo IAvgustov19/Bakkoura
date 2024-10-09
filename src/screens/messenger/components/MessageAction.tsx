@@ -4,13 +4,16 @@ import { Images } from '../../../assets';
 import RN from '../../../components/RN';
 import { smileyEmojis } from '../../../utils/messenger';
 import { t } from '../../../i18n';
+import { StatusBar } from 'react-native';
+import useRootStore from '../../../hooks/useRootStore';
 
 const MessageActionSheet = ({ visible, onClose, onSelect, onReact, messageType }) => {
     
     const [currentIndex, setCurrentIndex] = useState(0);
+    const {themeState} = useRootStore().personalAreaStore;
     const emojiFlatListRef = useRef(null);
     const options = [
-        { text: `${t("Edit")}`, action: 'edit', icon: <RN.Image source={Images.Img.editMessage} style={{ width: 17, height: 17 }} /> },
+        { text: `${t("Edit")}`, action: 'edit', icon: <RN.Image source={themeState.editIcon} style={{ width: 17, height: 17 }} /> },
         { text: `${t("Delete")}`, action: 'delete', icon: <Images.Svg.deleteMessage /> },
     ];
 
@@ -44,6 +47,7 @@ const MessageActionSheet = ({ visible, onClose, onSelect, onReact, messageType }
             animationType="fade"
             onRequestClose={onClose}
         >
+            <StatusBar backgroundColor='#33333380'/>
             <TouchableOpacity style={styles.modalBackground} onPress={onClose}>
                 <View style={styles.mainContainer}>
                     <View style={styles.emojiContainer}>
@@ -58,18 +62,18 @@ const MessageActionSheet = ({ visible, onClose, onSelect, onReact, messageType }
                             scrollEnabled={true}
                             style={{ height: 200 }}
                         />
-                        <Images.Svg.scrollSmiles style={styles.scrollIcon} onPress={loadMoreEmojis} />
+                        <themeState.scrollSmiles style={styles.scrollIcon} onPress={loadMoreEmojis}/>
                     </View>
-                    <View style={[styles.actionSheet, messageType !== 'text' && {height: '26%'}]}>
+                    <View style={[styles.actionSheet,{backgroundColor:themeState.backgrounColor}, messageType !== 'text' && {height: '26%'}]}>
                         {options
-                            .filter(option => !(option.text === 'Edit' && messageType !== 'text')) // Exclude "Edit" if messageType is not 'text'
+                            .filter(option => !((option.text === 'Edit' || option.text === 'تحرير') && messageType !== 'text')) // Exclude "Edit" if messageType is not 'text'
                             .map((option) => (
                                 <TouchableOpacity
                                     key={option.text}
-                                    style={[styles.option, option.text === `${t("Delete")}` && { borderBottomWidth: messageType == 'text' ? 0.4 : 0}]}
+                                    style={[styles.option, option.text === `${t("Delete")}` && { borderBottomWidth: messageType == 'text' ? 0 : 0}]}
                                     onPress={() => onSelect(option.action)}
                                 >
-                                    <Text style={[styles.optionText, option.text === `${t("Delete")}` && { color: '#EB5545' }]}>{option.text}</Text>
+                                    <Text style={[styles.optionText,{color:themeState.title}, option.text === `${t("Delete")}` && { color: '#EB5545' }]}>{option.text}</Text>
                                     {option.icon}
                                 </TouchableOpacity>
                             ))}
@@ -86,7 +90,7 @@ const styles = StyleSheet.create({
         opacity: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(10, 10, 9, 0.8)',
+        backgroundColor: '#33333380'
     },
     mainContainer: {
         gap: 8,
@@ -106,27 +110,20 @@ const styles = StyleSheet.create({
     actionSheet: {
         width: '65%',
         height: '45%',
-        backgroundColor: '#000000',
         borderRadius: 20,
         padding: 10,
-        shadowColor: 'white',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 5,
     },
     option: {
         padding: 10,
         display: 'flex',
         flexDirection: 'row',
-        borderBottomColor: '#3C3C43',
+        //borderBottomColor: '#3C3C43',
         justifyContent: 'space-between',
     },
     optionText: {
         fontSize: 17,
-        color: '#FFFFFF',
         letterSpacing: 0.4,
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'RedHatDisplay-Regular',
     },
     emojiContainer: {
         borderTopLeftRadius: 20,

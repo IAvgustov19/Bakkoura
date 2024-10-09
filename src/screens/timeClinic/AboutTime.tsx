@@ -45,7 +45,7 @@ const AboutTime = () => {
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title={`${t('About Time')}`}
           />
-          {l.locale === 'en' 
+          {l.locale === 'English' 
           ? 
           <RN.View style={styles.content}>
           <RN.FlatList
@@ -79,7 +79,7 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     gap: 5,
-    paddingBottom: windowHeight / 6,
+    paddingBottom: 100,
   },
   flatlist: {},
 });

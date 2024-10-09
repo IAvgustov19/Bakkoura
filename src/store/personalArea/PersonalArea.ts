@@ -15,9 +15,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import {MenuItems} from '../../utils/menuItems';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import I18n from '../../i18n';
+import I18n, { t } from '../../i18n';
 import {Themes} from '../../utils/themes';
-import {Appearance} from 'react-native';
+import {Alert, Appearance} from 'react-native';
 
 export class PersonalAreaStore {
   private readonly root: RootStore;
@@ -41,7 +41,7 @@ export class PersonalAreaStore {
   initialRouteName: InitialRouteNameType = InitialRouteNameInitial;
   initialRouteNameChanged: InitialRouteNameType = InitialRouteNameInitial;
 
-  language = 'en';
+  language = 'English';
 
   setLanguage(newLanguage) {
     this.language = newLanguage;
@@ -55,18 +55,18 @@ export class PersonalAreaStore {
     const theme = await AsyncStorage.getItem('theme');
     console.log('theme', theme);
 
-    if (theme == 'light') {
+    if (theme == 'Light') {
       runInAction(() => {
         this.themeState = Themes.light;
-        this.currentTheme = 'light';
+        this.currentTheme = 'Light';
         this.root.watchConstructor.currentWatch = {
           ...this.root.watchConstructor.currentWatch,
           bodyTypes: Themes.light.watchConstrctorData.bodyTypes[0],
         };
       });
-    } else if (theme == 'dark') {
+    } else if (theme == 'Dark') {
       this.themeState = Themes.dark;
-      this.currentTheme = 'dark';
+      this.currentTheme = 'Dark';
       this.root.watchConstructor.currentWatch = {
         ...this.root.watchConstructor.currentWatch,
         bodyTypes: Themes.dark.watchConstrctorData.bodyTypes[0],
@@ -84,11 +84,11 @@ export class PersonalAreaStore {
   setUpdateTheme = (theme: string) => {
     console.log('theme', theme);
     runInAction(() => {
-      if (theme == 'light') {
-        this.currentTheme = 'light';
+      if (theme == 'Light') {
+        this.currentTheme = 'Light';
         this.themeState = Themes.light;
-      } else if (theme == 'dark') {
-        this.currentTheme = 'dark';
+      } else if (theme == 'Dark') {
+        this.currentTheme = 'Dark';
         this.themeState = Themes.dark;
       } else {
         this.currentTheme = this.colorScheme;
@@ -291,6 +291,7 @@ export class PersonalAreaStore {
   };
 
   onLanguageItemPress = (index: number) => {
+    Alert.alert(`${t('Re-enter the application')}`,`${t('To change the language correctly, please re-enter the application')}`)
     const newData = this.languages.map((item, i) => {
       this.onSelectLanguage(index);
       return {

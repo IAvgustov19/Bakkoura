@@ -51,12 +51,12 @@ const FrancVila = () => {
                 <Images.Svg.francVila />
               </RN.View>
               {
-                l.locale === 'en'?
+                l.locale === 'English'?
                 <RN.View>{renderTexts()}</RN.View>
                 :
                 <RN.View>{renderTexts_ar()}</RN.View>
               }
-              <RN.Text style={styles.date}>07:08.2023 - Jihad Bakkoura</RN.Text>
+              <RN.Text style={styles.date}>07.08.2023 - Jihad Bakkoura</RN.Text>
             </RN.View>
           </RN.ScrollView>
         </RN.View>
@@ -72,7 +72,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 4,
+    paddingBottom: 100,
     gap: 15,
   },
   francLogoBox: {

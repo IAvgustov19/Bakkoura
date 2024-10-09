@@ -11,13 +11,14 @@ import useRootStore from '../../hooks/useRootStore';
 import {windowHeight} from '../../utils/styles';
 
 import {t} from '../../i18n'
+import { APP_ROUTES } from '../../navigation/routes';
 
 const DeleteEtap = () => {
   const navigation = useNavigation();
   const {handleDeleteEtap, addEtapState} = useRootStore().togetherTimeStore;
 
   const deleteHandle = () => {
-    navigation.goBack();
+    navigation.navigate(APP_ROUTES.TIME_TOGETHER as never);
     handleDeleteEtap(addEtapState.id);
   };
 
@@ -32,7 +33,7 @@ const DeleteEtap = () => {
           />
           <RN.View style={styles.content}>
             <TextView title={`${t("Are you sure you want to delete your account")}`}/>
-            <TextView text={`${t("remove_lover_1")} ${addEtapState.name}, ${t("remove_lover_2")}.`} />
+            <TextView text={`${t("remove_lover_1")} ${addEtapState.name}, ${t("remove_lover_2")}`} />
             <StartBtn text={`${t("Delete")}`} onPress={deleteHandle} />
           </RN.View>
         </RN.View>

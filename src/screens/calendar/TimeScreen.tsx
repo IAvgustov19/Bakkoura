@@ -14,6 +14,7 @@ import {APP_ROUTES} from '../../navigation/routes';
 import DataListLinearBack from '../../components/DataListLinearBack/DataListLinearBack';
 import Cancel from '../../components/Cancel/Cancel';
 import { t } from '../../i18n';
+import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 
 const TimeScreen = () => {
   const {setNewEventState, newEventData} = useRootStore().calendarStore;
@@ -56,7 +57,7 @@ const TimeScreen = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             title={`${t("Time")}`}
-            rightItem={<Cancel onClose={() => navigation.goBack()} />}
+            leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
           />
           <RN.View style={styles.row}>
             <DateList
@@ -64,7 +65,7 @@ const TimeScreen = () => {
               itemHeight={55}
               onChange={firstHandleChange}
               selectedValue={firstSelectedValue}
-              label={`${t("hours")}`}
+              label={`${t("hour")}`}
               initialScrollIndex={newEventData.hour}
             />
             <DateList
@@ -91,7 +92,7 @@ const TimeScreen = () => {
             <StartBtn
               onPress={okTime}
               primary={true}
-              text={`${t("Ok")}`}
+              text={`${t("ok")}`}
               subWidth={70}
               elWidth={55}
             />

@@ -33,7 +33,7 @@ export const UserInitial: UserType = {
   isVerified: false,
   inActiveMenus: [],
   phone: '',
-  theme: 'dark',
+  theme: 'Dark',
 };
 
 export type LoginStateType = {

@@ -751,22 +751,29 @@ const DialogScreen = () => {
     const renderMessageImage = props => {
         const { currentMessage } = props;
         return !currentMessage.file && currentMessage.image !== "none" ? (
-            <>
+            <RN.View style={[{flexDirection:'row', width:200}]}>
+                <RN.View style={[{flex:1}]}>
                 {currentMessage?.images?.map((img, idx) => img && <MessageImage
                     key={idx}
                     currentMessage={{
                         ...currentMessage,
                         image: img
                     }}
-                    imageStyle={{ width: 74, height: 74, resizeMode: 'cover' }}
+                    imageStyle={{ width: 74, height: 74, resizeMode: 'cover',
+                        marginBottom:-18,
+                        marginTop:-5,
+                        marginLeft:-5
+                     }}
                 />
                 )}
-                <RN.View style={styles.imageInfo}>
-                    <RN.Text style={styles.fileName}>{currentMessage.fileName}</RN.Text>
-                    <RN.Text style={styles.fileSize}>{currentMessage.fileSize}</RN.Text>
-                    <RN.Text style={styles.time}>{currentMessage.time}</RN.Text>
                 </RN.View>
-            </>
+                
+                <RN.View style={styles.imageInfo}>
+                    <RN.Text style={[styles.fileName,{color:themeState.title}]}>{currentMessage.fileName}</RN.Text>
+                    {/* <RN.Text style={styles.fileSize}>{currentMessage.fileSize}</RN.Text> */}
+                    {/* <RN.Text style={styles.time}>{currentMessage.time}</RN.Text> */}
+                </RN.View>
+            </RN.View>
         ) : currentMessage.image !== "none" && (
             <RN.Pressable
                 onPress={() => Linking.openURL(currentMessage.file)}
@@ -777,7 +784,7 @@ const DialogScreen = () => {
                 <RN.View style={styles.imageInfo}>
                     <RN.Text style={styles.fileName}>{currentMessage.fileName}</RN.Text>
                     <RN.Text style={styles.fileSize}>{currentMessage.fileSize}</RN.Text>
-                    <RN.Text style={styles.time}>{currentMessage.createdAt}</RN.Text>
+                    {/* <RN.Text style={styles.time}>{currentMessage.createdAt}</RN.Text> */}
                 </RN.View>
             </RN.Pressable>
         );
@@ -843,7 +850,7 @@ const DialogScreen = () => {
                         </RN.TouchableOpacity>
                     }
                     title={
-                        <RN.View>
+                        <RN.View style={styles.title}>
                             <RN.Text style={[styles.name, {color: themeState.title}]}>{name}</RN.Text>
                             {lastSeen !== 'Online' && <RN.Text style={styles.lastSeen}>{t("Last seen")}</RN.Text>}
                             <RN.Text style={styles.lastSeen}>{lastSeen ? lastSeen : `${t("Recently")}`}</RN.Text>
@@ -936,6 +943,9 @@ const styles = RN.StyleSheet.create({
         backgroundColor: 'black',
         paddingBottom: Platform.OS === 'ios' ? 30 : 10,
     },
+    title:{
+        width:250
+    },
     audioContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -971,20 +981,22 @@ const styles = RN.StyleSheet.create({
         fontFamily: 'RedHatDisplay-Bold',
     },
     imageInfo: {
-        marginLeft: 10,
-        flex: 1,
+        marginLeft: 15,
+        flex: 2,
+        justifyContent:'center'
     },
     fileName: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: 16,
+        width:100
     },
     fileSize: {
-        color: '#bbb',
+        color: '#fff',
         fontSize: 12,
     },
     time: {
-        color: '#bbb',
-        fontSize: 12,
+        color: '#fff',
+        fontSize: 1,
     },
     fileBox: {
         flexDirection: 'row',

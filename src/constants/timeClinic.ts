@@ -1783,7 +1783,7 @@ export const JihadBakkouraTexts = [
 export const FrancVillaTexts = {
   id: 1,
   title: `FrancVila`,
-  date: '07:08.2023 - Jihad Bakkoura',
+  date: '07.08.2023 - Jihad Bakkoura',
   image: Images.Svg.francVila,
   texts: [
     `Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. These timepieces live for everyone who has achieved success. And it doesn't matter who he is: an athlete, a politician, the head of a mafia clan, a star or an IT specialist. The company specializes in the production of all swiss watches with complications in super-limited series of 4, 8, 48 and 88 copies, which guarantees an exclusive high-tech design and a bright personality. The FRANC VILA watch is a mechanic created by a philosopher.`,
@@ -1795,7 +1795,7 @@ export const FrancVillaTexts = {
 export const RecommendationViewData = {
   id: 1,
   title: `New Era of Bakkoura Dynasty`,
-  date: '07:08.2023 - Jihad Bakkoura',
+  date: '07.08.2023 - Jihad Bakkoura',
   image: Images.Img.rec1,
   texts: [
     `Concept caliber FVn81 with manual winding, power reserve of 43 hours, equipped with a tourbillon and an alarm clock. These timepieces live for everyone who has achieved success. And it doesn't matter who he is: an athlete, a politician, the head of a mafia clan, a star or an IT specialist. The company specializes in the production of all swiss watches with complications in super-limited series of 4, 8, 48 and 88 copies, which guarantees an exclusive high-tech design and a bright personality. The FRANC VILA watch is a mechanic created by a philosopher.`,
@@ -1860,17 +1860,17 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       'Time loves those who create order out of chaos. Therefore, the first thing you need to do is to structure your affairs. Making a plan and schedule is good for productivity. You can make a detailed plan and schedule for the day with specific things to do and time, and a weekly or monthly plan with more general goals. This will help you stay motivated throughout the process and clearly see how doing something is leading you towards your goal.',
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 2,
-    imageUrl: Images.Img.recommendations7,
+    imageUrl: Images.Img.recommendations8,
     navigate: '',
     title: `Time is a rhythm`,
     texts: [
       'For proper time management, it is not only important to have an accurate schedule, but also to have a proper sense of the rhythm of your work and your life. It is important to give work and breaks a specific amount of time. For example, work for an hour and a half, rest for five to ten minutes, and so on in a circle. Household chores should also obey your rhythm - how often you do hygienic procedures, cook, go to the store, etc. Trying different options and getting a feel for what rhythm you are more comfortable with will help you create a comfortable schedule.',
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 3,
@@ -1880,7 +1880,7 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       'Attention can sometimes be tricky - while working, it can be distracted by something extraneous, and while resting, it can suddenly slip in work issues and thoughts. To make full use of your allotted time, concentrate only on its content. At work, you should not think about household chores, while playing sports - about sweets, and while resting - about urgent matters. Even if something seems important to you, make time for it, but not for other things. ',
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 4,
@@ -1890,7 +1890,7 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       `No matter how busy your schedule is, don't forget to make time for rest. It is important for your work rhythm and your health. In addition, during rest you can realize what you want in the format of hobbies or leisure activities. Once realized, thoughts about it will be much less distracting from work, allowing you to use your time to the fullest, concentrating only on what is important at the moment.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 5,
@@ -1900,7 +1900,7 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       `When creating your schedule, the most important thing is to understand how long it takes you to do something. It's best not to rely on conventional limits - they can be deceiving. Try to track yourself and see how much time you spend on basic daily activities and work tasks. That way you can create a schedule that works for you, leaving behind tardiness, rushing, burnout and overwork from misplaced deadlines.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 6,
@@ -1910,7 +1910,7 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       `Everyone spends hours on the road every day. Unless you are driving, that time itself is filled with passive waiting. But this can be changed. Time on the road can be put to good use. Instead of thinking about the remaining time on the road, try reading or listening to something, watching a helpful video, or just thinking about what's important to you when you're alone. The journey will not seem so long, and the time on the road will be well spent.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 7,
@@ -1920,7 +1920,7 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       `There are some things that simply fill up time without providing any significant benefit or pleasure. These are chronophages: constantly scrolling through your social media feed, going over the same scenario in your head, etc. Try to follow yourself and ask yourself two questions about each activity during the day: was it useful or necessary and did it give me a new pleasant feeling, a new experience? If the answer to both questions is “no” - you should spend less time on this activity or eliminate it altogether.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 8,
@@ -1930,17 +1930,17 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       `Every day each person is given 24 hours. Everyone evaluates this time in their own way, but one thing is certain - this time is not enough for everything possible or even for everything desired. Therefore, before making schedules and plans, it is important to prioritize the tasks that are most important. These can be the tasks that produce the most important or effective results, the most enjoyable activities or the most important people. And time should be filled with priorities first, then everything else.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 9,
-    imageUrl: Images.Img.recommendations8,
+    imageUrl: Images.Img.recommendations10,
     navigate: '',
     title: `Planning, execution, control - the three different faces of a task`,
     texts: [
       `When a person sets a goal or task, he or she must intelligently plan it, then execute it, then check the result. These are different stages: during each of them it is important to be focused only on it. But you should not lose sight of the other stages: do not plan what you cannot execute, when executing stick to the plan, and when controlling - compare the result with the planned, not ideal. And don't forget to estimate the time cost of executing the plan when planning.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
   {
     id: 10,
@@ -1950,7 +1950,7 @@ export const RecommendationsData: TimeWealthDataType[] = [
     texts: [
       `When evaluating time, it's important not to succumb to brightly colored emotions. When you are making a schedule or plan, both pessimism and over-optimism can play tricks on you. Try to estimate time as far away from your emotions as possible. Approach it this way: You will definitely get the job done, but it may take the right amount of time to get a good result. Don't compete with other people or with time: find your own pace.`,
     ],
-    // date: '07:08.2023 - Jihad Bakkoura',
+    // date: '07.08.2023 - Jihad Bakkoura',
   },
 ];
 

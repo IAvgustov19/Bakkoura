@@ -44,13 +44,13 @@ export default observer(TextView);
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: normalizeHeight(66),
+    fontSize: 20,
     color: '#fff',
     // fontWeight: '400',
     textAlign: 'center',
   },
   text: {
-    fontSize: normalizeHeight(46),
+    fontSize: 14,
     color: COLORS.grey,
     // fontWeight: '400',
   },

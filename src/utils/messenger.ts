@@ -14,14 +14,14 @@ export const MessageTypes = [
         id: 3,
         title: `${t("Links")}`,
     },
-    {
-        id: 4,
-        title: `${t("Files")}`,
-    },
-    {
-        id: 5,
-        title: `${t("Music")}`,
-    },
+    // {
+    //     id: 4,
+    //     title: `${t("Files")}`,
+    // },
+    // {
+    //     id: 5,
+    //     title: `${t("Music")}`,
+    // },
 
 ];
 
@@ -43,14 +43,14 @@ export const SearchMessageTypes = [
         id: 4,
         title: `${t("Links")}`,
     },
-    {
-        id: 5,
-        title: `${t("Files")}`,
-    },
-    {
-        id: 6,
-        title: `${t("Music")}`,
-    },
+    // {
+    //     id: 5,
+    //     title: `${t("Files")}`,
+    // },
+    // {
+    //     id: 6,
+    //     title: `${t("Music")}`,
+    //},
 
 ];
 

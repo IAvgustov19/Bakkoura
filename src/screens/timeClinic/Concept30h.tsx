@@ -23,7 +23,7 @@ const Concept30h = () => {
   }, [Concept30hTexts]);
 
   const renderTexts_ar = useCallback(() => {
-    return Concept30hTexts.map((item, index) => {
+    return Concept30hTexts_ar.map((item, index) => {
       return <ConceptItem key={index} title={item.title} texts={item.texts} />;
     });
   }, [Concept30hTexts_ar]);
@@ -47,7 +47,7 @@ const Concept30h = () => {
                 />
               </RN.View>
               {
-                l.locale ==='en'?
+                l.locale == 'English'?
                 <RN.View>{renderTexts()}</RN.View>
                 :
                 <RN.View>{renderTexts_ar()}</RN.View>
@@ -68,7 +68,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 8,
+    paddingBottom: 100,
     gap: 15,
   },
   conceptImageBox: {

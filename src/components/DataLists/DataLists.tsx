@@ -59,7 +59,7 @@ const List = ({
   separatorColor,
   flatListProps = {},
   label,
-  labelLeft,
+  labelLeft
 }: Props) => {
   const {themeState} = useRootStore().personalAreaStore;
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingRight: 10,
     fontSize: 28,
+    fontFamily:'RedHatDisplay-Regular'
   },
   divider: {
     position: 'absolute',

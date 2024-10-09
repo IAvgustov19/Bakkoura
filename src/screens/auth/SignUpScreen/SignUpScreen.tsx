@@ -36,6 +36,7 @@ import { COLORS } from '../../../utils/colors';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 
 import { t } from '../../../i18n';
+import l from '../../../i18n'
 
 type ISelect = {label: string; value: string};
 
@@ -197,7 +198,7 @@ const SignUpScreen = () => {
               leftItem={<Images.Svg.btsRightLinear />}
               rightItem={
                 <LanguageBtn
-                  value={newUser?.language}
+                value={l.locale == 'English' ? 'EN': 'AR'}
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                   }
@@ -211,7 +212,7 @@ const SignUpScreen = () => {
               showsVerticalScrollIndicator={false}>
               <RN.View style={styles.content}>
                 <LoadingScreen loading={loading} setLoading={setLoading} />
-                <TextView title={`${t("Sign up")}`} textAlign="center" />
+                <TextView title={`${t("sign_up")}`} textAlign="center" />
                 <SignUpForm
                   bottomInputPress={Scroll}
                   options={options}
@@ -220,7 +221,7 @@ const SignUpScreen = () => {
                 <RN.View style={styles.signUpBtn}>
                   <ButtonComp
                     onPress={signUp}
-                    title={`${t('Sign Up')}`}
+                    title={`${t("sign_up")}`}
                     icon={
                       loading ? (
                         <ActivityIndicator
@@ -235,7 +236,7 @@ const SignUpScreen = () => {
                 </RN.View>
               </RN.View>
               <View style={styles.needAcc}>
-                <TextView text={`${t("already_have?")}`} />
+                <TextView text={`${t("already_have")}`} />
                 <RN.TouchableOpacity
                   onPress={() =>
                     navigation.navigate(APP_ROUTES.AUTH_SIGN_IN as never)

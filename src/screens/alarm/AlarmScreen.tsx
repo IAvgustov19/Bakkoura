@@ -33,6 +33,7 @@ const AlarmScreen = () => {
     fetchAlarmsData,
     activeAlarm,
   } = useRootStore().alarmStore;
+  const [isClock, setClock] = useState(true);
   const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -98,7 +99,7 @@ const AlarmScreen = () => {
         </RN.View>
       );
     }
-  }, [is24h, alarmsListData, activeAlarm]);
+  }, [isClock, is24h, alarmsListData, activeAlarm]);;
 
   return (
     <LinearContainer
@@ -116,8 +117,10 @@ const AlarmScreen = () => {
           {/* <RN.TouchableOpacity onPress={() => setClock(e => !e)}>
             <Images.Svg.dotOpenBar />
           </RN.TouchableOpacity> */}
-
-          <RN.View style={styles.switch}>
+          
+          {
+            activeAlarm ?
+            <RN.View style={styles.switch}>
             {isClock ? (
               <SwitchContain
                 title="24h"
@@ -129,6 +132,10 @@ const AlarmScreen = () => {
               <Images.Svg.timerLogo />
             )}
           </RN.View>
+          :
+          null
+          }
+          
 
           {renderClock()}
         </RN.View>

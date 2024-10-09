@@ -67,12 +67,12 @@ const StressTestDuring = () => {
             ) : (
               <StartBtn text={t("Start")} primary onPress={startStopStressTest} />
             )}
-            <SwitchContain
+            {/* <SwitchContain
               title="24h"
               _title="30h"
               back={is24}
               handlePress={() => setIs24(e => !e)}
-            />
+            /> */}
           </RN.View>
         </RN.View>
       }

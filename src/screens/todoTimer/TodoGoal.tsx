@@ -10,9 +10,12 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
-import {TodoGoalData} from '../../utils/repeat';
+import {TodoGoalData, TodoGoalData_ar} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
 import TodoGoalTime from './components/TodoGoalTime';
+import { t } from '../../i18n';
+
+import l from '../../i18n'
 
 const TodoGoal = () => {
   const navigation = useNavigation();
@@ -37,7 +40,10 @@ const TodoGoal = () => {
                 <TodoGoalTime />
               </RN.View>
               <RN.View style={styles.repeat}>
-                {TodoGoalData.map((item, index) => {
+                {
+                  l.locale == 'English' ?
+                  
+                TodoGoalData.map((item, index) => {
                   return (
                     <OutlineBtn
                       key={index}
@@ -48,16 +54,42 @@ const TodoGoal = () => {
                       borderColor={
                         item.title === taskState.goal && themeState.selectYellow
                       }
+                      borderColor_2={
+                        themeState.radioback
+                      }
                       onPress={() => setNewTaskState('goal', item.title)}
                       Width={'30%'}
                     />
                   );
-                })}
+                })
+               
+                :
+                
+                TodoGoalData_ar.map((item, index) => {
+                  return (
+                    <OutlineBtn
+                      key={index}
+                      text={item.title}
+                      textColor={
+                        item.title === taskState.goal && themeState.selectYellow
+                      }
+                      borderColor={
+                        item.title === taskState.goal && themeState.selectYellow
+                      }
+                      borderColor_2={
+                        themeState.radioback
+                      }
+                      onPress={() => setNewTaskState('goal', item.title)}
+                      Width={'30%'}
+                    />
+                  );
+                })
+                }
               </RN.View>
             </RN.View>
             <RN.View>
               <StartBtn
-                text="Ok"
+                text={`${t("ok")}`}
                 primary
                 elWidth={55}
                 subWidth={70}

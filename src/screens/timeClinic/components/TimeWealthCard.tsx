@@ -55,7 +55,7 @@ export default observer(TimeWealthCard);
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    gap: 20,
+    gap: 10,
   },
   wealthImageBox: {
     alignItems: 'center',
@@ -69,5 +69,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
+
+    marginTop:10
   },
 });

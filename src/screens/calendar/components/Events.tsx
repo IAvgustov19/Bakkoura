@@ -19,12 +19,14 @@ type Props = {
   isShowDate?: boolean;
   leftLine?: boolean;
   borderRaduis?: number;
+  withoutDelete?:boolean
 };
 
 const Events: React.FC<Props> = ({
   borderRaduis = 5,
   isShowDate = true,
   leftLine,
+  withoutDelete = false
 }) => {
   const {
     allEventsData,
@@ -73,7 +75,8 @@ const Events: React.FC<Props> = ({
     item: NewEventStateType;
     index: number;
   }) => {
-    return (
+    return ( 
+      withoutDelete == false ?
       <Swipeable
         key={index}
         renderRightActions={() => renderLeftActions(item.id)}
@@ -97,6 +100,25 @@ const Events: React.FC<Props> = ({
           />
         </RN.View>
       </Swipeable>
+      :
+      <RN.View style={styles.itemContainer}>
+          <EventItem
+            key={index}
+            eventName={item.name}
+            isShowDate={isShowDate}
+            borderRadius={borderRaduis}
+            leftLine={leftLine}
+            already={item.already}
+            date={item.date[0]}
+            // finished={isFinished[index]}
+            time={`${item.stayedDay} ${t("days")} ${
+              item.stayedHour < 10 ? `0${item.stayedHour}` : item.stayedHour
+            }:${
+              item.stayedMinut < 10 ? `0${item.stayedMinut}` : item.stayedMinut
+            } ${t("hours")}`}
+            onPress={() => onGetHandle(item)}
+          />
+        </RN.View>
     );
   };
 
@@ -136,8 +158,7 @@ const styles = RN.StyleSheet.create({
     backgroundColor: COLORS.darkRed,
     alignItems: 'flex-end',
     justifyContent: 'center',
-    height: '90%',
-    marginTop: '1%',
+    height: '89%',
     borderRadius: 5,
     width: '100%',
     paddingHorizontal: 15,

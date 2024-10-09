@@ -30,20 +30,17 @@ const AlarmNotification: React.FC<Props> = ({
 
   return (
     <RN.TouchableOpacity style={styles.container} onPress={onPress}>
-      <themeState.eventAndTime />
+      <themeState.homeAlarmWatch />
       <RN.View style={styles.info}>
         <RN.Text
-          fontFamily="Rationale-Regular"
           style={[styles.time, {color: themeState.title}]}>
           {time24}
         </RN.Text>
         <RN.Text
-          fontFamily="Rationale-Regular"
           style={[styles.extraTime, {color: themeState.yellow}]}>
           {extraTime}
         </RN.Text>
         <RN.Text
-          fontFamily="Rationale-Regular"
           style={[styles.time, {color: themeState.title}]}>
           {time30}
         </RN.Text>
@@ -66,15 +63,16 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     gap: 2,
     height: '100%',
-    bottom: 15,
+    bottom: 5,
   },
   extraTime: {
+    color: COLORS.yellow,
     textAlign: 'center',
-    fontSize: normalizeHeight(42),
+    fontSize: 14,
   },
   time: {
     color: COLORS.white,
-    fontSize: normalizeHeight(50),
+    fontSize: 16,
     fontFamily: 'Rationale-Regular',
     textAlign: 'center',
   },

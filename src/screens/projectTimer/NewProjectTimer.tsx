@@ -16,6 +16,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
+import { t } from '../../i18n';
 
 const NewProjectTimer = () => {
   const navigation = useNavigation();
@@ -53,24 +54,24 @@ const NewProjectTimer = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            leftItem={<ArrowLeftBack onPress={goBackHandle} />}
-            title="New Project"
+            title={t("New Project")}
             rightItem={<Cancel onClose={goBackHandle} />}
           />
-          <RN.ScrollView style={styles.scrollView}>
+          <RN.ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
               <RN.View style={styles.formBox}>
                 <RN.View
                   style={[styles.form, {backgroundColor: themeState.mainBack}]}>
                   <Input
-                    placeholder="Name"
+                    placeholder={t("name")}
                     value={newProjectTimerState.title}
                     onChangeText={e => setNewProjectTimeState('title', e)}
                     backColor={themeState.mainBack}
+                    maxLenght={30}
                   />
                   <Line />
                   <Input
-                    placeholder="Description"
+                    placeholder={t("Description")}
                     value={newProjectTimerState.description}
                     multiLine={true}
                     height={100}
@@ -83,15 +84,14 @@ const NewProjectTimer = () => {
                 </RN.View>
                 <RN.View
                   style={[styles.form, {backgroundColor: themeState.mainBack}]}>
-                  <ListItemCont
+                  {/* <ListItemCont
                     title="Paid"
                     rightItem={
                       <SimpleSwitch active={isPaid} handlePress={onPaid} />
                     }
-                  />
-                  <Line />
+                  /> */}
                   <ListItemCont
-                    title="Price"
+                    title={t("Price")}
                     value={`${newProjectTimerState.price}$/h`}
                     onPress={() =>
                       navigation.navigate(
@@ -103,7 +103,7 @@ const NewProjectTimer = () => {
               </RN.View>
               <StartBtn
                 primary
-                text={isUpdate ? 'Update' : 'Add'}
+                text={isUpdate ? `${t("Update")}` : `${t("add")}`}
                 subWidth={80}
                 elWidth={65}
                 onPress={createProjectTimer}

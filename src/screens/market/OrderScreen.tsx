@@ -81,11 +81,11 @@ const OrderScreen = () => {
               <RN.View style={styles.privacyBox}>
                 <RadioBtn active={accept} onPress={AcceptPrivacy} />
                 <RN.View style={styles.privacyText}>
-                  <RN.Text style={styles.privacyInfo}>
-                  `${t('your_data_safe')}`
+                  <RN.Text style={[styles.privacyInfo, {color:themeState.title}]}>
+                  {t('your_data_safe')}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
-      <RN.Text style={styles.privacyLink}>`${t('I_accept')}`</RN.Text>
+      <RN.Text style={styles.privacyLink}>{t('I_accept')}</RN.Text>
     </RN.Pressable>
                 </RN.View>
               </RN.View>

@@ -40,7 +40,8 @@ const styles = RN.StyleSheet.create({
   container: {},
   stopwatch: {
     alignItems: 'center',
-    height: 450,
+    height: 1350,
+    width:"100%",
   },
   watchBg: {
     top: 20,
@@ -49,20 +50,20 @@ const styles = RN.StyleSheet.create({
     objectFit: 'contain',
   },
   watch24: {
-    marginTop: 82,
-    width: windowWidth - 15,
+    marginTop: 185,
+    width: windowWidth-25,
     objectFit: 'contain',
     zIndex: 1,
   },
   watch30: {
-    marginTop: 42,
-    width: windowWidth + 20,
+    marginTop: 60,
+    width: windowWidth+40,
     objectFit: 'contain',
     zIndex: 1,
   },
   timeLine: {
     position: 'absolute',
-    bottom: '40%',
+    bottom: '45%',
     width: 2,
     height: 100,
     backgroundColor: COLORS.yellow,
@@ -71,9 +72,9 @@ const styles = RN.StyleSheet.create({
   },
   timeText: {
     position: 'absolute',
-    bottom: '20%',
+    bottom: '40%',
     color: COLORS.blue,
     fontSize: 18,
-    left: '38%',
+    //left: '35%',
   },
 });

@@ -52,6 +52,6 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
     gap: 30,
     paddingTop: 10,
-    paddingBottom: windowHeight / 6,
+    paddingBottom: 100,
   },
 });

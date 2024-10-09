@@ -135,12 +135,13 @@ const AddEtap = () => {
                     {backgroundColor: themeState.mainBack},
                   ]}>
                   <RN.View style={styles.listItem}>
-                    <RN.Text style={styles.listItemText}>{`${t("reminder")}`}</RN.Text>
+                    <RN.Text style={[styles.listItemText,{color:themeState.title}]}>{`${t("reminder")}`}</RN.Text>
                     <SimpleSwitch
                       active={addEtapState.reminder}
                       handlePress={onSetReminder}
                     />
                   </RN.View>
+                  <Line />
                   <ListItemCont
                     title={`${t("repeat")}`}
                     value={addEtapState.repeat}
@@ -154,12 +155,11 @@ const AddEtap = () => {
                     styles.eventsTypeList,
                     {backgroundColor: themeState.mainBack},
                   ]}>
-                  <ListItemCont
+                  {/* <ListItemCont
                     title={`${t("Control")}`}
                     value={addEtapState.control}
                     onPress={() => setControl(e => !e)}
-                  />
-                  <Line />
+                  /> */}
                   <ListItemCont
                     title={`${t("Delete")}`}
                     onPress={() => onHandleNavigation(APP_ROUTES.DELETE_ETAP)}
@@ -171,7 +171,7 @@ const AddEtap = () => {
                   <StartBtn
                     onPress={UpdateTask}
                     primary={true}
-                    text="Ok"
+                    text={`${t("ok")}`}
                     subWidth={70}
                     elWidth={55}
                   />
@@ -206,10 +206,10 @@ const AddEtap = () => {
               onClose={() => setRepeat(e => !e)}
               modalVisible={repeat}
               okBtn
-              okBtnText={`${t("Ok")}`}
+              okBtnText={`${t("ok")}`}
               onPressBtn={() => setRepeat(e => !e)}
             />
-            <SoundsContent
+            {/* <SoundsContent
               headerTitle={`${t("Control")}`}
               data={controlData}
               onItemPress={onControlItemPress as never}
@@ -224,7 +224,7 @@ const AddEtap = () => {
               okBtn
               okBtnText="Ok"
               onPressBtn={() => setControl(e => !e)}
-            />
+            /> */}
           </RN.ScrollView>
         </RN.View>
       }

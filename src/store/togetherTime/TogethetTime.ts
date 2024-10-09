@@ -1,10 +1,12 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { TogetherDataInitial, TogetherDataType } from '../../types/alarm';
-import { ControlData, RepeatData, StatusData } from '../../utils/repeat';
+import { ControlData, RepeatData, StatusData, StatusData_ar } from '../../utils/repeat';
 import { RootStore } from '../rootStore';
 import { addEtapToFirestore, deleteEtapFromFirestore, getEtapsFromFirestore, updateEtapsInFirestore } from '../../services/firestoreService';
 import auth from '@react-native-firebase/auth';
 import { RepeatDataType } from '../../types/calendar';
+
+import l, { t } from '../../i18n'
 
 export class TogetherTimeStore {
   private readonly root: RootStore;
@@ -222,12 +224,12 @@ export class TogetherTimeStore {
     this.etapList = newData as never;
   };
 
-  selectedStatus = { title: 'Dating' };
-  statusData = StatusData;
+  selectedStatus = { title: `${t('Dating')}` };
+  statusData = l.locale == 'English' ? StatusData_ar : StatusData_ar;
 
   onSelectStatus = (index: number) => {
     runInAction(() => {
-      this.selectedStatus = this.statusData.find((e, i) => i === index) ?? { title: 'Dating' };
+      this.selectedStatus = this.statusData.find((e, i) => i === index) ?? { title: `${t('Dating')}` };
       this.setAddEtapState('type', this.selectedStatus.title as never);
     });
   };

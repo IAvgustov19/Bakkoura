@@ -24,6 +24,8 @@ import { Images } from '../../../assets';
 import LanguageBtn from '../../../components/LanguageBtn/LanguageBtn';
 import { t } from '../../../i18n';
 
+import l from '../../../i18n';
+
 const SignInScreen = () => {
   const [loading, setLoading] = useState(false);
   const {setAuthorized, setLoginUser, loginUser, newUser, isAuthorized} =
@@ -149,7 +151,7 @@ const SignInScreen = () => {
             leftItem={<Images.Svg.btsRightLinear />}
             rightItem={
               <LanguageBtn
-                value={newUser?.language}
+                value={l.locale == 'English' ? 'EN': 'AR'}
                 onPress={() =>
                   navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                 }
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   content: {
-    paddingBottom: 130,
+    paddingBottom: 0,
     justifyContent: 'center',
     height: '70%',
   },
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
   formBox: {
     alignItems: 'flex-start',
     gap: 8,
-    marginTop: 40,
+    marginTop: 60,
   },
   label: {
     marginLeft: 20,
@@ -251,7 +253,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 10,
+    bottom: -30,
     gap: 10,
     left: 5,
   },

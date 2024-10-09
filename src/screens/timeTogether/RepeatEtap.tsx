@@ -10,11 +10,12 @@ import RadioBtn from '../../components/RadioBtn/RadioBtn';
 import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
-import {RepeatData} from '../../utils/repeat';
+import {RepeatData, RepeatData_ar} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
 import Line from '../../components/Line/Line';
 
 import {t} from '../../i18n'
+import l from '../../i18n'
 
 const RepeatEtap = () => {
   const navigation = useNavigation();
@@ -56,6 +57,26 @@ const RepeatEtap = () => {
     });
   }, [selectedRepeat, addEtapState]);
 
+  const renderRepeat_ar = useCallback(() => {
+    return RepeatData_ar.map((item, index) => {
+      return (
+        <RN.View key={index}>
+          <ListItemCont
+            title={item.title}
+            rightItem={
+              <RadioBtn
+                active={item.id === selectedRepeat?.id}
+                onPress={() => onRepeatItemPress(index)}
+              />
+            }
+            onPress={() => onRepeatItemPress(index)}
+          />
+          <Line />
+        </RN.View>
+      );
+    });
+  }, [selectedRepeat, addEtapState]);
+
   return (
     <LinearContainer
       children={
@@ -69,12 +90,16 @@ const RepeatEtap = () => {
               styles.eventsTypeList,
               {backgroundColor: themeState.mainBack},
             ]}>
-            {renderRepeat()}
+            {
+              l.locale == 'English' ?
+              renderRepeat() :
+              renderRepeat_ar()
+            }
           </RN.View>
           <RN.View style={styles.btnBox}>
             <StartBtn
               primary
-              text="Ok"
+              text={`${t("ok")}`}
               elWidth={65}
               subWidth={80}
               onPress={onSelect}

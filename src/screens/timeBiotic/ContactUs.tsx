@@ -69,7 +69,6 @@ const ContactUs = () => {
           </RN.View> */}
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title={`${t("Contact Us")}`}
           />
           <RN.ScrollView
@@ -93,7 +92,7 @@ const ContactUs = () => {
                       ? COLORS.yellow
                       : '#496380'
                   }
-                  textColor={COLORS.lightGrey}
+                  textColor={themeState.selectYellow}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'General Director')}
                 />
@@ -104,7 +103,7 @@ const ContactUs = () => {
                   borderColor={
                     orderState.type === 'Developer' ? COLORS.yellow : '#496380'
                   }
-                  textColor={COLORS.lightGrey}
+                  textColor={themeState.selectYellow}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'Developer')}
                 />
@@ -117,7 +116,7 @@ const ContactUs = () => {
                       ? COLORS.yellow
                       : '#496380'
                   }
-                  textColor={COLORS.lightGrey}
+                  textColor={themeState.selectYellow}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'Technical Support')}
                   paddingVertical={15}
@@ -137,11 +136,11 @@ const ContactUs = () => {
                       styles.privacyInfo,
                       {color: themeState.darkGrayText},
                     ]}>
-                  `${t('your_data_safe')}`
+                  {t('your_data_safe')}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
                   <RN.Text
-                      style={[styles.privacyLink, {color: themeState.yellow}]}>`${t('I_accept')}`</RN.Text>
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>{t('I_accept')}</RN.Text>
     </RN.Pressable>
                 </RN.View>
               </RN.View>
@@ -202,7 +201,7 @@ const styles = RN.StyleSheet.create({
     zIndex: 2,
   },
   content: {
-    paddingBottom: windowHeight / 5,
+    paddingBottom: 20,
   },
   contactInfo: {
     gap: 20,

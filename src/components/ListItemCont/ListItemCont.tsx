@@ -64,9 +64,10 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     width: '100%',
     borderRadius: 5,
+    height:60
   },
   listItemText: {
-    fontSize: normalizeHeight(48),
+    fontSize: 16,
   },
   listItemRight: {
     flexDirection: 'row',

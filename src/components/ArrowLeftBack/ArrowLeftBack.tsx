@@ -30,7 +30,7 @@ const ArrowLeftBack: React.FC<Props> = ({
       onPress={onPress}
       hitSlop={HITSLOP}>
       {icon ? icon : <Images.Svg.arrowLeft />}
-      <TextView text={title ? title : `${t('back')}`} style={{color: titleColor}} />
+      <TextView text={title ? title : `${t('back')}`} style={{color: themeState.gray}} />
     </RN.TouchableOpacity>
   );
 };

@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import RN from '../RN';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import theme from '../../screens/personalArea/screens/theme';
+import useRootStore from '../../hooks/useRootStore';
 
 interface IProps {
     data: any;
@@ -14,6 +16,7 @@ interface IProps {
 
 const CustomSwiper: React.FC<IProps> = ({ data, height, width, marginTop = 60, paddingTop = 150 }) => {
     const [imageDimensions, setImageDimensions] = useState<Array<{ width: number, height: number }>>([]);
+    const {themeState} = useRootStore().personalAreaStore;
 
     useEffect(() => {
         const calculateImageDimensions = () => {
@@ -48,7 +51,7 @@ const CustomSwiper: React.FC<IProps> = ({ data, height, width, marginTop = 60, p
                             source={e.image}
                             resizeMode="contain"
                         />
-                        <Text style={[styles.text, { marginTop: marginTop }]}>{e.text}</Text>
+                        <Text style={[styles.text, { marginTop: marginTop, color: themeState.title }]}>{e.text}</Text>
                     </View>
                 );
             })}

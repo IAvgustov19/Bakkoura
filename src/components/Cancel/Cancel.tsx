@@ -18,7 +18,7 @@ const Cancel: React.FC<Props> = ({onClose}) => {
       style={styles.cancelBtn}
       onPress={onClose}
       hitSlop={HITSLOP}>
-      <RN.Text style={styles.cancelTxt}>{t('Cancel')}</RN.Text>
+      <RN.Text style={[styles.cancelTxt, {color: themeState.gray}]}>{t('Cancel')}</RN.Text>
     </RN.TouchableOpacity>
   );
 };

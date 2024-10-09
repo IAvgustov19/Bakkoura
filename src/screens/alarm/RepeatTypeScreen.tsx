@@ -11,9 +11,10 @@ import RN from '../../components/RN';
 import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {COLORS} from '../../utils/colors';
-import {WeekRepeatData} from '../../utils/repeat';
+import {WeekRepeatData, WeekRepeatData_ar} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
 import { t } from '../../i18n';
+import l from '../../i18n'
 
 const RepeatTypeScreen = () => {
   const {
@@ -54,6 +55,26 @@ const RepeatTypeScreen = () => {
       );
     });
   }, [alarmItemData, selectedRepeat]);
+
+  const renderDays_ar = useCallback(() => {
+    return WeekRepeatData_ar.map((item, index) => {
+      return (
+        <ListItemCont
+          key={index}
+          backBlack
+          title={item.title}
+          onPress={() => onSelectRepeat(item.title)}
+          rightItem={
+            <RadioBtn
+              active={!!selectedRepeat.find(e => e === item.title)}
+              onPress={() => onSelectRepeat(item.title)}
+            />
+          }
+        />
+      );
+    });
+  }, [alarmItemData, selectedRepeat]);
+
   return (
     <LinearContainer
       children={
@@ -63,13 +84,24 @@ const RepeatTypeScreen = () => {
             rightItem={<Cancel onClose={OnRepeatCancelPress} />}
           />
           <RN.View style={styles.content}>
-            <RN.View
+            
+{
+  l.locale == 'English'
+  ?
+  <RN.View
               style={[styles.listBox, {backgroundColor: themeState.mainBack}]}>
               {renderDays()}
             </RN.View>
+            :
+            <RN.View
+              style={[styles.listBox, {backgroundColor: themeState.mainBack}]}>
+              {renderDays_ar()}
+            </RN.View>
+}
+
             <RN.View>
               <StartBtn
-                text={`${t("Ok")}`}
+                text={`${t("ok")}`}
                 primary
                 elWidth={60}
                 subWidth={75}

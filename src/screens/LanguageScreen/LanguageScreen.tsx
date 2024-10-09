@@ -68,6 +68,8 @@ const LanguageScreen = () => {
     onLanguageItemPressStore(index);
   };
 
+  const {themeState} = useRootStore().personalAreaStore;
+
   const renderItem = ({ item, index }) => {
     return (
       <RN.TouchableOpacity
@@ -81,7 +83,7 @@ const LanguageScreen = () => {
           }
           onPress={() => onLanguageItemPress(index)}
         />
-        <RN.Text style={styles.language}>{item.title}</RN.Text>
+        <RN.Text style={[styles.language, {color:themeState.title}]}>{item.title}</RN.Text>
       </RN.TouchableOpacity>
     );
   };
@@ -110,7 +112,7 @@ const LanguageScreen = () => {
             <StartBtn
               onPress={update}
               primary={true}
-              text={updateLoading ? '' : `${t("Ok")}`}
+              text={updateLoading ? '' : `${t("ok")}`}
               icon={
                 updateLoading ? (
                   <ActivityIndicator

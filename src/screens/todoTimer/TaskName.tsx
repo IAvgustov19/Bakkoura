@@ -11,8 +11,11 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {ToDoTaskNameDataType, TodoTimerDataType} from '../../types/alarm';
 import {COLORS} from '../../utils/colors';
-import {ToDoTaskNameData} from '../../utils/repeat';
+import {ToDoTaskNameData, ToDoTaskNameData_ar} from '../../utils/repeat';
 import {windowHeight} from '../../utils/styles';
+import { t } from '../../i18n';
+
+import l from '../../i18n'
 
 const TaskName = () => {
   const {hide} = useRootStore().visibleStore;
@@ -37,27 +40,49 @@ const TaskName = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title={'Task Name'}
+            title={`${t("Task name")}`}
           />
           <RN.View style={styles.content}>
             <RN.View
               style={[styles.list, {backgroundColor: themeState.mainBack}]}>
-              {ToDoTaskNameData.map((item, index) => {
+              {
+                l.locale == "English" ?
+                <RN.View>
+                  {ToDoTaskNameData.map((item, index) => {
                 return (
                   <RN.View key={index}>
                     <SelectItem
                       title={item.title}
                       isActive={taskState.name === item.title}
                       onPress={() => onSelectName(item)}
+                      color={themeState.title}
                     />
                     {ToDoTaskNameData.length !== item.id ? <Line /> : null}
                   </RN.View>
                 );
               })}
+                </RN.View>
+                :
+                <RN.View>
+                  {ToDoTaskNameData_ar.map((item, index) => {
+                return (
+                  <RN.View key={index}>
+                    <SelectItem
+                      title={item.title}
+                      isActive={taskState.name === item.title}
+                      onPress={() => onSelectName(item)}
+                      color={themeState.title}
+                    />
+                    {ToDoTaskNameData.length !== item.id ? <Line /> : null}
+                  </RN.View>
+                );
+              })}
+                </RN.View>
+              }
             </RN.View>
             <RN.View style={styles.btn}>
               <StartBtn
-                text="Ok"
+                text={`${t("ok")}`}
                 primary
                 subWidth={70}
                 elWidth={55}

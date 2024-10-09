@@ -65,7 +65,7 @@ const TimeWealth = () => {
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
             {
-                l.locale === 'en'?
+                l.locale === 'English'?
                 <RN.View style={styles.cardBox}>{renderCards()}</RN.View>
                 :
                 <RN.View style={styles.cardBox}>{renderCards_ar()}</RN.View>
@@ -90,7 +90,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 5,
+    paddingBottom: 100,
     gap: 30,
   },
   cardBox: {

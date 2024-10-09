@@ -11,7 +11,7 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
-import {BreakData} from '../../utils/repeat';
+import {BreakData, BreakData_ar} from '../../utils/repeat';
 import TextView from '../../components/Text/Text';
 import Line from '../../components/Line/Line';
 import LottieContent from '../../components/LottieContent/LottieContent';
@@ -21,6 +21,7 @@ import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import Text from 'react-native'
 
 import {t} from '../../i18n'
+import l from '../../i18n'
 
 const Pomodoro = () => {
   const {
@@ -84,22 +85,29 @@ const Pomodoro = () => {
     return taskList.map((item, index) => {
       const hasDescription = !!item.description;
       return (
-        <RN.Pressable
+        <RN.View>
+          <Line />
+          <RN.Pressable
           style={styles.taskLists}
           key={index}
           onPress={() => { setData(item); setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro')); }}
         >
-          <RN.View style={{gap: 10}}>
+          <RN.View>
             <RN.View style={styles.spaceBetween}>
               <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
-                <RN.Text style={styles.tasksText}>{item.name.length > 100 ? `${item.name.slice(0, maxLength)}...` : item.name}</RN.Text>
+                <RN.Text style={[styles.tasksText, {color: themeState.title}]}>{item.name.length > 100 ? `${item.name.slice(0, maxLength)}...` : item.name}</RN.Text>
               </RN.View>
-              <RN.Text style={styles.tasksTime}>{`${0}`}/{`${item.minut}`}</RN.Text>
-              <Images.Svg.dots onPress={() => onHandleTask(item)} style={styles.dotImg}/>
+              <RN.Text style={[styles.tasksTime, {color:themeState.gray}]}>{`${0}`}/{`${item.minut}`}</RN.Text>
+              <RN.TouchableOpacity onPress={() => onHandleTask(item)} style={styles.dotPress}>
+                <Images.Svg.dots style={styles.dotImg}/>
+              </RN.TouchableOpacity>
             </RN.View>
-            {hasDescription && <TextView text={item.description.length > maxLength ? `${item.description.slice(0, maxLength)}...` : item.description} />}
+            {hasDescription && <TextView textAlign='left' text={item.description.length > maxLength ? `${item.description.slice(0, maxLength)}...` : item.description} />}
           </RN.View>
         </RN.Pressable>
+        <Line />
+        </RN.View>
+        
       );
     });
   }, [taskList]);
@@ -137,7 +145,6 @@ const Pomodoro = () => {
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.POMODORO_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
-                <themeState.timeLogo />
               </RN.TouchableOpacity>
             }
           />
@@ -146,35 +153,60 @@ const Pomodoro = () => {
             showsVerticalScrollIndicator={false}>  */}
           < RN.View style={styles.content}>
             <RN.View style={styles.pomodoro}>
-              <RN.View style={styles.breakTimeBox}>
-                {BreakData.map((item, index) => {
-                  return (
-                    <OutlineBtn
-                      Width={'30%'}
-                      key={index}
-                      text={item.title}
-                      textColor={
-                        currentBreakTime.id === item.id &&
-                        themeState.selectYellow
-                      }
-                      borderColor={
-                        currentBreakTime.id === item.id &&
-                        themeState.selectYellow
-                      }
-                      onPress={() => handleBreakTimeSelection(item.id)}
-                    />
-                  );
-                })}
-              </RN.View>
+
+{
+  l.locale == 'English' ? 
+
+  <RN.View style={styles.breakTimeBox}>
+  {BreakData.map((item, index) => {
+    return (
+      <OutlineBtn
+        Width={'30%'}
+        key={index}
+        text={item.title}
+        textColor={
+          currentBreakTime.id === item.id &&
+          themeState.selectYellow
+        }
+        borderColor={
+          currentBreakTime.id === item.id &&
+          themeState.selectYellow
+        }
+        borderColor_2={
+          themeState.radioback
+        }
+        onPress={() => handleBreakTimeSelection(item.id)}
+      />
+    );
+  })}
+</RN.View>
+:
+<RN.View style={styles.breakTimeBox}>
+{BreakData_ar.map((item, index) => {
+  return (
+    <OutlineBtn
+      Width={'30%'}
+      key={index}
+      text={item.title}
+      textColor={
+        currentBreakTime.id === item.id &&
+        themeState.selectYellow
+      }
+      borderColor={
+        currentBreakTime.id === item.id &&
+        themeState.selectYellow
+      }
+      onPress={() => handleBreakTimeSelection(item.id)}
+    />
+  );
+})}
+</RN.View>
+}
+
               <RN.View style={styles.pomodoroBox}>
                 <RN.View style={styles.breakTime}>
                   <TextView text={newTaskState?.name?.length > 12 ? `${newTaskState.name.slice(0, 12)}...` : newTaskState.name} />
                   {/* <RN.Text style={styles.breakTimeText}>{newTaskState ? newTaskState.breackType : 'Pomodoro'}</RN.Text> */}
-                  <TextView text={newTaskState.name} />
-                  <RN.Text
-                    style={[styles.breakTimeText, {color: themeState.title}]}>
-                    {newTaskState ? newTaskState.breackType : 'Pomodoro'}
-                  </RN.Text>
                 </RN.View>
                 {pomodoroLottie}
                 <RN.View style={styles.pomodoroTime}>
@@ -189,14 +221,14 @@ const Pomodoro = () => {
                         styles.pomodoroInfoName,
                         {color: themeState.green},
                       ]}>
-                    ${t("Pomos")}: {`${estimatedPomodoros} / ${newTaskState.minut}`}
+                    {t("Pomos")}: {`${estimatedPomodoros} / ${newTaskState.minut}`}
                     </RN.Text>
                     <RN.Text
                       style={[
                         styles.pomodoroInfoName,
                         {color: themeState.green},
                       ]}>
-                    ${t("Finish At")}: {finishTime}
+                    {t("Finish At")}: {finishTime}
                     </RN.Text>
                     <RN.Text
                       style={[
@@ -228,19 +260,19 @@ const Pomodoro = () => {
             {taskList.length > 0 ? (
               <RN.View style={styles.taskListBox}>
                 <RN.View style={styles.taskListHeader}>
-                  <RN.Text style={styles.tasksText}>Tasks</RN.Text>
+                  <RN.Text style={[styles.tasksText, {color: themeState.gray}]}>{`${t("Tasks")}`}</RN.Text>
                   <RN.TouchableOpacity
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.ADD_TASK_SCREEN as never)
                     }>
-                    <Images.Svg.addSmallicon />
+                    <Images.Svg.addSmallicon/>
                   </RN.TouchableOpacity>
                 </RN.View>
-                <Line />
-                <RN.ScrollView style={styles.renderTask}>
+                
+                <RN.ScrollView style={styles.renderTask} showsVerticalScrollIndicator={false}>
                   {renderTasks()}
                 </RN.ScrollView>
-                <Line />
+                
               </RN.View>
             ) : (
               <RN.View style={styles.addTaskBtn}>
@@ -266,6 +298,11 @@ export default observer(Pomodoro);
 const styles = RN.StyleSheet.create({
   container: {
     paddingHorizontal: 5,
+  },
+  dotPress:{
+    width:25,
+    height:25,
+    paddingLeft:3
   },
   content: {
     justifyContent: 'space-between',
@@ -293,7 +330,7 @@ const styles = RN.StyleSheet.create({
   },
   pomodoroTime: {
     position: 'absolute',
-    top: '45%',
+    top: '40%',
   },
   time: {
     fontSize: 70,
@@ -348,12 +385,13 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 2,
+    paddingVertical: 7,
   },
   tasksText: {
     fontSize: 16,
-    width: '77%',
-    color: COLORS.white,
+    width: '80%',
+    //color: COLORS.white,
+    textAlign:'left'
   },
   tasksTime: {
     fontSize: 16,
@@ -364,13 +402,13 @@ const styles = RN.StyleSheet.create({
     paddingTop:5
   },
   renderTask: {
-    height: 105,
+    height: 230,
   },
   addTaskBtn: {
     marginTop: 20,
   },
   spaceBetween: {
-    gap: 18,
+    gap: 8,
     alignItems: 'flex-start',
     flexDirection: 'row',
   },

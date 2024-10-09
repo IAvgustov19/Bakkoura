@@ -52,7 +52,7 @@ const Wallpapers = () => {
               />
             }
           />
-          <RN.ScrollView>
+        <RN.ScrollView showsVerticalScrollIndicator={false}>
             <RN.View style={styles.wallBox}>{renderWallpapers()}</RN.View>
           </RN.ScrollView>
         </RN.View>
@@ -71,6 +71,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     flexWrap: 'wrap',
-    paddingBottom: 100,
+    paddingBottom: 30,
   },
 });

@@ -20,6 +20,7 @@ import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 import SimpleBtn from '../../../components/SimpleBtn/SimpleBtn';
 
 import {t} from '../../../i18n'
+import l from '../../../i18n'
 import Line from '../../../components/Line/Line';
 import Cancel from '../../../components/Cancel/Cancel';
 
@@ -92,7 +93,7 @@ const PersonalArea = () => {
         <RN.View style={styles.container}>
           {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
-            rightItem={ <ArrowLeftBack onPress={() => navigation.goBack()} />}
+            leftItem={ <ArrowLeftBack onPress={() => navigation.goBack()} />}
             title= {`${t("Personal Area")}`}
           />
           <RN.ScrollView showsVerticalScrollIndicator={false}>
@@ -174,8 +175,15 @@ const PersonalArea = () => {
                     }
                   />
                 </RN.View> */}
-                <RN.View style={styles.eventsTypeList}>
-                  <ListItemCont
+
+                {/* <RN.View style={styles.eventsTypeList}>
+                </RN.View> */}
+                <RN.View
+                  style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
+                    <ListItemCont
                     title={`${t("Language")}`}
                     value={
                       personalAreaData ? personalAreaData.language : 'English'
@@ -184,20 +192,28 @@ const PersonalArea = () => {
                       navigation.navigate(APP_ROUTES.LANGUAGE_SCREEN as never)
                     }
                   />
-                </RN.View>
-                {/* <RN.View style={styles.eventsTypeList}>
-                </RN.View> */}
-                <RN.View
-                  style={[
-                    styles.eventsTypeList,
-                    {backgroundColor: themeState.mainBack},
-                  ]}>
                   <ListItemCont
-                    title="Theme"
-                    value={currentTheme}
+                    title={`${t("Theme")}`}
+                    value={
+                      l.locale == 'English' ?
+                        currentTheme == 'Dark' ?
+                          'Dark' : 'Light'
+                        :
+                        currentTheme == 'Dark' ?
+                          'غامق' : 'ضوء'
+                    }
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.THEME as never)
                     }
+                  />
+                </RN.View>
+                <RN.View style={[
+                    styles.eventsTypeList,
+                    {backgroundColor: themeState.mainBack},
+                  ]}>
+                                    <ListItemCont
+                     title={`${t("Delete account")}`}
+                    onPress={onHandleDeleteUser}
                   />
                 </RN.View>
                 {/* <RN.View style={[styles.eventsTypeList,{backgroundColor: themeState.mainBack},]}>
@@ -206,10 +222,6 @@ const PersonalArea = () => {
                   <ListItemCont title="Couple Time" onPress={() => {}} />
                 </RN.View> */}
                 <RN.View style={[styles.eventsTypeList, {marginTop: 10}]}>
-                  <ButtonComp
-                    title={`${t("Delete account")}`}
-                    onPress={onHandleDeleteUser}
-                  />
                 </RN.View>
               </RN.View>
             </RN.View>

@@ -60,7 +60,7 @@ const JihadBakkouraTimeClinic = () => {
                 </RN.View>
               </RN.View>
               {
-                l.locale === 'en'?
+                l.locale === 'English'?
                 <RN.View style={styles.textsBox}>{renderText()}</RN.View>
                 :
                 <RN.View style={styles.textsBox}>{renderText_ar()}</RN.View>
@@ -85,7 +85,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: 50,
+    paddingBottom: 100,
   },
   avatarBox: {
     width: '100%',

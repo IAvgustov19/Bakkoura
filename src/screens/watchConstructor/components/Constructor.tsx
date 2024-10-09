@@ -27,6 +27,8 @@ const Constructor = () => {
           <RN.Image
             style={styles.optionImage}
             source={currentWatch.options as never}
+            height={10}
+            width={10}
           />
         ) : null}
       </RN.View>

@@ -62,7 +62,7 @@ const PersonalDetails = () => {
               <RN.View style={styles.addBtn}>
                 <StartBtn
                   primary={true}
-                  text={updateLoading ? '' : `${t("Ok")}`}
+                  text={updateLoading ? '' : `${t("ok")}`}
                   icon={
                     updateLoading ? (
                       <ActivityIndicator

@@ -3,81 +3,162 @@ import {t} from '../i18n'
 export const RepeatData = [
   {
     id: 1,
-    title: `${t("Daily")}`,
+    title: "Daily",
   },
   {
     id: 2,
-    title: `${t("Monthly")}`,
+    title: "Monthly",
   },
   {
     id: 3,
-    title: `${t("yearly")}`,
+    title: "Yearly",
   },
   {
     id: 4,
-    title: `${t("never")}`,
+    title: "Never",
+  },
+];
+
+export const RepeatData_ar = [
+  {
+    id: 1,
+    title: "يوميًا",
+  },
+  {
+    id: 2,
+    title: "شهريًا",
+  },
+  {
+    id: 3,
+    title: "سنويًا",
+  },
+  {
+    id: 4,
+    title: "أبدًا",
   },
 ];
 
 export const WeekRepeatData = [
   {
     id: 1,
-    title: `${t("Monday")}`,
+    title: 'Monday',
   },
   {
     id: 2,
-    title: `${t("Tuesday")}`,
+    title: "Tuesday",
   },
   {
     id: 3,
-    title: `${t("Wednesday")}`,
+    title: "Wednesday",
   },
   {
     id: 4,
-    title: `${t("Thursday")}`,
+    title: "Thursday",
   },
   {
     id: 5,
-    title: `${t("Friday")}`,
+    title: "Friday",
   },
   {
     id: 6,
-    title: `${t("Saturday")}`,
+    title: "Saturday",
   },
   {
     id: 7,
-    title: `${t("Sunday")}`,
+    title: "Sunday",
   },
   {
     id: 8,
-    title: `${t("never")}`,
+    title: "never",
+  },
+];
+
+export const WeekRepeatData_ar = [
+  {
+    id: 1,
+    title: "الاثنين",
+  },
+  {
+    id: 2,
+    title: "الثلاثاء",
+  },
+  {
+    id: 3,
+    title: "الأربعاء",
+  },
+  {
+    id: 4,
+    title: "الخميس",
+  },
+  {
+    id: 5,
+    title: "الجمعة",
+  },
+  {
+    id: 6,
+    title: "السبت",
+  },
+  {
+    id: 7,
+    title: "الأحد",
+  },
+  {
+    id: 8,
+    title: "أبدًا",
   },
 ];
 
 export const BreakData = [
   {
     id: 1,
-    title: `${t("Pomodoro")}`,
+    title: 'Pomodoro',
   },
   {
     id: 2,
-    title: `${t("Short Break")}`,
+    title: "Short Break",
   },
   {
     id: 3,
-    title: `${t("Long Break")}`,
+    title: "Long Break",
+  },
+];
+export const BreakData_ar = [
+  {
+    id: 1,
+    title: 'بومودورو',
+  },
+  {
+    id: 2,
+    title: `استراحة قصيرة`,
+  },
+  {
+    id: 3,
+    title: `استراحة طويلة`,
   },
 ];
 
 export const ControlData = [
   {
     id: 1,
-    title: `${t("Start")}`,
+    title: "Start",
     active: true,
   },
   {
     id: 2,
-    title: `${t("Stopped")}`,
+    title: "Stop",
+    active: false,
+  },
+];
+
+export const ControlData_ar = [
+  {
+    id: 1,
+    title: "بدء",
+    active: true,
+  },
+  {
+    id: 2,
+    title: "إيقاف",
     active: false,
   },
 ];
@@ -85,22 +166,45 @@ export const ControlData = [
 export const StatusData = [
   {
     id: 1,
-    title: `${t("Dating")}`,
+    title: "Dating",
     active: true,
   },
   {
     id: 2,
-    title: `${t("Separated")}`,
+    title: "Separated",
     active: false,
   },
   {
     id: 3,
-    title: `${t("Betrothal")}`,
+    title: "Betrothal",
     active: false,
   },
   {
     id: 4,
-    title: `${t("Merried")}`,
+    title: "Merried",
+    active: false,
+  },
+];
+
+export const StatusData_ar = [
+  {
+    id: 1,
+    title: "التعارف",
+    active: true,
+  },
+  {
+    id: 2,
+    title: "منفصل",
+    active: false,
+  },
+  {
+    id: 3,
+    title: "خطوبة",
+    active: false,
+  },
+  {
+    id: 4,
+    title: "متزوج",
     active: false,
   },
 ];
@@ -129,74 +233,151 @@ export const etapCountData = [
 export const HistoryData = [
   {
     id: 1,
-    title: `${t("Last Day")}`,
+    title: "Last Day",
     key: 'lastDay',
   },
   {
     id: 2,
-    title: `${t("Last Week")}`,
+    title: "Last Week",
     key: 'lastWeek',
   },
   {
     id: 3,
-    title: `${t("Last Month")}`,
+    title: "Last Month",
     key: 'lastMonth',
   },
 ];
-export const TodoGoalData = [
+
+export const HistoryData_ar = [
   {
     id: 1,
-    title: `${t("Day")}`,
+    title: "اليوم السابق",
+    key: 'lastDay',
   },
   {
     id: 2,
-    title: `${t("Week")}`,
+    title: "الأسبوع الماضي",
+    key: 'lastWeek',
   },
   {
     id: 3,
-    title: `${t("Month")}`,
+    title: "الشهر الماضي",
+    key: 'lastMonth',
+  },
+];
+
+export const TodoGoalData = [
+  {
+    id: 1,
+    title: "Day",
+  },
+  {
+    id: 2,
+    title: "Week",
+  },
+  {
+    id: 3,
+    title: "Month",
+  },
+];
+
+export const TodoGoalData_ar = [
+  {
+    id: 1,
+    title: "اليوم",
+  },
+  {
+    id: 2,
+    title: "أسبوع",
+  },
+  {
+    id: 3,
+    title: "شهر",
   },
 ];
 
 export const ToDoTaskNameData = [
   {
     id: 1,
-    title: `${t("Work")}`,
+    title: "Work",
     key: 'work',
   },
   {
     id: 2,
-    title: `${t("Self-develop")}`,
+    title: "Self-develop",
     key: 'self_develop',
   },
   {
     id: 3,
-    title: `${t("Sport")}`,
+    title: "Sport",
     key: 'sport',
   },
   {
     id: 4,
-    title: `${t("Self-care")}`,
+    title: "Self-care",
     key: 'self_care',
   },
   {
     id: 5,
-    title: `${t("Rest and relax")}`,
+    title: "Rest and relax",
     key: 'rest',
   },
   {
     id: 6,
-    title: `${t("House keeping")}`,
+    title: "House keeping",
     key: 'house_keep',
   },
   {
     id: 7,
-    title: `${t("Time-killers")}`,
+    title: "Time-killers",
     key: 'time_killers',
   },
   {
     id: 8,
-    title: `${t("Family and friends")}`,
+    title: "Family and friends",
+    key: 'family',
+  },
+];
+
+export const ToDoTaskNameData_ar = [
+  {
+    id: 1,
+    title: "عمل",
+    key: 'work',
+  },
+  {
+    id: 2,
+    title: "التطوير الذاتي (التفكير هنا)",
+    key: 'self_develop',
+  },
+  {
+    id: 3,
+    title: "رياضة",
+    key: 'sport',
+  },
+  {
+    id: 4,
+    title: "العناية بالذات (المساج، الأقنعة وما إلى ذلك)",
+    key: 'self_care',
+  },
+  {
+    id: 5,
+    title: "الراحة والاسترخاء",
+    key: 'rest',
+  },
+  {
+    id: 6,
+    title: "تنظيف المنزل",
+    key: 'house_keep',
+  },
+  {
+    id: 7,
+    title: "قتل الوقت (الشبكات الاجتماعية، تصفح الإنترنت، التلفزيون)",
+    key: 'time_killers',
+  },
+  {
+    id: 8,
+    title: "العائلة والأصدقاء",
     key: 'family',
   },
 ];

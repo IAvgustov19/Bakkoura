@@ -58,10 +58,10 @@ const FirstTimerDuring: React.FC<Props> = ({ stop, finished }) => {
             </>
           )}
         </RN.View>
-        {stop ? <RN.Text style={[styles.pausa, {color: themeState.green}]}>{t("pause")}</RN.Text> : null}
+        {stop ? <RN.Text style={[styles.pausa, {color: themeState.green}]}>{t("Pause")}</RN.Text> : null}
         {timerStatus.finished ? (
           <RN.Text style={[styles.pausa, {color: themeState.green}]}>
-            {t("time is over")}
+            {t("Time is over")}
           </RN.Text>
         ) : null}
       </RN.View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    paddingTop: '35%',
+    paddingTop: '10%',
   },
   duringTimerBg: {
     width: '100%',
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+    marginTop:-240
   },
   duringTimer: {
     fontSize: horizontalScale(55),

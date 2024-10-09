@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.transparent,
     borderRadius: 4,
     fontWeight: '400',
+    fontFamily: 'RedHatDisplay-Regular',
     color: COLORS.grey,
     overflow: 'hidden',
   },

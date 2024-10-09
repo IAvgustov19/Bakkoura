@@ -91,7 +91,6 @@ const TimerScreen = () => {
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.TIMER_SLIDER as never)}>
                 <Images.Svg.question fill={'gray'} width={24} height={24} />
-                <themeState.timeLogo />
               </RN.TouchableOpacity>
             }
           />
@@ -158,13 +157,17 @@ const TimerScreen = () => {
               onPress={StartTimer}
             />
           </RN.View>
-          <RN.View style={styles.switchWork}>
+          {
+            timerStatus.reset ? null :
+
+            <RN.View>
+              <RN.View style={styles.switchWork}>
             <SwitchBtn isWork={isWork} onPress={() => setWork(e => !e)} />
           </RN.View>
           <RN.TouchableOpacity
             style={[styles.soundList, {borderColor: themeState.input2}]}
             onPress={() => toggle('soundsVisible')}>
-            <RN.Text color="#fff">`${t("sound")}`</RN.Text>
+            <RN.Text color={themeState.title}>{t("sound")}</RN.Text>
             <RN.View style={styles.sound}>
               <RN.Text color="#2F4252">{selectedSound.title}</RN.Text>
               <Images.Svg.arrowRight />
@@ -180,6 +183,9 @@ const TimerScreen = () => {
             onClose={() => toggle('soundsVisible')}
             modalVisible={timerStatus.soundsVisible}
           />
+              </RN.View>
+          }
+          
         </RN.View>
       }
     />

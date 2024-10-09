@@ -29,6 +29,7 @@ const NameAlarm = () => {
                 placeholder={`${t("name")}`}
                 value={alarmItemData.name}
                 onChangeText={e => setNewAlarmState('name', e)}
+                maxLenght={25}
               />
               <RN.TouchableOpacity
                 style={styles.deleteBox}
@@ -38,7 +39,7 @@ const NameAlarm = () => {
             </RN.View>
             <RN.View>
               <StopStartBtn
-                text={`${t("Ok")}`}
+                text={`${t("ok")}`}
                 primary
                 elWidth={55}
                 subWidth={70}
@@ -67,7 +68,7 @@ const styles = RN.StyleSheet.create({
     top: '30%',
   },
   content: {
-    height: '90%',
+    height: '85%',
     justifyContent: 'space-between',
   },
 });

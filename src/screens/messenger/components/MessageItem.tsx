@@ -69,10 +69,11 @@ export default observer(MessageItem);
 
 const styles = RN.StyleSheet.create({
   container: {
+    backgroundColor: COLORS.black,
     borderRadius: 5,
     marginBottom: 5,
-  },
-  header: {
+},
+header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
@@ -80,47 +81,47 @@ const styles = RN.StyleSheet.create({
     backgroundColor: '#0E1114',
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
-  },
-  itemContent: {
+},
+itemContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 15,
-  },
-  leftBox: {
+},
+leftBox: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 10,
-  },
-  timerInfo: {
+},
+timerInfo: {
     gap: 5,
-  },
-  rightBox: {
+},
+rightBox: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 15,
-  },
-  darkGreyText: {
+},
+darkGreyText: {
     color: '#ABABAB',
-    fontSize: normalizeHeight(40),
+    fontSize: 14,
     fontFamily: 'RedHatDisplay-Regular',
-  },
-  whiteText: {
-    fontSize: normalizeHeight(50),
-  },
-  imageContainer: {
+},
+whiteText: {
+    color: COLORS.white,
+    fontSize: 16,
+},
+imageContainer: {
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  profileImg: {
+},
+profileImg: {
     width: 47,
     height: 47,
     borderRadius: 35,
     position: 'absolute',
     zIndex: 2,
-  },
-  messagesCount: {
+},
+messagesCount: {
     minHeight: 22,
     minWidth: 22,
     borderRadius: 11,
@@ -128,10 +129,10 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#007AFF',
-  },
-  messageText: {
+},
+messageText: {
     fontSize: 12,
     color: '#FFFFFF',
     fontFamily: 'RedHatDisplay-Regular',
-  },
+}
 });

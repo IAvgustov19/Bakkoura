@@ -10,12 +10,18 @@ import {
   RecommendationsData,
   TimeWealthData,
 } from '../../constants/timeClinic';
+import {
+  RecommendationsData_ar,
+} from '../../constants/timeClinic_ar';
 import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {windowHeight, windowWidth} from '../../utils/styles';
 import ConceptItem from './components/ConceptItem';
 import TimeWealthCard from './components/TimeWealthCard';
 import TimeWebView from './components/TimeWebView';
+
+import { t } from '../../i18n';
+import l from '../../i18n';
 
 const Recommendation = () => {
   const navigation = useNavigation();
@@ -41,11 +47,25 @@ const Recommendation = () => {
           texts={item.texts}
           imageUrl={item.imageUrl}
           date={item.date}
-          onPress={() => GetReco(item.id)}
         />
       );
     });
   }, [RecommendationsData]);
+
+
+  const renderCards_ar = useCallback(() => {
+    return RecommendationsData_ar.map((item, index) => {
+      return (
+        <TimeWealthCard
+          key={index}
+          title={item.title}
+          texts={item.texts}
+          imageUrl={item.imageUrl}
+          date={item.date}
+        />
+      );
+    });
+  }, [RecommendationsData_ar]);
 
   return (
     <LinearContainer
@@ -53,13 +73,19 @@ const Recommendation = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Recommendations"
+            title={`${t("Reccomendations")}`}
           />
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
-              <RN.View style={styles.cardBox}>{renderCards()}</RN.View>
+              <RN.View style={styles.cardBox}>
+                {
+                  l.locale == 'English'?
+                  renderCards() :
+                  renderCards_ar()
+                }
+                </RN.View>
               {/* <TimeWebView
                 linkName="jihadbakkoura.com"
                 logo={<Images.Svg.jihadBakkouraSiteLogo />}
@@ -80,11 +106,11 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 4,
+    paddingBottom: 100,
     gap: 30,
   },
   cardBox: {
     paddingVertical: 10,
-    gap: 30,
+    gap: 50,
   },
 });

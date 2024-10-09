@@ -113,7 +113,7 @@ export const CalendarComp: React.FC<Props> = ({
         {width: calendarWidth ? calendarWidth : '100%'},
       ]}>
       {showMonth ? (
-        <RN.Text style={[styles.currentDate, {fontSize: currentDateFontSize}]}>
+        <RN.Text style={[styles.currentDate, {fontSize: currentDateFontSize, color: themeState.title}]}>
           {`${months[new Date(activeDate).getMonth()]}`}
         </RN.Text>
       ) : null}

@@ -20,7 +20,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         value={orderState.name}
         title={`${t("name")}`}
         placeholder={`${t("name")}`}
-        backColor={COLORS.black}
+       
         width="100%"
         onChangeText={e => setOrderState('name', e)}
         black={true}
@@ -30,7 +30,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         value={orderState.phone}
         title={`${t("Phone")}`}
         placeholder={`${t("Phone")}`}
-        backColor={COLORS.black}
+      
         width="100%"
         onPressIn={bottomInputPress}
         onChangeText={e => setOrderState('phone', e)}
@@ -43,7 +43,7 @@ const FormContainer: React.FC<Props> = ({bottomInputPress}) => {
         title={`${t("comment")}`}
         height={100}
         placeholder={`${t("Text")}`}
-        backColor={COLORS.black}
+       
         width="100%"
         multiLine={true}
         textAlignVertical="top"

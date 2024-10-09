@@ -17,7 +17,7 @@ const LoadingScreen: React.FC<Props> = ({loading, setLoading}) => {
     <View>
       {loading && (
         <View style={styles.overlay}>
-          <Progress.Circle size={50} indeterminate={true} color={'#FFFFFF'} />
+          <Progress.Circle size={50} indeterminate={true} color={COLORS.gray} />
         </View>
       )}
     </View>

@@ -1,22 +1,22 @@
 import I18n from 'react-native-i18n'; 
-import en from './locale/en.json';
-import ar from './locale/ar.json';
+import English from './locale/en.json';
+import عرب from './locale/ar.json';
 
 
 I18n.fallbacks = true; 
 I18n.translations = {
-  en, 
-  ar, 
+  English, 
+  عرب, 
 };
 
 
-I18n.defaultLocale = 'en';
+I18n.defaultLocale = 'English';
 
 //device default language
 //I18n.locale = Platform.OS === 'ios' ? NativeModules.SettingsManager.settings.AppleLocale : NativeModules.I18nManager.localeIdentifier;
 
 // initialize with english if the device language isnt supported
-I18n.locale = 'en';
+I18n.locale = 'English';
 
 // Translation function
 export const t = (key, withKeys = {}) => {

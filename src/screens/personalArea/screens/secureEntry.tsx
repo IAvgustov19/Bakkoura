@@ -18,6 +18,7 @@ import { RootStackParamList } from '../../../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import {t} from '../../../i18n'
+import l from '../../../i18n'
 import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PASSWORD>;
@@ -105,6 +106,18 @@ const SecureEntry = () => {
   };
 
 
+  const TranslateOption = (title) => {
+    if(title == 'Password'){
+      return l.locale == 'English' ? 'Password' : 'كلمة المرور'
+    }
+    else if(title == 'Biometry'){
+      return l.locale == 'English' ? 'Biomentry': 'القياس الحيوي'
+    }
+    else if(title == 'Free'){
+      return l.locale == 'English' ? 'Free' : 'مجانًا'
+    }
+  }
+
   const renderItem = ({ item, index }) => {
     const isActive = localSecureEntries[index]?.active ?? false;
     console.log('isActiveisActive', isActive);
@@ -126,7 +139,7 @@ const SecureEntry = () => {
                   ? themeState.title
                   : '#7D7D7D'
               }>
-              {item.title}
+              {TranslateOption(item.title)}
             </RN.Text>
           }
           onPress={() => handleItemPress(index)}
@@ -161,7 +174,7 @@ const SecureEntry = () => {
             <StartBtn
               onPress={updateSecure}
               primary={true}
-              text={updateLoading ? '' : `${t("Ok")}`}
+              text={updateLoading ? '' : `${t("ok")}`}
               icon={
                 updateLoading ? (
                   <ActivityIndicator

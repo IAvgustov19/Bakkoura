@@ -151,7 +151,7 @@ const App = () => {
     const interval = BackgroundTimer.setInterval(() => {
       checkAlarms(alarmsListData);
       checkEvent(cloneAllEventsData);
-    }, 30000);
+    }, 1000);
 
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (nextAppState === 'active') {

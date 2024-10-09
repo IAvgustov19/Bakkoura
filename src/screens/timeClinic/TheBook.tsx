@@ -51,7 +51,7 @@ const TheBook = () => {
           />
           
             {
-              l.locale === 'en'?
+              l.locale === 'English'?
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
@@ -78,6 +78,6 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: windowHeight / 8,
+    paddingBottom: 100,
   },
 });

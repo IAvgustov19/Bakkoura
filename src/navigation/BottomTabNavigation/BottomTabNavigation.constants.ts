@@ -33,6 +33,7 @@ import WorldTime from '../../screens/worldTime/WorldTime';
 import {APP_ROUTES} from '../routes';
 
 import {t} from '../../i18n'
+import l from '../../i18n'
 
 export const bottomTabBarOptions = {
   options: {
@@ -43,28 +44,28 @@ export const bottomTabBarOptions = {
   list: [
     {
       index: 0,
-      tabName: APP_ROUTES.HOME_START,
+      tabName: l.locale == 'English' ? APP_ROUTES.HOME_START : APP_ROUTES.HOME_START_AR,
       component: HomeScreen,
-      buttonLabel: `${t('Home')}`,
+      buttonLabel: '',
       key: 'home',
     },
     {
       index: 1,
-      tabName: APP_ROUTES.TOOLS,
+      tabName: l.locale == 'English' ? APP_ROUTES.TOOLS : APP_ROUTES.TOOLS_AR,
       component: Tools,
       buttonLabel: `${t('Tools')}`,
       key: 'tools',
     },
     {
       index: 2,
-      tabName: APP_ROUTES.MARKET,
+      tabName: l.locale == 'English' ? APP_ROUTES.MARKET : APP_ROUTES.MARKET_AR,
       component: MarketScreen,
       buttonLabel: `${t('Market')}`,
       key: 'market',
     },
     {
       index: 3,
-      tabName: APP_ROUTES.OTHER,
+      tabName: l.locale == 'English' ? APP_ROUTES.OTHER : APP_ROUTES.OTHER_AR,
       component: Other,
       buttonLabel: `${t('Other')}`,
       key: 'other',

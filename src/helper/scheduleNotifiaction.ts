@@ -7,7 +7,7 @@ export const scheduleNotifications = async (uid) => {
     if (userDoc) {
       const userData = userDoc.docs
         .map(doc => doc.data())
-        .filter(item => item.control !== 'Stopped' && item.reminder === true);
+        .filter(item => item.control !== 'Stop' && item.reminder === true);
       userData.forEach(item => {
         const currentDate: any = new Date();
         const fromDate: any = new Date(item.fromDateFormat);

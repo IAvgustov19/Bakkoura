@@ -97,9 +97,10 @@ const AddUser = () => {
         // if (loading) {
         //     return <ActivityIndicator size="large" color={COLORS.white} />;
         // }
+        const {themeState} = useRootStore().personalAreaStore;
 
         if (searchedUsers.length === 0 && searchPerformed) {
-            return <ListEmptyComp title="No user found" />;
+            return <ListEmptyComp title={`${t("The user was not found")}`} />;
         }
         return (
             <RN.ScrollView
@@ -117,13 +118,13 @@ const AddUser = () => {
                         })}
                     >
                         <RN.View style={styles.imageContainer}>
-                            <Images.Svg.profileBackground width={54} height={54} />
+                        <themeState.profileBackIcon width={55} height={55} />
                             <RN.Image
                                 source={{ uri: item.avatar || null }}
                                 style={styles.profileImg}
                             />
                         </RN.View>
-                        <RN.Text style={styles.name}>{item.name}</RN.Text>
+                        <RN.Text style={[styles.name, {color:themeState.title}]}>{item.name}</RN.Text>
                     </RN.TouchableOpacity>
                 ))}
             </RN.ScrollView>

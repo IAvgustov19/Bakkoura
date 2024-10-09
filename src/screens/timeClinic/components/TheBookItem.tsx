@@ -30,14 +30,11 @@ const TheBookitem: React.FC<Props> = ({title, page = 1, texts}) => {
 
   return (
     <RN.View style={[styles.container, {backgroundColor: themeState.mainBack}]}>
-        <TextView title={title} textAlign="left" />
-      ) : (
         <TextView
           text={title}
           textAlign="left"
           color={themeState.darkGrayText}
         />
-      )}
       <RN.View>{renderText()}</RN.View>
       {/*<TextView text={page} style={styles.pageNumber} />*/}
     </RN.View>

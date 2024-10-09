@@ -86,6 +86,7 @@ import homeWatchLine from './svg/homeWatchLine.svg';
 import userIcon from './svg/userIcon.svg';
 import messageIcon from './svg/messageIcon.svg';
 import alarmNotificatiion from './svg/alarmNotification.svg';
+import light_alarmNotificatiion from './svg/light_alarmNotificatiion.svg';
 import dateBottomLine from './svg/dateBottomLine.svg';
 import hour24Line from './svg/hour24Line.svg';
 import hour30Line from './svg/hour30Line.svg';
@@ -224,16 +225,20 @@ import fileIconMedia from './svg/fileIcon.svg';
 import linkIcon from './svg/linkIcon.svg';
 import noData from './svg/noData.svg';
 import question from './svg/question.svg';
+import goldheartIcon from './svg/goldheart.svg'
+import light_scrollSmiles from './svg/light_scrollSmiles.svg'
 
 export const Images = {
   Svg: {
     //bottomSheet
     homeIcon,
+    light_scrollSmiles,
     marketIcon,
     messengerIcon,
     todoIcon,
     timerIcon,
     projectTimerIcon,
+    goldheartIcon,
     worldTimeIcon,
     stopWatchIcon,
     stressTest,
@@ -378,6 +383,7 @@ export const Images = {
     userIcon,
     messageIcon,
     alarmNotificatiion,
+    light_alarmNotificatiion,
     dateBottomLine,
     hour24Line,
     hour30Line,
@@ -516,9 +522,11 @@ export const Images = {
     recommendations5: require('./images/The_journey_is_also_about_filling_time.jpg'),
     recommendations6: require('./images/Chronophages.jpg'),
     recommendations7: require('./images/Priorities_a_guide_in_the_ocean_of_time_0.jpg'),
-    recommendations8: require('./images/structure_your_affairs.jpg'),
+    recommendations8: require('./images/Time_is_rhytm.jpeg'),
     recommendations9: require('./images/important_to_give_work_and_breaks.jpg'),
+    recommendations10: require('./images/Planning.jpg'),
     editMessage: require('./images/editMessage.png'),
+    light_editMessage: require('./images/pencil.png'),
     questionMark: require('./images/question.png'),
     pomodoroSlide: require('./images/pomodoroSlide.jpeg'),
     alarmSlide1: require('./images/alarmSlider1.jpeg'),

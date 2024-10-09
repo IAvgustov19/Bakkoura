@@ -1,5 +1,6 @@
 import {ItemType} from '../components/DataLists/DataLists';
 import dayjs from 'dayjs';
+import { t } from '../i18n';
 
 export type Mode = 'date' | 'time' | 'datetime';
 export type PossibleDaysInMonth = 31 | 30 | 29 | 28;
@@ -359,7 +360,7 @@ export function formatDayAndMonth(day: number, month: number, year: number) {
   const Month = new Date().getMonth();
 
   if (day === today && Month + 1 === month) {
-    return 'Today';
+    return `${t('Today')}`;
   } else {
     const today = day;
     const month = monthData[Month];
@@ -391,11 +392,7 @@ export const formatDate = (timestamp: number) => {
 
   var dayDifference = Math.round((currentDay - givenDay) / oneDay);
 
-  if (dayDifference === 0) {
-    return 'Today';
-  } else if (dayDifference === 1) {
-    return 'Yesterday';
-  } else if (dayDifference > 1) {
+
     var day: any = givenDate.getDate();
     var month: any = givenDate.getMonth() + 1;
     var year = givenDate.getFullYear();
@@ -404,7 +401,7 @@ export const formatDate = (timestamp: number) => {
     month = month < 10 ? '0' + month : month;
 
     return year + '-' + month + '-' + day;
-  }
+  
 };
 
 export const formatDateTime = (timestamp: number) => {

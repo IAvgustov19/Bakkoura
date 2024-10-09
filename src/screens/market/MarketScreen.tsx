@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   content: {
     justifyContent: 'space-between',
-    height: windowHeight - windowHeight / 3.5,
+    height: 500,
   },
   companies: {
     gap: 10,

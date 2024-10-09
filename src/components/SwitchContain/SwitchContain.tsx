@@ -77,7 +77,7 @@ const styles = RN.StyleSheet.create({
   title: {
     width: 'auto',
     color: COLORS.black,
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: 'RedHatDisplay-Bold',
   },
   linear: {

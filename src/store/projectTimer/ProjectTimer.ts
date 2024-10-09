@@ -32,6 +32,9 @@ export class ProjectTimer {
   isUpdate = false;
 
   createNewProjectTimer = (calback?: () => void) => {
+
+    console.log(this.date)
+
     const userId = auth().currentUser.uid;
     if (!this.isUpdate) {
       runInAction(async () => {
@@ -39,6 +42,7 @@ export class ProjectTimer {
         this.setNewProjectTimeState('id', this.projectTimerList.length + 1);
         this.setNewProjectTimeState('timestamp', this.date.getTime());
         this.setNewProjectTimeState('date', formatDate(this.date.getTime()));
+        console.log(formatDate(this.date.getTime()))
         this.setNewProjectTimeState(
           'time',
           formatDateTime(this.date.getTime()),

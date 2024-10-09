@@ -91,7 +91,7 @@ export default observer(Tools);
 
 const styles = RN.StyleSheet.create({
     container: {
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
     },
     bgContainer: {
         width: '100%',
@@ -103,10 +103,9 @@ const styles = RN.StyleSheet.create({
     },
 
     flatlist: {
-        height: '85%',
+        height: '100%',
     },
   content: {
-    gap: 5,
-    paddingBottom: normalizeHeight(400),
+    gap: 5
   },
 });

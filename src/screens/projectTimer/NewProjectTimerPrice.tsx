@@ -9,6 +9,7 @@ import {observer} from 'mobx-react-lite';
 import useRootStore from '../../hooks/useRootStore';
 import {Images} from '../../assets/index';
 import Input from '../../components/Input/Input';
+import { t } from '../../i18n';
 
 const NewProjectTimerPrice = () => {
   const {setNewProjectTimeState, newProjectTimerState} = useRootStore().projectTimer;
@@ -35,18 +36,20 @@ const NewProjectTimerPrice = () => {
         <RN.View style={styles.container}>
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            title="Price"
+            title={`${t("Price")}`}
           />
           <RN.View style={styles.content}>
             <RN.View style={styles.priceBox}>
               <Input
                 value={price}
                 onChangeText={handlePriceChange}
-                placeholder="Enter a price"
+                placeholder={`${t("Enter a price")}`}
+                maxLenght={16}
+                keyBoardType='Numeric'
               />
             </RN.View>
             <StartBtn
-              text="Ok"
+              text={`${t("ok")}`}
               onPress={handleSave}
               primary
               subWidth={70}

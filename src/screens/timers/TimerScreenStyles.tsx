@@ -79,8 +79,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   changeBtn: {
-    width: 10,
-    height: 10,
+    width: 15,
+    height: 15,
     borderRadius: 50,
     borderWidth: 0.5,
     borderBottomWidth: 0,

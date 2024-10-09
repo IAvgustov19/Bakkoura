@@ -41,13 +41,13 @@ export class AlarmStore {
         const alarmId = notification.userInfo.id;
         const alarm = this.alarmState.find(a => a.id === alarmId);
 
-        if (notification.action === 'Stop') {
-          this.handleStopAction(alarm);
-          console.log('stop');
-        } else if (notification.action === 'Later') {
-          this.handleLaterAction(alarm);
-          console.log('later');
-        }
+        // if (notification.action === 'Stop') {
+        //   this.handleStopAction(alarm);
+        //   console.log('stop');
+        // } else if (notification.action === 'Later') {
+        //   this.handleLaterAction(alarm);
+        //   console.log('later');
+        // }
       },
       requestPermissions: Platform.OS === 'ios',
     });
@@ -57,8 +57,8 @@ export class AlarmStore {
         {
           id: 'userAction',
           actions: [
-            {id: 'Stop', title: `${t("Stop")}`, options: {foreground: true}},
-            {id: 'Later', title: `${t("Later")}`, options: {foreground: true}},
+            // {id: 'Stop', title: `${t("Stop")}`, options: {foreground: true}},
+            // {id: 'Later', title: `${t("Later")}`, options: {foreground: true}},
           ],
         },
       ]);
@@ -334,7 +334,7 @@ export class AlarmStore {
           message: alarm.name,
           playSound: alarm.sound.id !== 0,
           soundName: alarm.sound.url,
-          actions: [`${t("Stop")}`, `${t("Later")}`],
+         // actions: [`${t("Stop")}`, `${t("Later")}`],
           userInfo: {id: alarm.id},
           autoCancel: false,
           vibrate: alarm.vibration,

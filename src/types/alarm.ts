@@ -230,7 +230,7 @@ export const TodoTimerDataInitial: TodoTimerDataType = {
   timestamp: 0,
   play: false,
   date: 0,
-  dailyUsage: [],
+  dailyUsage: [{timestamp:0, date:'', hours:0, minutes:0, seconds:0}],
 };
 
 export type ToDoTaskNameDataType = {

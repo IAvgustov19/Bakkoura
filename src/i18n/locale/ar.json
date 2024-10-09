@@ -64,7 +64,7 @@
     "Permission Denied": "رفض الإذن",
     "You need to give storage permission to save the screenshot": "تحتاج إلى منح إذن التخزين لحفظ لقطة الشاشة",
     "Screenshot successfully Saved": "تم حفظ لقطة الشاشة بنجاح",
-    "Screenshot has been saved to your gallerys": "تم حفظ لقطة الشاشة في معرض الصور الخاص بك",
+    "Screenshot has been saved to your gallery": "تم حفظ لقطة الشاشة في معرض الصور الخاص بك",
     "Failed to save screenshot to gallery": "فشل حفظ لقطة الشاشة في المعرض",
     "Failed to capture and upload screenshot": "فشل التقاط وتحميل لقطة الشاشة",
 
@@ -107,7 +107,7 @@
   "Message to You!": "رسالة لك!",
   "Today is your day! Do something good!": "اليوم هو يومك! افعل شيئًا جيدًا!",
   "Today": "اليوم",
-  "Home": "الصفحة الرئيسية",
+  "Home": "الرئيسية",
   "Other": "أخرى",
   "Market": "السوق",
   "Tools": "الأدوات",
@@ -125,7 +125,7 @@
   "Time Together": "وقت معًا",
   "Bakkoura Watch": "ساعة بكورا",
 
-  "Farward": "إلى الأمام",
+  "Forward": "إلى الأمام",
   "Reset": "إعادة تعيين", 
   "Start": "بدء",  
   "work": "عمل",
@@ -152,7 +152,7 @@
   "Monthly": "شهريًا",
   "yearly": "سنويًا",
   "never": "أبدًا", 
-  "Ok": "موافق", 
+  "ok": "موافق", 
   "day": "يوم",
   "mon": "أثنين",
   "year": "عام",
@@ -258,7 +258,7 @@
         "Language": "اللغة",
         "Theme": "الموضوع",  
         "Dark": "غامق",
-        "White": "أبيض",
+        "White": "ضوء",
         "Repeat Password": "كرر كلمة المرور",   
     
         "Send Your Idea": "أرسل فكرتك",  
@@ -379,7 +379,7 @@
   "Important tips with mesmerizing images":"نصائح مهمة مع صور ساحرة",
   "pomodoro_slider":"ستُعرض المهام التي أنشأتها في أسفل الشاشة. تُظهر كل واحدة منها عدد دورات بومودورو، والاسم، والوصف. لتشغيل عداد المهام، حددها من القائمة. لتغيير أو حذف مهمة، انقر فوق النقاط الثلاث على اليمين.",
   "Pomodoro Timer":"مُؤقِّت بومودورو",
-  "Pomodoro session has ended":"انتهت جلسة بومودورو.",
+  "Pomodoro session has ended":"انتهت الجلسة.",
   "Back to Pomodoro!":"عودة إلى بومودورو!",
   "Take a short break!":"خذ استراحة قصيرة!",
   "Time for a long break!":"حان الوقت لأخذ استراحة طويلة!",
@@ -392,7 +392,6 @@
   "no Name":"بدون اسم",
   "time_together_slider_1":"سيتم عرض المراحل المُنشأة في القائمة أدناه، حيث يمكنك تغييرها بالنقر على النقاط الثلاث على اليمين، ومزامنة الساعة مع مستخدم آخر بالنقر على زر المزامنة الأصفر، أو تحديد المرحلة اللازمة لعرض معلومات عنها",
   "time_together_slider_2":"في أعلى الشاشة، يمكنك استخدام مفتاح التبديل لتغيير تنسيق الساعة - 24 ساعة أو 30 ساعة",
-  "Stopped":"مُوقّف",
 
   "hour":"ساعة",
     "minute":"دقيقة",
@@ -455,5 +454,23 @@
   "September": "سبتمبر",
   "October": "أكتوبر",
   "November": "نوفمبر",
-  "December": "ديسمبر"
+  "December": "ديسمبر",
+
+   "Event":"الحدث",
+   "No project timer yet":"لا يوجد مؤقت للمشروع حتى الآن",
+   "Update":"تحديث",
+    "Enter a price":"أدخل السعر",
+
+    "Re-enter the application":"أعد إدخال التطبيق",
+  "To change the language correctly, please re-enter the application":"لتغيير اللغة بشكل صحيح ، يرجى إعادة إدخال التطبيق",
+
+    "Tasks":"المهام",
+
+    "project_timer_slider_1":"لحذف مشروع ، ما عليك سوى تمريره إلى اليسار حتى النهاية",
+    "project_timer_slider_2":"بالانتقال إلى صفحة 'حساب' ، يمكنك تحديد المشروع الذي تريد عرض دخله والوقت الذي تقضيه في القائمة المنسدلة في الأعلى",
+  
+      "Username":"اسم المستخدم",
+      
+  "to_do_timer_slider":"من خلال النقر على صفحة 'التاريخ' يمكنك ان ترى وتصفية المشاريع حسب الوقت الذي يقضيه خلال فترة معينة عن طريق اختيار مرشح المناسب من فوق"
+
 }

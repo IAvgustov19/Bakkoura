@@ -84,12 +84,12 @@ export default observer(CitesScreen);
 const styles = RN.StyleSheet.create({
   container: {
     paddingHorizontal: 5,
-    paddingBottom: 30,
+    paddingBottom: 0,
   },
   content: {},
   countryList: {
     backgroundColor: COLORS.black,
-    height: '80%',
+    height: '85%',
     borderRadius: 5,
     paddingVertical: 5,
     marginTop: 20,

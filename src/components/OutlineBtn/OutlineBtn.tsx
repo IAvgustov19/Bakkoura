@@ -8,6 +8,7 @@ import {observer} from 'mobx-react-lite';
 
 type Props = {
   borderColor?: string;
+  borderColor_2?: string;
   textColor?: string;
   text?: string;
   onPress?: () => void;
@@ -19,6 +20,7 @@ type Props = {
 
 const OutlineBtn: React.FC<Props> = ({
   borderColor,
+  borderColor_2,
   textColor,
   text,
   onPress,
@@ -35,10 +37,10 @@ const OutlineBtn: React.FC<Props> = ({
         styles.container,
         customStyle,
         {
-          borderColor: borderColor ? borderColor : COLORS.grey,
+          borderColor: borderColor ? borderColor : borderColor_2,
           width: Width ? Width : 110,
           height: Height ? Height : 35,
-          backgroundColor: themeState.inputBaack,
+          backgroundColor: 'transparent',
         },
       ]}>
       <RN.Text style={{color: textColor ? textColor : COLORS.grey}}>

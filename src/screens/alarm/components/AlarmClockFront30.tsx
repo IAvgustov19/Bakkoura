@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   alarm: {
-    width: windowWidth - 100,
+    width: windowWidth - 90,
     objectFit: 'contain',
   },
   lineMinut: {

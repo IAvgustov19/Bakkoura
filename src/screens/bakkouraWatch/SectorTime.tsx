@@ -41,7 +41,7 @@ const SectorTime = () => {
             </RN.View>
             <RN.View style={styles.btn}>
               <StartBtn
-                text={t("Ok")}
+                text={t("ok")}
                 elWidth={55}
                 subWidth={70}
                 primary

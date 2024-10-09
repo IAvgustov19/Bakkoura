@@ -128,7 +128,7 @@ const MessengerScreen = () => {
             <LoadingScreen loading={loading} setLoading={() => {}} />
           ) : userData.length === 0 ? (
             <View style={styles.center}>
-              <Text style={[styles.text, {color: themeState.title}]}>`${t("There are no dialogues")}`</Text>
+              <Text style={[styles.text, {color: themeState.title}]}>{t("There are no dialogues")}</Text>
             </View>
           ) : (
             <ScrollView
@@ -167,20 +167,22 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginBottom: 55,
+    marginBottom: -30,
   },
   text: {
     fontSize: 20,
     color: 'white',
+    fontFamily:'RedHatDisplay-Regular'
   },
   center: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom:100
   },
   startBtnContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 50,
     width: windowWidth - 30,
     justifyContent: 'center',
     alignItems: 'center',

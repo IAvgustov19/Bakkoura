@@ -135,6 +135,7 @@ const FromDate = () => {
                 label={`${t("Day")}`}
                 selectedValue={firstSelectedValue}
                 initialScrollIndex={initialScrollIndexStart}
+                
               />
               <DateList
                 data={middleListData}

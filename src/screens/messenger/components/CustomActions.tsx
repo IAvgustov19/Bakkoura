@@ -175,41 +175,37 @@ const CustomComposer = props => {
   //     }
   //   }
   // }
-  const handlePickDocument = async () => {
-    try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
-  if (result.length > 0) {
-    const file = result[0];
-    console.log('file', file);
+  // const handlePickDocument = async () => {
+  //   try {
+  //     const result = await DocumentPicker.pick({
+  //       type: [DocumentPicker.types.allFiles],
+  //     });
+  // if (result.length > 0) {
+  //   const file = result[0];
+  //   console.log('file', file);
 
-    const newMessage = {
-      _id: Math.random().toString(36).substring(7),
-      text: '',
-      createdAt: new Date(),
-      user: {
-        _id: 1,
-      },
-      file: true,
-      uri: file.uri,
-      fileName: file.name,
-      fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-    };
-    onSend([newMessage]);
-      }
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        console.log('User cancelled document picker');
-      } else {
-        throw err;
-      }
-    }
-  };
-
-  const handlePickMediaOrDocument = () => {
-    setModalVisible(true);
-  };
+  //   const newMessage = {
+  //     _id: Math.random().toString(36).substring(7),
+  //     text: '',
+  //     createdAt: new Date(),
+  //     user: {
+  //       _id: 1,
+  //     },
+  //     file: true,
+  //     uri: file.uri,
+  //     fileName: file.name,
+  //     fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+  //   };
+  //   onSend([newMessage]);
+  //     }
+  //   } catch (err) {
+  //     if (DocumentPicker.isCancel(err)) {
+  //       console.log('User cancelled document picker');
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // };
 
   const handleSendText = () => {
     if (text.trim()) {
@@ -401,6 +397,7 @@ const CustomComposer = props => {
             {
               bottom: recording ? 0 : -200,
               width: recording ? windowWidth : 'auto',
+              backgroundColor: themeState.recordingBack
             },
           ]}>
           {recording ? (
@@ -586,11 +583,11 @@ const CustomComposer = props => {
           {backgroundColor: themeState.messengerFooter},
         ]}>
         <TouchableOpacity
-          onPress={handlePickMediaOrDocument}
+          onPress={handlePickImage}
           style={{ paddingTop: 8 }}>
           <Images.Svg.imageMessage height={26} width={26}/>
         </TouchableOpacity>
-        <RN.View
+        {/* <RN.View
           style={[
             styles.bottomModal,
             {
@@ -639,7 +636,7 @@ const CustomComposer = props => {
               </RN.Text>
             </TouchableOpacity>
           </View>
-        </RN.View>
+        </RN.View> */}
         <View style={styles.composerWrapper}>
           <Composer
             {...props}
@@ -714,6 +711,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     textAlign: 'left',
     paddingTop: 10,
+    fontFamily:'RedHatDisplay-Regular'
   },
   bottomModal: {
     position: 'absolute',
@@ -767,7 +765,6 @@ const styles = StyleSheet.create({
   recordingbottom: {
     position: 'absolute',
     height: '110%',
-    backgroundColor: '#1C1C1D',
     paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'flex-start',

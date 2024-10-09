@@ -42,7 +42,7 @@ const Other = () => {
             title={`${t('Other')}`}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.OTHER_SLIDER as never)}>
-                <Images.Svg.question fill={'gray'} width={24} height={24} />
+                <Images.Svg.question fill={'gray'} width={24} height={24}/>
               </RN.TouchableOpacity>
             }
           />
@@ -65,7 +65,7 @@ export default observer(Other);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   bgContainer: {
     width: '100%',
@@ -79,6 +79,6 @@ const styles = RN.StyleSheet.create({
     gap: 5,
   },
   flatlist: {
-    height: '85%',
+    height: '100%',
   },
 });

@@ -9,26 +9,26 @@ import useRootStore from '../../../hooks/useRootStore';
 import {COLORS} from '../../../utils/colors';
 import {windowWidth} from '../../../utils/styles';
 
-const STROKE_WIDTH = 16;
+const STROKE_WIDTH = 20;
 const RADIUS = 140;
-const xMargin =
-  windowWidth < 385
-    ? 35
-    : windowWidth > 415
-    ? windowWidth / 7
-    : windowWidth > 400
-    ? windowWidth / 7.5
-    : 45;
+const xMargin = windowWidth/13;
+  // windowWidth < 385
+  //   ? 30
+  //   : windowWidth > 415
+  //   ? windowWidth / 7
+  //   : windowWidth > 400
+  //   ? windowWidth / 7.5
+  //   : 45;
 const YMargin = 35;
 
 const path = Skia.Path.Make();
 
-path.addCircle(RADIUS + xMargin, RADIUS + YMargin, RADIUS);
+path.addCircle(RADIUS+17, RADIUS+15, RADIUS);
 
 const basePathOption: PathProps = {
   path,
   start: 0,
-  end: 0,
+  end: 1,
   style: 'stroke',
   strokeWidth: STROKE_WIDTH,
   color: COLORS.green,
@@ -66,7 +66,7 @@ const Vertices: React.FC<VerticesType> = ({
       {data.map((item, index) => {
         return (
           <Canvas
-            style={[styles.canvasContainer, StyleSheet.absoluteFill]}
+            style={[styles.canvasContainer]}
             key={index}>
             <ChartItem
               {...basePathOption}
@@ -124,8 +124,8 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
   },
   bakkouraWatch: {
-    width: windowWidth - windowWidth / 12,
-    objectFit: 'contain',
+    width: 350,
+    objectFit: 'contain'
   },
   bakkouraWatchHours: {
     position: 'absolute',
@@ -135,11 +135,16 @@ const styles = RN.StyleSheet.create({
   },
   canvasContainer: {
     flex: 1,
+    position: 'absolute',
+    objectFit: 'contain',
     transform: [
       {
         rotate: '-90deg',
       },
     ],
+  
+    height:310,
+    width:310
   },
   hourLine: {
     width: 2.5,

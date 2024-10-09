@@ -68,7 +68,6 @@ const WatchValuation = () => {
           {/* <Images.Svg.bg style={styles.bg} /> */}
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
-            rightItem={<Cancel onClose={() => navigation.goBack()} />}
             title= {`${t("Assestment Watch")}`}
           />
           <RN.ScrollView
@@ -111,11 +110,11 @@ const WatchValuation = () => {
                         color: themeState.darkGrayText,
                       },
                     ]}>
-                  `${t('your_data_safe')}`
+                  {t('your_data_safe')}
                   </RN.Text>
                   <RN.Pressable onPress={onHandleCategory}>
                   <RN.Text
-                      style={[styles.privacyLink, {color: themeState.yellow}]}>accept')}`</RN.Text>
+                      style={[styles.privacyLink, {color: themeState.yellow}]}>{t('I_accept')}</RN.Text>
     </RN.Pressable>
                 </RN.View>
                 </RN.View>
@@ -173,7 +172,7 @@ const styles = RN.StyleSheet.create({
   },
   pv39: {
     paddingTop: 39,
-    paddingBottom: windowHeight / 4,
+    paddingBottom:0,
   },
   scrollView: {
     zIndex: 2,

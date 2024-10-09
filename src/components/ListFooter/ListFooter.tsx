@@ -9,6 +9,6 @@ export default ListFooter;
 
 const styles = RN.StyleSheet.create({
   listFooter: {
-    height: 110,
+    height: 230,
   },
 });

@@ -18,6 +18,7 @@ import ButtonComp from '../../components/Button/Button';
 import RenderProjectTimer from './components/RenderProjectTimer';
 import ListFooter from '../../components/ListFooter/ListFooter';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
+import { t } from '../../i18n';
 
 const ProjectTimer = () => {
   const {
@@ -88,7 +89,7 @@ const ProjectTimer = () => {
       children={
         <RN.View style={styles.container}>
           <HeaderContent
-            title="Project Timer"
+            title={t("Project Timer")}
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             rightItem={
               <RN.TouchableOpacity onPress={() => navigation.navigate(APP_ROUTES.PROJECT_TIMER_SLIDER as never)}>
@@ -100,21 +101,22 @@ const ProjectTimer = () => {
             <RN.View style={styles.switch}>
               <ButtonComp
                 width={90}
-                title="Calculate"
+                title={t("calc")}
                 onPress={onCalculate}
                 paddingVertical={8}
               />
             </RN.View>
             <RN.View style={styles.projects}>
               <RN.View style={styles.totalTime}>
-                <TextView text="On this week" />
-                <TextView text={`Total: ${calculatedTotalTime}`} />
+                <TextView/>
+                <TextView text={`${t("total")} ${calculatedTotalTime}`} />
               </RN.View>
               <RN.View style={styles.flatList}>
                 <FlatList
                   showsVerticalScrollIndicator={false}
+                  showsHorizontalScrollIndicator={false}
                   ListEmptyComponent={
-                    <ListEmptyComp title="No project timer yet" />
+                    <ListEmptyComp title={t("No project timer yet")} />
                   }
                   data={projectTimerList}
                   renderItem={({ item, index }) => (
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   flatList: {
-    height: '100%',
+    height: '95%',
   },
   totalTime: {
     flexDirection: 'row',

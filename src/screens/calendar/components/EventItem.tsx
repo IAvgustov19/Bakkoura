@@ -75,11 +75,10 @@ const EventItem: React.FC<Props> = ({
         <RN.TouchableOpacity style={styles.arrowRight}>
           {already ? (
             <RN.View style={styles.already}>
-              <RN.Text style={[styles.alreadyText, {color: themeState.green}]}>
-                Already
-              </RN.Text>
               <Images.Svg.bellGreen width={24} />
-              <RN.Text style={styles.alreadyText}>{t("already")}</RN.Text>
+              <RN.Text style={[styles.alreadyText, {color: themeState.green}]}>
+              {t("already")}
+              </RN.Text>
             </RN.View>
           ) : null}
           <Images.Svg.arrowRight />
