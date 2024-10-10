@@ -1,8 +1,8 @@
-import {Image, Svg} from 'react-native-svg';
-import {BG, Images} from '../assets';
-import {Lotties} from '../lotties/lottie';
-import {COLORS} from './colors';
-import {ConstructorSvgs} from '../assets/constructor';
+import { Image, Svg } from 'react-native-svg';
+import { BG, Images } from '../assets';
+import { Lotties } from '../lotties/lottie';
+import { COLORS } from './colors';
+import { ConstructorSvgs } from '../assets/constructor';
 
 export const ThemeTypes = ['Dark', 'Light'];
 export const Themes = {
@@ -27,7 +27,7 @@ export const Themes = {
     homeAlarmWatch: Images.Svg.light_alarmNotificatiion,
     bottomSheetBg: BG.bottomSheetLightBg,
     inputBaack: '#c0c2c3',
-    backgrounColor:'#fff',
+    backgrounColor: '#fff',
     radioback: '#c0c2c3',
     inputBorder: '#BDBDBD',
     line: '#c0c2c3',
@@ -57,11 +57,13 @@ export const Themes = {
       watchBack: Images.Img.lightWatchBack,
       watchMain: Images.Img.lightBakkouraWatchMain,
       watchFront: Images.Img.lightBakkouraWatchFront,
+      watchMain30: Images.Img.lightBakkouraWatchMain30h,
+      watchFront30: Images.Img.lightBakkouraWatchFront30h,
     },
     timeLogo: Images.Svg.lightTimerLogo,
     eventAndTime: Images.Svg.lightEventAndTime,
     userIcon: Images.Svg.lightUser,
-    editIcon:Images.Img.light_editMessage,
+    editIcon: Images.Img.light_editMessage,
     profileBackIcon: Images.Svg.lightProfileBack,
     arrowRight: Images.Svg.lightArrowRight,
     scrollSmiles: Images.Svg.light_scrollSmiles,
@@ -252,7 +254,7 @@ export const Themes = {
     alarmText: COLORS.white,
     dateText: '#787878',
     scrollSmiles: Images.Svg.scrollSmiles,
-    backgrounColor:'#000',
+    backgrounColor: '#000',
     mainBack: 'black',
     bottomSheetBg: BG.bottomSheetBg,
     inputBaack: '#0D0D0D',
@@ -284,6 +286,8 @@ export const Themes = {
       watchBack: Images.Img.watchBack,
       watchMain: Images.Img.bakkouraWatchMain,
       watchFront: Images.Img.bakkouraWatchLines,
+      watchMain30: Images.Img.bakkouraWatchMain,
+      watchFront30: Images.Img.bakkouraWatchLines,
     },
     messageIcon: Images.Svg.messageIcon,
     searchBtn: Images.Svg.searchButton,
@@ -297,7 +301,7 @@ export const Themes = {
     checkbox: Images.Svg.checkbox,
     uploadFile: Images.Svg.darkUpArrow,
     ellipse: Images.Svg.ellipseOut,
-    editIcon:Images.Img.editMessage,
+    editIcon: Images.Img.editMessage,
     heartIdle: Images.Svg.heartIcon,
     substrack: Images.Svg.subtrackOut,
     metronom: Images.Svg.metronom,

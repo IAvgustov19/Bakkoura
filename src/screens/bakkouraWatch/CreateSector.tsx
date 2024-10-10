@@ -14,7 +14,7 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
-import Vertices from './components/Vertices';
+import Vertices from './components/Vertices24h';
 
 import {t} from '../../i18n'
 
