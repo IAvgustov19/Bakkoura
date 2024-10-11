@@ -40,16 +40,16 @@ const BakkouraWatch = () => {
           <HeaderContent
             leftItem={<ArrowLeftBack onPress={() => navigation.goBack()} />}
             title={t("Bakkoura Watch")}
-            rightItem={
-              <RN.View style={styles.switch}>
-              <SwitchContain
-                title="24h"
-                _title="30h"
-                back={is24h}
-                handlePress={() => setIs24h(e => !e)}
-              />
-            </RN.View>
-            }
+            // rightItem={
+            //   <RN.View style={styles.switch}>
+            //   <SwitchContain
+            //     title="24h"
+            //     _title="30h"
+            //     back={is24h}
+            //     handlePress={sethours}
+            //   />
+            // </RN.View>
+            //}
           />
           <RN.ScrollView
             showsHorizontalScrollIndicator={false}

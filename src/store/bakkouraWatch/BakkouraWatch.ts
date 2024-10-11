@@ -22,7 +22,7 @@ export class BakkouraWatchStore {
   listSelects: SelectListDataType[] = [];
   newSelectState: SelectListDataType = SelectListDataInitial;
   isHas = false;
-
+  
   onSelectSectorColor = (id: number | string) => {
     const selectSectorColor = SelectColorData.find(item => item.id === id);
     if (this.listSelects.some(item => item.color === selectSectorColor.color)) {

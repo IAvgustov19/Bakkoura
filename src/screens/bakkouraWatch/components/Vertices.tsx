@@ -122,10 +122,12 @@ const styles = RN.StyleSheet.create({
   watchBox: {
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:'transparent'
   },
   bakkouraWatch: {
     width: 350,
-    objectFit: 'contain'
+    objectFit: 'contain',
+    backgroundColor:'transparent'
   },
   bakkouraWatchHours: {
     position: 'absolute',

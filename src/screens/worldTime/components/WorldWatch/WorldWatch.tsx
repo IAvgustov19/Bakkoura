@@ -35,6 +35,7 @@ const WorldWatch: React.FC<Props> = ({
 }) => {
   const {themeState} = useRootStore().personalAreaStore;
   const renderClock = useMemo(() => {
+    console.log("is24h:",is24)
     return is24 ? <themeState.worldWatch24 /> : <themeState.worldWatch30 />;
   }, [is24]);
 

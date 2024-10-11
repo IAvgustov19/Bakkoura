@@ -133,7 +133,7 @@ export default observer(CreateSector);
 
 const styles = RN.StyleSheet.create({
   container: {
-    paddingHorizontal: 5,
+    
   },
   content: {
     justifyContent: 'space-between',
