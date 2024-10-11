@@ -551,7 +551,10 @@ export const Images = {
     worldTimeSlider1: require('./images/worldTimeSlider1.jpeg'),
     otherSlider1: require('./images/otherSlider1.jpeg'),
     messengerSlider1: require('./images/messengerSlider1.jpeg'),
-    authLight:  require('./images/authLight.png'),
+    authLight: require('./images/authLight.png'),
+    lightBakkouraWatchFront30h: require('./images/lightBakkouraWatchFront30h.png'),
+    lightBakkouraWatchMain30h: require('./images/lightBakkouraWatchMain30h.png'),
+    bakkouraWatchFront30h: require('./images/bakkouraFront30.webp')
   },
 };
 
