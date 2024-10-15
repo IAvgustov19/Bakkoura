@@ -18,11 +18,10 @@ import Vertices24h from './components/Vertices24h';
 import Vertices30h from './components/Vertices30h';
 
 const BakkouraWatch = () => {
-  const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const { themeState } = useRootStore().personalAreaStore;
-  const { listSelects, getOneSector, getAllSectorsFromFirestore } =
+  const { listSelects, getOneSector, getAllSectorsFromFirestore, is24h, toggleIs24h } =
     useRootStore().bakkouraWatchStore;
   const onGetSector = (id: number | string) => {
     getOneSector(id);
@@ -70,7 +69,7 @@ const BakkouraWatch = () => {
                   title="24h"
                   _title="30h"
                   back={is24h}
-                  handlePress={() => setIs24h(e => !e)}
+                  handlePress={toggleIs24h}
                 />
               </RN.View>
             }

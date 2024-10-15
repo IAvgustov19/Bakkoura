@@ -146,7 +146,7 @@ const PersonalArea = () => {
                       navigation.navigate(APP_ROUTES.LOGIN_PASSWORD as never)
                     }
                   />
-                  {/* <Line />
+                  <Line />
                   <ListItemCont
                     title={`${t("Secure Entry")}`}
                     value={
@@ -155,7 +155,7 @@ const PersonalArea = () => {
                     onPress={() =>
                       navigation.navigate(APP_ROUTES.SECURE_ENTRY as never)
                     }
-                  /> */}
+                  />
                 </RN.View>
                 {/* <RN.View style={styles.eventsTypeList}>
                   <ListItemCont

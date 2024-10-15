@@ -16,15 +16,14 @@ import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
 import Vertices24h from './components/Vertices24h';
 import Vertices30h from './components/Vertices30h';
-//import Vertices from './components/Vertices';
-import is24h from './BakkouraWatch';
+
 
 import {t} from '../../i18n'
 
 const CreateSector = () => {
   //const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
-  const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
+  const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState, is24h} =
     useRootStore().bakkouraWatchStore;
   const {themeState} = useRootStore().personalAreaStore;
 

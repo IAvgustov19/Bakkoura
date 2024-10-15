@@ -22,6 +22,20 @@ export class BakkouraWatchStore {
   listSelects: SelectListDataType[] = [];
   newSelectState: SelectListDataType = SelectListDataInitial;
   isHas = false;
+  is24h = true;
+
+
+  toggleIs24h = () => {
+    runInAction(() => {
+      this.is24h = !this.is24h;
+    });
+  };
+
+  setIs24h = (value: boolean) => {
+    runInAction(() => {
+      this.is24h = value;
+    });
+  };
   
   onSelectSectorColor = (id: number | string) => {
     const selectSectorColor = SelectColorData.find(item => item.id === id);
