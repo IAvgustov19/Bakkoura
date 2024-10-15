@@ -92,7 +92,9 @@ const ContactUs = () => {
                       ? COLORS.yellow
                       : '#496380'
                   }
-                  textColor={themeState.selectYellow}
+                  textColor={orderState.type === 'General Director'
+                    ? COLORS.yellow
+                    : '#496380'}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'General Director')}
                 />
@@ -103,7 +105,7 @@ const ContactUs = () => {
                   borderColor={
                     orderState.type === 'Developer' ? COLORS.yellow : '#496380'
                   }
-                  textColor={themeState.selectYellow}
+                  textColor={orderState.type === 'Developer' ? COLORS.yellow : '#496380'}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'Developer')}
                 />
@@ -116,7 +118,9 @@ const ContactUs = () => {
                       ? COLORS.yellow
                       : '#496380'
                   }
-                  textColor={themeState.selectYellow}
+                  textColor={orderState.type === 'Technical Support'
+                    ? COLORS.yellow
+                    : '#496380'}
                   customStyle={styles.br40}
                   onPress={() => setOrderState('type', 'Technical Support')}
                   paddingVertical={15}
@@ -201,7 +205,7 @@ const styles = RN.StyleSheet.create({
     zIndex: 2,
   },
   content: {
-    paddingBottom: 20,
+    paddingBottom: 50,
   },
   contactInfo: {
     gap: 20,

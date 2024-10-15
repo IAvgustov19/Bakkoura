@@ -37,7 +37,7 @@ const StressTestDuring = () => {
 
   const pandaLottie = useMemo(() => {
     return (
-      <LottieContent source={themeState.lotties.panda} width={windowWidth} />
+      <LottieContent source={themeState.lotties.panda} width={windowWidth <= 500 ? windowWidth : windowWidth/1.7} />
     );
   }, []);
 
@@ -95,7 +95,8 @@ const styles = RN.StyleSheet.create({
   startReset: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    columnGap: 100,
     alignItems: 'center',
     paddingHorizontal: 15,
   },
@@ -106,7 +107,7 @@ const styles = RN.StyleSheet.create({
   panda: {},
   time: {
     position: 'absolute',
-    fontSize: moderateScale(50),
+    fontSize: 65,
     fontWeight: '300',
     color: COLORS.white,
     bottom: '30%',

@@ -22,7 +22,7 @@ const FirstTimerDuring: React.FC<Props> = ({ stop, finished }) => {
       <LottieContent
         autoPlay={!timerStatus.stop || !timerStatus.finished}
         source={themeState.lotties.timer}
-        width={windowWidth - 10}
+        width={windowWidth <= 500 ? windowWidth : windowWidth/1.4}
         speed={timerStatus.stop || timerStatus.finished ? 0 : 1}
       />
     );
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    paddingTop: '10%',
   },
   duringTimerBg: {
     width: '100%',
@@ -94,10 +93,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    marginTop:-240
+    marginTop:'auto'
   },
   duringTimer: {
-    fontSize: horizontalScale(55),
+    fontSize: 65,
     fontWeight: '300',
     color: '#fff',
     textAlign: 'center',

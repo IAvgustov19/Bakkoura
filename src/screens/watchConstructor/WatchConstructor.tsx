@@ -132,7 +132,7 @@ const WatchConstructor = () => {
         <RN.View style={styles.faceCont} key={index}>
           {currentPart === 'faceTypes' ? (
             <RN.View style={styles.faceBox}>
-              <themeState.watchConstructor.faceBack />
+              {/* <themeState.watchConstructor.faceBack /> */}
             </RN.View>
           ) : null}
           <RN.Pressable
@@ -249,7 +249,7 @@ const styles = RN.StyleSheet.create({
     height: windowHeight / 4,
   },
   parts: {
-    paddingBottom: 10,
+    paddingBottom: 60,
   },
   part: {
     height: 100,

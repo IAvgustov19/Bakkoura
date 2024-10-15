@@ -164,7 +164,6 @@ const VideoPlayer = (props: any) => {
                 {/* <Text style={styles.time}>{currentMessage.time}</Text> */}
               </View>
             </RN.TouchableOpacity>
-            <StatusBar backgroundColor='red'/>
             <RN.Modal
               visible={modalVisible}
               transparent={true}

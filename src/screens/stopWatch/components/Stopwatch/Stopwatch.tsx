@@ -42,22 +42,23 @@ const styles = RN.StyleSheet.create({
     alignItems: 'center',
     height: 1350,
     width:"100%",
+    zIndex:0
   },
   watchBg: {
     top: 20,
     position: 'absolute',
-    width: windowWidth - 20,
+    width: windowWidth <= 500 ? windowWidth : windowWidth/1.8,
     objectFit: 'contain',
   },
   watch24: {
     marginTop: 185,
-    width: windowWidth-25,
+    width: windowWidth <= 500 ? windowWidth : windowWidth/1.8,
     objectFit: 'contain',
     zIndex: 1,
   },
   watch30: {
     marginTop: 60,
-    width: windowWidth+40,
+    width: windowWidth <= 500 ? windowWidth*1.1 : windowWidth/1.55,
     objectFit: 'contain',
     zIndex: 1,
   },

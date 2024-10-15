@@ -10,6 +10,7 @@ import useRootStore from '../../hooks/useRootStore';
 import WallpaperItem from './components/WallpaperiItem';
 
 import {t} from '../../i18n'
+import { windowHeight } from '../../utils/styles';
 
 const Wallpapers = () => {
   const navigation = useNavigation();
@@ -71,6 +72,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     flexWrap: 'wrap',
-    paddingBottom: 30,
+    paddingBottom: windowHeight/7,
   },
 });

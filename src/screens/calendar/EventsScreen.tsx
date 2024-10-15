@@ -107,7 +107,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    bottom: '0%',
+    bottom: '3%',
     paddingRight: 5,
   },
   currentTime: {

@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   okBtn: {
     position: 'absolute',
     alignItems: 'center',
-    bottom: 20,
+    bottom: '10%',
     width: '100%',
   },
 });

@@ -90,7 +90,7 @@ const styles = RN.StyleSheet.create({
     paddingHorizontal: 5,
   },
   content: {
-    paddingBottom: 100,
+    paddingBottom: 150,
     gap: 30,
   },
   cardBox: {

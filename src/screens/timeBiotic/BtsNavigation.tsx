@@ -6,7 +6,7 @@ import HeaderContent from '../../components/HeaderContent/HeaderContent';
 import ArrowLeftBack from '../../components/ArrowLeftBack/ArrowLeftBack';
 import { BtsNavigationItems_en, BtsNavigationItems_ar } from '../../utils/btsNavigation';
 import TextView from '../../components/Text/Text';
-import {windowHeight} from '../../utils/styles';
+import {windowHeight, windowWidth} from '../../utils/styles';
 import {COLORS} from '../../utils/colors';
 import RN from '../../components/RN';
 
@@ -101,5 +101,6 @@ const styles = RN.StyleSheet.create({
   text: {
     fontSize: 14,
     color: COLORS.white,
+    width:windowWidth/1.4
   },
 });

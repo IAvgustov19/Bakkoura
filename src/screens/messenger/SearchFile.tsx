@@ -268,6 +268,7 @@ const SearchContact = () => {
                         isPlaying={playingId === item.id}
                         onPlayPress={onPlayPress}
                         title={item?.title}
+                        titleColor={themeState.title}
                         subtitle={item.subtitle} />
                 )}
             />

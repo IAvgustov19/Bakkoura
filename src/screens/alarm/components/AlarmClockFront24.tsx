@@ -20,7 +20,7 @@ const AlarmClockFront24: React.FC<Props> = ({}) => {
     <RN.View
       style={[
         styles.alarmFront,
-        {top: RN.Platform.OS == 'ios' ? windowHeight / 7.5 : windowHeight / 8},
+        {top: windowHeight / 7.5},
       ]}>
       <RN.Image style={styles.alarm} source={themeState.alarmFront24} />
       <LinearGradient
@@ -51,13 +51,13 @@ export default observer(AlarmClockFront24);
 const styles = StyleSheet.create({
   alarmFront: {
     position: 'absolute',
-    bottom: RN.Platform.OS === 'ios' ? 58 : 43,
+    bottom: windowHeight/14,
     paddingRight: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   alarm: {
-    width: windowWidth - 125,
+    width: windowWidth<=500 ? windowWidth/1.7: windowWidth/2.6,
     objectFit: 'contain',
   },
   lineMinut: {

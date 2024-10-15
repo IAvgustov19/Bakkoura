@@ -201,5 +201,6 @@ const styles = RN.StyleSheet.create({
   },
   monthBottom: {
     marginVertical: 10,
+    alignItems:'center'
   },
 });

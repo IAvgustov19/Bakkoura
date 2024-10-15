@@ -88,7 +88,7 @@ const Pomodoro = () => {
         <RN.View>
           <Line />
           <RN.Pressable
-          style={styles.taskLists}
+          style={styles.etapList}
           key={index}
           onPress={() => { setData(item); setFinishTime(calculateFinishTime(newTaskState.breackType || 'Pomodoro')); }}
         >
@@ -97,10 +97,11 @@ const Pomodoro = () => {
               <RN.View style={[styles.taskTitleContainer, !hasDescription && styles.alignCenter]}>
                 <RN.Text style={[styles.tasksText, {color: themeState.title}]}>{item.name.length > 100 ? `${item.name.slice(0, maxLength)}...` : item.name}</RN.Text>
               </RN.View>
-              <RN.Text style={[styles.tasksTime, {color:themeState.gray}]}>{`${0}`}/{`${item.minut}`}</RN.Text>
-              <RN.TouchableOpacity onPress={() => onHandleTask(item)} style={styles.dotPress}>
-                <Images.Svg.dots style={styles.dotImg}/>
-              </RN.TouchableOpacity>
+                <RN.Text style={[styles.tasksTime, {color:themeState.gray}]}>{`${0}`}/{`${item.minut}`}</RN.Text>
+                <RN.TouchableOpacity onPress={() => onHandleTask(item)} style={styles.dotPress}>
+                  <Images.Svg.dots style={styles.dotImg}/>
+                </RN.TouchableOpacity>
+              
             </RN.View>
             {hasDescription && <TextView textAlign='left' text={item.description.length > maxLength ? `${item.description.slice(0, maxLength)}...` : item.description} />}
           </RN.View>
@@ -116,7 +117,7 @@ const Pomodoro = () => {
     return (
       <LottieContent
         source={themeState.lotties.tomato}
-        width={windowWidth}
+        width={windowWidth <= 500 ? windowWidth : windowWidth/1.8}
         autoPlay={isStartCurrent}
         speed={isStartCurrent ? 1 : 0}
       />
@@ -299,6 +300,11 @@ const styles = RN.StyleSheet.create({
   container: {
     paddingHorizontal: 5,
   },
+  endItems:{
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'flex-end',
+  },
   dotPress:{
     width:25,
     height:25,
@@ -408,8 +414,24 @@ const styles = RN.StyleSheet.create({
     marginTop: 20,
   },
   spaceBetween: {
-    gap: 8,
+    gap: windowWidth/35,
     alignItems: 'flex-start',
     flexDirection: 'row',
+    width:windowWidth-40
+  },
+  etapList: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+  },
+  etapType: {
+    fontSize: 18,
+    color: COLORS.white,
+  },
+  etapDays: {
+    fontSize: 16,
+    color: COLORS.white,
   },
 });

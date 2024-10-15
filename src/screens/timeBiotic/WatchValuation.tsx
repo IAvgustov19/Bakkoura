@@ -172,7 +172,7 @@ const styles = RN.StyleSheet.create({
   },
   pv39: {
     paddingTop: 39,
-    paddingBottom:0,
+    paddingBottom:60,
   },
   scrollView: {
     zIndex: 2,

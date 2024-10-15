@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     image: {
         objectFit: 'fill',
         borderRadius: 35,
+        maxWidth:400,
         // backgroundColor: 'red',
     },
     text: {

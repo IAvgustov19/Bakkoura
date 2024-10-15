@@ -23,7 +23,7 @@ const AlarmSlider = () => {
                         title={`${t("Alarm Clock")}`}
                         rightItem={<Images.Svg.btsRightLinear />}
                     />
-                    <CustomSwiper data={AlarmData} height={width / 2.2} width={'100%'}/>
+                    <CustomSwiper data={AlarmData} height={width / 2.2} width={width/2}/>
                 </>
             }
         />

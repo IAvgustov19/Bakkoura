@@ -504,6 +504,7 @@ const CustomComposer = props => {
             {
               bottom: audioRec ? 0 : -200,
               width: audioRec ? windowWidth : 'auto',
+              backgroundColor: themeState.recordingBack
             },
           ]}>
           {audioRec ? (

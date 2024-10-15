@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginBottom: -30,
+    marginBottom: 50,
   },
   text: {
     fontSize: 20,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   },
   startBtnContainer: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 80,
     width: windowWidth - 30,
     justifyContent: 'center',
     alignItems: 'center',

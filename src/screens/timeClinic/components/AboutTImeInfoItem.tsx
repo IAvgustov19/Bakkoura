@@ -22,7 +22,7 @@ const AboutTimeInfoItem: React.FC<Props> = ({author, text}) => {
         style={[styles.text, {color: themeState.title}]}>
         {text}
       </RN.Text>
-      <Images.Svg.aboutTimeLine width={windowWidth - 40} />
+      {/* <Images.Svg.aboutTimeLine width={windowWidth}/> */}
       <RN.Text style={[styles.author, {color: themeState.yellow}]}>
         {author}
       </RN.Text>
@@ -35,6 +35,9 @@ export default observer(AboutTimeInfoItem);
 const styles = StyleSheet.create({
   container: {
     gap: 5,
+    display:'flex',
+    justifyContent:'flex-start',
+    alignItems:'flex-start'
   },
   text: {
     fontSize: 17,

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {Images} from '../../assets';
 import Cancel from '../../components/Cancel/Cancel';
 import HeaderContent from '../../components/HeaderContent/HeaderContent';
@@ -14,11 +14,15 @@ import useRootStore from '../../hooks/useRootStore';
 import {APP_ROUTES} from '../../navigation/routes';
 import {COLORS} from '../../utils/colors';
 import {windowHeight} from '../../utils/styles';
-import Vertices from './components/Vertices24h';
+import Vertices24h from './components/Vertices24h';
+import Vertices30h from './components/Vertices30h';
+//import Vertices from './components/Vertices';
+import is24h from './BakkouraWatch';
 
 import {t} from '../../i18n'
 
 const CreateSector = () => {
+  //const [is24h, setIs24h] = useState(true);
   const navigation = useNavigation();
   const {addNewSelect, newSelectState, deleteSelect, listSelects, clearState} =
     useRootStore().bakkouraWatchStore;
@@ -33,6 +37,25 @@ const CreateSector = () => {
     clearState();
   };
 
+  const renderWatchs = useCallback(() => {
+    console.log(is24h)
+    if (is24h) {
+      return <Vertices24h
+        data={listSelects}
+        watchBack={themeState.bakkouraWatchs.watchBack}
+        watchFront={themeState.bakkouraWatchs.watchMain}
+        watchLines
+      />;
+    } else {
+      return <Vertices30h
+        data={listSelects}
+        watchBack={themeState.bakkouraWatchs.watchBack}
+        watchFront={themeState.bakkouraWatchs.watchMain30}
+        watchLines
+      />
+    }
+  }, [is24h]);
+
   return (
     <LinearContainer
       children={
@@ -46,7 +69,7 @@ const CreateSector = () => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <RN.View style={styles.content}>
-              <Vertices data={listSelects} />
+            {renderWatchs()}
               <RN.View style={styles.bottomBox}>
                 <RN.View style={styles.btnBox}>
                   <StartBtn
@@ -151,7 +174,7 @@ const styles = RN.StyleSheet.create({
   bottomBox: {
     borderRadius: 5,
     paddingHorizontal: 10,
-    gap: 10,
+    gap: 10
   },
   bottom: {
     backgroundColor: COLORS.black,

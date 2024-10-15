@@ -148,7 +148,7 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     gap: 20,
-    paddingBottom: 20,
+    paddingBottom: 50,
   },
   ideaInfo: {
     gap: 20,

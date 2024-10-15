@@ -123,7 +123,7 @@ const styles = RN.StyleSheet.create({
         justifyContent: 'center',
     },
     bakkouraWatch: {
-        width: 500,
+        width: 350,
         objectFit: 'contain'
     },
     bakkouraWatchHours: {

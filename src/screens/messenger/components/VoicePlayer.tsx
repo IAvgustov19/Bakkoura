@@ -85,7 +85,7 @@ const styles = RN.StyleSheet.create({
     },
     voiceSubTitle: {
         fontSize: 12,
-        color: '#AAAAAA',
+        color:'gray',
         fontFamily: 'RedHatDisplay-Regular',
     },
     voiceInfo: {

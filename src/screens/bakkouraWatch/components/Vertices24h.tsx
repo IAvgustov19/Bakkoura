@@ -159,15 +159,6 @@ const styles = RN.StyleSheet.create({
         bottom: '49%',
         transformOrigin: 'bottom',
         zIndex: 1,
-    },
-    secondLine: {
-        width: 1,
-        height: '35%',
-        backgroundColor: COLORS.yellow,
-        position: 'absolute',
-        bottom: '49%',
-        transformOrigin: 'bottom',
-        zIndex: 1,
     }
 });
 

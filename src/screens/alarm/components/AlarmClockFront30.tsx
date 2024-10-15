@@ -15,7 +15,7 @@ const AlarmClockFront30: React.FC<Props> = ({}) => {
   const {themeState} = useRootStore().personalAreaStore;
 
   return (
-    <RN.View style={[styles.alarmFront, {top: windowWidth / 4.2}]}>
+    <RN.View style={[styles.alarmFront, {top: windowWidth <= 500 ? windowWidth / 4.5 : windowWidth / 7}]}>
       <RN.Image style={styles.alarm} source={themeState.alarmFront30} />
       <LinearGradient
         style={[
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   alarm: {
-    width: windowWidth - 90,
+    width: windowWidth <= 500 ? windowWidth/1.5 : windowWidth/2.3,
     objectFit: 'contain',
   },
   lineMinut: {

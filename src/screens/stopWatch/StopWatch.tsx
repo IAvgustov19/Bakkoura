@@ -9,7 +9,7 @@ import StartBtn from '../../components/StopStartBtn/StopStartBtn';
 import SwitchContain from '../../components/SwitchContain/SwitchContain';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import { COLORS } from '../../utils/colors';
-import { HITSLOP, windowWidth } from '../../utils/styles';
+import { HITSLOP, windowHeight, windowWidth } from '../../utils/styles';
 import useRootStore from '../../hooks/useRootStore';
 import { observer } from 'mobx-react-lite';
 import Line from '../../components/Line/Line';
@@ -190,10 +190,11 @@ const styles = StyleSheet.create({
     height: '90%',
   },
   text: {
-    fontSize: moderateScale(50),
+    fontSize: 55,
     fontWeight: '100',
     width: '100%',
-    paddingLeft: '7%',
+    paddingLeft: '0%',
+    textAlign:'center'
   },
 
   changeBtn: {
@@ -223,11 +224,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     position: 'absolute',
-    bottom: 0,
+    bottom: "-10%",
     zIndex: 1,
   },
   lapsBox: {
-    height: 50,
+    height: windowHeight/3.5,
     overflow: 'hidden',
     marginTop: 20,
   },

@@ -59,13 +59,13 @@ export const TimeWealthDataInitial: TimeWealthDataType = {
 };
 
 export const TimeClinicList: TimeClinicListType[] = [
-  {
-    id: 1,
-    title: `${t('Podcast')}`,
-    navigate: APP_ROUTES.PODCASTS,
-    info: `${t('Stories about')}`,
-    isbtn: false,
-  },
+  // {
+  //   id: 1,
+  //   title: `${t('Podcast')}`,
+  //   navigate: APP_ROUTES.PODCASTS,
+  //   info: `${t('Stories about')}`,
+  //   isbtn: false,
+  // },
   {
     id: 2,
     title: `${t('Consultation')}`,

@@ -48,8 +48,9 @@ export const styles = StyleSheet.create({
   },
   startStop: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 20,
+    columnGap: 100
   },
   switchWork: {
     marginVertical: 20,

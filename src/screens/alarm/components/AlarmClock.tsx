@@ -41,7 +41,7 @@ const AlarmClock: React.FC<Props> = ({is24h}) => {
   const renderLottieClock = React.useCallback(() => {
     return (
       <LottieContent
-        width={windowWidth + 20}
+        width={windowWidth <= 500 ? windowHeight/2.2 : windowHeight/1.7}
         source={themeState.lotties.clock}
         speed={isRing ? 1 : 0}
         loop={isRing ? true : false}

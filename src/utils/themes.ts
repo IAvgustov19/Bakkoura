@@ -286,7 +286,7 @@ export const Themes = {
       watchBack: Images.Img.watchBack,
       watchMain: Images.Img.bakkouraWatchMain,
       watchFront: Images.Img.bakkouraWatchLines,
-      watchMain30: Images.Img.bakkouraWatchMain,
+      watchMain30: Images.Img.bakkouraWatchMain30h,
       watchFront30: Images.Img.bakkouraWatchLines,
     },
     messageIcon: Images.Svg.messageIcon,

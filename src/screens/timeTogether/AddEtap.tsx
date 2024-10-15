@@ -135,7 +135,7 @@ const AddEtap = () => {
                     {backgroundColor: themeState.mainBack},
                   ]}>
                   <RN.View style={styles.listItem}>
-                    <RN.Text style={[styles.listItemText,{color:themeState.title}]}>{`${t("reminder")}`}</RN.Text>
+                    <RN.Text style={[styles.listItemText,{color:themeState.gray}]}>{`${t("reminder")}`}</RN.Text>
                     <SimpleSwitch
                       active={addEtapState.reminder}
                       handlePress={onSetReminder}
