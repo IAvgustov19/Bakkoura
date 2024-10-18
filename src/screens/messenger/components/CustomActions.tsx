@@ -8,6 +8,7 @@ import {
   Alert,
   Linking,
   PermissionsAndroid,
+  StatusBar,
 } from 'react-native';
 import { Composer } from 'react-native-gifted-chat';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -391,6 +392,7 @@ const CustomComposer = props => {
   const renderRecordingVideo = useCallback(() => {
     return (
       <>
+      
         <View
           style={[
             styles.recordingbottom,
@@ -402,6 +404,7 @@ const CustomComposer = props => {
           ]}>
           {recording ? (
             <>
+            <StatusBar backgroundColor={ themeState.recordingBack}/>
               <View style={[styles.recordingItem, styles.recordingItemTime]}>
                 <View style={styles.redDot}></View>
                 <TextView text={maindis} />
@@ -509,6 +512,7 @@ const CustomComposer = props => {
           ]}>
           {audioRec ? (
             <>
+            <StatusBar backgroundColor={ themeState.recordingBack}/>
               <View style={[styles.recordingItem, styles.recordingItemTime]}>
                 <View style={styles.redDot}></View>
                 <TextView text={maindis} />

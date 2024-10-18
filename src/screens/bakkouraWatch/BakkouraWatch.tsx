@@ -124,7 +124,7 @@ const styles = RN.StyleSheet.create({
   },
   content: {
     height: windowHeight,
-    paddingBottom: windowHeight / 6,
+    paddingBottom: windowHeight / 8,
     justifyContent: 'space-between',
   },
   watchBox: {

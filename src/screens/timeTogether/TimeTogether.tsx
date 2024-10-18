@@ -221,7 +221,7 @@ const TimeTogether = () => {
         source={
           synchronized ? themeState.lotties.heart : themeState.lotties.goldHeart
         }
-        width={windowWidth/1.9}
+        width={windowWidth <= 500 ? windowWidth-20 : windowWidth / 1.9}
         autoPlay={true}
         speed={1}
       />

@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.bts"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.bakkourabts"
     xmlns:tools="http://schemas.android.com/tools"
 >
 
@@ -38,7 +38,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.bts.firebaseinitprovider"
+            android:authorities="com.bakkourabts.firebaseinitprovider"
             android:exported="false"
             tools:replace="android:authorities">
         </provider>

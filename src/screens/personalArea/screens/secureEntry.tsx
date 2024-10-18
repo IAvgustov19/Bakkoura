@@ -23,6 +23,7 @@ import ArrowLeftBack from '../../../components/ArrowLeftBack/ArrowLeftBack';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, APP_ROUTES.PASSWORD>;
 import Line from '../../../components/Line/Line';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SecureEntry = () => {
   const navigation = useNavigation<NavigationProp>();
@@ -111,7 +112,7 @@ const SecureEntry = () => {
       return l.locale == 'English' ? 'Password' : 'كلمة المرور'
     }
     else if(title == 'Biometry'){
-      return l.locale == 'English' ? 'Biomentry': 'القياس الحيوي'
+      return l.locale == 'English' ? 'Biometry': 'القياس الحيوي'
     }
     else if(title == 'Free'){
       return l.locale == 'English' ? 'Free' : 'مجانًا'
@@ -120,7 +121,8 @@ const SecureEntry = () => {
 
   const renderItem = ({ item, index }) => {
     const isActive = localSecureEntries[index]?.active ?? false;
-    console.log('isActiveisActive', isActive);
+   // console.log('isActiveisActive', isActive);
+   console.log(AsyncStorage.removeItem('secureEntry'))
 
     return (
       <RN.View

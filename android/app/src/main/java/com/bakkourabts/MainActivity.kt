@@ -1,4 +1,4 @@
-package com.bts
+package com.bakkourabts
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

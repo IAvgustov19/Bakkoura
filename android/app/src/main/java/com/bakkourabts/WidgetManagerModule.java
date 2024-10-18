@@ -1,4 +1,4 @@
-package com.bts;
+package com.bakkourabts;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

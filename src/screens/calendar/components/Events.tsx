@@ -127,7 +127,7 @@ const Events: React.FC<Props> = ({
       <RN.View style={styles.eventsTypeList}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={<ListEmptyComp title={`${t("No event yet")}`} />}
+          ListEmptyComponent={<ListEmptyComp title={`${t("No events yet")}`} />}
           data={allEventsData}
           renderItem={renderItem}
           ListFooterComponent={<ListFooter />}

@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex:1000
   },
   subtrack: {
     position: 'absolute',

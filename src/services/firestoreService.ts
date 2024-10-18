@@ -997,28 +997,28 @@ export const uploadMediaToStorage = async (uri, path, mediaType) => {
     let compressedUri = uri;
 
     // Compress based on media type
-    if (mediaType === 'image') {
+    //if (mediaType === 'image') {
       // Apply existing image compression logic
-      compressedUri = await Image.compress(uri, {
-        compressionMethod: 'auto', // Can be 'jpeg', 'png', etc.
-      });
+      // compressedUri = await Image.compress(uri, {
+      //   compressionMethod: 'auto', // Can be 'jpeg', 'png', etc.
+      // });
 
       // Convert the image to WebP format
-      const resizedImage = await ImageResizer.createResizedImage(
-        compressedUri, // URI of the already compressed image
-        800, // new width (adjust as needed)
-        600, // new height (adjust as needed)
-        'WEBP', // format
-        80, // quality (0 to 100)
-      );
+      // const resizedImage = await ImageResizer.createResizedImage(
+      //   compressedUri, // URI of the already compressed image
+      //   uri.width, // new width (adjust as needed)
+      //   uri.height, // new height (adjust as needed)
+      //   'WEBP', // format
+      //   85, // quality (0 to 100)
+      // );
 
-      compressedUri = resizedImage.uri;
-    } else if (mediaType === 'video') {
-      // Compress the video
-      compressedUri = await Video.compress(uri, {
-        compressionMethod: 'auto', // Can be adjusted based on your needs
-      });
-    }
+      //compressedUri = resizedImage.uri;
+    // } else if (mediaType === 'video') {
+    //   // Compress the video
+    //   compressedUri = await Video.compress(uri, {
+    //     compressionMethod: 'manual', // Can be adjusted based on your needs
+    //   });
+    //}
 
     // Create a reference to Firebase Storage
     const reference = storage().ref(path);

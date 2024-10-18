@@ -1,4 +1,4 @@
-package com.bts;
+package com.bakkourabts;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -74,7 +74,7 @@ public class YourWidgetProvider extends AppWidgetProvider {
 
             // Set click intent
             Intent intent = new Intent(context, YourWidgetProvider.class);
-            intent.setAction("com.bts.ACTION_UPDATE_WIDGET");
+            intent.setAction("com.bakkourabts.ACTION_UPDATE_WIDGET");
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
 
@@ -110,7 +110,7 @@ public class YourWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         // Handle manual update action if needed
-        if (intent.getAction() != null && intent.getAction().equals("com.bts.ACTION_UPDATE_WIDGET")) {
+        if (intent.getAction() != null && intent.getAction().equals("com.bakkourabts.ACTION_UPDATE_WIDGET")) {
             // Perform action here, for example, launch MainActivity
             Intent launchIntent = new Intent(context, MainActivity.class);
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
